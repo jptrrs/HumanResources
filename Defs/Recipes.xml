@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RecipeDef>
+    <defName>Tech_Learn</defName>
+    <label>Study technologies</label>
+    <description>Study to acquire knowledge about a new technology.</description>
+    <jobString>Studying a new technology.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+	  <recipeUsers>
+		  <li>StudyDesk</li>  
+	  </recipeUsers>
+	  <!--<skillRequirements>
+		  <Intellectual>3</Intellectual>
+	  </skillRequirements>-->
+    <fixedIngredientFilter>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>Tech_Document</defName>
+    <label>Document technologies</label>
+    <description>Consolidate knowledge into a compeduim.</description>
+    <jobString>Documenting a technology.</jobString>
+    <workAmount>1000</workAmount>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+    <recipeUsers>
+      <li>StudyDesk</li>
+    </recipeUsers>
+    <!--<skillRequirements>
+		  <Intellectual>3</Intellectual>
+	  </skillRequirements>-->
+    <fixedIngredientFilter>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>TrainWeaponShooting</defName>
+    <label>learn to shoot a weapon</label>
+    <description>Train with a ranged weapon to acquire proficiency.</description>
+    <jobString>Practicing with a weapon.</jobString>
+    <workAmount>350</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Shot_Revolver</soundWorking>
+    <workSkill>Shooting</workSkill>
+    <recipeUsers>
+      <li>Target</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsRanged</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsRanged</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>WeaponsRanged</li>
+      </categories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>TrainWeaponMelee</defName>
+    <label>learn to wield a weapon</label>
+    <description>Train with a melee weapon to acquire proficiency.</description>
+    <jobString>Training with a weapon.</jobString>
+    <workAmount>350</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
+    <workSkill>Melee</workSkill>
+    <recipeUsers>
+      <li>MrDummy</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsMelee</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsMelee</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>WeaponsMelee</li>
+      </categories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+  
+  <!--From ItchyFlea's Practise Target-->
+  <RecipeDef>
+    <defName>PracticeShooting</defName>
+    <label>practice shooting</label>
+    <description>Shoots at a target to train shooting accuracy.</description>
+    <jobString>Training.</jobString>
+    <workAmount>350</workAmount>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Shot_Revolver</soundWorking>
+    <workSkill>Shooting</workSkill>
+    <recipeUsers>
+      <li>Target</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>PracticeMelee</defName>
+    <label>practice melee</label>
+    <description>Trains close quarters combat against a straw dummy.</description>
+    <jobString>Training.</jobString>
+    <workAmount>700</workAmount>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
+    <workSkill>Melee</workSkill>
+    <recipeUsers>
+      <li>MrDummy</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

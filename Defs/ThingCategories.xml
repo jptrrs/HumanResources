@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingCategoryDef>
+    <defName>Knowledge</defName>
+    <label>knowledge</label>
+    <parent>Root</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Neolithic</defName>
+    <label>neolithic</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Medieval</defName>
+    <label>medieval</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Industrial</defName>
+    <label>industrial</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Spacer</defName>
+    <label>spacer</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Ultra</defName>
+    <label>ultra</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+  
+  <ThingCategoryDef>
+    <defName>Archotech</defName>
+    <label>archotech</label>
+    <parent>Knowledge</parent>
+  </ThingCategoryDef>
+
+</Defs>

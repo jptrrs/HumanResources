@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  
+  <JobDef>
+    <defName>LearnTech</defName>
+    <driverClass>HumanResources.JobDriver_LearnTech</driverClass>
+    <reportString>learning TargetB.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+  
+  <JobDef>
+    <defName>DocumentTech</defName>
+    <driverClass>HumanResources.JobDriver_DocumentTech</driverClass>
+    <reportString>documenting TargetB.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>  
+  
+  <JobDef>
+    <defName>LearnWeapon</defName>
+    <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
+    <reportString>practicing TargetB.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>  
+  
+  <!--From ItchyFlea's Practise Target-->
+    <JobDef>
+    <defName>UseDummy</defName>
+    <driverClass>JobDriver_WatchBuilding</driverClass>
+    <reportString>Training Melee.</reportString>
+    <joyDuration>4000</joyDuration>
+    <joyMaxParticipants>1</joyMaxParticipants>
+    <joySkill>Melee</joySkill>
+    <joyXpPerTick>0.004</joyXpPerTick>
+    <joyGainRate>1.2</joyGainRate>
+    <joyKind>Meditative</joyKind>
+  </JobDef>
+  
+  <JobDef>
+    <defName>UseTarget</defName>
+    <driverClass>JobDriver_WatchBuilding</driverClass>
+    <reportString>Training Shooting.</reportString>
+    <joyDuration>4000</joyDuration>
+    <joyMaxParticipants>1</joyMaxParticipants>
+    <joySkill>Shooting</joySkill>
+    <joyXpPerTick>0.004</joyXpPerTick>
+    <joyGainRate>1.2</joyGainRate>
+    <joyKind>Meditative</joyKind>
+  </JobDef>
+  
+</Defs>

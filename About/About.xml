@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>[JPT] Human Resources</name>
+	<author>jptrrs</author>
+  <supportedVersions>
+    <!--<li>1.0</li>-->
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>JPT.HumanResources</packageId>
+  <modDependencies>
+    <li>
+      <packageId>UnlimitedHugs.HugsLib</packageId>
+      <displayName>HugsLib</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>UnlimitedHugs.HugsLib</li>
+  </loadAfter>
+  <description>
+What if it was impossible to discover Microelectronics while sitting alone in a cabin in the woods? What if you actually had to learn it from someone who knows his stuff? This experimental mod with far-reaching consequences completely changes the way technology plays out in the game.
+  </description>
+	<url>https://steamcommunity.com/id/jptrrs/myworkshopfiles/?appid=294100</url>
+</ModMetaData>

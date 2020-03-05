@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Manifest>
+    <identifier>HumanResources</identifier>
+    <version>0.1</version>
+    <!--<incompatibleWith>
+      <li>SW-Lightsabers</li>
+    </incompatibleWith>
+    <suggests>
+      <li>Dubs-Skylights</li>
+      <li>ExpandedRoofing</li>
+      <li>Glass+Lights</li>
+    </suggests>-->
+    <showCrossPromotions>true</showCrossPromotions>
+    <downloadUri>https://github.com/jptrrs/OpenTheWindows/releases/latest</downloadUri>
+</Manifest>

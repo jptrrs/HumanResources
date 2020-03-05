@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<WorkTypeDef>
+		<defName>HR_Learn</defName>
+		<labelShort>Learn</labelShort>
+		<pawnLabel>Student</pawnLabel>
+		<gerundLabel>learning</gerundLabel>
+		<description>Acquire new knowledge.</description>
+		<verb>Learn at</verb>
+		<naturalPriority>90</naturalPriority>
+		<relevantSkills>
+		  <li>Intellectual</li>
+		</relevantSkills>
+	</WorkTypeDef>
+  
+</Defs>

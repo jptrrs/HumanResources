@@ -1,0 +1,105 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanResources", "Source\HumanResources.csproj", "{36A3E364-2E2B-401C-9E79-3909DEBE07D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4A36335D-CF65-4FAC-9C83-B135ECFBE53E}"
+	ProjectSection(SolutionItems) = preProject
+		About\About.xml = About\About.xml
+		About\Manifest.xml = About\Manifest.xml
+		About\Preview.png = About\Preview.png
+		About\PublishedFileId.txt = About\PublishedFileId.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B9E9-4338-8845-ACD73F533D7D}"
+	ProjectSection(SolutionItems) = preProject
+		Defs\Jobs.xml = Defs\Jobs.xml
+		..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml = ..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml
+		Defs\Recipes.xml = Defs\Recipes.xml
+		Defs\ThingCategories.xml = Defs\ThingCategories.xml
+		Defs\Things.xml = Defs\Things.xml
+		Defs\WorkGivers.xml = Defs\WorkGivers.xml
+		Defs\WorkTypes.xml = Defs\WorkTypes.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{09F3603A-0073-497A-ACAA-541F5006FFCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{2E40F710-D92E-4778-8170-90E0C139B601}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\English\Keyed\HumanResources_keys.xml = Languages\English\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portuguese", "Portuguese", "{C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{BD7B65EA-E59C-4123-853E-EE0A7F4E1B8E}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Portuguese\Keyed\BurnItForFuel_keys.xml = Languages\Portuguese\Keyed\BurnItForFuel_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PortugueseBrazilian", "PortugueseBrazilian", "{EE02142C-EF8D-4A9D-8AB2-CDC293042218}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{E35F3389-1928-4A41-A186-77CC05AEDCE6}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml = Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{6A809623-353B-411E-BDB4-7C4428221C02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{433382EE-88BC-4265-97D3-BD88C6A45CBC}"
+	ProjectSection(SolutionItems) = preProject
+		Textures\Things\Building\ManagerStation_east.png = Textures\Things\Building\ManagerStation_east.png
+		Textures\Things\Building\ManagerStation_eastm.png = Textures\Things\Building\ManagerStation_eastm.png
+		Textures\Things\Building\ManagerStation_front.png = Textures\Things\Building\ManagerStation_front.png
+		Textures\Things\Building\ManagerStation_north.png = Textures\Things\Building\ManagerStation_north.png
+		Textures\Things\Building\ManagerStation_northm.png = Textures\Things\Building\ManagerStation_northm.png
+		Textures\Things\Building\ManagerStation_south.png = Textures\Things\Building\ManagerStation_south.png
+		Textures\Things\Building\ManagerStation_southm.png = Textures\Things\Building\ManagerStation_southm.png
+		Textures\Things\Building\MrDummy_east.png = Textures\Things\Building\MrDummy_east.png
+		Textures\Things\Building\MrDummy_north.png = Textures\Things\Building\MrDummy_north.png
+		Textures\Things\Building\MrDummy_south.png = Textures\Things\Building\MrDummy_south.png
+		Textures\Things\Building\Target_north.png = Textures\Things\Building\Target_north.png
+		Textures\Things\Building\Target_northm.png = Textures\Things\Building\Target_northm.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{9B5032FB-497C-43D8-9EE9-5F26D099F9DE}"
+	ProjectSection(SolutionItems) = preProject
+		Source\JobDriver_DocumentTech(bug).cs = Source\JobDriver_DocumentTech(bug).cs
+		Source\WorkGiver_DocumentTech.cs = Source\WorkGiver_DocumentTech.cs
+		Source\WorkGiver_Knowledge.cs = Source\WorkGiver_Knowledge.cs
+		Source\WorkGiver_LearnTech.cs = Source\WorkGiver_LearnTech.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09F3603A-0073-497A-ACAA-541F5006FFCD} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
+		{2E40F710-D92E-4778-8170-90E0C139B601} = {09F3603A-0073-497A-ACAA-541F5006FFCD}
+		{C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
+		{BD7B65EA-E59C-4123-853E-EE0A7F4E1B8E} = {C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921}
+		{EE02142C-EF8D-4A9D-8AB2-CDC293042218} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
+		{E35F3389-1928-4A41-A186-77CC05AEDCE6} = {EE02142C-EF8D-4A9D-8AB2-CDC293042218}
+		{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB} = {6A809623-353B-411E-BDB4-7C4428221C02}
+		{433382EE-88BC-4265-97D3-BD88C6A45CBC} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}
+	EndGlobalSection
+EndGlobal

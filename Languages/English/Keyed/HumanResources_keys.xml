@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <TabKnowledge>Tech</TabKnowledge>
+  <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
+  <MessageDocumentComplete>{0_nameDef} wrote a compendium on {1}.</MessageDocumentComplete>
+  <MessageTrainingComplete>{0_nameDef} has mastered the {1}.</MessageTrainingComplete>
+  <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
+  <NoWeaponToLearn>{0_nameDef} believes those weapons are evil, {0_pronoun} won't touch them.</NoWeaponToLearn>
+  <DoesntKnowHowToBuild>{0_nameDef} doesn't know how to build a {1}.</DoesntKnowHowToBuild>
+  <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1}.</DoesntKnowHowToCraft>
+  <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1}.</DoesntKnowThisPlant>
+  <UnknownWeapon>Unknown Weapon</UnknownWeapon>
+  <ShowCommon>show common</ShowCommon>
+</LanguageData>

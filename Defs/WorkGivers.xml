@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <WorkGiverDef>
+    <defName>TechDocument</defName>
+    <label>Document technologies</label>
+    <giverClass>HumanResources.WorkGiver_DocumentTech</giverClass>
+    <workType>Research</workType>
+    <verb>write</verb>
+    <gerund>writing at</gerund>
+    <fixedBillGiverDefs>
+      <li>StudyDesk</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+  
+  <WorkGiverDef>
+		<defName>TechLearn</defName>
+		<label>Study Technologies</label>
+		<giverClass>HumanResources.WorkGiver_LearnTech</giverClass>
+		<workType>HR_Learn</workType>
+		<verb>study</verb>
+		<gerund>studying at</gerund>
+		<fixedBillGiverDefs>
+			<li>StudyDesk</li>
+		</fixedBillGiverDefs>
+	</WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>WeaponLearn</defName>
+    <label>Learn weapon use</label>
+    <giverClass>HumanResources.WorkGiver_LearnWeapon</giverClass>
+    <workType>HR_Learn</workType>
+    <verb>train</verb>
+    <gerund>training</gerund>
+    <fixedBillGiverDefs>
+      <li>Target</li>
+      <li>MrDummy</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>PracticeShooting</defName>
+    <label>shooting practice</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>HR_Learn</workType>
+    <verb>train</verb>
+    <gerund>training</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <fixedBillGiverDefs>
+      <li>Target</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>PracticeMelee</defName>
+    <label>melee practice</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>HR_Learn</workType>
+    <verb>train</verb>
+    <gerund>training</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <fixedBillGiverDefs>
+      <li>MrDummy</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+
+</Defs>
