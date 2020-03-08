@@ -34,8 +34,6 @@ namespace HumanResources
 			bool result;
 			if (pawn.Reserve(target, job, 1, -1, null, errorOnFailed))
 			{
-				pawn = this.pawn;
-				job = this.job;
 				result = pawn.Reserve(target, job, 1, -1, null, errorOnFailed);
 			}
 			else

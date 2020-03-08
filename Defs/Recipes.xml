@@ -11,12 +11,9 @@
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
-	  <recipeUsers>
-		  <li>StudyDesk</li>  
-	  </recipeUsers>
-	  <!--<skillRequirements>
-		  <Intellectual>3</Intellectual>
-	  </skillRequirements>-->
+    <recipeUsers>
+      <li>StudyDesk</li>
+    </recipeUsers>
     <fixedIngredientFilter>
     </fixedIngredientFilter>
     <defaultIngredientFilter>
@@ -36,13 +33,28 @@
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
-    <!--<skillRequirements>
-		  <Intellectual>3</Intellectual>
-	  </skillRequirements>-->
+    <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
+    <!--<ingredients>
+      <li>
+        <filter>
+          <li>Technic</li>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>-->
     <fixedIngredientFilter>
+      <!--<categories>
+        <li>Technic</li>
+      </categories>-->
     </fixedIngredientFilter>
     <defaultIngredientFilter>
+      <!--<categories>
+        <li>Technic</li>
+      </categories>-->
     </defaultIngredientFilter>
+    <products>
+      <TechBook>1</TechBook>
+    </products>
   </RecipeDef>
 
   <RecipeDef>
@@ -114,7 +126,7 @@
       </categories>
     </defaultIngredientFilter>
   </RecipeDef>
-  
+
   <!--From ItchyFlea's Practise Target-->
   <RecipeDef>
     <defName>PracticeShooting</defName>
@@ -143,5 +155,4 @@
       <li>MrDummy</li>
     </recipeUsers>
   </RecipeDef>
-
 </Defs>

@@ -4,18 +4,15 @@ using System.Linq;
 using RimWorld;
 using FluffyResearchTree;
 using Verse;
-using System.Reflection;
 using HarmonyLib;
-//using Harmony;
 
 namespace HumanResources
 {
-	public static class Research_Extension
+	public static class Extension_Research
 	{
 		public static SkillDef Bias = new SkillDef();
 
-		public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech =
-	new Dictionary<ResearchProjectDef, List<SkillDef>>();
+		public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
 
 		private static bool shootingTag = false;
 		private static bool meleeTag = false;
@@ -30,7 +27,6 @@ namespace HumanResources
 		private static bool socialTag = false; //broader knowledge
 		private static bool intellectualTag = false; //higher tech level
 
-		//public static void InferSkillBias(this ResearchNode research)
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
 			//ResearchProjectDef tech = research.Research;
@@ -87,7 +83,7 @@ namespace HumanResources
 					{
 						//FieldInfo workskillInfo = AccessTools.Field(typeof(ResearchNode_Extensions), r.workSkill.label + "Tag");
 						//Verse.Log.Message(r + " worksill is " + r.workSkill);// +", field is "+ workskillInfo.GetValue(research));
-						AccessTools.Field(typeof(Research_Extension), r.workSkill.label + "Tag").SetValue(techNode, true);
+						AccessTools.Field(typeof(Extension_Research), r.workSkill.label + "Tag").SetValue(techNode, true);
 					}
 				}
 			}
@@ -195,44 +191,55 @@ namespace HumanResources
 			}
 		}
 
-		public static void CreateDummyThingDef(this ResearchProjectDef tech, ThingFilter filter)
+		public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, Dictionary<ResearchProjectDef, ThingDef> stuffByTech)
 		{
-			string dummyName = "Tech_" + tech.defName;
+			string name = "Tech_" + tech.defName;
 			ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
+			string label = "KnowledgeLabel".Translate(tech.label);
 			ThingDef dummy = new ThingDef
 			{
-				defName = dummyName,
-				label = tech.label,
+				thingClass = typeof(ThingWithComps),
+				defName = name,
+				label = label,
 				description = tech.description,
 				category = ThingCategory.Item,
 				thingCategories = new List<ThingCategoryDef>() { tCat },
-				menuHidden = true
+				techLevel = tech.techLevel,
+				//menuHidden = true,
+				stuffProps = new StuffProperties()
+				{
+					categories = new List<StuffCategoryDef>() { DefDatabase<StuffCategoryDef>.GetNamed("Technic") },
+					color = Assets.ColorCompleted[tech.techLevel],
+					stuffAdjective = tech.LabelCap,
+					statOffsets = new List<StatModifier>()
+					{
+						new StatModifier
+						{
+							stat = StatDefOf.MarketValue,
+							value = 200f
+						}
+					},
+					statFactors = new List<StatModifier>()
+					{
+						new StatModifier
+						{
+							stat = StatDefOf.WorkToMake,
+							value = (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 3.0)),1)
+						},
+						new StatModifier
+						{
+							stat = StatDefOf.MarketValue,
+							value = (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) /10, 1)
+						}
+					}
+				}
 			};
+			//dummy.ResolveReferences();
 			DefDatabase<ThingDef>.Add(dummy);
 			filter.SetAllow(dummy, true);
-		}
 
-		public static void FillInThingfCategories(this ResearchProjectDef tech)
-		{
-			string techLevel = tech.techLevel.ToString();
-			if (!DefDatabase<ThingCategoryDef>.AllDefs.Any(x => x.defName.Contains(techLevel)))
-			{
-				ThingCategoryDef newCat = new ThingCategoryDef
-				{
-					defName = techLevel,
-					label = techLevel.ToLower(),
-					parent = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")
-				};
-
-				//hard crash!
-				//ThingCategoryDef newCat = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
-				//newCat.defName = techLevel;
-				//newCat.label = techLevel.ToLower();
-				//newCat.parent = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
-
-				DefDatabase<ThingCategoryDef>.Add(newCat);
-				Verse.Log.Message("[HumanResources] " + techLevel + " included as a category.");
-			}
+			//to use later
+			stuffByTech.Add(tech, dummy);
 		}
 
 		public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)

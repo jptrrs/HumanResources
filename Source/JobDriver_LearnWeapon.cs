@@ -25,7 +25,7 @@ namespace HumanResources
 			{
 				return false;
 			}
-			this.pawn.ReserveAsManyAsPossible(this.job.GetTargetQueue(TargetIndex.B), this.job, 1, -1, null);
+			pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
 			return true;
 		}
 

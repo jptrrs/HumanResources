@@ -11,6 +11,8 @@ namespace HumanResources
     {
         public List<ThingDef> weapons = new List<ThingDef>();
 
+        public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
+
         public void ExposeData()
         {
             Scribe_Collections.Look<ThingDef>(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
@@ -29,7 +31,7 @@ namespace HumanResources
                 {
                     UnlockWeapons(tech.UnlockedWeapons());
                 }
-                Log.Warning("Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
+                //Log.Warning("Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
             }
         }
 

@@ -39,7 +39,7 @@ namespace HumanResources
             SkillDef highestSkill = highestSkillRecord.def;
             SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate((l, r) => l.levelInt > r.levelInt ? l : r).def;
             bool guru = techLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
-            var filtered = Research_Extension.SkillsByTech.Where(e => e.Key.techLevel.Equals(techLevel));
+            var filtered = Extension_Research.SkillsByTech.Where(e => e.Key.techLevel.Equals(techLevel));
             int pass = 0;
             List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
             if (guru) techLevel++;

@@ -2,7 +2,8 @@
 <LanguageData>
   <TabKnowledge>Tech</TabKnowledge>
   <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
-  <MessageDocumentComplete>{0_nameDef} wrote a compendium on {1}.</MessageDocumentComplete>
+  <MessageDocumentComplete>{0_nameDef} wrote a book on {1}.</MessageDocumentComplete>
+  <MessageFiledTech>The knowledge for {0} was added to our library.</MessageFiledTech>
   <MessageTrainingComplete>{0_nameDef} has mastered the {1}.</MessageTrainingComplete>
   <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
@@ -12,4 +13,10 @@
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1}.</DoesntKnowThisPlant>
   <UnknownWeapon>Unknown Weapon</UnknownWeapon>
   <ShowCommon>show common</ShowCommon>
+  <KnowledgeLabel>{0} knowledge</KnowledgeLabel>
+  <Book>Book of {0}</Book>
+  <BookCompendium>{0} Compendium</BookCompendium>
+  <BookManual>{0} Manual</BookManual>
+  <BookTheory>{0} Theory</BookTheory>
+  <BookDatabase>{0} Database</BookDatabase>
 </LanguageData>

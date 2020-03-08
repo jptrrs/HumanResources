@@ -8,11 +8,11 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    public class CompProperties_Knowledge : CompProperties
+    public class CompProperties_TitleMaker : CompProperties
     {
-        public CompProperties_Knowledge()
+        public CompProperties_TitleMaker()
         {
-            compClass = typeof(CompKnowledge);
+            compClass = typeof(CompTitleMaker);
         }
     }
 }

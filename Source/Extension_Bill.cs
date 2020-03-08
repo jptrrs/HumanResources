@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
 using Verse;
 
 namespace HumanResources
 {
-    public static class Bill_Extension
+    public static class Extension_Bill
     {
         public static IEnumerable<ResearchProjectDef> SelectedTech(this Bill bill)
         {

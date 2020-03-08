@@ -1,9 +1,7 @@
 ﻿using HugsLib;
 using RimWorld;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement;
 using Verse;
 
 namespace HumanResources
@@ -49,45 +47,61 @@ namespace HumanResources
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
             ThingFilter lateFilter = new ThingFilter();
+            ThingCategoryDef knowledgeCat = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
                 tech.InferSkillBias();
-                tech.CreateDummyThingDef(lateFilter);
+                tech.CreateStuff(lateFilter, unlocked.stuffByTech);
                 foreach (ThingDef weapon in tech.UnlockedWeapons()) UniversalWeapons.Remove(weapon);
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
-            //Verse.Log.Message("[HumanResources] Created tech dummy defs:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))).ToStringSafeEnumerable());
-            ThingCategoryDef KnowledgeDef = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
+            Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat)).Select(x => x.label).ToStringSafeEnumerable());
+            //Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.stuffProps != null && x.stuffProps.categories.Contains(DefDatabase<StuffCategoryDef>.GetNamed("Technic"))).ToStringSafeEnumerable());
+            Log.Message("[HumanResources] Universal weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+
+            //TechBook dirty trick, but only now this is possible!
+            //DefDatabase<ThingDef>.GetNamed("TechBook").stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x.defName.Contains("TechBook")))
+            {
+                t.stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));
+            }
+
+            //Filling main technic category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
                 foreach (ThingCategoryDef c in t.thingCategories)
                 {
                     c.childThingDefs.Add(t);
-                    if (!KnowledgeDef.childCategories.Contains(c))
+                    if (!knowledgeCat.childCategories.Contains(c))
                     {
-                        KnowledgeDef.childCategories.Add(c);
+                        knowledgeCat.childCategories.Add(c);
                     }
                 }
             }
 
-            //Populating knowledge recipes
+            //Populating knowledge recipes and book shelves
+            ThingFilter filter = new ThingFilter();
+            filter.SetAllow(knowledgeCat, true);
             foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.defName.StartsWith("Tech_")))
             {
-                r.fixedIngredientFilter.SetAllow(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"), true);
-                r.defaultIngredientFilter.CopyAllowancesFrom(r.fixedIngredientFilter);
+                r.fixedIngredientFilter.CopyAllowancesFrom(filter);
+                r.defaultIngredientFilter.CopyAllowancesFrom(filter);
             }
-            Verse.Log.Message("[HumanResources] Universal Weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
+            {
+                t.building.fixedStorageSettings.filter.CopyAllowancesFrom(filter);
+                t.building.defaultStorageSettings.filter.CopyAllowancesFrom(filter);
+            }
         }
 
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
-        public static UnlockManager unlocked;
+        public static UnlockManager unlocked = new UnlockManager();
 
         public override void WorldLoaded()
         {
-            unlocked = new UnlockManager();
+            //unlocked = new UnlockManager();
             unlocked.RecacheUnlockedWeapons();
-            Log.Message("[HumanResources] Unlocked weapons: " + unlocked.weapons.ToStringSafeEnumerable());
         }
     }   
 }

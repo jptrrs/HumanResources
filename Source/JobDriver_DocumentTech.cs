@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Verse;
-using Verse.AI;
 using RimWorld;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using System.Reflection.Emit;
+using Verse.AI;
 
 namespace HumanResources
 {
@@ -14,41 +12,32 @@ namespace HumanResources
 	{
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
+			Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
+			
 			project = job.bill.SelectedTech().Intersect(techComp.expertise).RandomElement();
-			UpdateCost(project.baseCost);
+			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
+			//UpdateCost(project.baseCost);
 			//job.bill.recipe.workAmount = VariableCost(project.baseCost);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
-		//private float VariableCost (float baseCost)
-		//{
-		//	return baseCost * (float)Math.Pow(baseCost, (1.0 / 3.0)) * 2;
-		//}
+		protected ThingDef techStuff;
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			Bill bill = job.bill;
-			//Log.Warning("JobDriver_DocumentTech:MakeNewToils: " + bill.Label);
-			//Log.Message("Toil start:" + pawn + " is trying to document " + project + ", globalFailConditions count:" + globalFailConditions.Count);
-
-			//from DoBill
 			AddEndCondition(delegate
 			{
-				if (!desk.Spawned)
+				Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
+				if (thing is Building && !thing.Spawned)
 				{
 					return JobCondition.Incompletable;
 				}
-				if (project.IsFinished)
-				{
-					return JobCondition.Succeeded;
-				}
 				return JobCondition.Ongoing;
 			});
-
 			this.FailOnBurningImmobile(TargetIndex.A);
 			this.FailOn(delegate ()
 			{
-				IBillGiver billGiver = desk as IBillGiver;
+				IBillGiver billGiver = job.GetTarget(TargetIndex.A).Thing as IBillGiver;
 				if (billGiver != null)
 				{
 					if (job.bill.DeletedOrDereferenced)
@@ -63,104 +52,81 @@ namespace HumanResources
 				return false;
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return gotoBillGiver;
-			
-			//yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-
-			//Toil transferKnowledge = new Toil();
-			//transferKnowledge.initAction = delegate
-			//{
-			//	Pawn actor = transferKnowledge.actor;
-			//	Find.ResearchManager.FinishProject(project, true, actor);
-			//	Messages.Message("MessageDocumentComplete".Translate(actor,project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
-			//	//because vanillla FinishRecipeAndStartStoringProduct() wasn't working
-			//	//bill.Notify_IterationCompleted(actor, new List<Thing> { });
-			//	Notify_IterationCompleted(actor, bill as Bill_Production);
-			//	if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
-			//	{
-			//		float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
-			//		actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
-			//	}
-			//	actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);	
-			//};
-			//transferKnowledge.defaultCompleteMode = ToilCompleteMode.Instant;
-			//transferKnowledge.FailOnDespawnedOrNull(TargetIndex.A);
-			//yield return transferKnowledge;
-
-			Toil research = new Toil();
-			research.tickAction = delegate ()
+			yield return new Toil
 			{
-				Pawn actor = research.actor;
-				float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
-				num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true); //testing
-				ResearchPerformed(num, actor);
-				actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
-				actor.GainComfortFromCellIfPossible(true);
-			};
-			research.FailOn(() => project == null);
-			//research.FailOn(() => !project.CanBeResearchedAt(this.ResearchBench, false));
-			research.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-			research.WithEffect(EffecterDefOf.Research, TargetIndex.A);
-			research.WithProgressBar(TargetIndex.A, delegate
-			{
-				if (project == null)
+				initAction = delegate ()
 				{
-					return 0f;
+					if (job.targetQueueB != null && job.targetQueueB.Count == 1)
+					{
+						UnfinishedThing unfinishedThing = job.targetQueueB[0].Thing as UnfinishedThing;
+						if (unfinishedThing != null)
+						{
+							unfinishedThing.BoundBill = (Bill_ProductionWithUft)job.bill;
+						}
+					}
 				}
-				return project.ProgressPercent;
-			}, false, -0.5f);
-			research.defaultCompleteMode = ToilCompleteMode.Delay;
-			research.defaultDuration = 4000;
-			research.activeSkill = (() => SkillDefOf.Intellectual);
-			yield return research;
-			yield return Toils_General.Wait(2, TargetIndex.None);
-
+			};
+			yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
+			Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
+			yield return extract;
+			Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
+			yield return getToHaulTarget;
+			yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
+			//yield return JobDriver_DoBill.JumpToCollectNextIntoHandsForBill(getToHaulTarget, TargetIndex.B);
+			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell).FailOnDestroyedOrNull(TargetIndex.B);
+			Toil findPlaceTarget = Toils_JobTransforms.SetTargetToIngredientPlaceCell(TargetIndex.A, TargetIndex.B, TargetIndex.C);
+			yield return findPlaceTarget;
+			yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.C, findPlaceTarget, false, false);
+			yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
+			extract = null;
+			getToHaulTarget = null;
+			findPlaceTarget = null;
+			yield return gotoBillGiver;
+			yield return MakeUnfinishedThingIfNeeded();
+			yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+			yield return Toils_Recipe.FinishRecipeAndStartStoringProduct();
+			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
+			{
+				yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
+				findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
+				yield return findPlaceTarget;
+				yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
+			}
 			yield break;
 		}
 
-		public void ResearchPerformed(float amount, Pawn researcher)
+		private Toil MakeUnfinishedThingIfNeeded()
 		{
-			if (project == null)
+			Log.Message("Making unfinished thing if needed");
+			Toil toil = new Toil();
+			toil.initAction = delegate ()
 			{
-				Log.Error("Researched without having an active project.", false);
-				return;
-			}
-			amount *= ResearchPointsPerWorkTick;
-			amount *= Find.Storyteller.difficulty.researchSpeedFactor;
-			if (researcher != null && researcher.Faction != null)
-			{
-				amount /= project.CostFactor(researcher.Faction.def.techLevel);
-			}
-			if (DebugSettings.fastResearch)
-			{
-				amount *= 500f;
-			}
-			if (researcher != null)
-			{
-				researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
-			}
-			float num = Find.ResearchManager.GetProgress(project);
-			num += amount;
+				Pawn actor = toil.actor;
+				Job curJob = actor.jobs.curJob;
+				if (!curJob.RecipeDef.UsesUnfinishedThing)
+				{
+					return;
+				}
+				if (curJob.GetTarget(TargetIndex.B).Thing != null && curJob.GetTarget(TargetIndex.B).Thing is UnfinishedThing)
+				{
+					return;
+				}
+				UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, techStuff);
+				unfinishedThing.Creator = actor;
+				unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill;
+				unfinishedThing.ingredients = new List<Thing>
+				{
+					new Thing()
+					{
+						def = unfinishedThing.Stuff
+					}
+				};
 
-			FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
-			object progressObj = progressInfo.GetValue(Find.ResearchManager);
-			((Dictionary<ResearchProjectDef, float>)progressObj)[project] = num;
-
-			if (project.IsFinished)
-			{
-				Find.ResearchManager.FinishProject(project, true, researcher);
-			}
+				GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
+				curJob.SetTarget(TargetIndex.B, unfinishedThing);
+				actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
+			};
+			return toil;
 		}
-
-		private float ResearchPointsPerWorkTick
-		{
-			get
-			{
-				FieldInfo researchPerWorktickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
-				return (float)researchPerWorktickInfo.GetValue(Find.ResearchManager) * DocumentedResearchFactor;
-			}
-		}
-
-		private const int DocumentedResearchFactor = 5;
 	}
 }

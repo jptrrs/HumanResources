@@ -1,13 +1,12 @@
 ﻿using HarmonyLib;
-//using Harmony;
 using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Verse;
 using Verse.AI;
 using UnityEngine;
+using System.Reflection;
 
 namespace HumanResources
 {
@@ -27,11 +26,11 @@ namespace HumanResources
             //harmonyInstance.Patch(original: AccessTools.Method(type: typeof(?), name: "?"),
             //prefix: null, postfix: new HarmonyMethod(type: patchType, name: nameof(?)), transpiler: null);
 
-            harmony.Patch(AccessTools.Method(typeof(Dialog_BillConfig), "DoWindowContents", new Type[] { typeof(Rect) }),
-                new HarmonyMethod(patchType, nameof(DoWindowContents_Prefix)), new HarmonyMethod(patchType, nameof(DoWindowContents_Postfix)), null);
+            //harmony.Patch(AccessTools.Method(typeof(Dialog_BillConfig), "DoWindowContents", new Type[] { typeof(Rect) }),
+            //    new HarmonyMethod(patchType, nameof(DoWindowContents_Prefix)), new HarmonyMethod(patchType, nameof(DoWindowContents_Postfix)), null);
 
-            harmony.Patch(AccessTools.Method(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) }),
-                null, new HarmonyMethod(patchType, nameof(Visible_Postfix)), null);
+            //harmony.Patch(AccessTools.Method(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) }),
+            //    null, new HarmonyMethod(patchType, nameof(Visible_Postfix)), null);
 
             harmony.Patch(AccessTools.Method(typeof(WorkGiver_ConstructFinishFrames), "JobOnThing", new Type[] { typeof(Pawn), typeof(Thing), typeof(bool) }),
                 new HarmonyMethod(patchType, nameof(ConstructFinishFrames_JobOnThing_Prefix)), null, null);
@@ -59,7 +58,71 @@ namespace HumanResources
 
             harmony.Patch(AccessTools.Method(typeof(ScenPart_PlayerFaction), "PostWorldGenerate"),
                 null, new HarmonyMethod(patchType, nameof(PostWorldGenerate_Postfix)), null);
+
+            //harmony.Patch(AccessTools.Method(typeof(Toils_Recipe), "MakeUnfinishedThingIfNeeded"),
+            //    new HarmonyMethod(patchType, nameof(MakeUnfinishedThingIfNeeded_Prefix)), new HarmonyMethod(patchType, nameof(MakeUnfinishedThingIfNeeded_Postfix)), null);
         }
+
+        public static bool MakeUnfinishedThingIfNeeded_Prefix()
+        {
+            return false;
+        }
+
+        public static void MakeUnfinishedThingIfNeeded_Postfix(object __instance, Toil __result)
+        {
+            __result = MakeUnfinishedThingIfNeeded(__instance);
+        }
+        
+        public static Toil MakeUnfinishedThingIfNeeded(object __instance)
+        {
+            Log.Warning("Making unfinished thing if needed");
+            
+            Toil toil = new Toil();
+            toil.initAction = delegate ()
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.jobs.curJob;
+                if (!curJob.RecipeDef.UsesUnfinishedThing)
+                {
+                    return;
+                }
+                if (curJob.GetTarget(TargetIndex.B).Thing != null && curJob.GetTarget(TargetIndex.B).Thing is UnfinishedThing)
+                {
+                    return;
+                }
+                MethodInfo calculateIngredientsInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateIngredients");
+                MethodInfo calculateDominantIngredientInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateDominantIngredient");
+                List<Thing> list = (List<Thing>)calculateIngredientsInfo.Invoke(__instance, new object[] { curJob, actor });
+                Log.Warning("list count is " + list.Count());
+                Thing thing = (Thing)calculateDominantIngredientInfo.Invoke(__instance, new object[] { curJob, list });
+                Log.Warning("dominant ingredient is "+thing);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Thing thing2 = list[i];
+                    actor.Map.designationManager.RemoveAllDesignationsOn(thing2, false);
+                    if (thing2.Spawned)
+                    {
+                        thing2.DeSpawn(DestroyMode.Vanish);
+                    }
+                }
+                ThingDef stuff = curJob.RecipeDef.unfinishedThingDef.MadeFromStuff ? thing.def : null;
+                UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, stuff);
+                unfinishedThing.Creator = actor;
+                unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill;
+                unfinishedThing.ingredients = list;
+                CompColorable compColorable = unfinishedThing.TryGetComp<CompColorable>();
+                if (compColorable != null)
+                {
+                    compColorable.Color = thing.DrawColor;
+                }
+                GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
+                curJob.SetTarget(TargetIndex.B, unfinishedThing);
+                actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
+            };
+            return toil;
+        }
+
+
 
         public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
         {
@@ -67,32 +130,32 @@ namespace HumanResources
             return false;
         }
 
-        public static void DoWindowContents_Prefix(Dialog_BillConfig __instance)
-        {
-            FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
-            Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
-            if (bill.recipe.fixedIngredientFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
-            {
-                Ball = true;
-            }
-        }
+        //public static void DoWindowContents_Prefix(Dialog_BillConfig __instance)
+        //{
+        //    FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
+        //    Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
+        //    if (bill.recipe.fixedIngredientFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
+        //    {
+        //        Ball = true;
+        //    }
+        //}
 
-        public static void DoWindowContents_Postfix()
-        {
-            Ball = false;
-        }
+        //public static void DoWindowContents_Postfix()
+        //{
+        //    Ball = false;
+        //}
 
-        private static bool Ball;
+        //private static bool Ball;
 
-        public static void Visible_Postfix(ThingDef td, ref bool __result)
-        {
-            if (Ball && td.defName.StartsWith("Tech_"))
-            {
-                __result = true;
-                //ResearchProjectDef tech = DefDatabase<ResearchProjectDef>.GetNamed(td.defName.Substring(td.defName.IndexOf(@"_") + 1));
-                //__result = tech.IsFinished;
-            }
-        }
+        //public static void Visible_Postfix(ThingDef td, ref bool __result)
+        //{
+        //    if (Ball && td.defName.StartsWith("Book_"))
+        //    {
+        //        __result = true;
+        //        //ResearchProjectDef tech = DefDatabase<ResearchProjectDef>.GetNamed(td.defName.Substring(td.defName.IndexOf(@"_") + 1));
+        //        //__result = tech.IsFinished;
+        //    }
+        //}
 
         public static bool ConstructFinishFrames_JobOnThing_Prefix(Pawn pawn, Thing t)
         {
@@ -182,7 +245,7 @@ namespace HumanResources
             {
                 ModBaseHumanResources.unlocked.UnlockWeapons(weapons);
                 Log.Message("[HumanResources] " + proj + " discovered, unlocked weapons: " + weapons.ToStringSafeEnumerable());
-                Log.Message("[HumanResources] Currently unlocked weapons: " + ModBaseHumanResources.unlocked.weapons.Count());
+                //Log.Message("[HumanResources] Currently unlocked weapons: " + ModBaseHumanResources.unlocked.weapons.Count());
             }
         }
 

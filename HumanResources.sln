@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B
 		Defs\Jobs.xml = Defs\Jobs.xml
 		..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml = ..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml
 		Defs\Recipes.xml = Defs\Recipes.xml
+		Defs\StuffCategories.xml = Defs\StuffCategories.xml
 		Defs\ThingCategories.xml = Defs\ThingCategories.xml
 		Defs\Things.xml = Defs\Things.xml
 		Defs\WorkGivers.xml = Defs\WorkGivers.xml
@@ -67,12 +68,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{43
 		Textures\Things\Building\Target_northm.png = Textures\Things\Building\Target_northm.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{9B5032FB-497C-43D8-9EE9-5F26D099F9DE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1}"
 	ProjectSection(SolutionItems) = preProject
-		Source\JobDriver_DocumentTech(bug).cs = Source\JobDriver_DocumentTech(bug).cs
-		Source\WorkGiver_DocumentTech.cs = Source\WorkGiver_DocumentTech.cs
-		Source\WorkGiver_Knowledge.cs = Source\WorkGiver_Knowledge.cs
-		Source\WorkGiver_LearnTech.cs = Source\WorkGiver_LearnTech.cs
+		Textures\Things\Item\book.png = Textures\Things\Item\book.png
+		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{0A1DCD6C-9285-40CF-8CC4-47EAF9ED2429}"
+	ProjectSection(SolutionItems) = preProject
+		Source\JobDriver_DocumentTech0.cs = Source\JobDriver_DocumentTech0.cs
 	EndProjectSection
 EndProject
 Global
@@ -98,6 +102,7 @@ Global
 		{E35F3389-1928-4A41-A186-77CC05AEDCE6} = {EE02142C-EF8D-4A9D-8AB2-CDC293042218}
 		{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB} = {6A809623-353B-411E-BDB4-7C4428221C02}
 		{433382EE-88BC-4265-97D3-BD88C6A45CBC} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
+		{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

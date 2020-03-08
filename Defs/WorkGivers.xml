@@ -12,7 +12,20 @@
       <li>StudyDesk</li>
     </fixedBillGiverDefs>
   </WorkGiverDef>
-  
+
+  <WorkGiverDef>
+    <defName>TechFiling</defName>
+    <label>file knowledge</label>
+    <giverClass>HumanResources.WorkGiver_FileTech</giverClass>
+    <workType>Hauling</workType>
+    <verb>file</verb>
+    <gerund>filing</gerund>
+    <priorityInType>70</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
   <WorkGiverDef>
 		<defName>TechLearn</defName>
 		<label>Study Technologies</label>

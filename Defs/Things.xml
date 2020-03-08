@@ -8,7 +8,7 @@
     <description>A desk to write and study.</description>
     <graphicData>
       <texPath>Things/Building/StudyDesk</texPath>
-	  <shaderType>CutoutComplex</shaderType>
+      <shaderType>CutoutComplex</shaderType>
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
       <damageData>
@@ -21,7 +21,7 @@
     <stuffCategories>
       <li>Metallic</li>
       <li>Woody</li>
-      <li>Stony</li>	  
+      <li>Stony</li>
     </stuffCategories>
     <costStuffCount>75</costStuffCount>
     <altitudeLayer>Building</altitudeLayer>
@@ -49,7 +49,7 @@
       <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
     </building>
     <comps>
-	  <li Class="CompProperties_Facility">
+      <li Class="CompProperties_Facility">
         <statOffsets>
           <WorkTableWorkSpeedFactor>1.0</WorkTableWorkSpeedFactor>
         </statOffsets>
@@ -57,13 +57,13 @@
         <maxDistance>11.0</maxDistance>
       </li>
     </comps>
-    <designationHotKey></designationHotKey>
+    <designationHotKey />
     <placeWorkers>
-		<li>PlaceWorker_ShowFacilitiesConnections</li>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
     </placeWorkers>
   </ThingDef>
 
-  <!--From ItchyFlea's Practise Target-->
+  <!--Borrewed from ItchyFlea's Practise Target-->
   <ThingDef ParentName="BuildingBase">
     <defName>Target</defName>
     <label>Target</label>
@@ -80,8 +80,8 @@
     <size>(1,1)</size>
     <useHitPoints>False</useHitPoints>
     <!--<costList>
-      <Steel>35</Steel>
-    </costList>-->
+			<Steel>35</Steel>
+		</costList>-->
     <stuffCategories>
       <li>Woody</li>
     </stuffCategories>
@@ -144,4 +144,201 @@
     </inspectorTabs>
   </ThingDef>
 
+  <!--Borrowed from Jecrell's RimWriter-->
+  <ThingDef ParentName="BuildingBase">
+    <defName>BookShelf</defName>
+    <label>Book Shelf</label>
+    <thingClass>HumanResources.Building_BookStore</thingClass>
+    <description>A sturdy shelf for storing knowledge in form of books.</description>
+    <uiIconScale>0.45</uiIconScale>
+    <!--<researchPrerequisites>
+      <li>ComplexFurniture</li>
+    </researchPrerequisites>-->
+    <graphicData>
+      <texPath>Things/Building/LibraryBookcase/Jecrell_Bookcase</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <rotatable>true</rotatable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Mass>15</Mass>
+      <Flammability>1.0</Flammability>
+      <Beauty>5</Beauty>
+      <JoyGainFactor>1</JoyGainFactor>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>110</costStuffCount>
+    <pathCost>70</pathCost>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Joy</designationCategory>
+    <designationHotKey>Misc2</designationHotKey>
+    <comps>
+      <li Class="HumanResources.CompProperties_StorageGraphic">
+        <graphicEmpty>
+          <texPath>Things/Building/LibraryBookcase/Jecrell_BookcaseEmpty</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>3</drawSize>
+        </graphicEmpty>
+        <graphicSparse>
+          <texPath>Things/Building/LibraryBookcase/Jecrell_BookcaseSparse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>3</drawSize>
+        </graphicSparse>
+        <graphicFull>
+          <texPath>Things/Building/LibraryBookcase/Jecrell_Bookcase</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>3</drawSize>
+        </graphicFull>
+        <countSparseThreshhold>1</countSparseThreshhold>
+        <countFullCapacity>30</countFullCapacity>
+      </li>
+    </comps>
+    <building>
+      <!--<joyKind>Jecrell_Books</joyKind>-->
+      <ai_chillDestination>false</ai_chillDestination>
+      <isInert>true</isInert>
+      <preventDeteriorationInside>true</preventDeteriorationInside>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+      <li>HumanResources.ITab_Inventory</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="UnfinishedBase">
+    <defName>UnfinishedTechBook</defName>
+    <label>unfinished technical document</label>
+    <statBases>
+      <Flammability>1.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Item/unfinishedBook</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <stuffCategories Inherit="false" />
+  </ThingDef>
+
+  <ThingDef>
+    <thingClass>ThingWithComps</thingClass>
+    <defName>TechBook</defName>
+    <label>Technical Document</label>
+    <description>A book filled with knowledge.</description>
+    <category>Item</category>
+    <selectable>true</selectable> 
+    <graphicData>
+      <texPath>Things/Item/book</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <costStuffCount>0</costStuffCount>
+    <stuffCategories/>
+    <pathCost>10</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>1</Mass>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Flammability>1.2</Flammability>
+      <MarketValue>1000</MarketValue>
+      <WorkToMake>1000</WorkToMake>
+    </statBases>
+    <comps>
+      <li Class="HumanResources.CompProperties_TitleMaker"/>
+    </comps>
+
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <rotatable>true</rotatable>
+    <tickerType>Never</tickerType>
+    <tradeability>Buyable</tradeability>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <menuHidden>true</menuHidden>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <stackLimit>1</stackLimit>
+    <tradeNeverStack>true</tradeNeverStack>
+    <forceDebugSpawnable>true</forceDebugSpawnable>
+  </ThingDef>
+
+  <!--<ThingDef ParentName="TechBookBase">
+    <defName>TechBook_Neolithic</defName>
+    <label>Book</label>
+    <description>A book filled with knowledge.</description>
+    <techLevel>Neolithic</techLevel>
+    <thingCategories>
+      <li>Neolithic</li>
+    </thingCategories>
+  </ThingDef>
+  
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechBook_Medieval</defName>
+    <label>Compendium</label>
+    <description>A book filled with knowledge.</description>
+    <techLevel>Medieval</techLevel>
+    <thingCategories>
+      <li>Medieval</li>
+    </thingCategories>
+  </ThingDef>
+  
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechBook_Industrial</defName>
+    <label>Manual</label>
+    <description>A book filled with knowledge.</description>
+    <techLevel>Industrial</techLevel>
+    <thingCategories>
+      <li>Industrial</li>
+    </thingCategories>
+  </ThingDef>
+  
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechBook_Spacer</defName>
+    <label>Theory</label>
+    <description>A book filled with knowledge.</description>
+    <techLevel>Spacer</techLevel>
+    <thingCategories>
+      <li>Spacer</li>
+    </thingCategories>
+  </ThingDef>
+  
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechBook_Ultra</defName>
+    <label>Database</label>
+    <description>A book filled with knowledge.</description>
+    <techLevel>Ultra</techLevel>
+    <thingCategories>
+      <li>Ultra</li>
+    </thingCategories>
+  </ThingDef>-->
+  
 </Defs>

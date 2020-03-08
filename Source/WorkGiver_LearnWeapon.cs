@@ -5,7 +5,6 @@ using System.Reflection;
 using Verse;
 using Verse.AI;
 using HarmonyLib;
-//using Harmony;
 
 namespace HumanResources
 {

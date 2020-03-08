@@ -325,15 +325,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building_BookStore.cs" />
+    <Compile Include="CompTitleMaker.cs" />
+    <Compile Include="CompProperties_TitleMaker.cs" />
+    <Compile Include="CompProperties_StorageGraphic.cs" />
+    <Compile Include="CompStorageGraphic.cs" />
+    <Compile Include="ITab_Inventory.cs" />
+    <Compile Include="JobDriver_DocumentTech.cs" />
     <Compile Include="JobDriver_LearnWeapon.cs" />
+    <Compile Include="JobDriver_FileTech.cs" />
+    <Compile Include="RoomRoleWorker_Library.cs" />
     <Compile Include="UnlockManager.cs" />
-    <Compile Include="Bill_Extension.cs" />
+    <Compile Include="Extension_Bill.cs" />
     <Compile Include="HarmonyPatch.cs" />
     <Compile Include="ITab_PawnKnowledge.cs" />
-    <Compile Include="JobDriver_DocumentTech.cs" />
     <Compile Include="JobDriver_Knowledge.cs" />
     <Compile Include="JobDriver_LearnTech.cs" />
-    <Compile Include="Research_Extension.cs" />
+    <Compile Include="Extension_Research.cs" />
     <Compile Include="CompProperties_Knowledge.cs" />
     <Compile Include="CompKnowledge.cs" />
     <Compile Include="ModBaseHumanResources.cs" />
@@ -342,6 +350,7 @@
     <Compile Include="WorkGiver_LearnWeapon.cs" />
     <Compile Include="WorkGiver_Knowledge.cs" />
     <Compile Include="WorkGiver_LearnTech.cs" />
+    <Compile Include="WorkGiver_FileTech.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
