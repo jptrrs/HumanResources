@@ -19,4 +19,10 @@
   <BookManual>{0} Manual</BookManual>
   <BookTheory>{0} Theory</BookTheory>
   <BookDatabase>{0} Database</BookDatabase>
+  <BookStoreCount>Contains {0} technical books</BookStoreCount>
+  <BookStoreCapacity>Can hold a total of {0} books</BookStoreCapacity>
+  <BookStoreRetrieveBook>Retrieve Book</BookStoreRetrieveBook>
+  <BookStoreRetrieveBookDesc>Find and remove a particular book from the bookcase.</BookStoreRetrieveBookDesc>
+  <TabCatalogue>Catalogue</TabCatalogue>
+
 </LanguageData>

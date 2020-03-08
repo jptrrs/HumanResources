@@ -67,7 +67,7 @@ namespace HumanResources
         public ITab_Inventory()
         {
             size = new Vector2(460f, 450f);
-            labelKey = "RimWriter_Inventory";
+            labelKey = "TabCatalogue";
         }
 
         protected override void FillTab()

@@ -14,7 +14,7 @@ namespace HumanResources
             }
         }
 
-public void UpdateGraphics()
+        public void UpdateGraphics()
         {
             cachedGraphic = null;
         }

@@ -132,8 +132,8 @@ namespace HumanResources
             if (baseStr != "")
                 s.AppendLine(baseStr);
             if (innerContainer.Count > 0)
-                s.AppendLine("RimWriter_ContainsXBooks".Translate(innerContainer.Count));
-            s.AppendLine("RimWriter_XSlotsForBooks".Translate(CompStorageGraphic.Props.countFullCapacity));
+                s.AppendLine("BookStoreCount".Translate(innerContainer.Count));
+            s.AppendLine("BookStoreCapacity".Translate(CompStorageGraphic.Props.countFullCapacity));
             return s.ToString().TrimEndNewlines();
         }
 
@@ -145,9 +145,9 @@ namespace HumanResources
             {
                 yield return new Command_Action()
                 {
-                    defaultLabel = "RimWriter_RetrieveBook".Translate(),
+                    defaultLabel = "BookStoreRetrieveBook".Translate(),
                     icon = ContentFinder<Texture2D>.Get("UI/Commands/LaunchReport", true),
-                    defaultDesc = "RimWriter_RetrieveBookDesc".Translate(),
+                    defaultDesc = "BookStoreRetrieveBookDesc".Translate(),
                     action = delegate
                     {
                         ProcessInput();
@@ -166,8 +166,8 @@ namespace HumanResources
                 foreach (Thing current in innerContainer)
                 {
                     string text = current.Label;
-                    if (current.TryGetComp<CompArt>() is CompArt compArt)
-                        text = TranslatorFormattedStringExtensions.Translate("RimWriter_BookTitle", compArt.Title, compArt.AuthorName);
+                    //if (current.TryGetComp<CompArt>() is CompArt compArt)
+                    //    text = TranslatorFormattedStringExtensions.Translate("RimWriter_BookTitle", compArt.Title, compArt.AuthorName);
                     List<FloatMenuOption> menu = list;
                     Func<Rect, bool> extraPartOnGUI = (Rect rect) => Widgets.InfoCardButton(rect.x + 5f, rect.y + (rect.height - 24f) / 2f, current);
                     menu.Add(new FloatMenuOption(text, delegate { TryDrop(current); }, MenuOptionPriority.Default, null, null, 29f, extraPartOnGUI, null));

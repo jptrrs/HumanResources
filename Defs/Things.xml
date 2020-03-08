@@ -155,22 +155,21 @@
       <li>ComplexFurniture</li>
     </researchPrerequisites>-->
     <graphicData>
-      <texPath>Things/Building/LibraryBookcase/Jecrell_Bookcase</texPath>
+      <texPath>Things/Building/BookShelf</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <shaderType>CutoutComplex</shaderType>
-      <drawSize>3</drawSize>
+      <drawSize>(3,2)</drawSize>
     </graphicData>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <rotatable>true</rotatable>
     <socialPropernessMatters>true</socialPropernessMatters>
     <statBases>
       <MaxHitPoints>100</MaxHitPoints>
-      <WorkToBuild>5000</WorkToBuild>
+      <WorkToBuild>700</WorkToBuild>
       <Mass>15</Mass>
       <Flammability>1.0</Flammability>
-      <Beauty>5</Beauty>
-      <JoyGainFactor>1</JoyGainFactor>
     </statBases>
+    <size>(2,1)</size>
     <stuffCategories>
       <li>Metallic</li>
       <li>Woody</li>
@@ -179,36 +178,33 @@
     <costStuffCount>110</costStuffCount>
     <pathCost>70</pathCost>
     <passability>PassThroughOnly</passability>
-    <designationCategory>Joy</designationCategory>
-    <designationHotKey>Misc2</designationHotKey>
+    <designationCategory>Furniture</designationCategory>
+    <designationHotKey>Misc10</designationHotKey>
     <comps>
       <li Class="HumanResources.CompProperties_StorageGraphic">
         <graphicEmpty>
-          <texPath>Things/Building/LibraryBookcase/Jecrell_BookcaseEmpty</texPath>
+          <texPath>Things/Building/BookShelfEmpty</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <shaderType>CutoutComplex</shaderType>
-          <drawSize>3</drawSize>
+          <drawSize>(3,2)</drawSize>
         </graphicEmpty>
         <graphicSparse>
-          <texPath>Things/Building/LibraryBookcase/Jecrell_BookcaseSparse</texPath>
+          <texPath>Things/Building/BookShelfSparse</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <shaderType>CutoutComplex</shaderType>
-          <drawSize>3</drawSize>
+          <drawSize>(3,2)</drawSize>
         </graphicSparse>
         <graphicFull>
-          <texPath>Things/Building/LibraryBookcase/Jecrell_Bookcase</texPath>
+          <texPath>Things/Building/BookShelf</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <shaderType>CutoutComplex</shaderType>
-          <drawSize>3</drawSize>
+          <drawSize>(3,2)</drawSize>
         </graphicFull>
         <countSparseThreshhold>1</countSparseThreshhold>
-        <countFullCapacity>30</countFullCapacity>
+        <countFullCapacity>12</countFullCapacity>
       </li>
     </comps>
     <building>
-      <!--<joyKind>Jecrell_Books</joyKind>-->
-      <ai_chillDestination>false</ai_chillDestination>
-      <isInert>true</isInert>
       <preventDeteriorationInside>true</preventDeteriorationInside>
       <fixedStorageSettings>
         <filter>
