@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   <TabKnowledge>Tech</TabKnowledge>
+  <TabCatalogue>Catalog</TabCatalogue>
   <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
   <MessageDocumentComplete>{0_nameDef} wrote a book on {1}.</MessageDocumentComplete>
   <MessageFiledTech>The knowledge for {0} was added to our library.</MessageFiledTech>
+  <MessageEjectedTech>The knowledge for {0} was removed from our library.</MessageEjectedTech>
   <MessageTrainingComplete>{0_nameDef} has mastered the {1}.</MessageTrainingComplete>
   <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
@@ -19,10 +21,11 @@
   <BookManual>{0} Manual</BookManual>
   <BookTheory>{0} Theory</BookTheory>
   <BookDatabase>{0} Database</BookDatabase>
-  <BookStoreCount>Contains {0} technical books</BookStoreCount>
-  <BookStoreCapacity>Can hold a total of {0} books</BookStoreCapacity>
+  <BookStoreEmpty>Empty</BookStoreEmpty>
+  <BookStoreCapacity>Archived technologies: {0}/{1}</BookStoreCapacity>
   <BookStoreRetrieveBook>Retrieve Book</BookStoreRetrieveBook>
-  <BookStoreRetrieveBookDesc>Find and remove a particular book from the bookcase.</BookStoreRetrieveBookDesc>
-  <TabCatalogue>Catalogue</TabCatalogue>
+  <BookStoreRetrieveBookDesc>Find and remove a particular book from the book shelf.</BookStoreRetrieveBookDesc>
+  <BookStoreNoInternalStorage>{0} doesn't fit at any book shelf.</BookStoreNoInternalStorage>
+  <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
 
-</LanguageData>
+</LanguageData> 

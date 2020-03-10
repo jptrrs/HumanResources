@@ -129,7 +129,7 @@ namespace HumanResources
             }
             Widgets.EndScrollView();
             Text.Font = GameFont.Tiny;
-            Rect filterRect = new Rect(rightColumn.x, scrollrect2.max.y, viewRect2.width, rowHeight);
+            Rect filterRect = new Rect(rightColumn.x, scrollrect2.max.y, rightColumn.width - margin - padding, rowHeight);
             Widgets.CheckboxLabeled(filterRect, "ShowCommon".Translate(), ref filterWeapons, false);
             GUI.EndGroup();
         }

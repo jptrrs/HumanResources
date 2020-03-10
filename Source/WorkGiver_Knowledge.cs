@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -30,12 +32,11 @@ namespace HumanResources
 			Building_WorkTable desk = thing as Building_WorkTable;
 			if (desk != null)
 			{
-				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.Contains(recipeName) && x.repeatCount > 0).ToList();
+				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(recipeName) && x.repeatCount > 0).ToList();
 			}
 			return null;
 		}
 
 		protected string RecipeName;
-
 	}
 }

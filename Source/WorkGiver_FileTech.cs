@@ -39,10 +39,15 @@ namespace HumanResources
             {
                 return null;
             }
+            if (AlreadyKnown(t))
+            {
+                JobFailReason.Is("TechAlreadyKnown".Translate(t.Stuff.stuffProps.stuffAdjective.CapitalizeFirst()));
+                return null;
+            }
             Building_BookStore target = FindBestStorage(pawn, t);
             if (target == null)
             {
-                JobFailReason.Is("RimWriter_NoInternalStorage".Translate());
+                JobFailReason.Is("BookStoreNoInternalStorage".Translate(t.LabelCap));
                 return null;
             }
             return new Job(DefDatabase<JobDef>.GetNamed("FileTech"), t, target)
@@ -69,6 +74,11 @@ namespace HumanResources
             TraverseParms traverseParams = TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn, false);
             Predicate<Thing> validator = predicate;
             return (Building_BookStore)GenClosest.ClosestThing_Global_Reachable(position, map, searchSet, peMode, traverseParams, 9999f, validator, priorityGetter);
+        }
+
+        private bool AlreadyKnown(Thing book)
+        {
+            return ModBaseHumanResources.unlocked.techByStuff[book.Stuff].IsFinished;
         }
     }
 }

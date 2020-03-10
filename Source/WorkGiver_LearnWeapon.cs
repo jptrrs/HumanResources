@@ -13,6 +13,8 @@ namespace HumanResources
         protected new string RecipeName = "TrainWeapon";
 
         private List<ThingCount> chosenIngThings = new List<ThingCount>();
+        //private string RangedSuffix = "Shooting";
+        //private string MeleeSuffix = "Melee";
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
@@ -120,6 +122,8 @@ namespace HumanResources
 
         private Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
         {
+            //string suffix = chosenIngThings.Any(x => x.Thing.def.IsRangedWeapon) ? RangedSuffix : MeleeSuffix;
+            //string jobName = RecipeName + suffix;
             Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
             if (job != null)
             {

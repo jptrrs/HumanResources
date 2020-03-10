@@ -23,9 +23,9 @@
   <RecipeDef>
     <defName>Tech_Document</defName>
     <label>Document technologies</label>
-    <description>Consolidate knowledge into a compeduim.</description>
+    <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
-    <workAmount>1000</workAmount>
+    <!--<workAmount>1000</workAmount>-->
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
@@ -62,7 +62,7 @@
     <label>learn to shoot a weapon</label>
     <description>Train with a ranged weapon to acquire proficiency.</description>
     <jobString>Practicing with a weapon.</jobString>
-    <workAmount>350</workAmount>
+    <workAmount>10000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Shot_Revolver</soundWorking>
@@ -97,7 +97,7 @@
     <label>learn to wield a weapon</label>
     <description>Train with a melee weapon to acquire proficiency.</description>
     <jobString>Training with a weapon.</jobString>
-    <workAmount>350</workAmount>
+    <workAmount>10000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>

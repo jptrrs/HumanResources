@@ -16,6 +16,7 @@
   </modDependencies>
   <loadAfter>
     <li>UnlimitedHugs.HugsLib</li>
+    <li>jelly.survivaltoolsreborn</li>
   </loadAfter>
   <description>
 What if it was impossible to discover Microelectronics while sitting alone in a cabin in the woods? What if you actually had to learn it from someone who knows his stuff? This experimental mod with far-reaching consequences completely changes the way technology plays out in the game.

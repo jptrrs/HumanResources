@@ -49,18 +49,170 @@
       <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
     </building>
     <comps>
-      <li Class="CompProperties_Facility">
-        <statOffsets>
-          <WorkTableWorkSpeedFactor>1.0</WorkTableWorkSpeedFactor>
-        </statOffsets>
-        <maxSimultaneous>1</maxSimultaneous>
-        <maxDistance>11.0</maxDistance>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>BookShelf</li>
+        </linkableFacilities>
       </li>
     </comps>
     <designationHotKey />
     <placeWorkers>
       <li>PlaceWorker_ShowFacilitiesConnections</li>
     </placeWorkers>
+  </ThingDef>
+
+  <!--Borrowed from Jecrell's RimWriter-->
+  <ThingDef ParentName="BuildingBase">
+    <defName>BookShelf</defName>
+    <label>Book Shelf</label>
+    <thingClass>HumanResources.Building_BookStore</thingClass>
+    <description>A sturdy shelf for storing knowledge in form of books.</description>
+    <uiIconScale>0.45</uiIconScale>
+    <!--<researchPrerequisites>
+      <li>ComplexFurniture</li>
+    </researchPrerequisites>-->
+    <graphicData>
+      <texPath>Things/Building/BookShelf</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(3,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <rotatable>true</rotatable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>700</WorkToBuild>
+      <Mass>15</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <size>(2,1)</size>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>110</costStuffCount>
+    <pathCost>70</pathCost>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Furniture</designationCategory>
+    <designationHotKey>Misc10</designationHotKey>
+    <comps>
+      <li Class="CompProperties_Facility">
+        <statOffsets>
+          <ResearchSpeedFactor>0.025</ResearchSpeedFactor>
+        </statOffsets>
+        <maxSimultaneous>6</maxSimultaneous>
+        <maxDistance>7.0</maxDistance>
+      </li>
+      <li Class="HumanResources.CompProperties_StorageGraphic">
+        <graphicEmpty>
+          <texPath>Things/Building/BookShelfEmpty</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+        </graphicEmpty>
+        <graphicSparse>
+          <texPath>Things/Building/BookShelfSparse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+        </graphicSparse>
+        <graphicFull>
+          <texPath>Things/Building/BookShelf</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(3,2)</drawSize>
+        </graphicFull>
+        <countSparseThreshhold>1</countSparseThreshhold>
+        <countFullCapacity>12</countFullCapacity>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+    <building>
+      <preventDeteriorationInside>true</preventDeteriorationInside>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+      <li>HumanResources.ITab_Inventory</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="UnfinishedBase">
+    <defName>UnfinishedTechBook</defName>
+    <label>unfinished technical book</label>
+    <statBases>
+      <Flammability>1.2</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Item/unfinishedBook</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <stuffCategories Inherit="false" />
+    <rotatable>true</rotatable>
+  </ThingDef>
+
+  <ThingDef>
+    <thingClass>ThingWithComps</thingClass>
+    <defName>TechBook</defName>
+    <label>Technical Book</label>
+    <description>A book filled with knowledge.</description>
+    <category>Item</category>
+    <selectable>true</selectable> 
+    <graphicData>
+      <texPath>Things/Item/book</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <costStuffCount>0</costStuffCount>
+    <stuffCategories/>
+    <pathCost>10</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>1</Mass>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Flammability>1.2</Flammability>
+      <MarketValue>1000</MarketValue>
+      <WorkToMake>18000</WorkToMake>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="HumanResources.CompProperties_TitleMaker"/>
+    </comps>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <rotatable>true</rotatable>
+    <tickerType>Never</tickerType>
+    <tradeability>Buyable</tradeability>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <menuHidden>true</menuHidden>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <stackLimit>1</stackLimit>
+    <tradeNeverStack>true</tradeNeverStack>
+    <forceDebugSpawnable>true</forceDebugSpawnable>
   </ThingDef>
 
   <!--Borrewed from ItchyFlea's Practise Target-->
@@ -144,197 +296,4 @@
     </inspectorTabs>
   </ThingDef>
 
-  <!--Borrowed from Jecrell's RimWriter-->
-  <ThingDef ParentName="BuildingBase">
-    <defName>BookShelf</defName>
-    <label>Book Shelf</label>
-    <thingClass>HumanResources.Building_BookStore</thingClass>
-    <description>A sturdy shelf for storing knowledge in form of books.</description>
-    <uiIconScale>0.45</uiIconScale>
-    <!--<researchPrerequisites>
-      <li>ComplexFurniture</li>
-    </researchPrerequisites>-->
-    <graphicData>
-      <texPath>Things/Building/BookShelf</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <shaderType>CutoutComplex</shaderType>
-      <drawSize>(3,2)</drawSize>
-    </graphicData>
-    <altitudeLayer>BuildingOnTop</altitudeLayer>
-    <rotatable>true</rotatable>
-    <socialPropernessMatters>true</socialPropernessMatters>
-    <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
-      <WorkToBuild>700</WorkToBuild>
-      <Mass>15</Mass>
-      <Flammability>1.0</Flammability>
-    </statBases>
-    <size>(2,1)</size>
-    <stuffCategories>
-      <li>Metallic</li>
-      <li>Woody</li>
-      <li>Stony</li>
-    </stuffCategories>
-    <costStuffCount>110</costStuffCount>
-    <pathCost>70</pathCost>
-    <passability>PassThroughOnly</passability>
-    <designationCategory>Furniture</designationCategory>
-    <designationHotKey>Misc10</designationHotKey>
-    <comps>
-      <li Class="HumanResources.CompProperties_StorageGraphic">
-        <graphicEmpty>
-          <texPath>Things/Building/BookShelfEmpty</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <shaderType>CutoutComplex</shaderType>
-          <drawSize>(3,2)</drawSize>
-        </graphicEmpty>
-        <graphicSparse>
-          <texPath>Things/Building/BookShelfSparse</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <shaderType>CutoutComplex</shaderType>
-          <drawSize>(3,2)</drawSize>
-        </graphicSparse>
-        <graphicFull>
-          <texPath>Things/Building/BookShelf</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <shaderType>CutoutComplex</shaderType>
-          <drawSize>(3,2)</drawSize>
-        </graphicFull>
-        <countSparseThreshhold>1</countSparseThreshhold>
-        <countFullCapacity>12</countFullCapacity>
-      </li>
-    </comps>
-    <building>
-      <preventDeteriorationInside>true</preventDeteriorationInside>
-      <fixedStorageSettings>
-        <filter>
-          <categories>
-            <li>Knowledge</li>
-          </categories>
-        </filter>
-      </fixedStorageSettings>
-      <defaultStorageSettings>
-        <filter>
-          <categories>
-            <li>Knowledge</li>
-          </categories>
-        </filter>
-      </defaultStorageSettings>
-    </building>
-    <inspectorTabs>
-      <li>ITab_Storage</li>
-      <li>HumanResources.ITab_Inventory</li>
-    </inspectorTabs>
-  </ThingDef>
-
-  <ThingDef ParentName="UnfinishedBase">
-    <defName>UnfinishedTechBook</defName>
-    <label>unfinished technical document</label>
-    <statBases>
-      <Flammability>1.2</Flammability>
-    </statBases>
-    <graphicData>
-      <texPath>Things/Item/unfinishedBook</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>CutoutComplex</shaderType>
-    </graphicData>
-    <stuffCategories Inherit="false" />
-  </ThingDef>
-
-  <ThingDef>
-    <thingClass>ThingWithComps</thingClass>
-    <defName>TechBook</defName>
-    <label>Technical Document</label>
-    <description>A book filled with knowledge.</description>
-    <category>Item</category>
-    <selectable>true</selectable> 
-    <graphicData>
-      <texPath>Things/Item/book</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>CutoutComplex</shaderType>
-    </graphicData>
-    <costStuffCount>0</costStuffCount>
-    <stuffCategories/>
-    <pathCost>10</pathCost>
-    <useHitPoints>true</useHitPoints>
-    <drawGUIOverlay>true</drawGUIOverlay>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <Mass>1</Mass>
-      <DeteriorationRate>2</DeteriorationRate>
-      <Flammability>1.2</Flammability>
-      <MarketValue>1000</MarketValue>
-      <WorkToMake>1000</WorkToMake>
-    </statBases>
-    <comps>
-      <li Class="HumanResources.CompProperties_TitleMaker"/>
-    </comps>
-
-    <altitudeLayer>Item</altitudeLayer>
-    <alwaysHaulable>true</alwaysHaulable>
-    <rotatable>true</rotatable>
-    <tickerType>Never</tickerType>
-    <tradeability>Buyable</tradeability>
-    <thingCategories>
-      <li>Manufactured</li>
-    </thingCategories>
-    <menuHidden>true</menuHidden>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-    <stackLimit>1</stackLimit>
-    <tradeNeverStack>true</tradeNeverStack>
-    <forceDebugSpawnable>true</forceDebugSpawnable>
-  </ThingDef>
-
-  <!--<ThingDef ParentName="TechBookBase">
-    <defName>TechBook_Neolithic</defName>
-    <label>Book</label>
-    <description>A book filled with knowledge.</description>
-    <techLevel>Neolithic</techLevel>
-    <thingCategories>
-      <li>Neolithic</li>
-    </thingCategories>
-  </ThingDef>
-  
-  <ThingDef ParentName="TechBookBase">
-    <defName>TechBook_Medieval</defName>
-    <label>Compendium</label>
-    <description>A book filled with knowledge.</description>
-    <techLevel>Medieval</techLevel>
-    <thingCategories>
-      <li>Medieval</li>
-    </thingCategories>
-  </ThingDef>
-  
-  <ThingDef ParentName="TechBookBase">
-    <defName>TechBook_Industrial</defName>
-    <label>Manual</label>
-    <description>A book filled with knowledge.</description>
-    <techLevel>Industrial</techLevel>
-    <thingCategories>
-      <li>Industrial</li>
-    </thingCategories>
-  </ThingDef>
-  
-  <ThingDef ParentName="TechBookBase">
-    <defName>TechBook_Spacer</defName>
-    <label>Theory</label>
-    <description>A book filled with knowledge.</description>
-    <techLevel>Spacer</techLevel>
-    <thingCategories>
-      <li>Spacer</li>
-    </thingCategories>
-  </ThingDef>
-  
-  <ThingDef ParentName="TechBookBase">
-    <defName>TechBook_Ultra</defName>
-    <label>Database</label>
-    <description>A book filled with knowledge.</description>
-    <techLevel>Ultra</techLevel>
-    <thingCategories>
-      <li>Ultra</li>
-    </thingCategories>
-  </ThingDef>-->
-  
 </Defs>

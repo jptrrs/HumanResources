@@ -10,8 +10,8 @@ namespace HumanResources
     public class UnlockManager : IExposable
     {
         public List<ThingDef> weapons = new List<ThingDef>();
-
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
+        public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
 
         public void ExposeData()
         {

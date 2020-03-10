@@ -26,11 +26,14 @@ namespace HumanResources
             //harmonyInstance.Patch(original: AccessTools.Method(type: typeof(?), name: "?"),
             //prefix: null, postfix: new HarmonyMethod(type: patchType, name: nameof(?)), transpiler: null);
 
-            //harmony.Patch(AccessTools.Method(typeof(Dialog_BillConfig), "DoWindowContents", new Type[] { typeof(Rect) }),
-            //    new HarmonyMethod(patchType, nameof(DoWindowContents_Prefix)), new HarmonyMethod(patchType, nameof(DoWindowContents_Postfix)), null);
+            harmony.Patch(AccessTools.Method(typeof(Dialog_BillConfig), "DoWindowContents", new Type[] { typeof(Rect) }),
+                new HarmonyMethod(patchType, nameof(DoWindowContents_Prefix)), new HarmonyMethod(patchType, nameof(DoWindowContents_Postfix)), null);
 
-            //harmony.Patch(AccessTools.Method(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) }),
-            //    null, new HarmonyMethod(patchType, nameof(Visible_Postfix)), null);
+            harmony.Patch(AccessTools.Method(typeof(ThingFilterUI), "DoThingFilterConfigWindow"),
+                new HarmonyMethod(patchType, nameof(DoThingFilterConfigWindow_Prefix), new Type[] { typeof(ThingFilter), typeof(int) }), new HarmonyMethod(patchType, nameof(BallKeeper_Postfix)), null);
+
+            harmony.Patch(AccessTools.Method(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) }),
+                null, new HarmonyMethod(patchType, nameof(Visible_Postfix)), null);
 
             harmony.Patch(AccessTools.Method(typeof(WorkGiver_ConstructFinishFrames), "JobOnThing", new Type[] { typeof(Pawn), typeof(Thing), typeof(bool) }),
                 new HarmonyMethod(patchType, nameof(ConstructFinishFrames_JobOnThing_Prefix)), null, null);
@@ -56,106 +59,59 @@ namespace HumanResources
             harmony.Patch(AccessTools.Method(typeof(ResearchManager), "DebugSetAllProjectsFinished"),
                 null, new HarmonyMethod(patchType, nameof(DebugSetAllProjectsFinished_Postfix)), null);
 
-            harmony.Patch(AccessTools.Method(typeof(ScenPart_PlayerFaction), "PostWorldGenerate"),
-                null, new HarmonyMethod(patchType, nameof(PostWorldGenerate_Postfix)), null);
+            harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
+                new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
 
-            //harmony.Patch(AccessTools.Method(typeof(Toils_Recipe), "MakeUnfinishedThingIfNeeded"),
-            //    new HarmonyMethod(patchType, nameof(MakeUnfinishedThingIfNeeded_Prefix)), new HarmonyMethod(patchType, nameof(MakeUnfinishedThingIfNeeded_Postfix)), null);
         }
 
-        public static bool MakeUnfinishedThingIfNeeded_Prefix()
+        //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
+        //{
+        //    //Log.Message(__originalMethod.Name + " was inhibited");
+        //    return false;
+        //}
+
+        public static void DoWindowContents_Prefix(Dialog_BillConfig __instance)
         {
-            return false;
+            FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
+            Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
+            if (bill.recipe.defName == "Tech_Document") DocumentRecipe = true;
+            if (bill.recipe.defName == "Tech_Learn") LearnRecipe = true;
         }
 
-        public static void MakeUnfinishedThingIfNeeded_Postfix(object __instance, Toil __result)
+        public static void DoWindowContents_Postfix()
         {
-            __result = MakeUnfinishedThingIfNeeded(__instance);
+            LearnRecipe = false;
+            DocumentRecipe = false;
         }
-        
-        public static Toil MakeUnfinishedThingIfNeeded(object __instance)
+
+        private static bool LearnRecipe;
+        private static bool DocumentRecipe;
+
+        public static void DoThingFilterConfigWindow_Prefix(ThingFilter parentFilter, int openMask)
         {
-            Log.Warning("Making unfinished thing if needed");
-            
-            Toil toil = new Toil();
-            toil.initAction = delegate ()
+            if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
             {
-                Pawn actor = toil.actor;
-                Job curJob = actor.jobs.curJob;
-                if (!curJob.RecipeDef.UsesUnfinishedThing)
-                {
-                    return;
-                }
-                if (curJob.GetTarget(TargetIndex.B).Thing != null && curJob.GetTarget(TargetIndex.B).Thing is UnfinishedThing)
-                {
-                    return;
-                }
-                MethodInfo calculateIngredientsInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateIngredients");
-                MethodInfo calculateDominantIngredientInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateDominantIngredient");
-                List<Thing> list = (List<Thing>)calculateIngredientsInfo.Invoke(__instance, new object[] { curJob, actor });
-                Log.Warning("list count is " + list.Count());
-                Thing thing = (Thing)calculateDominantIngredientInfo.Invoke(__instance, new object[] { curJob, list });
-                Log.Warning("dominant ingredient is "+thing);
-                for (int i = 0; i < list.Count; i++)
-                {
-                    Thing thing2 = list[i];
-                    actor.Map.designationManager.RemoveAllDesignationsOn(thing2, false);
-                    if (thing2.Spawned)
-                    {
-                        thing2.DeSpawn(DestroyMode.Vanish);
-                    }
-                }
-                ThingDef stuff = curJob.RecipeDef.unfinishedThingDef.MadeFromStuff ? thing.def : null;
-                UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, stuff);
-                unfinishedThing.Creator = actor;
-                unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill;
-                unfinishedThing.ingredients = list;
-                CompColorable compColorable = unfinishedThing.TryGetComp<CompColorable>();
-                if (compColorable != null)
-                {
-                    compColorable.Color = thing.DrawColor;
-                }
-                GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
-                curJob.SetTarget(TargetIndex.B, unfinishedThing);
-                actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
-            };
-            return toil;
+                openMask = 2;
+                Ball = true;
+            }
         }
 
-
-
-        public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
+        public static void BallKeeper_Postfix()
         {
-            //Log.Message(__originalMethod.Name + " was inhibited");
-            return false;
+            Ball = false;
         }
 
-        //public static void DoWindowContents_Prefix(Dialog_BillConfig __instance)
-        //{
-        //    FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
-        //    Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
-        //    if (bill.recipe.fixedIngredientFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
-        //    {
-        //        Ball = true;
-        //    }
-        //}
-
-        //public static void DoWindowContents_Postfix()
-        //{
-        //    Ball = false;
-        //}
-
-        //private static bool Ball;
-
-        //public static void Visible_Postfix(ThingDef td, ref bool __result)
-        //{
-        //    if (Ball && td.defName.StartsWith("Book_"))
-        //    {
-        //        __result = true;
-        //        //ResearchProjectDef tech = DefDatabase<ResearchProjectDef>.GetNamed(td.defName.Substring(td.defName.IndexOf(@"_") + 1));
-        //        //__result = tech.IsFinished;
-        //    }
-        //}
+        private static bool Ball;
+        
+        public static void Visible_Postfix(ThingDef td, ref bool __result)
+        {
+            if (Ball && td.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            {
+                if (DocumentRecipe) __result = !ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;
+                else if (LearnRecipe) __result = ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;
+                else __result = true;
+            }
+        }
 
         public static bool ConstructFinishFrames_JobOnThing_Prefix(Pawn pawn, Thing t)
         {
@@ -254,10 +210,10 @@ namespace HumanResources
             foreach (ResearchProjectDef proj in ___progress.Select(x => x.Key)) FinishProject_Postfix(proj);
         }
 
-        public static void PostWorldGenerate_Postfix()
+        public static void InitNewGame_Prefix()
         {
             Find.FactionManager.OfPlayer.def.startingResearchTags.Clear();
-            Log.Message("[HumanResources] Preparing play: player faction has been stripped of all starting research");
+            Log.Message("[HumanResources] Starting a new game, player faction has been stripped of all starting research.");
         }
     }
 }

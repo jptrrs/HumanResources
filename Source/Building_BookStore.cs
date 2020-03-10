@@ -52,8 +52,8 @@ namespace HumanResources
         public bool Accepts(Thing thing)
         {
             bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
-            bool fits = innerContainer.Count + 1 < CompStorageGraphic.Props.countFullCapacity;
-            bool duplicate = innerContainer.Any(x => x.Stuff == thing.Stuff);
+            bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;
+            bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;//innerContainer.Any(x => x.Stuff == thing.Stuff);
             return allowed && fits && !duplicate;
         }
 
@@ -74,22 +74,31 @@ namespace HumanResources
             Scribe_Deep.Look<StorageSettings>(ref storageSettings, "storageSettings", new object[] { this });
         }
 
-        public bool TryDropRandom(out Thing droppedThing, bool forbid = false)
+        public override void DeSpawn(DestroyMode mode)
         {
-            Thing outThing;
-            droppedThing = null;
             if (innerContainer.Count > 0)
             {
-                innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
-                if (forbid) outThing.SetForbidden(true);
-                //droppedThing = outThing as ThingBook;
-                droppedThing = outThing as ThingWithComps;
-                return true;
+                innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this); });
             }
-            else
-            {
-                Log.Warning("Building_InternalStorage : TryDropRandom - failed to get a book.");
-            }
+            base.DeSpawn(mode);
+        }
+
+        public bool TryDropRandom(out Thing droppedThing, bool forbid = false)
+        {
+        Thing outThing;
+        droppedThing = null;
+        if (innerContainer.Count > 0)
+        {
+            innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
+            if (forbid) outThing.SetForbidden(true);
+            //droppedThing = outThing as ThingBook;
+            droppedThing = outThing as ThingWithComps;
+            return true;
+        }
+        else
+        {
+            Log.Warning("Building_InternalStorage : TryDropRandom - failed to get a book.");
+        }
             return false;
         }
 
@@ -99,6 +108,9 @@ namespace HumanResources
             {
                 Thing outThing;
                 innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
+                //ResearchProjectDef tech = ModBaseHumanResources.unlocked.stuffByTech.FirstOrDefault(x => x.Value == outThing.Stuff).Key;
+                ResearchProjectDef tech = ModBaseHumanResources.unlocked.techByStuff[outThing.Stuff];
+                tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
                 return true;
             }
@@ -131,9 +143,8 @@ namespace HumanResources
             string baseStr = base.GetInspectString();
             if (baseStr != "")
                 s.AppendLine(baseStr);
-            if (innerContainer.Count > 0)
-                s.AppendLine("BookStoreCount".Translate(innerContainer.Count));
-            s.AppendLine("BookStoreCapacity".Translate(CompStorageGraphic.Props.countFullCapacity));
+            if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
+            else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, CompStorageGraphic.Props.countFullCapacity.ToString()));
             return s.ToString().TrimEndNewlines();
         }
 

@@ -51,12 +51,12 @@ namespace HumanResources
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
                 tech.InferSkillBias();
-                tech.CreateStuff(lateFilter, unlocked.stuffByTech);
+                tech.CreateStuff(lateFilter, unlocked);
                 foreach (ThingDef weapon in tech.UnlockedWeapons()) UniversalWeapons.Remove(weapon);
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
+
             Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat)).Select(x => x.label).ToStringSafeEnumerable());
-            //Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.stuffProps != null && x.stuffProps.categories.Contains(DefDatabase<StuffCategoryDef>.GetNamed("Technic"))).ToStringSafeEnumerable());
             Log.Message("[HumanResources] Universal weapons: " + UniversalWeapons.ToStringSafeEnumerable());
 
             //TechBook dirty trick, but only now this is possible!

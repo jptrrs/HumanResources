@@ -5,6 +5,7 @@ using RimWorld;
 using FluffyResearchTree;
 using Verse;
 using HarmonyLib;
+using System.Reflection;
 
 namespace HumanResources
 {
@@ -191,7 +192,7 @@ namespace HumanResources
 			}
 		}
 
-		public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, Dictionary<ResearchProjectDef, ThingDef> stuffByTech)
+		public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
 		{
 			string name = "Tech_" + tech.defName;
 			ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
@@ -205,7 +206,7 @@ namespace HumanResources
 				category = ThingCategory.Item,
 				thingCategories = new List<ThingCategoryDef>() { tCat },
 				techLevel = tech.techLevel,
-				//menuHidden = true,
+				menuHidden = true,
 				stuffProps = new StuffProperties()
 				{
 					categories = new List<StuffCategoryDef>() { DefDatabase<StuffCategoryDef>.GetNamed("Technic") },
@@ -239,7 +240,8 @@ namespace HumanResources
 			filter.SetAllow(dummy, true);
 
 			//to use later
-			stuffByTech.Add(tech, dummy);
+			unlocked.stuffByTech.Add(tech, dummy);
+			unlocked.techByStuff.Add(dummy, tech);
 		}
 
 		public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
@@ -249,8 +251,10 @@ namespace HumanResources
 			foreach (RecipeDef r in tech.GetRecipesUnlocked().Where(x => !x.products.NullOrEmpty()))
 			{
 				//Verse.Log.Message("...checking recipe " + r.label);
-				foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(s => s.Contains("Basic")))))
+				foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(t => t.Contains("Basic"))) && !(x.defName.Contains("Tool") || x.defName.Contains("tool"))))
 				{
+					string test = (weapon.defName.Contains("Tool")) ? "gotcha!" : "";
+					//Verse.Log.Message("...found " + weapon.defName+" "+test);
 					result.Add(weapon);
 				}
 			}
@@ -270,6 +274,28 @@ namespace HumanResources
 				result.Add(plant);
 			}
 			return result;
+		}
+
+		public static void CarefullyFinishProject(this ResearchProjectDef project, Thing place)
+		{
+			bool careful = !project.prerequisites.NullOrEmpty();
+			List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
+			if (careful)
+			{
+				prerequisitesCopy.AddRange(project.prerequisites);
+				project.prerequisites.Clear();
+			}
+			Find.ResearchManager.FinishProject(project);
+			if (careful) project.prerequisites.AddRange(prerequisitesCopy);
+			Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
+		}
+
+		public static void EjectTech(this ResearchProjectDef tech, Thing place)
+		{
+			FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
+			Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+			progress[tech] = 0f;
+			Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
 		}
 	}
 }

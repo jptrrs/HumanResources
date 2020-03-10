@@ -25,8 +25,9 @@ namespace HumanResources
         {
             get
             {
-                string name = Book.Stuff.defName;
-                return DefDatabase<ResearchProjectDef>.GetNamed(name.Substring(name.IndexOf(@"_") + 1));
+                return ModBaseHumanResources.unlocked.techByStuff[Book.Stuff];
+                //string name = Book.Stuff.defName;
+                //return DefDatabase<ResearchProjectDef>.GetNamed(name.Substring(name.IndexOf(@"_") + 1));
             }
         }
 
@@ -77,22 +78,26 @@ namespace HumanResources
                         }
                         Storage.CompStorageGraphic.UpdateGraphics();
                         pawn.carryTracker.innerContainer.Remove(Book);
-                        CarefullyFinishProject();
+                        Project.CarefullyFinishProject(Storage);
                     }
                 }
             };
             yield break;
         }
 
-        protected void CarefullyFinishProject()
-        {
-            List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
-            prerequisitesCopy.AddRange(Project.prerequisites);
-            Project.prerequisites.Clear();
-            Find.ResearchManager.FinishProject(Project);
-            Project.prerequisites.AddRange(prerequisitesCopy);
-            Messages.Message("MessageFiledTech".Translate(Project.label), Storage, MessageTypeDefOf.TaskCompletion, true);
-        }
+        //protected void CarefullyFinishProject()
+        //{
+        //    bool careful = !Project.prerequisites.NullOrEmpty();
+        //    List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
+        //    if (careful)
+        //    {
+        //        prerequisitesCopy.AddRange(Project.prerequisites);
+        //        Project.prerequisites.Clear();
+        //    }
+        //    Find.ResearchManager.FinishProject(Project);
+        //    if (careful) Project.prerequisites.AddRange(prerequisitesCopy);
+        //    Messages.Message("MessageFiledTech".Translate(Project.label), Storage, MessageTypeDefOf.TaskCompletion, true);
+        //}
 
     }
 }
