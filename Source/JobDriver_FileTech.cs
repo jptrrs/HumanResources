@@ -85,19 +85,5 @@ namespace HumanResources
             yield break;
         }
 
-        //protected void CarefullyFinishProject()
-        //{
-        //    bool careful = !Project.prerequisites.NullOrEmpty();
-        //    List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
-        //    if (careful)
-        //    {
-        //        prerequisitesCopy.AddRange(Project.prerequisites);
-        //        Project.prerequisites.Clear();
-        //    }
-        //    Find.ResearchManager.FinishProject(Project);
-        //    if (careful) Project.prerequisites.AddRange(prerequisitesCopy);
-        //    Messages.Message("MessageFiledTech".Translate(Project.label), Storage, MessageTypeDefOf.TaskCompletion, true);
-        //}
-
     }
 }

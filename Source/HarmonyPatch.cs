@@ -59,8 +59,9 @@ namespace HumanResources
             harmony.Patch(AccessTools.Method(typeof(ResearchManager), "DebugSetAllProjectsFinished"),
                 null, new HarmonyMethod(patchType, nameof(DebugSetAllProjectsFinished_Postfix)), null);
 
-            harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
-                new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
+            //Kills all starting research 
+            //harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
+            //    new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
 
         }
 
@@ -141,12 +142,14 @@ namespace HumanResources
             if (__result != null)
             {
                 var knownPlants = pawn.GetComp<CompKnowledge>().knownPlants;
+                Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
                 bool flag = true;
-                if (!knownPlants.NullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
+                if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
                 else flag = false;
                 if (!flag)
                 {
-                    JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn,___wantedPlantDef));
+                    
+                    JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef));
                     __result = null;
                 }
             }
@@ -178,7 +181,7 @@ namespace HumanResources
         {
             var knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
             bool result = true;
-            if (!knownWeapons.NullOrEmpty()) result = knownWeapons.Contains(thing.def);
+            if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(thing.def);
             else result = false;
             return result;
         }

@@ -174,8 +174,8 @@ namespace HumanResources
 			{
 				Pawn actor = acquireProficiency.actor;
 				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
-				techComp.knownWeapons.Add(TargetThingB.def);
-				Log.Message(actor + " can use the following weapons: " + techComp.knownWeapons.ToStringSafeEnumerable());
+				techComp.proficientWeapons.Add(TargetThingB.def);
+				Log.Message(actor + " can use the following weapons: " + techComp.proficientWeapons.ToStringSafeEnumerable());
 				Messages.Message("MessageTrainingComplete".Translate(actor, TargetThingB.LabelCap), TargetThingA, MessageTypeDefOf.TaskCompletion, true);
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				//Notify_IterationCompleted(actor, bill as Bill_Production);

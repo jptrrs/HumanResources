@@ -13,7 +13,7 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
-			project = job.bill.SelectedTech().Intersect(techComp.expertise).RandomElement();
+			project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.expertise).RandomElement();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
@@ -69,7 +69,6 @@ namespace HumanResources
 			Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
 			yield return getToHaulTarget;
 			yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
-			//yield return JobDriver_DoBill.JumpToCollectNextIntoHandsForBill(getToHaulTarget, TargetIndex.B);
 			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell).FailOnDestroyedOrNull(TargetIndex.B);
 			Toil findPlaceTarget = Toils_JobTransforms.SetTargetToIngredientPlaceCell(TargetIndex.A, TargetIndex.B, TargetIndex.C);
 			yield return findPlaceTarget;
@@ -84,6 +83,7 @@ namespace HumanResources
 			yield return Toils_Recipe.FinishRecipeAndStartStoringProduct();
 			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
 			{
+				Log.Warning("reached alternative conclusion");
 				yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
 				findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
 				yield return findPlaceTarget;
@@ -114,7 +114,8 @@ namespace HumanResources
 				{
 					new Thing()
 					{
-						def = unfinishedThing.Stuff
+						def = unfinishedThing.Stuff,
+						stackCount = 0
 					}
 				};
 

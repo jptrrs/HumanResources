@@ -28,6 +28,17 @@ namespace HumanResources
 		private static bool socialTag = false; //broader knowledge
 		private static bool intellectualTag = false; //higher tech level
 
+		private const float MarketValueOffset = 200f;
+		private static float MarketValueFactor(this ResearchProjectDef tech)
+		{
+			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+		}
+		public static float CostFactor(this ResearchProjectDef tech)
+		{
+			return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
+		}
+
+
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
 			//ResearchProjectDef tech = research.Research;
@@ -197,7 +208,7 @@ namespace HumanResources
 			string name = "Tech_" + tech.defName;
 			ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
 			string label = "KnowledgeLabel".Translate(tech.label);
-			ThingDef dummy = new ThingDef
+			ThingDef techStuff = new ThingDef
 			{
 				thingClass = typeof(ThingWithComps),
 				defName = name,
@@ -217,7 +228,7 @@ namespace HumanResources
 						new StatModifier
 						{
 							stat = StatDefOf.MarketValue,
-							value = 200f
+							value = MarketValueOffset
 						}
 					},
 					statFactors = new List<StatModifier>()
@@ -225,23 +236,23 @@ namespace HumanResources
 						new StatModifier
 						{
 							stat = StatDefOf.WorkToMake,
-							value = (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 3.0)),1)
+							value = CostFactor(tech)
 						},
 						new StatModifier
 						{
 							stat = StatDefOf.MarketValue,
-							value = (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) /10, 1)
+							value = MarketValueFactor(tech)
 						}
 					}
 				}
 			};
-			//dummy.ResolveReferences();
-			DefDatabase<ThingDef>.Add(dummy);
-			filter.SetAllow(dummy, true);
-
-			//to use later
-			unlocked.stuffByTech.Add(tech, dummy);
-			unlocked.techByStuff.Add(dummy, tech);
+			techStuff.ResolveReferences();
+			MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
+			GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
+			DefDatabase<ThingDef>.Add(techStuff);
+			filter.SetAllow(techStuff, true);
+			unlocked.stuffByTech.Add(tech, techStuff);
+			unlocked.techByStuff.Add(techStuff, tech);
 		}
 
 		public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)

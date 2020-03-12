@@ -62,7 +62,7 @@
   </ThingDef>
 
   <!--Borrowed from Jecrell's RimWriter-->
-  <ThingDef ParentName="BuildingBase">
+  <ThingDef ParentName="FurnitureBase">
     <defName>BookShelf</defName>
     <label>Book Shelf</label>
     <thingClass>HumanResources.Building_BookStore</thingClass>
@@ -192,7 +192,7 @@
       <DeteriorationRate>2</DeteriorationRate>
       <Flammability>1.2</Flammability>
       <MarketValue>1000</MarketValue>
-      <WorkToMake>18000</WorkToMake>
+      <WorkToMake>600</WorkToMake>
     </statBases>
     <comps>
       <li Class="CompProperties_Forbiddable" />

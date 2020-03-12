@@ -11,8 +11,22 @@ namespace HumanResources
     {
         public List<ResearchProjectDef> expertise;
         public List<ResearchProjectDef> HomeWork = new List<ResearchProjectDef>();
-        public List<ThingDef> knownPlants;
-        public List<ThingDef> knownWeapons;
+        public List<ThingDef> proficientPlants;
+        public List<ThingDef> proficientWeapons;
+        public List<ThingDef> knownWeapons
+        {
+            get
+            {
+                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons).ToList();
+            }
+        }
+        public List<ThingDef> knownPlants
+        {
+            get
+            {
+                return proficientPlants.Concat(ModBaseHumanResources.UniversalCrops).ToList();
+            }
+        }
 
         private Pawn pawn
         {
@@ -40,6 +54,7 @@ namespace HumanResources
             SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate((l, r) => l.levelInt > r.levelInt ? l : r).def;
             bool guru = techLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
             var filtered = Extension_Research.SkillsByTech.Where(e => e.Key.techLevel.Equals(techLevel));
+            Log.Warning("GetExpertiseDefsFor: " + pawn + "'s techLevel is " + techLevel);
             int pass = 0;
             List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
             if (guru) techLevel++;
@@ -86,23 +101,27 @@ namespace HumanResources
 
         public void AcquirePlantKnowledge()
         {
-            if (knownPlants == null)
+            if (proficientPlants == null)
             {
-                knownPlants = new List<ThingDef>();
-                knownPlants.AddRange(ModBaseHumanResources.UniversalCrops);
+                proficientPlants = new List<ThingDef>();
+                //proficientPlants.AddRange(ModBaseHumanResources.UniversalCrops);
                 foreach (ResearchProjectDef tech in expertise) LearnCrops(tech);
             }
         }
 
         public void AcquireWeaponKnowledge()
         {
-            if (knownWeapons == null)
+            if (proficientWeapons == null)
             {
-                knownWeapons = new List<ThingDef>();
-                knownWeapons.AddRange(ModBaseHumanResources.UniversalWeapons);
+                //Log.Message("Determining initial weapon list for " + pawn + " with expertise count = " + expertise.Count+"...");
+                proficientWeapons = new List<ThingDef>();
+                //proficientWeapons.AddRange(ModBaseHumanResources.UniversalWeapons);
                 foreach (ResearchProjectDef tech in expertise) LearnWeapons(tech);
+                string test = (proficientWeapons != null) ? "ok" : "bad";
+                //Log.Message("... proficientWeapons is " + test + ", counts " + proficientWeapons.Count);
             }
         }
+
         public void AssignHomework(List<ResearchProjectDef> studyMaterial)
         {
             //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count() + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant");
@@ -130,23 +149,23 @@ namespace HumanResources
 
         public void LearnCrops(ResearchProjectDef tech)
         {
-            knownPlants.AddRange(tech.UnlockedPlants());
-            //Log.Message(parent + " can cultivate the followin plants: " + knownPlants.ToStringSafeEnumerable());
+            proficientPlants.AddRange(tech.UnlockedPlants());
+            //Log.Message(parent + " can cultivate the followin plants: " + proficientPlants.ToStringSafeEnumerable());
         }
 
         public void LearnWeapons(ResearchProjectDef tech)
         {
-            knownWeapons.AddRange(tech.UnlockedWeapons());
-            //Log.Message(parent + " can use the following weapons: " + knownWeapons.ToStringSafeEnumerable());
+            proficientWeapons.AddRange(tech.UnlockedWeapons());
+            //Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
-
             Scribe_Collections.Look(ref expertise, "Expertise");
-            Scribe_Collections.Look(ref knownWeapons, "KnownWeapons");
-            Scribe_Collections.Look(ref knownPlants, "KnownPlants");
+            Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
+            Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
+            Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

@@ -58,10 +58,5 @@ namespace HumanResources
 			}
 			//Log.Message("Notify_IterationCompleted bill is " + bill.Label);
 		}
-
-		protected void UpdateCost(float baseCost)
-		{
-			job.bill.recipe.workAmount *= (float)Math.Pow(baseCost, (1.0 / 3.0));
-		}
 	}
 }

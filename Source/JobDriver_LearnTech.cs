@@ -11,8 +11,7 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			project = techComp.HomeWork.RandomElement();
-			UpdateCost(project.baseCost);
-			//job.bill.recipe.workAmount = VariableCost(project.baseCost);
+			//job.bill.recipe.workAmount *= project.CostFactor();
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
@@ -66,7 +65,7 @@ namespace HumanResources
 				techComp.expertise.Add(project);
 				techComp.HomeWork.Clear();
 				techComp.LearnCrops(project);
-				Messages.Message("MessageStudyComplete".Translate(actor,project.LabelCap), (Thing)desk, MessageTypeDefOf.TaskCompletion, true);
+				//Messages.Message("MessageStudyComplete".Translate(actor,project.LabelCap), (Thing)desk, MessageTypeDefOf.TaskCompletion, true);
 				Notify_IterationCompleted(actor, bill as Bill_Production);
 				if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
 				{

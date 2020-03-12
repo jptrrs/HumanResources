@@ -57,7 +57,8 @@ namespace HumanResources
             };
 
             Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat)).Select(x => x.label).ToStringSafeEnumerable());
-            Log.Message("[HumanResources] Universal weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+            Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
+            Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
 
             //TechBook dirty trick, but only now this is possible!
             //DefDatabase<ThingDef>.GetNamed("TechBook").stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));

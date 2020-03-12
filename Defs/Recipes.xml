@@ -9,7 +9,7 @@
     <workAmount>300</workAmount>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
+    <!--<workSkill>Intellectual</workSkill>-->
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>
       <li>StudyDesk</li>
@@ -25,7 +25,6 @@
     <label>Document technologies</label>
     <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
-    <!--<workAmount>1000</workAmount>-->
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
