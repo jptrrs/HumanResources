@@ -13,7 +13,7 @@
     </fixedBillGiverDefs>
   </WorkGiverDef>
 
-  <WorkGiverDef>
+  <!--<WorkGiverDef>
     <defName>TechFiling</defName>
     <label>file knowledge</label>
     <giverClass>HumanResources.WorkGiver_FileTech</giverClass>
@@ -24,7 +24,7 @@
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
-  </WorkGiverDef>
+  </WorkGiverDef>-->
 
   <WorkGiverDef>
 		<defName>TechLearn</defName>

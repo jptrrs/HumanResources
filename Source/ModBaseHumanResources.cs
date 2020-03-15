@@ -56,9 +56,11 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            Log.Message("[HumanResources] Codified technologies:" + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat)).Select(x => x.label).ToStringSafeEnumerable());
-            Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
-            Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+            IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
+            //Log.Message("[HumanResources] Codified technologies:" + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
+            //Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
+            //Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+            Log.Message("[HumanResources] This is what we know: "+codifiedTech.EnumerableCount() +" technologies processed, "+UniversalCrops.Count()+" basic crops, "+UniversalWeapons.Count()+" basic weapons");
 
             //TechBook dirty trick, but only now this is possible!
             //DefDatabase<ThingDef>.GetNamed("TechBook").stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));

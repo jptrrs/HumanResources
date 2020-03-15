@@ -50,10 +50,10 @@
     <joyKind>Meditative</joyKind>
   </JobDef>
 
-  <JobDef>
+  <!--<JobDef>
     <defName>FileTech</defName>
     <driverClass>HumanResources.JobDriver_FileTech</driverClass>
     <reportString>filing TargetA.</reportString>
-  </JobDef>
+  </JobDef>-->
   
 </Defs>

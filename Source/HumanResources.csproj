@@ -333,7 +333,6 @@
     <Compile Include="ITab_Inventory.cs" />
     <Compile Include="JobDriver_DocumentTech.cs" />
     <Compile Include="JobDriver_LearnWeapon.cs" />
-    <Compile Include="JobDriver_FileTech.cs" />
     <Compile Include="RoomRoleWorker_Library.cs" />
     <Compile Include="UnlockManager.cs" />
     <Compile Include="Extension_Bill.cs" />
@@ -350,7 +349,6 @@
     <Compile Include="WorkGiver_LearnWeapon.cs" />
     <Compile Include="WorkGiver_Knowledge.cs" />
     <Compile Include="WorkGiver_LearnTech.cs" />
-    <Compile Include="WorkGiver_FileTech.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

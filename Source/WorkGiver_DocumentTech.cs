@@ -19,7 +19,7 @@ namespace HumanResources
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
-			Log.Message(pawn + " is looking for a document job...");
+			//Log.Message(pawn + " is looking for a document job...");
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
@@ -29,7 +29,7 @@ namespace HumanResources
 					return false;
 				}
 				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Where(x => !x.IsFinished);
-				Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
+				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
 				foreach (Bill bill in RelevantBills(Desk, RecipeName))
 				{
 					if (advantage.Intersect(bill.SelectedTech()).Count() > 0) return true;

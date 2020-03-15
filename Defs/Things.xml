@@ -67,16 +67,14 @@
     <label>Book Shelf</label>
     <thingClass>HumanResources.Building_BookStore</thingClass>
     <description>A sturdy shelf for storing knowledge in form of books.</description>
-    <uiIconScale>0.45</uiIconScale>
-    <!--<researchPrerequisites>
-      <li>ComplexFurniture</li>
-    </researchPrerequisites>-->
     <graphicData>
       <texPath>Things/Building/BookShelf</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <shaderType>CutoutComplex</shaderType>
       <drawSize>(3,2)</drawSize>
     </graphicData>
+    <uiIconPath>Things/Building/BookShelfEmpty_north</uiIconPath>
+    <uiIconScale>1.5</uiIconScale>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <rotatable>true</rotatable>
     <socialPropernessMatters>true</socialPropernessMatters>
@@ -133,6 +131,7 @@
     </placeWorkers>
     <building>
       <preventDeteriorationInside>true</preventDeteriorationInside>
+      <haulToContainerDuration>120</haulToContainerDuration>
       <fixedStorageSettings>
         <filter>
           <categories>
@@ -204,12 +203,15 @@
     <tickerType>Never</tickerType>
     <tradeability>Buyable</tradeability>
     <thingCategories>
-      <li>Manufactured</li>
+      <li>Items</li>
     </thingCategories>
     <menuHidden>true</menuHidden>
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <thingSetMakerTags>
+      <li>RewardSpecial</li>
+    </thingSetMakerTags>
     <stackLimit>1</stackLimit>
     <tradeNeverStack>true</tradeNeverStack>
     <forceDebugSpawnable>true</forceDebugSpawnable>

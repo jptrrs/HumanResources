@@ -7,6 +7,7 @@ using Verse;
 using Verse.AI;
 using UnityEngine;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace HumanResources
 {
@@ -59,6 +60,9 @@ namespace HumanResources
             harmony.Patch(AccessTools.Method(typeof(ResearchManager), "DebugSetAllProjectsFinished"),
                 null, new HarmonyMethod(patchType, nameof(DebugSetAllProjectsFinished_Postfix)), null);
 
+            harmony.Patch(AccessTools.Method(typeof(ThingOwner), "NotifyAdded"),
+                null, new HarmonyMethod(patchType, nameof(NotifyAdded_Postfix)), null);
+
             //Kills all starting research 
             //harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
             //    new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
@@ -71,6 +75,16 @@ namespace HumanResources
         //    return false;
         //}
 
+        public static void NotifyAdded_Postfix(Thing item, IThingHolder ___owner)
+        {
+            if (___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            {
+                ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];
+                bookStore.CompStorageGraphic.UpdateGraphics();
+                project.CarefullyFinishProject(bookStore);
+            }
+        }
+        
         public static void DoWindowContents_Prefix(Dialog_BillConfig __instance)
         {
             FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");

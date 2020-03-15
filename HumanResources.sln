@@ -16,8 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B9E9-4338-8845-ACD73F533D7D}"
 	ProjectSection(SolutionItems) = preProject
 		Defs\Jobs.xml = Defs\Jobs.xml
-		..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml = ..\..\..\..\workshop\content\294100\1737269778\Defs\JoyGiverDefs\JoyGivers.xml
 		Defs\Recipes.xml = Defs\Recipes.xml
+		Defs\Rooms.xml = Defs\Rooms.xml
 		Defs\StuffCategories.xml = Defs\StuffCategories.xml
 		Defs\ThingCategories.xml = Defs\ThingCategories.xml
 		Defs\Things.xml = Defs\Things.xml
@@ -77,6 +77,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{0A1DCD6C-9285-40CF-8CC4-47EAF9ED2429}"
 	ProjectSection(SolutionItems) = preProject
 		Source\JobDriver_DocumentTech0.cs = Source\JobDriver_DocumentTech0.cs
+		Source\JobDriver_FileTech.cs = Source\JobDriver_FileTech.cs
+		Source\SlotGroup_BookStore.cs = Source\SlotGroup_BookStore.cs
+		Source\WorkGiver_FileTech.cs = Source\WorkGiver_FileTech.cs
 	EndProjectSection
 EndProject
 Global

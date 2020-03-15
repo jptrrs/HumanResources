@@ -9,9 +9,9 @@ using Verse;
 namespace HumanResources
 {
     //Borrowed from Jecrell's RimWriter
-    public class Building_BookStore : Building, IThingHolder, IStoreSettingsParent
+    public class Building_BookStore : Building, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
-        protected ThingOwner innerContainer;
+        public ThingOwner innerContainer;
         protected StorageSettings storageSettings;
         private CompStorageGraphic compStorageGraphic = null;
         public CompStorageGraphic CompStorageGraphic
@@ -42,6 +42,7 @@ namespace HumanResources
         public Building_BookStore()
         {
             innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
+            //slotGroup = new SlotGroup_BookStore(this);
         }
         
         //public bool TryAccept(Thing thing)
@@ -51,19 +52,24 @@ namespace HumanResources
 
         public bool Accepts(Thing thing)
         {
-            bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
-            bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;
-            bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;//innerContainer.Any(x => x.Stuff == thing.Stuff);
-            return allowed && fits && !duplicate;
+            if (thing.Stuff != null && thing.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            {
+                //bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
+                bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
+                bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;
+                bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;//innerContainer.Any(x => x.Stuff == thing.Stuff);
+                return allowed && fits && !duplicate;
+            }
+            return false;
         }
 
         public override void PostMake()
         {
             base.PostMake();
-            this.storageSettings = new StorageSettings(this);
-            if (this.def.building.defaultStorageSettings != null)
+            storageSettings = new StorageSettings(this);
+            if (def.building.defaultStorageSettings != null)
             {
-                this.storageSettings.CopyFrom(this.def.building.defaultStorageSettings);
+                storageSettings.CopyFrom(this.def.building.defaultStorageSettings);
             }
         }
 
@@ -91,7 +97,6 @@ namespace HumanResources
         {
             innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
             if (forbid) outThing.SetForbidden(true);
-            //droppedThing = outThing as ThingBook;
             droppedThing = outThing as ThingWithComps;
             return true;
         }
@@ -108,7 +113,6 @@ namespace HumanResources
             {
                 Thing outThing;
                 innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
-                //ResearchProjectDef tech = ModBaseHumanResources.unlocked.stuffByTech.FirstOrDefault(x => x.Value == outThing.Stuff).Key;
                 ResearchProjectDef tech = ModBaseHumanResources.unlocked.techByStuff[outThing.Stuff];
                 tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
