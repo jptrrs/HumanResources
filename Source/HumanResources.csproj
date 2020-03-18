@@ -333,6 +333,7 @@
     <Compile Include="ITab_Inventory.cs" />
     <Compile Include="JobDriver_DocumentTech.cs" />
     <Compile Include="JobDriver_LearnWeapon.cs" />
+    <Compile Include="ExpertiseNode.cs" />
     <Compile Include="RoomRoleWorker_Library.cs" />
     <Compile Include="UnlockManager.cs" />
     <Compile Include="Extension_Bill.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkGiver_DocumentTech.cs" />
+    <Compile Include="WorkGiver_ResearchTech.cs" />
     <Compile Include="WorkGiver_LearnWeapon.cs" />
     <Compile Include="WorkGiver_Knowledge.cs" />
     <Compile Include="WorkGiver_LearnTech.cs" />

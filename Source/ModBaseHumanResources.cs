@@ -1,7 +1,9 @@
-﻿using HugsLib;
+﻿using HarmonyLib;
+using HugsLib;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Verse;
 
 namespace HumanResources
@@ -17,12 +19,10 @@ namespace HumanResources
             }
         }
 
-        // ThingDef injection stolen from the work of notfood for Psychology
         public override void DefsLoaded()
         {
-            //Log.Warning("DefsLoaded start...");
-
             //Adding Tech Tab to Pawns
+            // ThingDef injection stolen from the work of notfood for Psychology
             var zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
             IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
                                             where def.race?.intelligence == Intelligence.Humanlike && !def.defName.Contains("Android") && !def.defName.Contains("Robot")&& (zombieThinkTree == null || def.race.thinkTreeMain != zombieThinkTree)
@@ -83,17 +83,14 @@ namespace HumanResources
             }
 
             //Populating knowledge recipes and book shelves
-            ThingFilter filter = new ThingFilter();
-            filter.SetAllow(knowledgeCat, true);
-            foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.defName.StartsWith("Tech_")))
+            foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.fixedIngredientFilter.AnyAllowedDef == null))
             {
-                r.fixedIngredientFilter.CopyAllowancesFrom(filter);
-                r.defaultIngredientFilter.CopyAllowancesFrom(filter);
+                r.fixedIngredientFilter.ResolveReferences();
             }
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
-                t.building.fixedStorageSettings.filter.CopyAllowancesFrom(filter);
-                t.building.defaultStorageSettings.filter.CopyAllowancesFrom(filter);
+                t.building.fixedStorageSettings.filter.ResolveReferences();
+                t.building.defaultStorageSettings.filter.ResolveReferences();
             }
         }
 

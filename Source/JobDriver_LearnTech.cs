@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Verse;
 using Verse.AI;
 using RimWorld;
+using System.Linq;
 
 namespace HumanResources
 {
@@ -10,32 +11,52 @@ namespace HumanResources
 	{
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			project = techComp.HomeWork.RandomElement();
+			//List<ResearchProjectDef> homework = techComp.HomeWork;
+			//if (job.bill.IsResearch())
+			//{
+			//	project = homework.FindAll(x => !x.IsFinished).RandomElement();
+			//}
+			//else
+			//{
+			//	project = homework.FindAll(x => x.IsFinished).RandomElement();
+			//}
 			//job.bill.recipe.workAmount *= project.CostFactor();
+
+			var valid = techComp.HomeWork.FindAll(x => job.bill.IsResearch() ? !x.IsFinished : x.IsFinished);
+			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
+			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
+			else project = valid.RandomElement();
 			return base.TryMakePreToilReservations(errorOnFailed);
+		}
+
+		private float TaskCost()
+		{
+			if (job.bill.IsResearch())
+			{
+				return project.baseCost;
+			}
+			else
+			{
+				return job.bill.recipe.workAmount *= project.StuffCostFactor();
+			}
 		}
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			Bill bill = job.bill;
-			//Bill_Production probed = bill as Bill_Production;
 			//Log.Warning("JobDriver_LearnTech:MakeNewToils: " + bill.Label);
-			//Log.Message("Toil start:" + pawn + " is trying to learn " + project+ ", globalFailConditions count:" + globalFailConditions.Count);
+			Log.Message("Toil start:" + pawn + " is trying to learn " + project+ ", globalFailConditions count:" + globalFailConditions.Count);
 
-			//from DoBill
+			Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
+
 			AddEndCondition(delegate
 			{
 				if (!desk.Spawned)
 				{
 					return JobCondition.Incompletable;
 				}
-				if (!techComp.HomeWork.Contains(project))
-				{
-					return JobCondition.Succeeded;
-				}
 				return JobCondition.Ongoing;
 			});
-
 			this.FailOnBurningImmobile(TargetIndex.A);
 			this.FailOn(delegate ()
 			{
@@ -55,28 +76,72 @@ namespace HumanResources
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return gotoBillGiver;
-			yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+			//yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
 
 			Toil acquireKnowledge = new Toil();
-			acquireKnowledge.initAction = delegate
+			acquireKnowledge.initAction = delegate ()
+			{
+				if (!expertise.ContainsKey(project))
+				{
+					expertise.Add(project, 0f);
+					acquireKnowledge.endConditions.Add(delegate
+					{
+						if (expertise[project] >= TaskCost())
+						{
+							return JobCondition.Succeeded;
+						}
+						return JobCondition.Ongoing;
+					});
+				}
+			};
+			acquireKnowledge.tickAction = delegate ()
 			{
 				Pawn actor = acquireKnowledge.actor;
-				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
-				techComp.expertise.Add(project);
-				techComp.HomeWork.Clear();
-				techComp.LearnCrops(project);
-				//Messages.Message("MessageStudyComplete".Translate(actor,project.LabelCap), (Thing)desk, MessageTypeDefOf.TaskCompletion, true);
-				Notify_IterationCompleted(actor, bill as Bill_Production);
-				if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
-				{
-					float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
-					actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
-				}
-				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
+				float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
+				num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
+				project.ResearchPerformed(num, TaskCost(), actor, job.bill.IsResearch());
+				//Find.ResearchManager.ResearchPerformed(num, actor);
+				actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
+				actor.GainComfortFromCellIfPossible(true);
 			};
-			acquireKnowledge.defaultCompleteMode = ToilCompleteMode.Instant;
-			acquireKnowledge.FailOnDespawnedOrNull(TargetIndex.A);
+			acquireKnowledge.FailOn(() => project == null);
+			//research.FailOn(() => !this.Project.CanBeResearchedAt(this.ResearchBench, false)); //need rework
+			//acquireKnowledge.FailOn(() => !expertise.ContainsKey(project)); //might be necessary if initAction fails.
+			acquireKnowledge.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+			acquireKnowledge.WithEffect(EffecterDefOf.Research, TargetIndex.A);
+			acquireKnowledge.WithProgressBar(TargetIndex.A, delegate
+			{
+				if (project == null) return 0f;
+				return expertise[project]/TaskCost();
+			}, false, -0.5f);
+			acquireKnowledge.defaultCompleteMode = ToilCompleteMode.Delay;
+			acquireKnowledge.defaultDuration = 4000;
+			acquireKnowledge.activeSkill = () => SkillDefOf.Intellectual;
 			yield return acquireKnowledge;
+			yield return Toils_General.Wait(2, TargetIndex.None);
+
+
+			//Toil acquireKnowledge = new Toil();
+			//acquireKnowledge.initAction = delegate
+			//{
+			//	Pawn actor = acquireKnowledge.actor;
+			//	CompKnowledge techComp = actor.GetComp<CompKnowledge>();
+			//	techComp.expertise.Add(project,1f); // TO DO!
+			//	techComp.HomeWork.Clear();
+			//	techComp.LearnCrops(project);
+			//	//Messages.Message("MessageStudyComplete".Translate(actor,project.LabelCap), (Thing)desk, MessageTypeDefOf.TaskCompletion, true);
+			//	Notify_IterationCompleted(actor, bill as Bill_Production);
+			//	if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
+			//	{
+			//		float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
+			//		actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
+			//	}
+			//	actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
+			//};
+			//acquireKnowledge.defaultCompleteMode = ToilCompleteMode.Instant;
+			//acquireKnowledge.FailOnDespawnedOrNull(TargetIndex.A);
+			//yield return acquireKnowledge;
+			
 			yield break;
 		}
 

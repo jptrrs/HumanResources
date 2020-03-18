@@ -13,7 +13,7 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
-			project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.expertise).RandomElement();
+			project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.expertise.Keys).RandomElement();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
@@ -83,7 +83,7 @@ namespace HumanResources
 			yield return Toils_Recipe.FinishRecipeAndStartStoringProduct();
 			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
 			{
-				Log.Warning("reached alternative conclusion");
+				//Log.Warning("reached alternative conclusion");
 				yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
 				findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
 				yield return findPlaceTarget;

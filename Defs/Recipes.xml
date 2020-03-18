@@ -2,7 +2,7 @@
 <Defs>
 
   <RecipeDef>
-    <defName>Tech_Learn</defName>
+    <defName>LearnTech</defName>
     <label>Study technologies</label>
     <description>Study to acquire knowledge about a new technology.</description>
     <jobString>Studying a new technology.</jobString>
@@ -15,42 +15,54 @@
       <li>StudyDesk</li>
     </recipeUsers>
     <fixedIngredientFilter>
+      <categories>
+        <li>Knowledge</li>
+      </categories>
     </fixedIngredientFilter>
-    <defaultIngredientFilter>
-    </defaultIngredientFilter>
   </RecipeDef>
 
   <RecipeDef>
-    <defName>Tech_Document</defName>
+    <defName>DocumentTech</defName>
     <label>Document technologies</label>
     <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <!--<requiredGiverWorkType>HR_Learn</requiredGiverWorkType>-->
+    <requiredGiverWorkType>Research</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
     <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
-    <!--<ingredients>
-      <li>
-        <filter>
-          <li>Technic</li>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>-->
     <fixedIngredientFilter>
-      <!--<categories>
-        <li>Technic</li>
-      </categories>-->
+      <categories>
+        <li>Knowledge</li>
+      </categories>
     </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <!--<categories>
-        <li>Technic</li>
-      </categories>-->
-    </defaultIngredientFilter>
+    <products>
+      <TechBook>1</TechBook>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>ResearchTech</defName>
+    <label>Research technologies</label>
+    <description>Expand the frontier of knowledge by researching new technologies.</description>
+    <jobString>Researching.</jobString>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <!--<requiredGiverWorkType>HR_Learn</requiredGiverWorkType>-->
+    <requiredGiverWorkType>Research</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+    <recipeUsers>
+      <li>StudyDesk</li>
+    </recipeUsers>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Knowledge</li>
+      </categories>
+    </fixedIngredientFilter>
     <products>
       <TechBook>1</TechBook>
     </products>

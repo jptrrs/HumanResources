@@ -15,8 +15,16 @@
     <reportString>documenting TargetB.</reportString>
     <casualInterruptible>true</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-  </JobDef>  
-  
+  </JobDef>
+
+  <JobDef>
+    <defName>ResearchTech</defName>
+    <driverClass>HumanResources.JobDriver_LearnTech</driverClass>
+    <reportString>researching TargetB.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
   <JobDef>
     <defName>TrainWeapon</defName>
     <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>

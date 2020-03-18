@@ -9,7 +9,8 @@ namespace HumanResources
 {
     public class CompKnowledge : ThingComp
     {
-        public List<ResearchProjectDef> expertise;
+        //public List<ResearchProjectDef> expertise;
+        public Dictionary<ResearchProjectDef,float> expertise;
         public List<ResearchProjectDef> HomeWork = new List<ResearchProjectDef>();
         public List<ThingDef> proficientPlants;
         public List<ThingDef> proficientWeapons;
@@ -92,8 +93,9 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                expertise = new List<ResearchProjectDef>();
-                expertise.AddRange(GetExpertiseDefsFor(pawn));
+                //expertise = new List<ResearchProjectDef>();
+                //expertise.AddRange(GetExpertiseDefsFor(pawn));
+                expertise = GetExpertiseDefsFor(pawn).ToDictionary(x => x, x => 1f);
                 AcquireWeaponKnowledge();
                 AcquirePlantKnowledge();
             }
@@ -105,7 +107,7 @@ namespace HumanResources
             {
                 proficientPlants = new List<ThingDef>();
                 //proficientPlants.AddRange(ModBaseHumanResources.UniversalCrops);
-                foreach (ResearchProjectDef tech in expertise) LearnCrops(tech);
+                foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
             }
         }
 
@@ -116,8 +118,8 @@ namespace HumanResources
                 //Log.Message("Determining initial weapon list for " + pawn + " with expertise count = " + expertise.Count+"...");
                 proficientWeapons = new List<ThingDef>();
                 //proficientWeapons.AddRange(ModBaseHumanResources.UniversalWeapons);
-                foreach (ResearchProjectDef tech in expertise) LearnWeapons(tech);
-                string test = (proficientWeapons != null) ? "ok" : "bad";
+                foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
+                //string test = (proficientWeapons != null) ? "ok" : "bad";
                 //Log.Message("... proficientWeapons is " + test + ", counts " + proficientWeapons.Count);
             }
         }
@@ -127,20 +129,37 @@ namespace HumanResources
             //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count() + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant");
             if (pawn.Faction.IsPlayer)
             {
-                IEnumerable<ResearchProjectDef> excess = HomeWork.Except(studyMaterial);
-                if (excess.Count() > 0)
-                {
-                    //Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
-                    HomeWork.RemoveAll(x => excess.Contains(x));
-                }
-                var available = studyMaterial.Except(expertise).Except(HomeWork);
+                //IEnumerable<ResearchProjectDef> excess = HomeWork.Except(studyMaterial);
+                //if (excess.Count() > 0)
+                //{
+                //    //Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
+                //    HomeWork.RemoveAll(x => excess.Contains(x));
+                //}
+                var available = studyMaterial.Except(expertise.Keys).Except(HomeWork);
                 //Log.Warning("...Available projects: " + available.ToStringSafeEnumerable());
-                var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Contains(r)));
+                var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
                 var starters = available.Where(t => t.prerequisites.NullOrEmpty());
-                List<ResearchProjectDef> nextProjects = starters.Concat(derived).ToList();
-                HomeWork.AddRange(nextProjects);
+                //List<ResearchProjectDef> nextProjects = starters.Concat(derived).ToList();
+                //HomeWork.AddRange(nextProjects);
+                HomeWork.AddRange(starters.Concat(derived));
             }
         }
+
+        public override void CompTickRare()
+        {
+            if (!HomeWork.NullOrEmpty())
+            {
+                //var selectedAnywhere = Find.map .CurrentMap.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>().SelectMany(x => x.billStack.Bills).Where(x => x.recipe.defName.StartsWith("Tech_")).SelectMany(x => x.SelectedTech()).Distinct();
+                var excess = HomeWork.Except(SelectedAnywhere);
+                if (excess.Any())
+                {
+                    HomeWork.RemoveAll(x => excess.Contains(x));
+                    Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
+                }
+            }
+        }
+
+        private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()/*x.recipe.defName.StartsWith("Tech_")*/).SelectMany(x => x.SelectedTech()).Distinct();
 
         public void ExposeData()
         {
@@ -165,7 +184,7 @@ namespace HumanResources
             Scribe_Collections.Look(ref expertise, "Expertise");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
-            Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
+            //Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

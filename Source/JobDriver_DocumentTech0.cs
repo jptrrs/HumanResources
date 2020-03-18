@@ -12,9 +12,8 @@ namespace HumanResources
 	{
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
-			
-			project = job.bill.SelectedTech().Intersect(techComp.expertise).RandomElement();
+			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
+			project = job.bill.SelectedTech().Intersect(techComp.expertise.Keys).RandomElement();
 			//UpdateCost(project.baseCost);
 			//job.bill.recipe.workAmount = VariableCost(project.baseCost);
 			return base.TryMakePreToilReservations(errorOnFailed);

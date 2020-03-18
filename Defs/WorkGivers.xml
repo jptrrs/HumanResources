@@ -2,32 +2,19 @@
 <Defs>
 
   <WorkGiverDef>
-    <defName>TechDocument</defName>
-    <label>Document technologies</label>
-    <giverClass>HumanResources.WorkGiver_DocumentTech</giverClass>
+    <defName>ResearchTech</defName>
+    <label>Research technologies</label>
+    <giverClass>HumanResources.WorkGiver_ResearchTech</giverClass>
     <workType>Research</workType>
-    <verb>write</verb>
-    <gerund>writing at</gerund>
+    <verb>research</verb>
+    <gerund>researching at</gerund>
     <fixedBillGiverDefs>
       <li>StudyDesk</li>
     </fixedBillGiverDefs>
   </WorkGiverDef>
 
-  <!--<WorkGiverDef>
-    <defName>TechFiling</defName>
-    <label>file knowledge</label>
-    <giverClass>HumanResources.WorkGiver_FileTech</giverClass>
-    <workType>Hauling</workType>
-    <verb>file</verb>
-    <gerund>filing</gerund>
-    <priorityInType>70</priorityInType>
-    <requiredCapacities>
-      <li>Manipulation</li>
-    </requiredCapacities>
-  </WorkGiverDef>-->
-
   <WorkGiverDef>
-		<defName>TechLearn</defName>
+		<defName>LearnTech</defName>
 		<label>Study Technologies</label>
 		<giverClass>HumanResources.WorkGiver_LearnTech</giverClass>
 		<workType>HR_Learn</workType>
@@ -39,7 +26,7 @@
 	</WorkGiverDef>
 
   <WorkGiverDef>
-    <defName>WeaponLearn</defName>
+    <defName>TrainWeapon</defName>
     <label>Learn weapon use</label>
     <giverClass>HumanResources.WorkGiver_LearnWeapon</giverClass>
     <workType>HR_Learn</workType>

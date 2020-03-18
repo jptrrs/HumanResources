@@ -205,7 +205,7 @@
     <thingCategories>
       <li>Items</li>
     </thingCategories>
-    <menuHidden>true</menuHidden>
+    <!--<menuHidden>true</menuHidden>-->
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>

@@ -12,7 +12,7 @@ namespace HumanResources
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
-			IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Where(x => !x.IsFinished);
+			IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 			bool flag = advantage.ToList().Count > 0;
 			return !flag;
 		}
@@ -23,14 +23,14 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t, RecipeName).Count() > 0)
+				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t/*, RecipeName*/).Count() > 0)
 				{
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Where(x => !x.IsFinished);
+				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
-				foreach (Bill bill in RelevantBills(Desk, RecipeName))
+				foreach (Bill bill in RelevantBills(Desk/*, RecipeName*/))
 				{
 					if (advantage.Intersect(bill.SelectedTech()).Count() > 0) return true;
 				}
@@ -50,7 +50,7 @@ namespace HumanResources
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
 					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing, RecipeName))
+					foreach (Bill bill in RelevantBills(thing/*, RecipeName*/))
 					{
 						return StartOrResumeBillJob(pawn, billGiver, target);
 					}
@@ -95,7 +95,7 @@ namespace HumanResources
 								}
 							}
 						}
-						Job result = new Job(DefDatabase<JobDef>.GetNamed(RecipeName + "Tech"), target)
+						Job result = new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
 						{
 							bill = bill
 						};
@@ -127,14 +127,12 @@ namespace HumanResources
 			{
 				return job;
 			}
-			Job job2 = JobMaker.MakeJob(DefDatabase<JobDef>.GetNamed(RecipeName + "Tech"), (Thing)bill.billStack.billGiver);
+			Job job2 = JobMaker.MakeJob(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), (Thing)bill.billStack.billGiver);
 			job2.bill = bill;
 			job2.targetQueueB = new List<LocalTargetInfo> { uft };
 			job2.countQueue = new List<int> { 1 };
 			job2.haulMode = HaulMode.ToCellNonStorage;
 			return job2;
 		}
-		protected new static string RecipeName = "Document";
-
 	}
 }

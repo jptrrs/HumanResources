@@ -80,7 +80,7 @@ namespace HumanResources
             Rect titleRect = new Rect(leftColumn.x, leftColumn.y, leftColumn.width, Text.LineHeight);
             Widgets.Label(titleRect, "Knowledge");
             Text.Font = GameFont.Small;
-            var expertise = PawnToShowInfoAbout.GetComp<CompKnowledge>().expertise.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ResearchNode(x)).ToList();
+            var expertise = PawnToShowInfoAbout.GetComp<CompKnowledge>().expertise.Keys.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ExpertiseNode(x,PawnToShowInfoAbout)/*ResearchNode(x)*/).ToList();
             Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - margin - padding - 2f);
             float viewHeight = (nodeSize.y + margin) * expertise.Count();
             Rect viewRect = new Rect(0f, 0f, nodeSize.x/*canvas.width*/, viewHeight);

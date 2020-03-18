@@ -29,11 +29,13 @@ namespace HumanResources
 		private static bool intellectualTag = false; //higher tech level
 
 		private const float MarketValueOffset = 200f;
-		private static float MarketValueFactor(this ResearchProjectDef tech)
+
+		private static float StuffMarketValueFactor(this ResearchProjectDef tech)
 		{
 			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
 		}
-		public static float CostFactor(this ResearchProjectDef tech)
+
+		public static float StuffCostFactor(this ResearchProjectDef tech)
 		{
 			return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
 		}
@@ -236,12 +238,12 @@ namespace HumanResources
 						new StatModifier
 						{
 							stat = StatDefOf.WorkToMake,
-							value = CostFactor(tech)
+							value = StuffCostFactor(tech)
 						},
 						new StatModifier
 						{
 							stat = StatDefOf.MarketValue,
-							value = MarketValueFactor(tech)
+							value = StuffMarketValueFactor(tech)
 						}
 					}
 				}
@@ -307,6 +309,45 @@ namespace HumanResources
 			Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
 			progress[tech] = 0f;
 			Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
+		}
+
+		public static void ResearchPerformed(this ResearchProjectDef tech, float amount, float total, Pawn researcher, bool record = false)
+		{
+			amount *= ResearchPointsPerWorkTick;
+			amount *= Find.Storyteller.difficulty.researchSpeedFactor;
+			if (researcher != null && researcher.Faction != null)
+			{
+				amount /= tech.CostFactor(researcher.Faction.def.techLevel);
+			}
+			if (DebugSettings.fastResearch)
+			{
+				amount *= 500f;
+			}
+			if (researcher != null && record)
+			{
+				researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
+			}
+			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
+			float num = GetProgress(tech, expertise);
+			num += amount/total;
+			expertise[tech] = num;
+			//if (this.currentProj.IsFinished)
+			//{
+			//	this.FinishProject(this.currentProj, true, researcher);
+			//}
+		}
+
+		private const float ResearchPointsPerWorkTick = 0.00825f;
+
+		public static float GetProgress(ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
+		{
+			float result;
+			if (expertise != null && expertise.TryGetValue(tech, out result))
+			{
+				return result;
+			}
+			expertise.Add(tech, 0f);
+			return 0f;
 		}
 	}
 }

@@ -6,20 +6,18 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    class WorkGiver_LearnTech : WorkGiver_Knowledge
+    class WorkGiver_ResearchTech : WorkGiver_Knowledge
     {
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
 			IEnumerable<ResearchProjectDef> expertise = pawn.GetComp<CompKnowledge>().expertise.Keys;
-			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise);
-			//bool flag = available.ToList().Count > 0;
-			//return !flag;
+			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.IsFinished).Except(expertise);
 			return !available.Any();
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
-			//Log.Message(pawn + " is looking for a study job...");
+			//Log.Message(pawn + " is looking for a research job...");
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
@@ -34,7 +32,7 @@ namespace HumanResources
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
-					studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
+					studyMaterial.AddRange(bill.SelectedTech().Where(x => !x.IsFinished));
 				}
 				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
 				CompKnowledge techComp = pawn.GetComp<CompKnowledge>();
@@ -42,7 +40,7 @@ namespace HumanResources
 				//Log.Message("...homework count is " + techComp.HomeWork.Count());
 				//if (techComp.HomeWork.Count() > 0) return true;
 				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
-				JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
+				JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
 				return false;
 			}
 			//Log.Message("case 4");

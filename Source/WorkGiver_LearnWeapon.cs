@@ -10,7 +10,7 @@ namespace HumanResources
 {
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
-        protected new string RecipeName = "TrainWeapon";
+        //protected string RecipeName = "TrainWeapon";
 
         private List<ThingCount> chosenIngThings = new List<ThingCount>();
         //private string RangedSuffix = "Shooting";
@@ -22,13 +22,13 @@ namespace HumanResources
             Building_WorkTable Target = t as Building_WorkTable;
             if (Target != null)
             {
-                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t, RecipeName).Count() > 0)
+                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t/*, RecipeName*/).Count() > 0)
                 {
                     //Log.Message("...no job on target.");
                     return false;
                 }
                 IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
-                foreach (Bill bill in RelevantBills(Target, RecipeName))
+                foreach (Bill bill in RelevantBills(Target/*, RecipeName*/))
                 {
                     if (knownWeapons.Intersect(bill.ingredientFilter.AllowedThingDefs).Count() > 0) return base.HasJobOnThing(pawn, t, forced);//true;
                 }
@@ -49,7 +49,7 @@ namespace HumanResources
                 if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
                 {
                     billGiver.BillStack.RemoveIncompletableBills();
-                    foreach (Bill bill in RelevantBills(thing, RecipeName))
+                    foreach (Bill bill in RelevantBills(thing/*, RecipeName*/))
                     {
                         return StartBillJob(pawn, billGiver);
                     }
@@ -129,7 +129,7 @@ namespace HumanResources
             {
                 return job;
             }
-            Job job2 = new Job(DefDatabase<JobDef>.GetNamed(RecipeName), (Thing)giver);
+            Job job2 = new Job(DefDatabase<JobDef>.GetNamed("TrainWeapon"), (Thing)giver);
             job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
             job2.countQueue = new List<int>(chosenIngThings.Count);
             for (int i = 0; i < chosenIngThings.Count; i++)
