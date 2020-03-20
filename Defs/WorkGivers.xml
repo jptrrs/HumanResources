@@ -14,6 +14,18 @@
   </WorkGiverDef>
 
   <WorkGiverDef>
+    <defName>DocumentTech</defName>
+    <label>Document technologies</label>
+    <giverClass>HumanResources.WorkGiver_DocumentTech</giverClass>
+    <workType>Research</workType>
+    <verb>write</verb>
+    <gerund>writing at</gerund>
+    <fixedBillGiverDefs>
+      <li>StudyDesk</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
 		<defName>LearnTech</defName>
 		<label>Study Technologies</label>
 		<giverClass>HumanResources.WorkGiver_LearnTech</giverClass>

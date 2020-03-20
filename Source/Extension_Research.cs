@@ -40,7 +40,6 @@ namespace HumanResources
 			return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
 		}
 
-
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
 			//ResearchProjectDef tech = research.Research;
@@ -311,9 +310,10 @@ namespace HumanResources
 			Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
 		}
 
-		public static void ResearchPerformed(this ResearchProjectDef tech, float amount, float total, Pawn researcher, bool record = false)
+		public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
 		{
-			amount *= ResearchPointsPerWorkTick;
+			float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
+			amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
 			amount *= Find.Storyteller.difficulty.researchSpeedFactor;
 			if (researcher != null && researcher.Faction != null)
 			{
@@ -323,21 +323,19 @@ namespace HumanResources
 			{
 				amount *= 500f;
 			}
-			if (researcher != null && record)
+			if (researcher != null && research)
 			{
 				researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
 			}
 			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
 			float num = GetProgress(tech, expertise);
 			num += amount/total;
+			//Verse.Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
 			expertise[tech] = num;
-			//if (this.currentProj.IsFinished)
-			//{
-			//	this.FinishProject(this.currentProj, true, researcher);
-			//}
 		}
 
 		private const float ResearchPointsPerWorkTick = 0.00825f;
+		private const float StudyPointsPerWorkTick = 1f;
 
 		public static float GetProgress(ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
 		{
