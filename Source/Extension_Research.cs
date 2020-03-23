@@ -60,10 +60,6 @@ namespace HumanResources
 												  where d is TerrainDef
 												  select d as TerrainDef;
 
-			//IEnumerable<ThingDef> thingDefs = tech.GetThingsUnlocked();
-			//IEnumerable<RecipeDef> recipeDefs = tech.GetRecipesUnlocked();
-			//IEnumerable<TerrainDef> terrainDefs = tech.GetTerrainUnlocked();
-
 			//2. look for skills based on unlocked stuff
 
 			//a. checking by query on the research tree
@@ -265,7 +261,7 @@ namespace HumanResources
 				//Verse.Log.Message("...checking recipe " + r.label);
 				foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(t => t.Contains("Basic"))) && !(x.defName.Contains("Tool") || x.defName.Contains("tool"))))
 				{
-					string test = (weapon.defName.Contains("Tool")) ? "gotcha!" : "";
+					//string test = (weapon.defName.Contains("Tool")) ? "gotcha!" : "";
 					//Verse.Log.Message("...found " + weapon.defName+" "+test);
 					result.Add(weapon);
 				}

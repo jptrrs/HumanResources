@@ -228,7 +228,8 @@ namespace HumanResources
         {
             var expertise = p.GetComp<CompKnowledge>().expertise;
             //if (___recipe.researchPrerequisite != null && !expertise.Keys.Contains(___recipe.researchPrerequisite))
-            if (___recipe.researchPrerequisite != null && expertise[___recipe.researchPrerequisite] >= 1f)
+            ResearchProjectDef preReq = ___recipe.researchPrerequisite;
+            if (preReq != null && !(expertise.ContainsKey(preReq) && expertise[preReq] >= 1f))
             {
                 JobFailReason.Is("DoesntKnowHowToCraft".Translate(p,___recipe.label));
                 return false;

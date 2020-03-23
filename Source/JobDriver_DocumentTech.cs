@@ -2,8 +2,6 @@
 using Verse;
 using RimWorld;
 using System.Linq;
-using System.Reflection;
-using HarmonyLib;
 using Verse.AI;
 
 namespace HumanResources

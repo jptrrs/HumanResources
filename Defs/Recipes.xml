@@ -6,7 +6,7 @@
     <label>Study technologies</label>
     <description>Study to acquire knowledge about a new technology.</description>
     <jobString>Studying a new technology.</jobString>
-    <workAmount>300</workAmount>
+    <workAmount>450</workAmount>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <!--<workSkill>Intellectual</workSkill>-->
