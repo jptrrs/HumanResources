@@ -74,7 +74,19 @@ namespace HumanResources
             //harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
             //    new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
 
+            //harmony.Patch(AccessTools.Method(typeof(WorkGiver_DoBill), "JobOnThing"),
+            //    null, new HarmonyMethod(patchType, nameof(JobOnThing_Postfix)), null);
+
+            //harmony.Patch(AccessTools.Method(typeof(ThinkNode_PrioritySorter), "TryIssueJobPackage"),
+            //    null, new HarmonyMethod(patchType, nameof(TryIssueJobPackage_Postfix)), null);
+
         }
+
+        //public static void TryIssueJobPackage_Postfix(Pawn pawn, JobIssueParams jobParams)
+        //{
+        //    Log.Message("TryIssueJobPackage for " + pawn + ", jobParams are " + jobParams);
+        //}
+
 
         //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
         //{

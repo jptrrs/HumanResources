@@ -34,7 +34,7 @@
   </JobDef>  
   
   <!--From ItchyFlea's Practise Target-->
-    <JobDef>
+  <JobDef>
     <defName>UseDummy</defName>
     <driverClass>JobDriver_WatchBuilding</driverClass>
     <reportString>Training Melee.</reportString>
@@ -58,10 +58,4 @@
     <joyKind>Meditative</joyKind>
   </JobDef>
 
-  <!--<JobDef>
-    <defName>FileTech</defName>
-    <driverClass>HumanResources.JobDriver_FileTech</driverClass>
-    <reportString>filing TargetA.</reportString>
-  </JobDef>-->
-  
 </Defs>

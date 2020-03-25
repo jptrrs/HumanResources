@@ -72,7 +72,7 @@
     <defName>TrainWeaponShooting</defName>
     <label>learn to shoot a weapon</label>
     <description>Train with a ranged weapon to acquire proficiency.</description>
-    <jobString>Practicing with a weapon.</jobString>
+    <jobString>Training to use a ranged weapon.</jobString>
     <workAmount>10000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
@@ -107,7 +107,7 @@
     <defName>TrainWeaponMelee</defName>
     <label>learn to wield a weapon</label>
     <description>Train with a melee weapon to acquire proficiency.</description>
-    <jobString>Training with a weapon.</jobString>
+    <jobString>Training to use a melee weapon.</jobString>
     <workAmount>10000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
@@ -142,8 +142,8 @@
   <RecipeDef>
     <defName>PracticeShooting</defName>
     <label>practice shooting</label>
-    <description>Shoots at a target to train shooting accuracy.</description>
-    <jobString>Training.</jobString>
+    <description>Shoots at a target to practice shooting accuracy.</description>
+    <jobString>Practicing shooting.</jobString>
     <workAmount>350</workAmount>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Shot_Revolver</soundWorking>
@@ -156,8 +156,8 @@
   <RecipeDef>
     <defName>PracticeMelee</defName>
     <label>practice melee</label>
-    <description>Trains close quarters combat against a straw dummy.</description>
-    <jobString>Training.</jobString>
+    <description>Practices close quarters combat against a straw dummy.</description>
+    <jobString>Practicing melee.</jobString>
     <workAmount>700</workAmount>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
