@@ -10,7 +10,9 @@ namespace HumanResources
     {
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-			IEnumerable<ResearchProjectDef> expertise = pawn.GetComp<CompKnowledge>().expertise.Keys;
+			IEnumerable<ResearchProjectDef> expertise = from x in pawn.GetComp<CompKnowledge>().expertise
+														where x.Value >= 1f
+														select x.Key;
 			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.IsFinished).Except(expertise);
 			return !available.Any();
 		}
@@ -21,14 +23,14 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t/*, RecipeName*/).Count() > 0)
+				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t).Count() > 0)
 				{
-					//Log.Message("...no job on desk.");
+					Log.Message("...no job on desk.");
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
-				//Log.Message("...relevant bills: " + RelevantBills(Desk, RecipeName).Count);
-				foreach (Bill bill in RelevantBills(Desk/*, RecipeName*/))
+				//Log.Message("...relevant bills: " + RelevantBills(Desk).Count);
+				foreach (Bill bill in RelevantBills(Desk))
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
@@ -57,12 +59,15 @@ namespace HumanResources
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
 					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing/*, RecipeName*/))
+					foreach (Bill bill in RelevantBills(thing))
 					{
-						return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
+						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
-							bill = bill
-						};
+							return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
+							{
+								bill = bill
+							};
+						}
 					}
 				}
 			}

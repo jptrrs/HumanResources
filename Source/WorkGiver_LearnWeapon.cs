@@ -49,7 +49,7 @@ namespace HumanResources
                 if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
                 {
                     billGiver.BillStack.RemoveIncompletableBills();
-                    foreach (Bill bill in RelevantBills(thing/*, RecipeName*/))
+                    foreach (Bill bill in RelevantBills(thing))
                     {
                         return StartBillJob(pawn, billGiver);
                     }
@@ -83,34 +83,31 @@ namespace HumanResources
                     if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
                     {
                         bill.lastIngredientSearchFailTicks = 0;
-                        if (bill.ShouldDoNow())
+                        if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                         {
-                            if (bill.PawnAllowedToStartAnew(pawn))
+                            //reflection info
+                            MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+                            FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
+                            //
+                            chosenIngThings.RemoveAll(x => pawn.GetComp<CompKnowledge>().knownWeapons.Contains(x.Thing.def));
+                            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
                             {
-                                //reflection info
-                                MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-                                FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
-                                //
-                                chosenIngThings.RemoveAll(x => pawn.GetComp<CompKnowledge>().knownWeapons.Contains(x.Thing.def));
-                                if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
-                                {
-                                    //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x=>x.Thing).ToStringSafeEnumerable());
-                                    Job result = TryStartNewDoBillJob(pawn, bill, giver);
-                                    chosenIngThings.Clear();
-                                    return result;
-                                }
-                                if (FloatMenuMakerMap.makingFor != pawn)
-                                {
-                                    //Log.Message("...float menu maker case");
-                                    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-                                }
-                                else
-                                {
-                                    //Log.Message("...missing materials");
-                                    JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
-                                }
+                                //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x=>x.Thing).ToStringSafeEnumerable());
+                                Job result = TryStartNewDoBillJob(pawn, bill, giver);
                                 chosenIngThings.Clear();
+                                return result;
                             }
+                            if (FloatMenuMakerMap.makingFor != pawn)
+                            {
+                                //Log.Message("...float menu maker case");
+                                bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+                            }
+                            else
+                            {
+                                //Log.Message("...missing materials");
+                                JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
+                            }
+                            chosenIngThings.Clear();
                         }
                     }
                 }

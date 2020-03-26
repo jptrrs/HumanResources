@@ -5,7 +5,7 @@
     <defName>StudyDesk</defName>
     <label>Study Desk</label>
     <thingClass>Building_WorkTable</thingClass>
-    <description>A desk to write and study.</description>
+    <description>A desk to study and research technologies. Comes with all your faction starting research.</description>
     <graphicData>
       <texPath>Things/Building/StudyDesk</texPath>
       <shaderType>CutoutComplex</shaderType>
@@ -133,6 +133,7 @@
       <preventDeteriorationInside>true</preventDeteriorationInside>
       <haulToContainerDuration>120</haulToContainerDuration>
       <fixedStorageSettings>
+        <priority>Critical</priority>
         <filter>
           <categories>
             <li>Knowledge</li>
@@ -140,6 +141,7 @@
         </filter>
       </fixedStorageSettings>
       <defaultStorageSettings>
+        <priority>Critical</priority>
         <filter>
           <categories>
             <li>Knowledge</li>

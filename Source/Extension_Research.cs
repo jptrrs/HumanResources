@@ -330,7 +330,7 @@ namespace HumanResources
 			expertise[tech] = num;
 		}
 
-		private const float ResearchPointsPerWorkTick = 0.00825f;
+		private const float ResearchPointsPerWorkTick = 0.00644f; // desk + shelf is 20% down from vanilla 0.00825f;
 		private const float StudyPointsPerWorkTick = 1f;
 
 		public static float GetProgress(ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)

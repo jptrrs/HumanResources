@@ -50,7 +50,7 @@ namespace HumanResources
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
 					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing/*, RecipeName*/))
+					foreach (Bill bill in RelevantBills(thing))
 					{
 						return StartOrResumeBillJob(pawn, billGiver, target);
 					}

@@ -67,8 +67,11 @@ namespace HumanResources
                 null, new HarmonyMethod(patchType, nameof(NotifyAdded_Postfix)), null);
 
             //If a book can't be hauled, try IHaulDestination to look for a book shelf.
-            harmony.Patch(AccessTools.Method(typeof(StoreUtility), "TryFindBestBetterStoreCellFor"/*, new Type[] { typeof(Thing), typeof(Pawn), typeof(Map), typeof(StoragePriority), typeof(Faction), typeof(IntVec3), typeof(bool) }*/),
-                null, new HarmonyMethod(patchType, nameof(TryFindBestBetterStoreCellFor_Postfix)), null);
+            //harmony.Patch(AccessTools.Method(typeof(StoreUtility), "TryFindBestBetterStoreCellFor"/*, new Type[] { typeof(Thing), typeof(Pawn), typeof(Map), typeof(StoragePriority), typeof(Faction), typeof(IntVec3), typeof(bool) }*/),
+            //    null, new HarmonyMethod(patchType, nameof(TryFindBestBetterStoreCellFor_Postfix)), null);
+
+            //harmony.Patch(AccessTools.Method(typeof(StoreUtility), "TryFindBestBetterNonSlotGroupStorageFor"/*, new Type[] { typeof(Thing), typeof(Pawn), typeof(Map), typeof(StoragePriority), typeof(Faction), typeof(IntVec3), typeof(bool) }*/),
+            //    null, new HarmonyMethod(patchType, nameof(TryFindBestBetterNonSlotGroupStorageFor_Postfix)), null);
 
             //Kills all starting research 
             //harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
@@ -94,14 +97,31 @@ namespace HumanResources
         //    return false;
         //}
 
+        public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
+        {
+            if (__result && t.def.defName == "TechBook") Log.Warning("TryFindBestBetterNonSlotGroupStorageFor found " + haulDestination);
+        }
+
         public static void TryFindBestBetterStoreCellFor_Postfix(Thing t, Pawn carrier, Map map, StoragePriority currentPriority, Faction faction, ref IntVec3 foundCell, ref bool __result, bool needAccurateResult = true)
         {
-            //Log.Message("postFixing TryFindBestBetterStoreCellFor");
+            Log.Warning("postFixing TryFindBestBetterStoreCellFor:");
             //foundCell = new IntVec3(0, 0, 0);
             if (!__result && t.def.defName == "TechBook")
             {
-                IHaulDestination haulDestination;
-                __result = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, true);
+                try
+                {
+                    IHaulDestination haulDestination;
+                    //bool test = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult);
+                    //Log.Message("postFixing TryFindBestBetterStoreCellFor test is "+test);
+                    //__result = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult   );
+                    bool alternate = StoreUtility.TryFindBestBetterNonSlotGroupStorageFor(t, carrier, map, currentPriority, faction, out haulDestination);
+                    Log.Message("haulDestination found: " + haulDestination+" at "+haulDestination.Position);
+                    foundCell = haulDestination.Position;
+                    __result = alternate;
+                }
+                catch (Exception ex)
+                {
+                }
             }
         }
 

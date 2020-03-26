@@ -27,19 +27,12 @@ namespace HumanResources
 			return false;
 		}
 
-		protected List<Bill_Production> RelevantBills(Thing thing/*, string recipeName*/)
+		protected List<Bill_Production> RelevantBills(Thing thing)
 		{
 			Building_WorkTable desk = thing as Building_WorkTable;
 			if (desk != null)
 			{
-				//var bills = desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.Contains(def.defName)/*.Contains(recipeName)*/ && x.repeatCount > 0).ToList();
-				//int count = bills.Count();
-				//foreach (Bill_Production bill in bills)
-				//{
-				//	Log.Message("RelevantBills: comparing recipe "+bill.recipe.defName+" with defName is "+def.defName);
-				//}
-				//Log.Message("RelevantBills: final count is " + count+", defName="+def.defName);
-				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.Contains(def.defName)/*.Contains(recipeName)*/ && x.repeatCount > 0).ToList();
+				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.Contains(def.defName) && x.repeatCount > 0).ToList();
 			}
 			return null;
 		}

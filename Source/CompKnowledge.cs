@@ -129,13 +129,10 @@ namespace HumanResources
             //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count() + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant");
             if (pawn.Faction.IsPlayer)
             {
-                //IEnumerable<ResearchProjectDef> excess = HomeWork.Except(studyMaterial);
-                //if (excess.Count() > 0)
-                //{
-                //    //Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
-                //    HomeWork.RemoveAll(x => excess.Contains(x));
-                //}
-                var available = studyMaterial.Except(expertise.Keys).Except(HomeWork);
+                var expertiseKeys = from x in expertise
+                                    where x.Value >= 1f
+                                    select x.Key;
+                var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
                 //Log.Warning("...Available projects: " + available.ToStringSafeEnumerable());
                 var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
                 var starters = available.Where(t => t.prerequisites.NullOrEmpty());
