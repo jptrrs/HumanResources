@@ -22,15 +22,17 @@ namespace HumanResources
             Building_WorkTable Target = t as Building_WorkTable;
             if (Target != null)
             {
-                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t/*, RecipeName*/).Count() > 0)
+                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t).Any())
                 {
-                    //Log.Message("...no job on target.");
+                    Log.Message("...no job on target.");
                     return false;
                 }
                 IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
-                foreach (Bill bill in RelevantBills(Target/*, RecipeName*/))
+                foreach (Bill bill in RelevantBills(Target))
                 {
-                    if (knownWeapons.Intersect(bill.ingredientFilter.AllowedThingDefs).Count() > 0) return base.HasJobOnThing(pawn, t, forced);//true;
+                    var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Except(knownWeapons);
+                    //Log.Message(pawn + "'s list of weapons to train is " + studyWeapons.EnumerableCount());
+                    if (studyWeapons.Any()) return true;
                 }
                 JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                 return false;

@@ -7,6 +7,7 @@ using Verse;
 using Verse.AI;
 using UnityEngine;
 using System.Reflection;
+using RimWorld.Planet;
 
 namespace HumanResources
 {
@@ -83,19 +84,74 @@ namespace HumanResources
             //harmony.Patch(AccessTools.Method(typeof(ThinkNode_PrioritySorter), "TryIssueJobPackage"),
             //    null, new HarmonyMethod(patchType, nameof(TryIssueJobPackage_Postfix)), null);
 
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))
+            {
+                Log.Message("[HumanResources] Go Explore detected! Integrating...");
+
+                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Notify_CaravanArrived"),
+                    new HarmonyMethod(patchType, nameof(Notify_CaravanArrived_Prefix)), new HarmonyMethod(patchType, nameof(Notify_CaravanArrived_Postfix)), null);
+                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:ApplyPointsToResearch"),
+                    new HarmonyMethod(patchType, nameof(ApplyPointsToResearch_Prefix)), null, null);
+            }
+
+            //public static void TryIssueJobPackage_Postfix(Pawn pawn, JobIssueParams jobParams)
+            //{
+            //    Log.Message("TryIssueJobPackage for " + pawn + ", jobParams are " + jobParams);
+            //}
+
+
+            //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
+            //{
+            //    //Log.Message(__originalMethod.Name + " was inhibited");
+            //    return false;
+            //}
         }
 
-        //public static void TryIssueJobPackage_Postfix(Pawn pawn, JobIssueParams jobParams)
-        //{
-        //    Log.Message("TryIssueJobPackage for " + pawn + ", jobParams are " + jobParams);
-        //}
+        private static Pawn GoExploreResearcher;
 
+        public static void Notify_CaravanArrived_Prefix(Caravan caravan)
+        {
+            GoExploreResearcher = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed, null);
+        }
 
-        //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
-        //{
-        //    //Log.Message(__originalMethod.Name + " was inhibited");
-        //    return false;
-        //}
+        public static void Notify_CaravanArrived_Postfix(Caravan caravan)
+        {
+            GoExploreResearcher = null;
+        }
+
+        public static bool ApplyPointsToResearch_Prefix(float points, ResearchProjectDef __result)
+        {
+            ResearchManager researchManager = Find.ResearchManager;
+            bool flag = !researchManager.AnyProjectIsAvailable;
+            if (flag)
+            {
+                __result = null;
+            }
+            else
+            {
+                IEnumerable<ResearchProjectDef> source = from x in DefDatabase<ResearchProjectDef>.AllDefsListForReading
+                                                         where x.CanStartNow
+                                                         select x;
+                ResearchProjectDef tech;
+                source.TryRandomElementByWeight((ResearchProjectDef x) => 1f / x.baseCost, out tech);
+                points *= 121f;
+                float total = tech.baseCost;
+                CompKnowledge techComp = GoExploreResearcher.TryGetComp<CompKnowledge>();
+                if (techComp != null)
+                {
+                    Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+                    float num = tech.GetProgress(expertise);
+                    num += points / total;
+                    expertise[tech] = num;
+                }
+                else
+                {
+                    return true;
+                }
+                __result = tech;
+            }
+            return false;
+        }
 
         public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
         {
@@ -139,29 +195,30 @@ namespace HumanResources
         {
             FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
             Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
-            //if (bill.recipe.defName == "Tech_Document") FutureTech = true;
-            //if (bill.recipe.defName == "Tech_Learn") CurrentTech = true;
             if (bill.UsesKnowledge())
             {
                 if (bill.IsResearch()) FutureTech = true;
                 else CurrentTech = true;
             }
+            if (bill.IsWeaponsTraining()) WeaponTrainingSelection = true;
         }
 
         public static void DoWindowContents_Postfix()
         {
             CurrentTech = false;
             FutureTech = false;
+            WeaponTrainingSelection = false;
         }
 
         private static bool CurrentTech;
         private static bool FutureTech;
+        private static bool WeaponTrainingSelection;
 
         public static void DoThingFilterConfigWindow_Prefix(ThingFilter parentFilter, int openMask)
         {
             if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
             {
-                openMask = 2;
+                openMask = 4;
                 Ball = true;
             }
         }
@@ -181,6 +238,10 @@ namespace HumanResources
                 else if (CurrentTech) __result = ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;
                 else __result = true;
             }
+            else if (WeaponTrainingSelection)
+            {
+                __result = ModBaseHumanResources.unlocked.weapons.Contains(td);
+            }
         }
 
         public static bool ConstructFinishFrames_JobOnThing_Prefix(Pawn pawn, Thing t)
@@ -189,7 +250,6 @@ namespace HumanResources
             if (!requisites.NullOrEmpty())
             {
                 JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn,t.def.entityDefToBuild.label));
-                //return pawn.GetComp<CompKnowledge>().expertise.Keys.Any(x => requisites.Contains(x));
                 return pawn.GetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
             }
             return true;
@@ -241,7 +301,8 @@ namespace HumanResources
             if (equipment != null && equipment.def.IsWeapon && !CheckKnownWeapons(pawn, equipment))
             {
                 string labelShort = equipment.LabelShort;
-                FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + "UnknownWeapon".Translate(pawn) + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
+                string flavoredExplanation = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
+                FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + flavoredExplanation + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
                 opts.RemoveAt(opts.FindIndex(x => x.Label.Contains("Equip".Translate(labelShort))));
                 opts.Add(item);
             }
@@ -259,14 +320,25 @@ namespace HumanResources
         public static bool PawnAllowedToStartAnew_Prefix(Pawn p, RecipeDef ___recipe)
         {
             var expertise = p.GetComp<CompKnowledge>().expertise;
-            //if (___recipe.researchPrerequisite != null && !expertise.Keys.Contains(___recipe.researchPrerequisite))
-            ResearchProjectDef preReq = ___recipe.researchPrerequisite;
-            if (preReq != null && !(expertise.ContainsKey(preReq) && expertise[preReq] >= 1f))
+            if (expertise != null)
             {
-                JobFailReason.Is("DoesntKnowHowToCraft".Translate(p,___recipe.label));
-                return false;
+                ResearchProjectDef preReq = null;
+                if (___recipe.researchPrerequisite != null) preReq = ___recipe.researchPrerequisite;
+                else if (!___recipe.recipeUsers.NullOrEmpty())
+                {
+                    ThingDef recipeHolder = ___recipe.recipeUsers.FirstOrDefault();
+                    if (recipeHolder != null && !recipeHolder.researchPrerequisites.NullOrEmpty())
+                    {
+                        preReq = recipeHolder.researchPrerequisites.FirstOrDefault();
+                    }
+                }
+                if (preReq != null && !(expertise.ContainsKey(preReq) && expertise[preReq] >= 1f))
+                {
+                    JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label));
+                    return false;
+                }
             }
-            else return true;
+            return true;
         }
 
         public static void FinishProject_Postfix(ResearchProjectDef proj)

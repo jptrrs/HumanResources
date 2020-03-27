@@ -29,5 +29,10 @@ namespace HumanResources
             }
             return false;
         }
+
+        public static bool IsWeaponsTraining(this Bill bill)
+        {
+            return bill.recipe.defName.StartsWith("TrainWeapon");
+        }
     }
 }

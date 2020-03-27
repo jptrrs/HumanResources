@@ -324,7 +324,7 @@ namespace HumanResources
 				researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
 			}
 			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
-			float num = GetProgress(tech, expertise);
+			float num = tech.GetProgress(expertise);
 			num += amount/total;
 			//Verse.Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
 			expertise[tech] = num;
@@ -333,7 +333,7 @@ namespace HumanResources
 		private const float ResearchPointsPerWorkTick = 0.00644f; // desk + shelf is 20% down from vanilla 0.00825f;
 		private const float StudyPointsPerWorkTick = 1f;
 
-		public static float GetProgress(ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
+		public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
 		{
 			float result;
 			if (expertise != null && expertise.TryGetValue(tech, out result))

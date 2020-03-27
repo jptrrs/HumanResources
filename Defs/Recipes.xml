@@ -96,11 +96,6 @@
         <li>WeaponsRanged</li>
       </categories>
     </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li>WeaponsRanged</li>
-      </categories>
-    </defaultIngredientFilter>
   </RecipeDef>
 
   <RecipeDef>
@@ -131,11 +126,6 @@
         <li>WeaponsMelee</li>
       </categories>
     </fixedIngredientFilter>
-    <defaultIngredientFilter>
-      <categories>
-        <li>WeaponsMelee</li>
-      </categories>
-    </defaultIngredientFilter>
   </RecipeDef>
 
   <!--From ItchyFlea's Practise Target-->

@@ -176,7 +176,7 @@ namespace HumanResources
 				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
 				techComp.proficientWeapons.Add(TargetThingB.def);
 				//Log.Message(actor + " can use the following weapons: " + techComp.proficientWeapons.ToStringSafeEnumerable());
-				Messages.Message("MessageTrainingComplete".Translate(actor, TargetThingB.LabelCap), TargetThingA, MessageTypeDefOf.TaskCompletion, true);
+				Messages.Message("MessageTrainingComplete".Translate(actor, TargetThingB.def.LabelCap), TargetThingA, MessageTypeDefOf.TaskCompletion, true);
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				//Notify_IterationCompleted(actor, bill as Bill_Production);
 				if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)

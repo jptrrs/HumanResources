@@ -32,7 +32,7 @@ namespace HumanResources
 			Building_WorkTable desk = thing as Building_WorkTable;
 			if (desk != null)
 			{
-				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.Contains(def.defName) && x.repeatCount > 0).ToList();
+				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(def.defName) && x.ShouldDoNow()/*x.repeatCount > 0*/).ToList();
 			}
 			return null;
 		}
