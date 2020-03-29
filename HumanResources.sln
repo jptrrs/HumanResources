@@ -82,6 +82,34 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{0A1DCD
 		Source\WorkGiver_FileTech.cs = Source\WorkGiver_FileTech.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1A49A134-082B-49CA-BAED-1708C8422690}"
+	ProjectSection(SolutionItems) = preProject
+		Patches\Patches.xml = Patches\Patches.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{99273FC1-C64B-4C80-812D-CAB7DEAA0D7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{24373A66-EAB3-4EDA-9394-768AE51BD441}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\English\Keyed\HumanResources_keys.xml = Languages\English\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portuguese", "Portuguese", "{134B5292-D7F8-426F-BB08-C3C641C50BAB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{68FCEB6A-6506-49BA-8C5A-8101B1169D9C}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Portuguese\Keyed\BurnItForFuel_keys.xml = Languages\Portuguese\Keyed\BurnItForFuel_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PortugueseBrazilian", "PortugueseBrazilian", "{815073C8-666B-4709-903A-D46BB7B8E765}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{9D9198D1-80C7-4DFE-A53B-056A8489A780}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml = Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +125,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{DD698DDA-6D8B-4ADD-B702-4821AC16F6CC} = {A425CC4D-B9E9-4338-8845-ACD73F533D7D}
 		{09F3603A-0073-497A-ACAA-541F5006FFCD} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
 		{2E40F710-D92E-4778-8170-90E0C139B601} = {09F3603A-0073-497A-ACAA-541F5006FFCD}
 		{C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
@@ -106,6 +135,12 @@ Global
 		{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB} = {6A809623-353B-411E-BDB4-7C4428221C02}
 		{433382EE-88BC-4265-97D3-BD88C6A45CBC} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
 		{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
+		{99273FC1-C64B-4C80-812D-CAB7DEAA0D7E} = {EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}
+		{24373A66-EAB3-4EDA-9394-768AE51BD441} = {99273FC1-C64B-4C80-812D-CAB7DEAA0D7E}
+		{134B5292-D7F8-426F-BB08-C3C641C50BAB} = {EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}
+		{68FCEB6A-6506-49BA-8C5A-8101B1169D9C} = {134B5292-D7F8-426F-BB08-C3C641C50BAB}
+		{815073C8-666B-4709-903A-D46BB7B8E765} = {EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}
+		{9D9198D1-80C7-4DFE-A53B-056A8489A780} = {815073C8-666B-4709-903A-D46BB7B8E765}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

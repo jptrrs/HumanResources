@@ -23,7 +23,7 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t).Count() > 0)
+				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
 				{
 					Log.Message("...no job on desk.");
 					return false;
@@ -63,6 +63,7 @@ namespace HumanResources
 					{
 						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
+							Log.Message("probing bill: pawn allowed is " + bill.PawnAllowedToStartAnew(pawn) + " for " + pawn);
 							return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
 							{
 								bill = bill

@@ -5,7 +5,7 @@
     <defName>StudyDesk</defName>
     <label>Study Desk</label>
     <thingClass>Building_WorkTable</thingClass>
-    <description>A desk to study and research technologies. Comes with all your faction starting research.</description>
+    <description>A desk to study and research technologies. Comes with all your faction's starting research.</description>
     <graphicData>
       <texPath>Things/Building/StudyDesk</texPath>
       <shaderType>CutoutComplex</shaderType>
@@ -97,9 +97,9 @@
     <designationHotKey>Misc10</designationHotKey>
     <comps>
       <li Class="CompProperties_Facility">
-        <statOffsets>
+        <!--<statOffsets>
           <ResearchSpeedFactor>0.025</ResearchSpeedFactor>
-        </statOffsets>
+        </statOffsets>-->
         <maxSimultaneous>6</maxSimultaneous>
         <maxDistance>7.0</maxDistance>
       </li>
@@ -207,7 +207,6 @@
     <thingCategories>
       <li>Items</li>
     </thingCategories>
-    <!--<menuHidden>true</menuHidden>-->
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
@@ -220,10 +219,10 @@
   </ThingDef>
 
   <!--Borrewed from ItchyFlea's Practise Target-->
-  <ThingDef ParentName="BuildingBase">
+  <ThingDef ParentName="FurnitureBase">
     <defName>Target</defName>
     <label>Target</label>
-    <!--<thingClass>Building</thingClass>-->
+    <description>A target for your sharpshooters to hone their skills with.</description>
     <thingClass>Building_WorkTable</thingClass>
     <uiIconPath>Things/Building/Target_MenuIcon</uiIconPath>
     <graphicData>
@@ -232,12 +231,9 @@
       <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
-    <description>A target for your sharpshooters to hone their skills with.</description>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <size>(1,1)</size>
     <useHitPoints>False</useHitPoints>
-    <!--<costList>
-			<Steel>35</Steel>
-		</costList>-->
     <stuffCategories>
       <li>Woody</li>
     </stuffCategories>
@@ -245,13 +241,12 @@
     <statBases>
       <WorkToBuild>250</WorkToBuild>
       <Flammability>0</Flammability>
+      <Mass>3</Mass>
     </statBases>
     <passability>PassThroughOnly</passability>
-    <!--<castEdgeShadows>true</castEdgeShadows>-->
     <pathCost>60</pathCost>
     <fillPercent>0.8</fillPercent>
     <designationCategory>Security</designationCategory>
-    <!--<staticSunShadowHeight>0.20</staticSunShadowHeight>-->
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-10)</interactionCellOffset>
     <inspectorTabs>
@@ -259,7 +254,7 @@
     </inspectorTabs>
   </ThingDef>
 
-  <ThingDef ParentName="BuildingBase">
+  <ThingDef ParentName="FurnitureBase">
     <defName>MrDummy</defName>
     <label>training dummy</label>
     <thingClass>Building_WorkTable</thingClass>
@@ -270,31 +265,26 @@
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
-    <!--<costList>
-      <Steel>15</Steel>
-      <WoodLog>10</WoodLog>
-    </costList>-->
     <stuffCategories>
       <li>Fabric</li>
       <li>Leathery</li>
     </stuffCategories>
     <costStuffCount>35</costStuffCount>
-    <!--<constructEffect>ConstructWood</constructEffect>-->
     <altitudeLayer>Building</altitudeLayer>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <size>(1,1)</size>
     <passability>PassThroughOnly</passability>
-    <!--<castEdgeShadows>true</castEdgeShadows>-->
     <fillPercent>1</fillPercent>
     <useHitPoints>True</useHitPoints>
     <statBases>
       <WorkToBuild>200</WorkToBuild>
       <MaxHitPoints>350</MaxHitPoints>
       <Flammability>1.0</Flammability>
+      <Mass>7</Mass>
     </statBases>
-    <size>(1,1)</size>
     <designationCategory>Security</designationCategory>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
-    <!--<surfaceType>Item</surfaceType>-->
     <inspectorTabs>
       <li>ITab_Bills</li>
     </inspectorTabs>

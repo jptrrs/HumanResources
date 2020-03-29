@@ -22,7 +22,7 @@ namespace HumanResources
             Building_WorkTable Target = t as Building_WorkTable;
             if (Target != null)
             {
-                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t).Any())
+                if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
                 {
                     Log.Message("...no job on target.");
                     return false;

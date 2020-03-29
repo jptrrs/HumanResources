@@ -21,7 +21,6 @@ namespace HumanResources
 					return false;
 				}
 				billGiver.BillStack.RemoveIncompletableBills();
-
 				return true;
 			}
 			return false;

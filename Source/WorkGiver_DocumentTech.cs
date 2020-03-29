@@ -23,16 +23,16 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t/*, RecipeName*/).Count() > 0)
+				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
 				{
 					//Log.Message("...no job on desk.");
 					return false;
 				}
 				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
-				foreach (Bill bill in RelevantBills(Desk/*, RecipeName*/))
+				foreach (Bill bill in RelevantBills(Desk))
 				{
-					if (advantage.Intersect(bill.SelectedTech()).Count() > 0) return true;
+					if (advantage.Intersect(bill.SelectedTech()).Any()) return true;
 				}
 				JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
 				return false;

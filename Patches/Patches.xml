@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <!--to Stats_Building_Special-->
+  <Operation Class="PatchOperationAdd">
+    <xpath>*/StatDef[defName = "ResearchSpeedFactor"]/parts</xpath>
+    <value>
+      <li Class="HumanResources.StatPart_AvailableBooks"/>
+    </value>
+  </Operation>
+
+</Patch>

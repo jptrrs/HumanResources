@@ -335,6 +335,7 @@
     <Compile Include="JobDriver_LearnWeapon.cs" />
     <Compile Include="ExpertiseNode.cs" />
     <Compile Include="RoomRoleWorker_Library.cs" />
+    <Compile Include="StatPart_AvailableBooks.cs" />
     <Compile Include="UnlockManager.cs" />
     <Compile Include="Extension_Bill.cs" />
     <Compile Include="HarmonyPatch.cs" />

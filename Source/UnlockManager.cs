@@ -12,6 +12,7 @@ namespace HumanResources
         public List<ThingDef> weapons = new List<ThingDef>();
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
+        
 
         public void ExposeData()
         {
@@ -38,6 +39,22 @@ namespace HumanResources
         public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
         {
             weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
+        }
+
+        private const float decay = 0.02f;
+        private static float ratio = 1 / (1 + decay);
+        private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
+        private int total => techByStuff.Count;
+        private float geoSum => (float) (Math.Pow(ratio, total)-1) / (ratio - 1);
+        private float quota => semiMaxBuff / geoSum;
+        private float linear => semiMaxBuff / total;
+
+        public float BookResearchIncrement(int count)
+        {
+            float term = (float)Math.Pow(ratio, count - 1);
+            float sum = quota * (term * ratio - 1) / (ratio - 1);
+            float result = sum + linear;
+            return result/100;
         }
     }
 }

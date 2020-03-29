@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
+  
+  <!--UI-->
   <TabKnowledge>Tech</TabKnowledge>
   <TabCatalogue>Catalog</TabCatalogue>
+  <ShowCommon>show common</ShowCommon>
+  <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
+
+  <!--Things-->
+  <BookStoreEmpty>Empty</BookStoreEmpty>
+  <BookStoreCapacity>Archived technologies: {0}/{1}</BookStoreCapacity>
+  <BookStoreRetrieveBook>Retrieve Book</BookStoreRetrieveBook>
+  <BookStoreRetrieveBookDesc>Find and remove a particular book from the book shelf.</BookStoreRetrieveBookDesc>
+  <BookStoreNoInternalStorage>{0} doesn't fit at any book shelf.</BookStoreNoInternalStorage>
+  <KnowledgeLabel>{0} knowledge</KnowledgeLabel>
+  <Book>Book of {0}</Book>
+  <BookCompendium>{0} Compendium</BookCompendium>
+  <BookManual>{0} Manual</BookManual>
+  <BookTheory>{0} Theory</BookTheory>
+  <BookDatabase>{0} Database</BookDatabase>
+
+  <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
   <MessageDocumentComplete>{0_nameDef} wrote a book on {1}.</MessageDocumentComplete>
   <MessageFiledTech>The knowledge for {0} was added to our library.</MessageFiledTech>
@@ -15,18 +34,6 @@
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1}.</DoesntKnowThisPlant>
   <UnknownWeapon>{0_nameDef} has not been trained to use this weapon.</UnknownWeapon>
   <EvilWeapon>{0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.</EvilWeapon>
-  <ShowCommon>show common</ShowCommon>
-  <KnowledgeLabel>{0} knowledge</KnowledgeLabel>
-  <Book>Book of {0}</Book>
-  <BookCompendium>{0} Compendium</BookCompendium>
-  <BookManual>{0} Manual</BookManual>
-  <BookTheory>{0} Theory</BookTheory>
-  <BookDatabase>{0} Database</BookDatabase>
-  <BookStoreEmpty>Empty</BookStoreEmpty>
-  <BookStoreCapacity>Archived technologies: {0}/{1}</BookStoreCapacity>
-  <BookStoreRetrieveBook>Retrieve Book</BookStoreRetrieveBook>
-  <BookStoreRetrieveBookDesc>Find and remove a particular book from the book shelf.</BookStoreRetrieveBookDesc>
-  <BookStoreNoInternalStorage>{0} doesn't fit at any book shelf.</BookStoreNoInternalStorage>
   <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
 
 </LanguageData> 
