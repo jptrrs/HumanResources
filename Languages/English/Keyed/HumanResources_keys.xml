@@ -28,10 +28,11 @@
   <MessageTrainingComplete>{0_nameDef} has mastered the {1}.</MessageTrainingComplete>
   <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
+  <LacksFundamentalKnowledge>{0_nameDef} is missing basic knowledge on those subjects.</LacksFundamentalKnowledge>
   <NoWeaponToLearn>{0_nameDef} already knows how to use those weapons.</NoWeaponToLearn>
-  <DoesntKnowHowToBuild>{0_nameDef} doesn't know how to build a {1}.</DoesntKnowHowToBuild>
-  <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1}.</DoesntKnowHowToCraft>
-  <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1}.</DoesntKnowThisPlant>
+  <DoesntKnowHowToBuild>{0_nameDef} doesn't know how to build a {1} (requires {2}).</DoesntKnowHowToBuild>
+  <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1} (requires {2}).</DoesntKnowHowToCraft>
+  <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1} (requires {2}).</DoesntKnowThisPlant>
   <UnknownWeapon>{0_nameDef} has not been trained to use this weapon.</UnknownWeapon>
   <EvilWeapon>{0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.</EvilWeapon>
   <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>

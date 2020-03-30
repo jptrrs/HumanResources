@@ -6,10 +6,9 @@
     <label>Study technologies</label>
     <description>Study to acquire knowledge about a new technology.</description>
     <jobString>Studying a new technology.</jobString>
-    <workAmount>450</workAmount>
+    <workAmount>300</workAmount>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <!--<workSkill>Intellectual</workSkill>-->
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>
       <li>StudyDesk</li>
@@ -27,7 +26,6 @@
     <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <!--<requiredGiverWorkType>HR_Learn</requiredGiverWorkType>-->
     <requiredGiverWorkType>Research</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
@@ -51,7 +49,6 @@
     <description>Expand the frontier of knowledge by researching new technologies.</description>
     <jobString>Researching.</jobString>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <!--<requiredGiverWorkType>HR_Learn</requiredGiverWorkType>-->
     <requiredGiverWorkType>Research</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
@@ -156,4 +153,5 @@
       <li>MrDummy</li>
     </recipeUsers>
   </RecipeDef>
+  
 </Defs>

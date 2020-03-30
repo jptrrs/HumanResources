@@ -249,7 +249,7 @@ namespace HumanResources
             var requisites = t.def.entityDefToBuild.researchPrerequisites;
             if (!requisites.NullOrEmpty())
             {
-                JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn,t.def.entityDefToBuild.label));
+                JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn,t.def.entityDefToBuild.label,t.def.researchPrerequisites.ToStringSafe()));
                 return pawn.GetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
             }
             return true;
@@ -279,7 +279,7 @@ namespace HumanResources
                 if (!flag)
                 {
                     
-                    JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef));
+                    JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef, ___wantedPlantDef.researchPrerequisites.ToStringSafe()));
                     __result = null;
                 }
             }
@@ -334,7 +334,7 @@ namespace HumanResources
                 }
                 if (preReq != null && !(expertise.ContainsKey(preReq) && expertise[preReq] >= 1f))
                 {
-                    JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label));
+                    JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label, ___recipe.researchPrerequisites.ToStringSafe()));
                     return false;
                 }
             }

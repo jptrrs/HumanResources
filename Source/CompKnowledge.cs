@@ -4,6 +4,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace HumanResources
 {
@@ -124,18 +125,28 @@ namespace HumanResources
             }
         }
 
-        public void AssignHomework(List<ResearchProjectDef> studyMaterial)
+        public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
         {
-            //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count() + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant");
+            //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count()/* + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant"*/);
             if (pawn.Faction.IsPlayer)
             {
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f
                                     select x.Key;
                 var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
+                if (!available.Any())
+                {
+                    JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
+                    return;
+                }
                 //Log.Warning("...Available projects: " + available.ToStringSafeEnumerable());
                 var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
                 var starters = available.Where(t => t.prerequisites.NullOrEmpty());
+                if (!starters.Any() && !derived.Any())
+                {
+                    JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
+                    return;
+                }
                 //List<ResearchProjectDef> nextProjects = starters.Concat(derived).ToList();
                 //HomeWork.AddRange(nextProjects);
                 HomeWork.AddRange(starters.Concat(derived));
@@ -151,7 +162,7 @@ namespace HumanResources
                 if (excess.Any())
                 {
                     HomeWork.RemoveAll(x => excess.Contains(x));
-                    Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
+                    //Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
                 }
             }
         }

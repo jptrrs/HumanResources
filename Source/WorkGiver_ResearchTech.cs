@@ -42,7 +42,7 @@ namespace HumanResources
 				//Log.Message("...homework count is " + techComp.HomeWork.Count());
 				//if (techComp.HomeWork.Count() > 0) return true;
 				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
-				JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
+				//JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
 				return false;
 			}
 			//Log.Message("case 4");
@@ -63,7 +63,7 @@ namespace HumanResources
 					{
 						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
-							Log.Message("probing bill: pawn allowed is " + bill.PawnAllowedToStartAnew(pawn) + " for " + pawn);
+							//Log.Message("probing bill: pawn allowed is " + bill.PawnAllowedToStartAnew(pawn) + " for " + pawn);
 							return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
 							{
 								bill = bill
