@@ -81,6 +81,9 @@ namespace HumanResources
             //harmony.Patch(AccessTools.Method(typeof(WorkGiver_DoBill), "JobOnThing"),
             //    null, new HarmonyMethod(patchType, nameof(JobOnThing_Postfix)), null);
 
+            //harmony.Patch(AccessTools.Method(typeof(JobGiver_Work), "PawnCanUseWorkGiver"),
+            //    null, new HarmonyMethod(patchType, nameof(PawnCanUseWorkGiver_Postfix)), null);
+
             //harmony.Patch(AccessTools.Method(typeof(ThinkNode_PrioritySorter), "TryIssueJobPackage"),
             //    null, new HarmonyMethod(patchType, nameof(TryIssueJobPackage_Postfix)), null);
 
@@ -94,17 +97,23 @@ namespace HumanResources
                     new HarmonyMethod(patchType, nameof(ApplyPointsToResearch_Prefix)), null, null);
             }
 
-            //public static void TryIssueJobPackage_Postfix(Pawn pawn, JobIssueParams jobParams)
-            //{
-            //    Log.Message("TryIssueJobPackage for " + pawn + ", jobParams are " + jobParams);
-            //}
-
-
             //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
             //{
             //    //Log.Message(__originalMethod.Name + " was inhibited");
             //    return false;
             //}
+        }
+
+        public static void  PawnCanUseWorkGiver_Postfix(Pawn pawn, WorkGiver giver, bool __result)
+        {
+            
+            if (giver is WorkGiver_Scanner && __result)
+            {
+                //== "TrainWeapon")
+                Log.Message("PawnCanUseWorkGiver active for " + pawn+", defName was " + giver.def.defName);
+                //bool flag = giver.ShouldSkip(pawn, false);
+                //if (!flag) Log.Message("PawnCanUseWorkGiver: " + pawn + " should not skip!");
+            }
         }
 
         private static Pawn GoExploreResearcher;
@@ -134,7 +143,7 @@ namespace HumanResources
                                                          select x;
                 ResearchProjectDef tech;
                 source.TryRandomElementByWeight((ResearchProjectDef x) => 1f / x.baseCost, out tech);
-                points *= 121f;
+                points *= 12f; //stangely, that number is 121f on the mod source. I'm assuming that's a typo.
                 float total = tech.baseCost;
                 CompKnowledge techComp = GoExploreResearcher.TryGetComp<CompKnowledge>();
                 if (techComp != null)
@@ -142,7 +151,7 @@ namespace HumanResources
                     Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
                     float num = tech.GetProgress(expertise);
                     num += points / total;
-                    expertise[tech] = num;
+                    expertise[tech] = (num > 1) ? 1 : num;
                 }
                 else
                 {
@@ -160,9 +169,9 @@ namespace HumanResources
 
         public static void TryFindBestBetterStoreCellFor_Postfix(Thing t, Pawn carrier, Map map, StoragePriority currentPriority, Faction faction, ref IntVec3 foundCell, ref bool __result, bool needAccurateResult = true)
         {
-            Log.Warning("postFixing TryFindBestBetterStoreCellFor:");
+            //Log.Warning("postFixing TryFindBestBetterStoreCellFor:");
             //foundCell = new IntVec3(0, 0, 0);
-            if (!__result && t.def.defName == "TechBook")
+            if (!__result && carrier.CurJobDef.label == "DocumentTech" && t.def.defName == "TechBook")
             {
                 try
                 {
@@ -246,10 +255,24 @@ namespace HumanResources
 
         public static bool ConstructFinishFrames_JobOnThing_Prefix(Pawn pawn, Thing t)
         {
+            if (t.Faction != pawn.Faction)
+            {
+                return true;
+            }
+            Frame frame = t as Frame;
+            if (frame == null)
+            {
+                return true;
+            }
+            if (frame.MaterialsNeeded().Count > 0)
+            {
+                return true;
+            }
             var requisites = t.def.entityDefToBuild.researchPrerequisites;
             if (!requisites.NullOrEmpty())
             {
-                JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn,t.def.entityDefToBuild.label,t.def.researchPrerequisites.ToStringSafe()));
+                string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn,t.def.entityDefToBuild.label, preReqText));
                 return pawn.GetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
             }
             return true;
@@ -271,16 +294,20 @@ namespace HumanResources
         {
             if (__result != null)
             {
-                var knownPlants = pawn.GetComp<CompKnowledge>().knownPlants;
-                //Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
-                bool flag = true;
-                if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
-                else flag = false;
-                if (!flag)
+                var requisites = ___wantedPlantDef.researchPrerequisites;
+                if (!requisites.NullOrEmpty())
                 {
-                    
-                    JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef, ___wantedPlantDef.researchPrerequisites.ToStringSafe()));
-                    __result = null;
+                    var knownPlants = pawn.GetComp<CompKnowledge>().knownPlants;
+                    //Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
+                    bool flag = true;
+                    if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
+                    else flag = false;
+                    if (!flag)
+                    {
+                        string preReqText = requisites.Any() ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                        JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef, preReqText));
+                        __result = null;
+                    }
                 }
             }
         }
@@ -322,19 +349,36 @@ namespace HumanResources
             var expertise = p.GetComp<CompKnowledge>().expertise;
             if (expertise != null)
             {
-                ResearchProjectDef preReq = null;
-                if (___recipe.researchPrerequisite != null) preReq = ___recipe.researchPrerequisite;
-                else if (!___recipe.recipeUsers.NullOrEmpty())
+                //Look for a required ResearchProjectDef the pawn must know:
+                ResearchProjectDef requisite = null;
+
+                //If the recipe has it own prerequisite, then that's it:
+                if (___recipe.researchPrerequisite != null) requisite = ___recipe.researchPrerequisite;
+
+                //If not, only for complex recipes, inspect it's home buildings. 
+                //In this case, it will only look for the first pre-requisite on a given building's list.
+                else if (!___recipe.recipeUsers.NullOrEmpty() && ___recipe.UsesUnfinishedThing)
                 {
-                    ThingDef recipeHolder = ___recipe.recipeUsers.FirstOrDefault();
+                    ThingDef recipeHolder = null;
+                    //If any building is free from prerequisites, then that's used. 
+                    var noPreReq = ___recipe.recipeUsers.Where(x => x.researchPrerequisites.NullOrEmpty());
+                    if (noPreReq.Any()) recipeHolder = noPreReq.FirstOrDefault();
+                    //Otherwise, check each one and choose the one with the cheapest prerequisite.
+                    else if (___recipe.recipeUsers.Count() > 1)
+                    {
+                        recipeHolder = ___recipe.recipeUsers.Aggregate((l, r) => (l.researchPrerequisites.FirstOrDefault().baseCost < r.researchPrerequisites.FirstOrDefault().baseCost) ? l : r);
+                    }
+                    //Or, if its just one, pick that.
+                    else recipeHolder = ___recipe.recipeUsers.FirstOrDefault();
+                    //At last, define what's the requisite for the selected building.
                     if (recipeHolder != null && !recipeHolder.researchPrerequisites.NullOrEmpty())
                     {
-                        preReq = recipeHolder.researchPrerequisites.FirstOrDefault();
+                        requisite = recipeHolder.researchPrerequisites.FirstOrDefault();
                     }
                 }
-                if (preReq != null && !(expertise.ContainsKey(preReq) && expertise[preReq] >= 1f))
+                if (requisite != null && !(expertise.ContainsKey(requisite) && expertise[requisite] >= 1f))
                 {
-                    JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label, ___recipe.researchPrerequisites.ToStringSafe()));
+                    JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label, requisite.label));
                     return false;
                 }
             }

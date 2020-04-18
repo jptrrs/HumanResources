@@ -63,6 +63,7 @@ namespace HumanResources
 				{
 					if (expertise[project] > 1f)
 					{
+						expertise[project] = 1f;
 						techComp.HomeWork.Clear();
 						techComp.LearnCrops(project);
 						Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);

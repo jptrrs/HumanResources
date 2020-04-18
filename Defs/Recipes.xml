@@ -13,6 +13,16 @@
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
     <fixedIngredientFilter>
       <categories>
         <li>Knowledge</li>
@@ -33,6 +43,16 @@
       <li>StudyDesk</li>
     </recipeUsers>
     <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
     <fixedIngredientFilter>
       <categories>
         <li>Knowledge</li>
@@ -55,6 +75,16 @@
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
     <fixedIngredientFilter>
       <categories>
         <li>Knowledge</li>
@@ -72,8 +102,8 @@
     <jobString>Training to use a ranged weapon.</jobString>
     <workAmount>10000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <effectWorking>CutStone</effectWorking>
-    <soundWorking>Shot_Revolver</soundWorking>
+    <!--<effectWorking>CutStone</effectWorking>
+    <soundWorking>Shot_Revolver</soundWorking>-->
     <workSkill>Shooting</workSkill>
     <recipeUsers>
       <li>Target</li>
@@ -132,12 +162,28 @@
     <description>Shoots at a target to practice shooting accuracy.</description>
     <jobString>Practicing shooting.</jobString>
     <workAmount>350</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Shot_Revolver</soundWorking>
     <workSkill>Shooting</workSkill>
     <recipeUsers>
       <li>Target</li>
     </recipeUsers>
+      <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsRanged</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsRanged</li>
+      </categories>
+    </fixedIngredientFilter>
   </RecipeDef>
 
   <RecipeDef>
@@ -146,12 +192,28 @@
     <description>Practices close quarters combat against a straw dummy.</description>
     <jobString>Practicing melee.</jobString>
     <workAmount>700</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
     <workSkill>Melee</workSkill>
     <recipeUsers>
       <li>MrDummy</li>
     </recipeUsers>
+      <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsMelee</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsMelee</li>
+      </categories>
+    </fixedIngredientFilter>
   </RecipeDef>
   
 </Defs>

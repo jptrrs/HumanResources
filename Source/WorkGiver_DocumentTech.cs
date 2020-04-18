@@ -30,7 +30,7 @@ namespace HumanResources
 				}
 				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
-				foreach (Bill bill in RelevantBills(Desk))
+				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{
 					if (advantage.Intersect(bill.SelectedTech()).Any()) return true;
 				}
@@ -50,7 +50,7 @@ namespace HumanResources
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
 					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing))
+					foreach (Bill bill in RelevantBills(thing, pawn))
 					{
 						return StartOrResumeBillJob(pawn, billGiver, target);
 					}

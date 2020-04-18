@@ -34,12 +34,13 @@
   </JobDef>  
   
   <!--From ItchyFlea's Practise Target-->
-  <JobDef>
+  <!--<JobDef>
     <defName>UseDummy</defName>
-    <driverClass>JobDriver_WatchBuilding</driverClass>
+    --><!--<driverClass>JobDriver_WatchBuilding</driverClass>--><!--
+    <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
     <reportString>Training Melee.</reportString>
     <joyDuration>4000</joyDuration>
-    <joyMaxParticipants>1</joyMaxParticipants>
+    <joyMaxParticipants>1</joyMaxParticipants> 
     <joySkill>Melee</joySkill>
     <joyXpPerTick>0.004</joyXpPerTick>
     <joyGainRate>1.2</joyGainRate>
@@ -48,7 +49,8 @@
   
   <JobDef>
     <defName>UseTarget</defName>
-    <driverClass>JobDriver_WatchBuilding</driverClass>
+    --><!--<driverClass>JobDriver_WatchBuilding</driverClass>--><!--
+    <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
     <reportString>Training Shooting.</reportString>
     <joyDuration>4000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants>
@@ -56,6 +58,6 @@
     <joyXpPerTick>0.004</joyXpPerTick>
     <joyGainRate>1.2</joyGainRate>
     <joyKind>Meditative</joyKind>
-  </JobDef>
+  </JobDef>-->
 
 </Defs>

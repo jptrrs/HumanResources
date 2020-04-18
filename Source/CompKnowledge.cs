@@ -48,7 +48,8 @@ namespace HumanResources
 
         public static IEnumerable<ResearchProjectDef> GetExpertiseDefsFor(Pawn pawn)
         {
-            TechLevel techLevel = pawn.Faction.def.techLevel;
+            FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+            TechLevel techLevel = faction?.techLevel ?? TechLevel.Spacer; //if no factions can be found, that's probably a space refugee
             int slots = Mathf.Max(0, FactionExpertiseRange(techLevel) - (4 - pawn.ageTracker.CurLifeStageIndex));
             if (slots == 0) return null;
             SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate((l, r) => l.levelInt > r.levelInt ? l : r);
@@ -76,7 +77,8 @@ namespace HumanResources
                     result.Add(remaining.RandomElement());
                 }
                 pass++;
-                if (guru && pass == 1) techLevel--;
+                if ((guru && pass == 1) | result.NullOrEmpty()) techLevel--;
+                if (techLevel == 0) break;
             }
             return result.Select(e => e.Key).ToList();
         }
@@ -94,6 +96,7 @@ namespace HumanResources
         {
             if (expertise == null)
             {
+                Log.Warning("aquiring expertise for " + pawn);
                 //expertise = new List<ResearchProjectDef>();
                 //expertise.AddRange(GetExpertiseDefsFor(pawn));
                 expertise = GetExpertiseDefsFor(pawn).ToDictionary(x => x, x => 1f);
@@ -167,7 +170,7 @@ namespace HumanResources
             }
         }
 
-        private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()/*x.recipe.defName.StartsWith("Tech_")*/).SelectMany(x => x.SelectedTech()).Distinct();
+        private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
 
         public void ExposeData()
         {
@@ -189,6 +192,14 @@ namespace HumanResources
         public override void PostExposeData()
         {
             base.PostExposeData();
+            //if (Scribe.mode == LoadSaveMode.Saving)
+            //{
+            //    var e = expertise.Where(x => x.Value > 1f).GetEnumerator();
+            //    while (e.MoveNext())
+            //    {
+            //        expertise[e.Current.Key] = 1f;
+            //    }
+            //}
             Scribe_Collections.Look(ref expertise, "Expertise");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");

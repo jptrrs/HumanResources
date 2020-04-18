@@ -16,11 +16,14 @@ namespace HumanResources
 			}
 		}
 
+		protected bool unknown = false;
+
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			Pawn pawn = this.pawn;
 			LocalTargetInfo target = this.job.GetTarget(TargetIndex.A);
 			Job job = this.job;
+			Bill bill = job.bill;
 			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed))
 			{
 				return false;
@@ -32,10 +35,9 @@ namespace HumanResources
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			Bill bill = job.bill;
-			//Log.Message("Toil start:" + pawn + " is trying to learn how to use a " + TargetThingB + ", globalFailConditions count:" + globalFailConditions.Count);
 			AddEndCondition(delegate
 			{
-				Thing thing = base.GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
+				Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
 				if (thing is Building && !thing.Spawned)
 				{
 					return JobCondition.Incompletable;
@@ -61,10 +63,10 @@ namespace HumanResources
 			});
 			AddFinishAction(delegate ()
 			{
+				//Log.Message("LearnWeapon: finishing");
 				ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
 				pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
 			});
-
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
 			Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
@@ -106,19 +108,20 @@ namespace HumanResources
 			{
 				Pawn actor = train.actor;
 				Job curJob = actor.jobs.curJob;
-				JobDriver_DoBill jobDriver_DoBill = (JobDriver_DoBill)actor.jobs.curDriver;
-				UnfinishedThing unfinishedThing = curJob.GetTarget(TargetIndex.B).Thing as UnfinishedThing;
-				jobDriver_DoBill.workLeft = curJob.bill.recipe.WorkAmountTotal((unfinishedThing == null) ? null : unfinishedThing.Stuff);
-				jobDriver_DoBill.billStartTick = Find.TickManager.TicksGame;
-				jobDriver_DoBill.ticksSpentDoingRecipeWork = 0;
+				ThingDef weapon = job.targetB.Thing.def;
+				workLeft = curJob.bill.recipe.WorkAmountTotal(null);
+				billStartTick = Find.TickManager.TicksGame;
+				ticksSpentDoingRecipeWork = 0;
 				curJob.bill.Notify_DoBillStarted(actor);
+				//sound:
+				if (weapon.soundInteract != null) weapon.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
 			};
 			train.tickAction = delegate ()
 			{
 				Pawn actor = train.actor;
 				Job curJob = actor.jobs.curJob;
-				JobDriver_DoBill jobDriver_DoBill = (JobDriver_DoBill)actor.jobs.curDriver;
-				jobDriver_DoBill.ticksSpentDoingRecipeWork++;
+				ThingDef weapon = job.targetB.Thing.def;
+				ticksSpentDoingRecipeWork++;
 				curJob.bill.Notify_PawnDidWork(actor);
 				IBillGiverWithTickAction billGiverWithTickAction = train.actor.CurJob.GetTarget(TargetIndex.A).Thing as IBillGiverWithTickAction;
 				if (billGiverWithTickAction != null)
@@ -128,7 +131,7 @@ namespace HumanResources
 				float num = (curJob.RecipeDef.workSpeedStat != null) ? actor.GetStatValue(curJob.RecipeDef.workSpeedStat, true) : 1f;
 				if (curJob.RecipeDef.workTableSpeedStat != null)
 				{
-					Building_WorkTable building_WorkTable = jobDriver_DoBill.BillGiver as Building_WorkTable;
+					Building_WorkTable building_WorkTable = BillGiver as Building_WorkTable;
 					if (building_WorkTable != null)
 					{
 						num *= building_WorkTable.GetStatValue(curJob.RecipeDef.workTableSpeedStat, true);
@@ -138,24 +141,39 @@ namespace HumanResources
 				{
 					num *= 30f;
 				}
-				jobDriver_DoBill.workLeft -= num;
+				workLeft -= num;
 				actor.GainComfortFromCellIfPossible();
-				if (jobDriver_DoBill.workLeft <= 0f)
+				if (workLeft <= 0f)
 				{
-					jobDriver_DoBill.ReadyForNextToil();
+					ReadyForNextToil();
 				}
-				if (curJob.bill.recipe.UsesUnfinishedThing)
-				{
-					int num2 = Find.TickManager.TicksGame - jobDriver_DoBill.billStartTick;
-					if (num2 >= 3000 && num2 % 1000 == 0)
-					{
-						actor.jobs.CheckForJobOverride();
-					}
-				}
+
 				//pawn posture
 				Verb verbToUse = actor.jobs.curJob.verbToUse;
 				LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
 				pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
+
+				//sound:
+				if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
+				{
+					if ((ticksSpentDoingRecipeWork % verbToUse.verbProps.warmupTime.SecondsToTicks()) == 0)
+					{
+						if (verbToUse.verbProps.soundCast != null)
+						{
+							verbToUse.verbProps.soundCast.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
+						}
+						if (verbToUse.verbProps.soundCastTail != null)
+						{
+							verbToUse.verbProps.soundCastTail.PlayOneShotOnCamera(pawn.Map);
+						}
+					}
+				}
+				if (job.RecipeDef.workSkill != null)
+				{
+					//float xpDelta = techComp.proficientWeapons.Contains(job.targetB.Thing.def) ? 1f : 0.1f;
+					float xp = 0.1f * job.RecipeDef.workSkillLearnFactor;
+					actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
+				}
 			};
 			train.defaultCompleteMode = ToilCompleteMode.Never;
 			train.WithEffect(() => train.actor.CurJob.bill.recipe.effectWorking, TargetIndex.A);
@@ -164,31 +182,42 @@ namespace HumanResources
 			{
 				Pawn actor = train.actor;
 				Job curJob = actor.CurJob;
-				return 1f - ((JobDriver_DoBill)actor.jobs.curDriver).workLeft / curJob.bill.recipe.WorkAmountTotal(null);
+				//return 1f - ((JobDriver_DoBill)actor.jobs.curDriver).workLeft / curJob.bill.recipe.WorkAmountTotal(null);
+				return 1f - (workLeft / curJob.bill.recipe.WorkAmountTotal(null));
 			}, false, -0.5f);
 			train.FailOn(() => train.actor.CurJob.bill.suspended);
-			train.activeSkill = (() => train.actor.CurJob.bill.recipe.workSkill);
+			train.activeSkill = () => train.actor.CurJob.bill.recipe.workSkill;
 			yield return train.FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-			Toil acquireProficiency = new Toil();
-			acquireProficiency.initAction = delegate
+			Toil finalizeTraining = new Toil();
+			finalizeTraining.initAction = delegate
 			{
-				Pawn actor = acquireProficiency.actor;
+				Pawn actor = finalizeTraining.actor;
 				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
-				techComp.proficientWeapons.Add(TargetThingB.def);
-				//Log.Message(actor + " can use the following weapons: " + techComp.proficientWeapons.ToStringSafeEnumerable());
-				Messages.Message("MessageTrainingComplete".Translate(actor, TargetThingB.def.LabelCap), TargetThingA, MessageTypeDefOf.TaskCompletion, true);
-				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
-				//Notify_IterationCompleted(actor, bill as Bill_Production);
-				if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
+				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def)) 
 				{
-					float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
-					actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
+					//Log.Message("LearnWeapon: weapon is unkonwn trying to acquire knowledge");
+					techComp.proficientWeapons.Add(TargetThingB.def);
 				}
+				//else Log.Message("LearnWeapon: weapon is known, practicing");
+				//if (job.RecipeDef.workSkill != null)
+				//{
+				//	float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
+				//	actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
+				//}
+				Log.Message("LearnWeapon interaction complete, bill is " + job.bill.Label);
+				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
 			};
-			acquireProficiency.defaultCompleteMode = ToilCompleteMode.Instant;
-			acquireProficiency.FailOnDespawnedOrNull(TargetIndex.A);
-			yield return acquireProficiency;
+			finalizeTraining.defaultCompleteMode = ToilCompleteMode.Instant;
+			finalizeTraining.FailOnDespawnedOrNull(TargetIndex.A);
+			yield return finalizeTraining;
+
+			//testing
+			yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
+			Toil findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
+			yield return findPlaceTarget;
+			yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
+
 			yield break;
 		}
 	}

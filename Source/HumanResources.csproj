@@ -330,6 +330,7 @@
     <Compile Include="CompProperties_TitleMaker.cs" />
     <Compile Include="CompProperties_StorageGraphic.cs" />
     <Compile Include="CompStorageGraphic.cs" />
+    <Compile Include="HarmonyPatch.cs" />
     <Compile Include="ITab_Inventory.cs" />
     <Compile Include="JobDriver_DocumentTech.cs" />
     <Compile Include="JobDriver_LearnWeapon.cs" />
@@ -338,7 +339,6 @@
     <Compile Include="StatPart_AvailableBooks.cs" />
     <Compile Include="UnlockManager.cs" />
     <Compile Include="Extension_Bill.cs" />
-    <Compile Include="HarmonyPatch.cs" />
     <Compile Include="ITab_PawnKnowledge.cs" />
     <Compile Include="JobDriver_Knowledge.cs" />
     <Compile Include="JobDriver_LearnTech.cs" />
@@ -348,8 +348,9 @@
     <Compile Include="ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkGiver_DocumentTech.cs" />
-    <Compile Include="WorkGiver_ResearchTech.cs" />
     <Compile Include="WorkGiver_LearnWeapon.cs" />
+    <Compile Include="WorkGiver_PracticeWeapon.cs" />
+    <Compile Include="WorkGiver_ResearchTech.cs" />
     <Compile Include="WorkGiver_Knowledge.cs" />
     <Compile Include="WorkGiver_LearnTech.cs" />
   </ItemGroup>

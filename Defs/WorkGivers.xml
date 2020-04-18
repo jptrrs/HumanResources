@@ -53,7 +53,8 @@
   <WorkGiverDef>
     <defName>PracticeShooting</defName>
     <label>shooting practice</label>
-    <giverClass>WorkGiver_DoBill</giverClass>
+    <!--<giverClass>WorkGiver_DoBill</giverClass>-->
+    <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
     <workType>HR_Learn</workType>
     <verb>train</verb>
     <gerund>training</gerund>
@@ -68,7 +69,8 @@
   <WorkGiverDef>
     <defName>PracticeMelee</defName>
     <label>melee practice</label>
-    <giverClass>WorkGiver_DoBill</giverClass>
+    <!--<giverClass>WorkGiver_DoBill</giverClass>-->
+    <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
     <workType>HR_Learn</workType>
     <verb>train</verb>
     <gerund>training</gerund>

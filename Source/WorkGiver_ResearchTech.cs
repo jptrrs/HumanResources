@@ -25,12 +25,12 @@ namespace HumanResources
 			{
 				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
 				{
-					Log.Message("...no job on desk.");
+					//Log.Message("...no job on desk.");
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
 				//Log.Message("...relevant bills: " + RelevantBills(Desk).Count);
-				foreach (Bill bill in RelevantBills(Desk))
+				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
@@ -59,7 +59,7 @@ namespace HumanResources
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
 					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing))
+					foreach (Bill bill in RelevantBills(thing, pawn))
 					{
 						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
