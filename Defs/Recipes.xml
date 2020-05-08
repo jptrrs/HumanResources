@@ -6,7 +6,7 @@
     <label>Study technologies</label>
     <description>Study to acquire knowledge about a new technology.</description>
     <jobString>Studying a new technology.</jobString>
-    <workAmount>300</workAmount>
+    <workAmount>240</workAmount>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
@@ -73,7 +73,8 @@
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>
-      <li>StudyDesk</li>
+      <li>SimpleResearchBench</li>
+      <li>HiTechResearchBench</li>
     </recipeUsers>
     <ingredients>
       <li>
@@ -100,10 +101,8 @@
     <label>learn to shoot a weapon</label>
     <description>Train with a ranged weapon to acquire proficiency.</description>
     <jobString>Training to use a ranged weapon.</jobString>
-    <workAmount>10000</workAmount>
+    <workAmount>3000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <!--<effectWorking>CutStone</effectWorking>
-    <soundWorking>Shot_Revolver</soundWorking>-->
     <workSkill>Shooting</workSkill>
     <recipeUsers>
       <li>Target</li>
@@ -130,7 +129,7 @@
     <label>learn to wield a weapon</label>
     <description>Train with a melee weapon to acquire proficiency.</description>
     <jobString>Training to use a melee weapon.</jobString>
-    <workAmount>10000</workAmount>
+    <workAmount>3000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>

@@ -8,6 +8,7 @@ using Verse.AI;
 using UnityEngine;
 using System.Reflection;
 using RimWorld.Planet;
+using System.Reflection.Emit;
 
 namespace HumanResources
 {
@@ -54,6 +55,10 @@ namespace HumanResources
             //Checks if pawn knows how to cultivate a crop.
             harmony.Patch(AccessTools.Method(typeof(WorkGiver_GrowerSow), "JobOnCell", new Type[] { typeof(Pawn), typeof(IntVec3), typeof(bool) }),
                 null, new HarmonyMethod(patchType, nameof(JobOnCell_Postfix)), null);
+            
+            //Checks if pawn knows how to repair something.
+            harmony.Patch(AccessTools.Method(typeof(WorkGiver_Repair), "HasJobOnThing", new Type[] { typeof(Pawn), typeof(Thing), typeof(bool) }),
+                null, new HarmonyMethod(patchType, nameof(WorkGiver_Repair_HasJobOnThing_PostFix)), null);
 
             //Unlocks weapons when any tech is discovered.
             harmony.Patch(AccessTools.Method(typeof(ResearchManager), "FinishProject", new Type[] { typeof(ResearchProjectDef), typeof(bool), typeof(Pawn) }),
@@ -78,23 +83,14 @@ namespace HumanResources
             //harmony.Patch(AccessTools.Method(typeof(Game), "InitNewGame"),
             //    new HarmonyMethod(patchType, nameof(InitNewGame_Prefix)), null, null);
 
-            //harmony.Patch(AccessTools.Method(typeof(WorkGiver_DoBill), "JobOnThing"),
-            //    null, new HarmonyMethod(patchType, nameof(JobOnThing_Postfix)), null);
-
-            //harmony.Patch(AccessTools.Method(typeof(JobGiver_Work), "PawnCanUseWorkGiver"),
-            //    null, new HarmonyMethod(patchType, nameof(PawnCanUseWorkGiver_Postfix)), null);
-
-            //harmony.Patch(AccessTools.Method(typeof(ThinkNode_PrioritySorter), "TryIssueJobPackage"),
-            //    null, new HarmonyMethod(patchType, nameof(TryIssueJobPackage_Postfix)), null);
-
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))
             {
                 Log.Message("[HumanResources] Go Explore detected! Integrating...");
 
-                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Notify_CaravanArrived"),
-                    new HarmonyMethod(patchType, nameof(Notify_CaravanArrived_Prefix)), new HarmonyMethod(patchType, nameof(Notify_CaravanArrived_Postfix)), null);
-                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:ApplyPointsToResearch"),
-                    new HarmonyMethod(patchType, nameof(ApplyPointsToResearch_Prefix)), null, null);
+                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Outcome_Success"),
+                    new HarmonyMethod(patchType, nameof(Outcome_Success_Prefix)), null, null);
+                harmony.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Outcome_Triumph"),
+                    new HarmonyMethod(patchType, nameof(Outcome_Triumph_Prefix)), null, null);
             }
 
             //public static bool Patch_Inhibitor_Prefix(/*MethodBase __originalMethod*/)
@@ -104,62 +100,71 @@ namespace HumanResources
             //}
         }
 
-        public static void  PawnCanUseWorkGiver_Postfix(Pawn pawn, WorkGiver giver, bool __result)
+        public static bool Outcome_Success_Prefix(WorldObject __instance, Caravan caravan, ref IntRange ___SuccessFactionRelationOffset, ref FloatRange ___SuccessResearchAmount)
         {
-            
-            if (giver is WorkGiver_Scanner && __result)
+            int factionRelationGain = ___SuccessFactionRelationOffset.RandomInRange;
+            __instance.Faction.TryAffectGoodwillWith(Faction.OfPlayer, factionRelationGain, false, false, null, null);
+            Pawn researcher = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed, null);
+            ResearchProjectDef researchProjectDef = ApplyPointsToExpertise(___SuccessResearchAmount.RandomInRange, researcher);
+            string discoveredTech = "No available research :(";
+            if (researchProjectDef != null)
             {
-                //== "TrainWeapon")
-                Log.Message("PawnCanUseWorkGiver active for " + pawn+", defName was " + giver.def.defName);
-                //bool flag = giver.ShouldSkip(pawn, false);
-                //if (!flag) Log.Message("PawnCanUseWorkGiver: " + pawn + " should not skip!");
+                discoveredTech = researchProjectDef.LabelCap;
             }
+            Find.LetterStack.ReceiveLetter("LetterLabelResearchRequest_SuccessLGE".Translate(), GetAltLetterText("LetterResearchRequest_SuccessHR".Translate(__instance.Faction.Name, Mathf.RoundToInt((float)factionRelationGain), discoveredTech), discoveredTech, caravan), LetterDefOf.PositiveEvent, caravan, null, null, null, null);
+            return false;
         }
 
-        private static Pawn GoExploreResearcher;
-
-        public static void Notify_CaravanArrived_Prefix(Caravan caravan)
+        public static bool Outcome_Triumph_Prefix(WorldObject __instance, Caravan caravan, ref IntRange ___TriumphFactionRelationOffset, ref FloatRange ___TriumphResearchAmount)
         {
-            GoExploreResearcher = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed, null);
+            int factionRelationGain = ___TriumphFactionRelationOffset.RandomInRange;
+            __instance.Faction.TryAffectGoodwillWith(Faction.OfPlayer, factionRelationGain, false, false, null, null);
+            Pawn researcher = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed, null);
+            ResearchProjectDef researchProjectDef = ApplyPointsToExpertise(___TriumphResearchAmount.RandomInRange, researcher);
+            string discoveredTech = "No available research :(";
+            if (researchProjectDef != null)
+            {
+                discoveredTech = researchProjectDef.LabelCap;
+            }
+            Find.LetterStack.ReceiveLetter("LetterLabelResearchRequest_TriumphLGE".Translate(), GetAltLetterText("LetterResearchRequest_TriumphHR".Translate(__instance.Faction.Name, Mathf.RoundToInt((float)factionRelationGain), discoveredTech), discoveredTech, caravan), LetterDefOf.PositiveEvent, caravan, null, null, null, null);
+            return false;
         }
 
-        public static void Notify_CaravanArrived_Postfix(Caravan caravan)
-        {
-            GoExploreResearcher = null;
-        }
-
-        public static bool ApplyPointsToResearch_Prefix(float points, ResearchProjectDef __result)
+        public static ResearchProjectDef ApplyPointsToExpertise(float points, Pawn pawn)
         {
             ResearchManager researchManager = Find.ResearchManager;
-            bool flag = !researchManager.AnyProjectIsAvailable;
-            if (flag)
-            {
-                __result = null;
-            }
+            ResearchProjectDef result;
+            if (!researchManager.AnyProjectIsAvailable) result = null;
             else
             {
                 IEnumerable<ResearchProjectDef> source = from x in DefDatabase<ResearchProjectDef>.AllDefsListForReading
                                                          where x.CanStartNow
                                                          select x;
-                ResearchProjectDef tech;
-                source.TryRandomElementByWeight((ResearchProjectDef x) => 1f / x.baseCost, out tech);
+                source.TryRandomElementByWeight((ResearchProjectDef x) => 1f / x.baseCost, out result);
                 points *= 12f; //stangely, that number is 121f on the mod source. I'm assuming that's a typo.
-                float total = tech.baseCost;
-                CompKnowledge techComp = GoExploreResearcher.TryGetComp<CompKnowledge>();
+                float total = result.baseCost;
+                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                 if (techComp != null)
                 {
                     Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
-                    float num = tech.GetProgress(expertise);
+                    float num = result.GetProgress(expertise);
                     num += points / total;
-                    expertise[tech] = (num > 1) ? 1 : num;
+                    expertise[result] = (num > 1) ? 1 : num;
                 }
-                else
-                {
-                    return true;
-                }
-                __result = tech;
             }
-            return false;
+            return result;
+        }
+
+        private static string GetAltLetterText(string baseText, string techName, Caravan caravan)
+        {
+            string text = baseText;
+            Pawn pawn = BestCaravanPawnUtility.FindPawnWithBestStat(caravan, StatDefOf.ResearchSpeed, null);
+            bool flag = pawn != null;
+            if (flag)
+            {
+                text = text + "\n\n" + "ResearchRequestXPGainHR".Translate(pawn.LabelShort, techName, 5000f);
+            }
+            return text;
         }
 
         public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
@@ -169,25 +174,35 @@ namespace HumanResources
 
         public static void TryFindBestBetterStoreCellFor_Postfix(Thing t, Pawn carrier, Map map, StoragePriority currentPriority, Faction faction, ref IntVec3 foundCell, ref bool __result, bool needAccurateResult = true)
         {
+            if (!__result && carrier.CurJobDef != null)
+            {
+                //string test = carrier.CurJobDef != null ? "ok" : "bad";
+                //Log.Message("test: " + test);
+
+                Log.Message(carrier.CurJobDef.label);
+            }
+            
             //Log.Warning("postFixing TryFindBestBetterStoreCellFor:");
             //foundCell = new IntVec3(0, 0, 0);
-            if (!__result && carrier.CurJobDef.label == "DocumentTech" && t.def.defName == "TechBook")
-            {
-                try
-                {
-                    IHaulDestination haulDestination;
-                    //bool test = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult);
-                    //Log.Message("postFixing TryFindBestBetterStoreCellFor test is "+test);
-                    //__result = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult   );
-                    bool alternate = StoreUtility.TryFindBestBetterNonSlotGroupStorageFor(t, carrier, map, currentPriority, faction, out haulDestination);
-                    Log.Message("haulDestination found: " + haulDestination+" at "+haulDestination.Position);
-                    foundCell = haulDestination.Position;
-                    __result = alternate;
-                }
-                catch (Exception ex)
-                {
-                }
-            }
+            //if (!__result && carrier.CurJobDef.label == "DocumentTech" && t.def.defName == "TechBook")
+            //{
+            //    Log.Message("patch go!");
+            //    try
+            //    {
+            //        IHaulDestination haulDestination;
+            //        bool test = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult);
+            //        Log.Message("postFixing TryFindBestBetterStoreCellFor test is " + test);
+            //        __result = StoreUtility.TryFindBestBetterStorageFor(t, carrier, map, currentPriority, faction, out foundCell, out haulDestination, needAccurateResult);
+            //        //bool alternate = StoreUtility.TryFindBestBetterNonSlotGroupStorageFor(t, carrier, map, currentPriority, faction, out haulDestination);
+            //        //Log.Message("haulDestination found: " + haulDestination+" at "+haulDestination.Position);
+            //        //foundCell = haulDestination.Position;
+            //        //__result = alternate;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //    }
+            //}
+
         }
 
         public static void NotifyAdded_Postfix(Thing item, IThingHolder ___owner)
@@ -312,6 +327,24 @@ namespace HumanResources
             }
         }
 
+        public static void WorkGiver_Repair_HasJobOnThing_PostFix(Pawn pawn, Thing t, ref bool __result)
+        {
+            if (__result)
+            {
+                var requisites = t.def.researchPrerequisites;
+                if (!requisites.NullOrEmpty())
+                {
+                    Log.Warning("repair patch working");
+                    __result = pawn.GetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                    if (!__result)
+                    {
+                        string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                        JobFailReason.Is("DoesntKnowHowToRepair".Translate(pawn, t.def.label, preReqText));
+                    }
+                }
+            }
+        }
+
         public static void AddHumanlikeOrders_Postfix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
             IntVec3 c = IntVec3.FromVector3(clickPos);
@@ -353,23 +386,32 @@ namespace HumanResources
                 ResearchProjectDef requisite = null;
 
                 //If the recipe has it own prerequisite, then that's it:
-                if (___recipe.researchPrerequisite != null) requisite = ___recipe.researchPrerequisite;
+                if (___recipe.researchPrerequisite != null)
+                {
+                    requisite = ___recipe.researchPrerequisite;
+                }
 
                 //If not, only for complex recipes, inspect it's home buildings. 
                 //In this case, it will only look for the first pre-requisite on a given building's list.
-                else if (!___recipe.recipeUsers.NullOrEmpty() && ___recipe.UsesUnfinishedThing)
+                else if (!___recipe.recipeUsers.NullOrEmpty() && (___recipe.UsesUnfinishedThing || ___recipe.defName.StartsWith("Make_")))
                 {
                     ThingDef recipeHolder = null;
                     //If any building is free from prerequisites, then that's used. 
                     var noPreReq = ___recipe.recipeUsers.Where(x => x.researchPrerequisites.NullOrEmpty());
-                    if (noPreReq.Any()) recipeHolder = noPreReq.FirstOrDefault();
+                    if (noPreReq.Any())
+                    {
+                        recipeHolder = noPreReq.FirstOrDefault();
+                    }
                     //Otherwise, check each one and choose the one with the cheapest prerequisite.
                     else if (___recipe.recipeUsers.Count() > 1)
                     {
                         recipeHolder = ___recipe.recipeUsers.Aggregate((l, r) => (l.researchPrerequisites.FirstOrDefault().baseCost < r.researchPrerequisites.FirstOrDefault().baseCost) ? l : r);
                     }
                     //Or, if its just one, pick that.
-                    else recipeHolder = ___recipe.recipeUsers.FirstOrDefault();
+                    else 
+                    { 
+                        recipeHolder = ___recipe.recipeUsers.FirstOrDefault();
+                    }
                     //At last, define what's the requisite for the selected building.
                     if (recipeHolder != null && !recipeHolder.researchPrerequisites.NullOrEmpty())
                     {

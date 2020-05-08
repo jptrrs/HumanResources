@@ -9,4 +9,83 @@
     </value>
   </Operation>
 
+  <!--to Buildings_Production-->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+       <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]/thingClass</xpath>
+        <value>
+          <thingClass>Building_WorkTable</thingClass>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]</xpath>
+        <value>
+          <inspectorTabs>
+            <li>ITab_Bills</li>
+          </inspectorTabs>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]</xpath>
+        <value>
+          <comps>
+            <li Class="CompProperties_AffectedByFacilities">
+              <linkableFacilities>
+                <li>BookShelf</li>
+              </linkableFacilities>
+            </li>
+          </comps>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName = "HiTechResearchBench"]/comps/li/linkableFacilities</xpath>
+        <value>
+          <li>BookShelf</li>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]/size</xpath>
+        <value>
+          <size>(3,1)</size>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]/graphicData/drawSize</xpath>
+        <value>
+          <drawSize>(3.5,1.5)</drawSize>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/graphicData/texPath</xpath>
+        <value>
+          <texPath>Things/Building/ResearchBenchSimple</texPath>
+        </value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName = "HiTechResearchBench"]/graphicData/texPath</xpath>
+        <value>
+          <texPath>Things/Building/ResearchBenchHiTech</texPath>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  
+  <!--to TraderKinds-->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/TraderKindDef[defName = "Caravan_Outlander_Exotic" or defName = "Orbital_Exotic"]/stockGenerators</xpath>
+    <value>
+      <li Class="StockGenerator_Category">
+        <categoryDef>Knowledge</categoryDef>
+        <excludedCategories>
+          <li>Ultra</li>
+          <li>Archotech</li>
+        </excludedCategories>
+        <thingDefCountRange>1~3</thingDefCountRange>
+        <countRange>1~1</countRange>
+      </li>
+    </value>
+  </Operation>>
+
 </Patch>

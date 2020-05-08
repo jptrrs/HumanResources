@@ -31,7 +31,7 @@
     <reportString>practicing TargetB.</reportString>
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-  </JobDef>  
+  </JobDef>   
   
   <!--From ItchyFlea's Practise Target-->
   <!--<JobDef>

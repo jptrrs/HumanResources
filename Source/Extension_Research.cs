@@ -311,6 +311,15 @@ namespace HumanResources
 			float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
 			amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
 			amount *= Find.Storyteller.difficulty.researchSpeedFactor;
+			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
+			foreach (ResearchProjectDef ancestor in expertise.Keys)
+			{
+				if (tech.prerequisites.Contains(ancestor))
+				{
+					amount *= 2;
+					break;
+				}
+			}
 			if (researcher != null && researcher.Faction != null)
 			{
 				amount /= tech.CostFactor(researcher.Faction.def.techLevel);
@@ -323,14 +332,13 @@ namespace HumanResources
 			{
 				researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
 			}
-			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
 			float num = tech.GetProgress(expertise);
 			num += amount/total;
 			//Verse.Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
 			expertise[tech] = num;
 		}
 
-		private const float ResearchPointsPerWorkTick = 0.0077f; // 5% down down from vanilla 0.00825f, neutralized with a quarter available techs in library;
+		private const float ResearchPointsPerWorkTick = 0.0075f; // aprox. 10% down down from vanilla 0.00825f, neutralized with half available techs in library;
 		private const float StudyPointsPerWorkTick = 1f;
 
 		public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)

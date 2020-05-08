@@ -31,10 +31,16 @@
   <LacksFundamentalKnowledge>{0_nameDef} is missing basic knowledge on those subjects.</LacksFundamentalKnowledge>
   <NoWeaponToLearn>{0_nameDef} already knows how to use those weapons.</NoWeaponToLearn>
   <DoesntKnowHowToBuild>{0_nameDef} doesn't know how to build a {1} (requires {2}).</DoesntKnowHowToBuild>
+  <DoesntKnowHowToRepair>{0_nameDef} doesn't know how to repair a {1} (requires {2}).</DoesntKnowHowToRepair>
   <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1} (requires {2}).</DoesntKnowHowToCraft>
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1} (requires {2}).</DoesntKnowThisPlant>
   <UnknownWeapon>{0_nameDef} has not been trained to use this weapon.</UnknownWeapon>
   <EvilWeapon>{0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.</EvilWeapon>
   <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
+  
+  <!--Go Explore-->
+  <LetterResearchRequest_SuccessHR>The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_TriumphHR>The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.</LetterResearchRequest_TriumphHR>
+  <ResearchRequestXPGainHR>{0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.</ResearchRequestXPGainHR>
 
 </LanguageData> 

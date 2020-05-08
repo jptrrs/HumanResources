@@ -195,16 +195,8 @@ namespace HumanResources
 				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
 				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def)) 
 				{
-					//Log.Message("LearnWeapon: weapon is unkonwn trying to acquire knowledge");
 					techComp.proficientWeapons.Add(TargetThingB.def);
 				}
-				//else Log.Message("LearnWeapon: weapon is known, practicing");
-				//if (job.RecipeDef.workSkill != null)
-				//{
-				//	float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
-				//	actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
-				//}
-				Log.Message("LearnWeapon interaction complete, bill is " + job.bill.Label);
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
 			};

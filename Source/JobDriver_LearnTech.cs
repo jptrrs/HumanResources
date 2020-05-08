@@ -106,29 +106,6 @@ namespace HumanResources
 			acquireKnowledge.activeSkill = () => SkillDefOf.Intellectual;
 			yield return acquireKnowledge;
 			yield return Toils_General.Wait(2, TargetIndex.None);
-
-
-			//Toil acquireKnowledge = new Toil();
-			//acquireKnowledge.initAction = delegate
-			//{
-			//	Pawn actor = acquireKnowledge.actor;
-			//	CompKnowledge techComp = actor.GetComp<CompKnowledge>();
-			//	techComp.expertise.Add(project,1f); // TO DO!
-			//	techComp.HomeWork.Clear();
-			//	techComp.LearnCrops(project);
-			//	//Messages.Message("MessageStudyComplete".Translate(actor,project.LabelCap), (Thing)desk, MessageTypeDefOf.TaskCompletion, true);
-			//	Notify_IterationCompleted(actor, bill as Bill_Production);
-			//	if (job.RecipeDef.workSkill != null && !job.RecipeDef.UsesUnfinishedThing)
-			//	{
-			//		float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
-			//		actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
-			//	}
-			//	actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
-			//};
-			//acquireKnowledge.defaultCompleteMode = ToilCompleteMode.Instant;
-			//acquireKnowledge.FailOnDespawnedOrNull(TargetIndex.A);
-			//yield return acquireKnowledge;
-
 			yield break;
 		}
 

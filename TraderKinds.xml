@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <TraderKindDef>
+    <defName>Caravan_Tech</defName>
+    <label>enciclopedia seller</label>
+    <commonality>1</commonality>
+    <stockGenerators>
+      <li Class="StockGenerator_Category">
+        <categoryDef>Knowledge</categoryDef>
+        <excludedCategories>
+          <li>Spacer</li>
+          <li>Ultra</li>
+          <li>Archotech</li>
+        </excludedCategories>
+        <thingDefCountRange>6~12</thingDefCountRange>
+        <countRange>1~1</countRange>
+      </li>
+    </stockGenerators>
+  </TraderKindDef>
+
+  <TraderKindDef>
+    <defName>Orbital_Tech</defName>
+    <label>enciclopedia seller</label>
+    <commonality>1</commonality>
+    <orbital>true</orbital>
+    <stockGenerators>
+      <li Class="StockGenerator_Category">
+        <categoryDef>Knowledge</categoryDef>
+        <excludedCategories>
+          <li>Neolithic</li>
+        </excludedCategories>
+        <thingDefCountRange>8~20</thingDefCountRange>
+        <countRange>1~1</countRange>
+      </li>
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>

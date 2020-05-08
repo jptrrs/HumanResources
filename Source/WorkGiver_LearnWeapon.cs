@@ -26,7 +26,7 @@ namespace HumanResources
                 IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
                 foreach (Bill bill in RelevantBills(Target, pawn))
                 {
-                    return ValidateChosenWeapons(bill, pawn);
+                    return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
                 }
                 JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                 return false;
@@ -47,7 +47,7 @@ namespace HumanResources
                     billGiver.BillStack.RemoveIncompletableBills();
                     foreach (Bill bill in RelevantBills(thing, pawn))
                     {
-                        if (ValidateChosenWeapons(bill, pawn))
+                        if (ValidateChosenWeapons(bill, pawn, billGiver))
                         {
                             return StartBillJob(pawn, billGiver);
                         }
@@ -83,11 +83,8 @@ namespace HumanResources
                         bill.lastIngredientSearchFailTicks = 0;
                         if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                         {
-                            //reflection info
-                            FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
-                            //
-                            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
-                            {
+                            //if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+                            //{
                                 //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
                                 chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
                                 if (chosenIngThings.Any())
@@ -97,7 +94,7 @@ namespace HumanResources
                                     return result;
                                 }
                                 else JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
-                            }
+                            //}
                             if (FloatMenuMakerMap.makingFor != pawn)
                             {
                                 //Log.Message("...float menu maker case");
@@ -105,6 +102,9 @@ namespace HumanResources
                             }
                             else
                             {
+                                //reflection info
+                                FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
+                                //
                                 //Log.Message("...missing materials");
                                 JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
                             }
@@ -146,9 +146,23 @@ namespace HumanResources
             return job2;
         }
 
-        private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
+        private bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
-            return StudyWeapons(bill, pawn).Any();
+            //reflection info
+            MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+            //
+            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+            {
+                //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
+                chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
+                if (chosenIngThings.Any())
+                {
+                    //chosenIngThings.Clear();
+                    return StudyWeapons(bill, pawn).Any();
+                }
+            }
+            return false;
+            //return StudyWeapons(bill, pawn).Any();
         }
     }
 }
