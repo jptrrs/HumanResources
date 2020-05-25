@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
-using FluffyResearchTree;
 using Verse;
 using HarmonyLib;
 using System.Reflection;
+using System.Globalization;
 
 namespace HumanResources
 {
@@ -42,13 +42,11 @@ namespace HumanResources
 
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
-			//ResearchProjectDef tech = research.Research;
-			ResearchNode techNode = new ResearchNode(tech);
-
 			//Verse.Log.Message("InferSkillBias Starting for "+tech.LabelCap);
 
 			//1. check what it unlocks
-			List<Pair<Def, string>> unlocks = tech.GetUnlockDefsAndDescs();
+			//List<Pair<Def, string>> unlocks = tech.GetUnlockDefsAndDescs();
+			List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
 			IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
 			IEnumerable<ThingDef> thingDefs = from d in defs
 											  where d is ThingDef
@@ -64,11 +62,11 @@ namespace HumanResources
 
 			//a. checking by query on the research tree
 			int matches = 0;
-			if (techNode.Matches("scanner") > 0 | techNode.Matches("terraform") > 0) { miningTag = true; matches++; };
+			if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; matches++; };
 
-			if (techNode.Matches("sterile") > 0 | techNode.Matches("medical") > 0 | techNode.Matches("medicine") > 0 | techNode.Matches("cryptosleep") > 0 | techNode.Matches("prostheses") > 0 | techNode.Matches("implant") > 0 | techNode.Matches("organs") > 0 | techNode.Matches("surgery") > 0) { medicineTag = true; matches++; };
+			if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; matches++; };
 
-			if (techNode.Matches("irrigation") > 0 | techNode.Matches("soil") > 0 | techNode.Matches("hydroponic") > 0) { plantsTag = true; matches++; };
+			if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; matches++; };
 
 			//b. checking by unlocked things
 			if (thingDefs.Count() > 0)
@@ -92,7 +90,7 @@ namespace HumanResources
 					{
 						//FieldInfo workskillInfo = AccessTools.Field(typeof(ResearchNode_Extensions), r.workSkill.label + "Tag");
 						//Verse.Log.Message(r + " worksill is " + r.workSkill);// +", field is "+ workskillInfo.GetValue(research));
-						AccessTools.Field(typeof(Extension_Research), r.workSkill.label + "Tag").SetValue(techNode, true);
+						AccessTools.Field(typeof(Extension_Research), r.workSkill.label + "Tag").SetValue(tech, true);
 					}
 				}
 			}
@@ -218,7 +216,7 @@ namespace HumanResources
 				stuffProps = new StuffProperties()
 				{
 					categories = new List<StuffCategoryDef>() { DefDatabase<StuffCategoryDef>.GetNamed("Technic") },
-					color = Assets.ColorCompleted[tech.techLevel],
+					color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
 					stuffAdjective = tech.LabelCap,
 					statOffsets = new List<StatModifier>()
 					{
@@ -350,6 +348,20 @@ namespace HumanResources
 			}
 			expertise.Add(tech, 0f);
 			return 0f;
+		}
+
+		public static int Matches(this ResearchProjectDef tech, string query)
+		{
+			var culture = CultureInfo.CurrentUICulture;
+			query = query.ToLower(culture);
+
+			if (tech.LabelCap.RawText.ToLower(culture).Contains(query))
+				return 1;
+			if (ResearchTree_Patches.GetUnlockDefsAndDescs(tech).Any(unlock => unlock.First.LabelCap.RawText.ToLower(culture).Contains(query)))
+				return 2;
+			if (tech.description.ToLower(culture).Contains(query))
+				return 3;
+			return 0;
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace HumanResources
     {
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-			IEnumerable<ResearchProjectDef> expertise = from x in pawn.GetComp<CompKnowledge>().expertise
+			IEnumerable<ResearchProjectDef> expertise = from x in pawn.TryGetComp<CompKnowledge>().expertise
 														where x.Value >= 1f
 														select x.Key;
 			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.IsFinished).Except(expertise);
@@ -37,7 +37,7 @@ namespace HumanResources
 					studyMaterial.AddRange(bill.SelectedTech().Where(x => !x.IsFinished));
 				}
 				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
-				CompKnowledge techComp = pawn.GetComp<CompKnowledge>();
+				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
 				//Log.Message("...homework count is " + techComp.HomeWork.Count());
 				//if (techComp.HomeWork.Count() > 0) return true;

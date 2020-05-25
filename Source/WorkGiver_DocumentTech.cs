@@ -12,7 +12,7 @@ namespace HumanResources
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
-			IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
+			IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 			bool flag = advantage.ToList().Count > 0;
 			return !flag;
 		}
@@ -28,7 +28,7 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				IEnumerable<ResearchProjectDef> advantage = pawn.GetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
+				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
 				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{

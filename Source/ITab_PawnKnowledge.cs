@@ -2,7 +2,6 @@
 using RimWorld;
 using Verse;
 using UnityEngine;
-using FluffyResearchTree;
 
 namespace HumanResources
 {
@@ -38,7 +37,7 @@ namespace HumanResources
             get
             {
                 Pawn pawn = PawnToShowInfoAbout;
-                return pawn != null && pawn.GetComp<CompKnowledge>() != null;
+                return pawn != null && pawn.TryGetComp<CompKnowledge>() != null;
             }
         }
 
@@ -80,24 +79,28 @@ namespace HumanResources
             Rect titleRect = new Rect(leftColumn.x, leftColumn.y, leftColumn.width, Text.LineHeight);
             Widgets.Label(titleRect, "Knowledge");
             Text.Font = GameFont.Small;
-            var expertise = PawnToShowInfoAbout.GetComp<CompKnowledge>().expertise.Keys.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ExpertiseNode(x,PawnToShowInfoAbout)/*ResearchNode(x)*/).ToList();
-            Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - margin - padding - 2f);
-            float viewHeight = (nodeSize.y + margin) * expertise.Count();
-            Rect viewRect = new Rect(0f, 0f, nodeSize.x/*canvas.width*/, viewHeight);
-            Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
-            var pos = new Vector2(0f, 0f);//canvas.min;
-            for (int i = 0; i < expertise.Count && pos.x + nodeSize.x < leftColumn.xMax; i++)
+            var expertise = PawnToShowInfoAbout.TryGetComp<CompKnowledge>().expertise;
+            if (!expertise.EnumerableNullOrEmpty())
             {
-                var node = expertise[i];
-                var rect = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
-                node.DrawAt(pos, rect, true);
-                pos.y += nodeSize.y + margin;
+                var expertiseList = expertise.Keys.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
+                Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - margin - padding - 2f);
+                float viewHeight = (nodeSize.y + margin) * expertiseList.Count();
+                Rect viewRect = new Rect(0f, 0f, nodeSize.x/*canvas.width*/, viewHeight);
+                Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
+                var pos = new Vector2(0f, 0f);//canvas.min;
+                for (int i = 0; i < expertiseList.Count && pos.x + nodeSize.x < leftColumn.xMax; i++)
+                {
+                    var node = expertiseList[i];
+                    var rect = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
+                    node.DrawAt(pos, rect, true);
+                    pos.y += nodeSize.y + margin;
+                }
+                if (Event.current.type == EventType.Layout)
+                {
+                    viewHeight = size.y;
+                }
+                Widgets.EndScrollView();
             }
-            if (Event.current.type == EventType.Layout)
-            {
-                viewHeight = size.y;
-            }
-            Widgets.EndScrollView();
 
             //Right Column
             Rect rightColumn = new Rect(leftColumn.xMax, canvas.y, canvas.width - leftColumn.width, canvas.height);
@@ -108,26 +111,31 @@ namespace HumanResources
             Text.Anchor = TextAnchor.LowerLeft;
             Widgets.Label(titleRect2, "Weapons Proficiency:");
             Text.Anchor = TextAnchor.UpperLeft;
-            var knownWeapons = PawnToShowInfoAbout.GetComp<CompKnowledge>().knownWeapons.Where(x => !x.menuHidden);
-            var noCommomWeapons = knownWeapons.Where(x => !x.weaponTags.NullOrEmpty());
-            var filteredWeapons = filterWeapons ? knownWeapons : noCommomWeapons;
-            var weaponsList = filteredWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
             Rect scrollrect2 = new Rect(rightColumn.x, titleRect2.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect2.height - rowHeight - margin - padding - 2f);
-            float viewHeight2 = rowHeight * weaponsList.Count();
-            cellWidth = (int)(scrollrect2.width - scrollBarWidth);
-            Rect viewRect2 = new Rect(0f, 0f, cellWidth, viewHeight2);
-            Widgets.BeginScrollView(scrollrect2, ref scrollPosition2, viewRect2);
-            int num = 0;
-            foreach (ThingDef item in weaponsList)
+            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>().knownWeapons;
+            if (!knownWeapons.NullOrEmpty())
             {
-                DrawRow(item, num, viewRect2.width);
-                num++;
+                var filteredKnownWeapons = knownWeapons.Where(x => !x.menuHidden);
+                Log.Message("knownweapons for " + PawnToShowInfoAbout + ": " + filteredKnownWeapons.Count());
+                var noCommomWeapons = filteredKnownWeapons.Where(x => !x.weaponTags.NullOrEmpty());
+                var filteredWeapons = filterWeapons ? filteredKnownWeapons : noCommomWeapons;
+                var weaponsList = filteredWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
+                float viewHeight2 = rowHeight * weaponsList.Count();
+                cellWidth = (int)(scrollrect2.width - scrollBarWidth);
+                Rect viewRect2 = new Rect(0f, 0f, cellWidth, viewHeight2);
+                Widgets.BeginScrollView(scrollrect2, ref scrollPosition2, viewRect2);
+                int num = 0;
+                foreach (ThingDef item in weaponsList)
+                {
+                    DrawRow(item, num, viewRect2.width);
+                    num++;
+                }
+                if (Event.current.type == EventType.Layout)
+                {
+                    viewHeight2 = size.y;
+                }
+                Widgets.EndScrollView();
             }
-            if (Event.current.type == EventType.Layout)
-            {
-                viewHeight2 = size.y;
-            }
-            Widgets.EndScrollView();
             Text.Font = GameFont.Tiny;
             Rect filterRect = new Rect(rightColumn.x, scrollrect2.max.y, rightColumn.width - margin - padding, rowHeight);
             Widgets.CheckboxLabeled(filterRect, "ShowCommon".Translate(), ref filterWeapons, false);

@@ -55,25 +55,28 @@ namespace HumanResources
             if (startingTechLevel == 0) startingTechLevel = InferTechLevelfromBG(pawn);
             SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate((l, r) => l.levelInt > r.levelInt ? l : r);
             SkillDef highestSkill = highestSkillRecord.def;
-            SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate((l, r) => l.levelInt > r.levelInt ? l : r).def;
-            
-            // TEST
+            SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate((l, r) => l.levelInt >= r.levelInt ? l : r).def;
             isFighter = highestSkill == SkillDefOf.Melee;
             isShooter = highestSkill == SkillDefOf.Shooting;
             int fighterHandicap = (isFighter | isShooter) ? 1 : 0;
-            //
-
-            int slots = Mathf.Max(0, FactionExpertiseRange(startingTechLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) - fighterHandicap);
-            if (slots == 0) return null;
+            int oldBonus = pawn.ageTracker.AgeBiologicalYears > pawn.RaceProps.lifeExpectancy / 2 ? 1 : 0;
+            int minSlots = startingTechLevel > TechLevel.Medieval ? 1 : oldBonus;
+            int slots = Mathf.Max(minSlots, FactionExpertiseRange(startingTechLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) + oldBonus - fighterHandicap);
+            if (slots == 0)
+            {
+                //Log.Warning("GetExpertiseDefsFor "+pawn+": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
+                return null;
+            }
             bool guru = startingTechLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
             var filtered = Extension_Research.SkillsByTech.Where(e => e.Key.techLevel.Equals(startingTechLevel));
-            //Log.Warning("GetExpertiseDefsFor: " + pawn + "'s techLevel is " + techLevel);
+            //Log.Warning("GetExpertiseDefsFor: " + pawn + "'s techLevel is " + startingTechLevel);
             int pass = 0;
             List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
             if (guru) startingTechLevel++;
             while (result.Count() < slots)
             {
                 var remaining = filtered.Except(result);
+                if (remaining.EnumerableNullOrEmpty()) break;
                 if (remaining.Any(e => e.Value.Contains(highestSkill)))
                 {
                     result.Add(remaining.RandomElementByWeight(entry => TechLikelihoodForSkill(pawn, entry.Value, highestSkill, slots, pass)));
@@ -82,7 +85,7 @@ namespace HumanResources
                 {
                     result.Add(remaining.RandomElementByWeight(entry => TechLikelihoodForSkill(pawn, entry.Value, secondSkill, slots, pass)));
                 }
-                else
+                else if (remaining.Any())
                 {
                     result.Add(remaining.RandomElement());
                 }
@@ -90,35 +93,48 @@ namespace HumanResources
                 if ((guru && pass == 1) | result.NullOrEmpty()) startingTechLevel--;
                 if (startingTechLevel == 0) break;
             }
-            return result.Select(e => e.Key).ToList();
+            if (!result.NullOrEmpty())
+            {
+                return result.Select(e => e.Key).ToList();
+            }
+            Log.Warning("Couldn't calculate any expertise for " + pawn);
+            return null;
         }
 
         private static TechLevel InferTechLevelfromBG(Pawn pawn)
         {
-            string adult = (pawn.story.adulthood.title+" "+pawn.story.adulthood.baseDesc).ToLower();
-            string child = (pawn.story.childhood.title+" "+pawn.story.childhood.baseDesc).ToLower();
-            var spacerHints = new List<string> { "glitterworld", "space", "imperial", "robot", "cryptosleep", "star system" };
-            foreach (string word in spacerHints)
+            Log.Warning("InferTechLevelfromBG starting...");
+            if (pawn.story != null)
             {
-                if (child.Contains(word) | adult.Contains(word)) return TechLevel.Spacer;
-            }
-            var industrialHints = new List<string> { "midworld", " industrial" , "urbworld"}; //leading space on " industrial" excludes "pre-industrial"
-            foreach (string word in industrialHints)
-            {
-                if (child.Contains(word) | adult.Contains(word)) return TechLevel.Industrial;
-            }
-            var medievalHints = new List<string> { "medieval", "monastery", "court" };
-            foreach (string word in medievalHints)
-            {
-                if (child.Contains(word) | adult.Contains(word)) return TechLevel.Medieval;
-            }
-            if (pawn.story.adulthood.spawnCategories.Contains("Tribal") | pawn.story.childhood.spawnCategories.Contains("Tribal")) return TechLevel.Neolithic;
-            else 
-            {
-                var tribalHints = new List<string> { "tribe", "tribal", "digger" };
-                foreach (string word in tribalHints)
+                string child = (pawn.story.childhood.title + " " + pawn.story.childhood.baseDesc).ToLower();
+                bool isAdult = pawn.story.adulthood != null;
+                string adult = isAdult ? (pawn.story.adulthood.title + " " + pawn.story.adulthood.baseDesc).ToLower() : "";
+                var spacerHints = new List<string> { "glitterworld", "space", "imperial", "robot", "cryptosleep", "star system" };
+                foreach (string word in spacerHints)
                 {
-                    if (child.Contains(word) | adult.Contains(word)) return TechLevel.Neolithic;
+                    if (child.Contains(word) | (isAdult && adult.Contains(word))) return TechLevel.Spacer;
+                }
+                var industrialHints = new List<string> { "midworld", " industrial", "urbworld" }; //leading space on " industrial" excludes "pre-industrial"
+                foreach (string word in industrialHints)
+                {
+                    if (child.Contains(word) | (isAdult && adult.Contains(word))) return TechLevel.Industrial;
+                }
+                var medievalHints = new List<string> { "medieval", "monastery", "court" };
+                foreach (string word in medievalHints)
+                {
+                    if (child.Contains(word) | (isAdult && adult.Contains(word))) return TechLevel.Medieval;
+                }
+                if ((!pawn.story.childhood.spawnCategories.NullOrEmpty() && pawn.story.childhood.spawnCategories.Contains("Tribal")) | (isAdult && !pawn.story.adulthood.spawnCategories.NullOrEmpty() && pawn.story.adulthood.spawnCategories.Contains("Tribal"))) 
+                { 
+                    return TechLevel.Neolithic; 
+                }
+                else
+                {
+                    var tribalHints = new List<string> { "tribe", "tribal", "digger" };
+                    foreach (string word in tribalHints)
+                    {
+                        if (child.Contains(word) | (isAdult && adult.Contains(word))) return TechLevel.Neolithic;
+                    }
                 }
             }
             return TechLevel.Industrial;
@@ -128,10 +144,21 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                //Log.Warning("aquiring expertise for " + pawn);
-                expertise = GetExpertiseDefsFor(pawn).ToDictionary(x => x, x => 1f);
+                Log.Warning("aquiring expertise for " + pawn+ "...");
+                var acquiredExpertise = GetExpertiseDefsFor(pawn);
+                if (!acquiredExpertise.EnumerableNullOrEmpty())
+                {
+                    expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
+                    Log.Message("...known techs: " + expertise.Count());
+                }
+                else
+                {
+                    Log.Message("...did not acquire any expertise");
+                }
                 AcquireWeaponKnowledge();
+                Log.Message("...known weapons: " + proficientWeapons.Count());
                 AcquirePlantKnowledge();
+                Log.Message("...known plants: " + proficientPlants.Count());
             }
         }
 
@@ -141,7 +168,7 @@ namespace HumanResources
             {
                 proficientPlants = new List<ThingDef>();
                 //proficientPlants.AddRange(ModBaseHumanResources.UniversalCrops);
-                foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
+                if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
             }
         }
 
@@ -150,39 +177,33 @@ namespace HumanResources
             if (proficientWeapons == null)
             {
                 proficientWeapons = new List<ThingDef>();
-                foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
-
-                // TEST
+                if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
                 if (isFighter)
                 {
-                    Log.Warning("extra melee weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    //Log.Warning("extra melee weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
-                        Log.Message("checking " + tech);
                         var weapons = tech.UnlockedWeapons().Where(x => x.IsMeleeWeapon);
                         if (weapons.Any()) foreach (ThingDef w in weapons)
                         {
                             proficientWeapons.Add(w);
-                            Log.Message("added " + w);
+                            //Log.Message("added " + w);
                         }
                     }
                 }
                 if (isShooter)
                 {
-                    Log.Warning("extra ranged weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    //Log.Warning("extra ranged weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
-                        Log.Message("checking " + tech);
                         var weapons = tech.UnlockedWeapons().Where(x => x.IsRangedWeapon);
                         if (weapons.Any()) foreach (ThingDef w in weapons)
                         {
                             proficientWeapons.Add(w);
-                            Log.Message("added " + w);
+                            //Log.Message("added " + w);
                         }
                     }
                 }
-                //
-
                 if (pawn.Faction != null && !pawn.Faction.IsPlayer && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;

@@ -10,7 +10,7 @@ namespace HumanResources
     {
         private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
             return studyWeapons.Any();
         }
@@ -38,13 +38,13 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             return !knownWeapons.Any();
         }
 
         protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             return chosen.Intersect(knownWeapons);
         }

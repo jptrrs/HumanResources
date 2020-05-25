@@ -18,7 +18,7 @@ namespace HumanResources
 
         private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Except(knownWeapons);
             if (studyWeapons.Any())
             {
@@ -39,7 +39,7 @@ namespace HumanResources
                     //Log.Message("...no job on target.");
                     return false;
                 }
-                IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+                IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
                 foreach (Bill bill in RelevantBills(Target))
                 {
                     return ValidateChosenWeapons(bill, pawn);
@@ -80,7 +80,7 @@ namespace HumanResources
             ////if (!flag) Log.Message(pawn + " skipped training. Available: " + available.ToList().Count() + ", studyMaterial: " + studyMaterial.Count());
             //return !flag;
 
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             IEnumerable<ThingDef> chosen = chosenIngThings.Cast<ThingDef>();
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
             IEnumerable<ThingDef> studyMaterial = chosen.Intersect(available).Except(knownWeapons);
@@ -108,7 +108,7 @@ namespace HumanResources
                             MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
                             FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
                             //
-                            chosenIngThings.RemoveAll(x => pawn.GetComp<CompKnowledge>().knownWeapons.Contains(x.Thing.def));
+                            chosenIngThings.RemoveAll(x => pawn.TryGetComp<CompKnowledge>().knownWeapons.Contains(x.Thing.def));
                             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
                             {
                                 if (chosenIngThings.Any())
@@ -147,7 +147,7 @@ namespace HumanResources
                 return job;
             }
             Job job2 = new Job(DefDatabase<JobDef>.GetNamed("TrainWeapon"), (Thing)giver);
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             chosenIngThings.RemoveAll(x => knownWeapons.Contains(x.Thing.def));
             job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
             job2.countQueue = new List<int>(chosenIngThings.Count);

@@ -23,7 +23,7 @@ namespace HumanResources
                     //Log.Message("...no job on target.");
                     return false;
                 }
-                IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+                IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
                 foreach (Bill bill in RelevantBills(Target, pawn))
                 {
                     return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
@@ -59,7 +59,7 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
             IEnumerable<ThingDef> studyMaterial = available.Except(knownWeapons);
             return !studyMaterial.Any();
@@ -120,7 +120,7 @@ namespace HumanResources
 
         protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.GetComp<CompKnowledge>().knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             return chosen.Intersect(available).Except(knownWeapons);

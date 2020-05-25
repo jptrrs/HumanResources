@@ -192,7 +192,7 @@ namespace HumanResources
 			finalizeTraining.initAction = delegate
 			{
 				Pawn actor = finalizeTraining.actor;
-				CompKnowledge techComp = actor.GetComp<CompKnowledge>();
+				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
 				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def)) 
 				{
 					techComp.proficientWeapons.Add(TargetThingB.def);
