@@ -312,7 +312,7 @@ namespace HumanResources
 			Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
 			foreach (ResearchProjectDef ancestor in expertise.Keys)
 			{
-				if (tech.prerequisites.Contains(ancestor))
+				if (!tech.prerequisites.NullOrEmpty() && tech.prerequisites.Contains(ancestor))
 				{
 					amount *= 2;
 					break;

@@ -144,21 +144,21 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                Log.Warning("aquiring expertise for " + pawn+ "...");
+                //Log.Warning("aquiring expertise for " + pawn+ "...");
                 var acquiredExpertise = GetExpertiseDefsFor(pawn);
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
                     expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
-                    Log.Message("...known techs: " + expertise.Count());
+                    //Log.Message("...known techs: " + expertise.Count());
                 }
                 else
                 {
-                    Log.Message("...did not acquire any expertise");
+                    Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
                 }
                 AcquireWeaponKnowledge();
-                Log.Message("...known weapons: " + proficientWeapons.Count());
+                //Log.Message("...known weapons: " + proficientWeapons.Count());
                 AcquirePlantKnowledge();
-                Log.Message("...known plants: " + proficientPlants.Count());
+                //Log.Message("...known plants: " + proficientPlants.Count());
             }
         }
 

@@ -156,7 +156,7 @@ namespace HumanResources
 				//sound:
 				if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
 				{
-					if ((ticksSpentDoingRecipeWork % verbToUse.verbProps.warmupTime.SecondsToTicks()) == 0)
+					if ((ticksSpentDoingRecipeWork % verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, actor).SecondsToTicks()) == 0)
 					{
 						if (verbToUse.verbProps.soundCast != null)
 						{

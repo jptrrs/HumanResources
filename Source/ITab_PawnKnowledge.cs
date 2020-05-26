@@ -116,7 +116,6 @@ namespace HumanResources
             if (!knownWeapons.NullOrEmpty())
             {
                 var filteredKnownWeapons = knownWeapons.Where(x => !x.menuHidden);
-                Log.Message("knownweapons for " + PawnToShowInfoAbout + ": " + filteredKnownWeapons.Count());
                 var noCommomWeapons = filteredKnownWeapons.Where(x => !x.weaponTags.NullOrEmpty());
                 var filteredWeapons = filterWeapons ? filteredKnownWeapons : noCommomWeapons;
                 var weaponsList = filteredWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
