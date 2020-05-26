@@ -1,11 +1,31 @@
-![Preview](https://github.com/jptrrs/OpenTheWindows/blob/master/About/Preview.png)
+![Preview](https://github.com/jptrrs/HumanResources/blob/master/About/Preview.png)
 
-# [JPT] Open The Windows!
-Natural Light for RimWorld
+# [JPT] Human Resources!
+A technology overhaul for RimWorld 
 
-[**>>> DOWNLOAD IT HERE <<<**](https://github.com/jptrrs/OpenTheWindows/releases/latest)
+[**>>> DOWNLOAD IT HERE <<<**](https://github.com/jptrrs/HumanResources/releases/latest)
 
-_Introducing a revolutionary device to illuminate, ventilate and defend your base: the **WINDOW**! Your base designs are never going to be same._
+_So, the brainiac in your colony spent a whole week locked up in his lab and discovered solar power. Great! Now, how exactly the builder figures out how to actually build the damn solar panels? Or else: you happened to find a sweet pulse charge rifle laying around and you give it to your best shooter, who's been only using bow and arrow for his whole life. How the heck is he supposed to operate this space-age weapon?! How can someone grow peaches if he's never seen a peach tree before? Or craft a full armor set without knowing how to smith? What if your pawns had to actually learn their stuff before putting a new technology to use?_
+
+This experimental mod with far-reaching consequences completely changes the way research plays out in the game. Technology is no longer some abstract concept, instead it is treated as knowledge to be individually learned from methodical research, by studying the proper books (yes, you get to build a library!) or, when it comes to weapons skills, to be acquired by arduous training (yes, you get to build a dojo!). Proper knowledge of what they're doing will be mandatory for your pawns to build and repair structures, follow recipes, grow crops and equip weapons. This will make you care a lot more for your colonists and give you a whole new perspective on recruiting. It will also raise new obstacles to developing your colony, making the game harder but also adding gameplay depth. We hope you're up to the challenge!
+
+#### Warning #1: Not suited to be added mid-game. 
+Please, start a new one.
+
+#### Warning #2: This mod relies on [ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759) (or its branch, [ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822)). 
+If you don't use one of them yet, what are you doing with your life? They're pretty much mandatory mods. Please, choose one and install it. We could have incorporated Fluffy's code into ours, but we'd rather mantain a lean mod and give you an incentive to get know and support his work.
+
+#### Warning #3: This is a public test phase for an unifinished mod. 
+Expect many issues and incompatibilities. We're counting on your collaboration to identify them and suggest improvements. Bear in mind the final product might be very different, and changes made during this process might break your game. If you're planning on starting a long-term playthrough (and we encourage you to do so, so we can test long-term effects), be prepared to make a local copy to avoid game-breaking updates.
+
+## Expertise
+
+## Books
+Yes, books! This is how humanity stores and shares knowledge. You can write them yourself, with the appropiate expertise, or buy them from specialized vendors. Your pawns will need to spend some time with them to expand their horizons. 
+
+## Changed Research Benches
+
+## Weapon training
 
 ## Let **natural light** in!
 
