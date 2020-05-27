@@ -32,7 +32,7 @@ Yes, books! This is how humanity stores and shares knowledge and this is how you
 ## Researching is **hard.**
 Researching with _**Human Resources**_ is a little different from the base game. Selecting a technology on the research tab will accomplish nothing. Instead, the research benches now function like the other work stations: you set up a bill with the subject to be researched and you can restrict skill levels or even assign individual pawns for the task. Your pawns will come to work if they're assigned to researching, as usual. However, their work no longer outputs to the research project on the main research tab, but to their own individual expertise instead, and it takes a little longer. If the tech you're researching has any pre-requisites, your pawns will only be able to proceed if they already mastered those. On the other hand, if what they are researching is itself a pre-requisite to something they already know, their research speed is doubled.
 
-As you can see, the technology advancemnt for your colony will become it's own **production chain**:
+As you can see, the technology advancement for your colony will become it's own **production chain**:
 
 research tech > | document it into a book > | add book to library > | study tech > | do stuff with it.
 :---|:---|:---|:---|:---
