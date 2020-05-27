@@ -5,9 +5,9 @@ A technology overhaul for RimWorld
 
 [**>>> DOWNLOAD IT HERE <<<**](https://github.com/jptrrs/HumanResources/releases/latest)
 
-_So, the brainiac in your colony spent a whole week locked up in his lab and discovered solar power. Great! Now, how exactly the builder figures out how to actually build the damn solar panels? Or else: you happened to find a sweet pulse charge rifle laying around and you give it to your best shooter, who's been only using bow and arrow for his whole life. How the heck is he supposed to operate this space-age weapon?! How can someone grow peaches if he's never seen a peach tree before? Or craft a full armor set without knowing how to smith? What if your pawns had to actually learn their stuff before putting a new technology to use?_
+_So, the brainiac in your colony spent a whole week locked up in his lab and discovered solar power. Great! Now, how exactly do the builder figures out how to actually build the damn solar panels? Or else: your hunter has been using only bow and arrow for his whole life, so how the heck is he going to operate the space-age pulse charger you just gave him? How can someone grow peaches if he's never seen a peach tree before? Craft a full armor set without knowing how to smith? **What if your pawns had to actually learn their stuff before putting a new technology to use?**_
 
-This experimental mod with far-reaching consequences completely changes the way research plays out in the game. Technology is no longer some abstract concept, instead it is treated as knowledge to be individually learned from methodical research, by studying the proper books (yes, you get to build a library!) or, when it comes to weapons skills, to be acquired by arduous training (yes, you get to build a dojo!). Proper knowledge of what they're doing will be mandatory for your pawns to build and repair structures, follow recipes, grow crops and equip weapons. This will make you care a lot more for your colonists and give you a whole new perspective on recruiting. It will also raise new obstacles to developing your colony, making the game harder but also adding gameplay depth. We hope you're up to the challenge!
+This experimental mod with far-reaching consequences completely changes the way research plays out in the game. No longer some abstract concept, technologies become actual knowledge your pawns need to learn from methodical research, by studying the proper books (yes, you get to build a library!) or, when it comes to weapons skills, to be acquired by arduous training (yes, you get to build a dojo!). Proper knowledge of what they're doing will be mandatory for them to build and repair structures, follow recipes, grow crops and equip weapons. **This will make you care a lot more for your colonists and give you a whole new perspective on recruiting**. It will also raise new obstacles to developing your colony, making the game harder but also adding gameplay depth. We hope you're up to the challenge!
 
 #### Warning #1: Not suited to be added mid-game. 
 Please, start a new one.
@@ -18,12 +18,24 @@ If you don't use one of them yet, what are you doing with your life? They're pre
 #### Warning #3: This is a public test phase for an unifinished mod. 
 Expect many issues and incompatibilities. We're counting on your collaboration to identify them and suggest improvements. Bear in mind the final product might be very different, and changes made during this process might break your game. If you're planning on starting a long-term playthrough (and we encourage you to do so, so we can test long-term effects), be prepared to make a local copy to avoid game-breaking updates.
 
-## Expertise
+Here are the details on how it works:
 
-## Books
-Yes, books! This is how humanity stores and shares knowledge. You can write them yourself, with the appropiate expertise, or buy them from specialized vendors. Your pawns will need to spend some time with them to expand their horizons. 
+## Knowledge is **power.**
+Every pawn gets a new inspector tab: _Tech_. It displays everything he or she knows: technological expertise on one side and weapons proficiency on the other. Both lists are derived from the current game database, so all modded research projects and weapons are automatically included. Newly generated pawns, including NPCs, are assigned a number of techs based on his faction tech level and his background. That number depends on a pawn's age and faction level: tribals get more and cheaper techs, and the more advanced their starting level is the more specialized they tend to be. This list limits what a pawn can build, repair, grow or craft. To acquire new knowledge, he or she will need to study! That's one of the uses of the new _study desk_.
+The weapon proficiency works similarly, limiting what weapons the pawn can equip. Some weapons are just too simple to use and don't require any special training, so all pawns start with those. Specially good shooters and brawlers get access to all their tech level's ranged and melee weapons, respectively (at the cost of one less tech on their expertise). Additionally, pawns who know how to craft a weapon automatically know how to use it. Beyond this starting proficiency, any weapon that's linked with a research project will require the pawn to learn how to use it before equipping. To train with a new weapon, that tech must have already been unlocked and the pawn will need to spend some time with the _training dummy_ or at the _target stand_. More on that below.
+
+## Books are **mandatory.**
+Yes, books! This is how humanity stores and shares knowledge, and this is how you're going to store and share your technology now. There's a book for every research project on the game (even modded ones), and you can only unlock a technology when you add that book to your library. Of course, this is RimWorld, so finding useful books is not so easy. You can eventually buy them from the new specialized traders, but that's expensive and they rarely visit. You can maybe get them as a quest reward too. But mostly you'll have to write them yourself, by assinging a pawn to a _document technology_ task on the _study desk_. The pawn, of course, will only be able to write about what he knows! This means in order to expand your horizons you'll need to either recruit more talents or do some research!
+
+## Researching is **hard.**
+Researching with _**Human Resources**_ is a little different from the base game. Selecting a technology on the research tab will accomplish nothing. Instead, the research benches now function like the other work stations: you set up a bill with the subject to be researched and you can restrict skill levels or even assign individual pawns for the task. Your pawns will come to work if they're assigned to researching, as usual. However, their work no longer outputs to the research project on the main research tab, but to their own individual expertise instead, and it takes a little longer. If the tech you're researching has any pre-requisites, your pawns will only be able to proceed if they already mastered those. On the other hand, if what they are researching is itself a pre-requisite to something they already know, their research speed is doubled.
+As you can see, the technology advancemnt for your colony will become it's own **production chain**:
+research tech > | document it into a book > | add book to library > | study tech > | do stuff with it
+:---|:---|:---|:---|:---
+(research bench)|(study bench)|(book shelf)|(study bench)|(build/repair/grow/craft)
 
 ## Changed Research Benches
+
 
 ## Weapon training
 
