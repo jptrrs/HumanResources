@@ -72,10 +72,12 @@ Not compatible with:
 *   [Star Wars - Fully Functional Lightsabers](https://steamcommunity.com/sharedfiles/filedetails/?id=918200645)
 
 ## Acknowledgements
-
-This mod's light distribution model was inspired by [Dubs Skylights](https://steamcommunity.com/sharedfiles/filedetails/?id=833899765). Many thanks for that and for the help! Also, thanks to Thom Blair III and Vermillion for their willingness in making compatibility easier with their respective mods, NanoCE for the support and inspiration, and Brrains, Krafs, lbmaian and erdelf on the Harmony Discord channel for the help.
+Borrowed code from Fluffy's [Research Tree](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778), Jecrell's [RimWriter](https://steamcommunity.com/sharedfiles/filedetails/?id=1521844535) & notfood's _ThingDef injection_ for [Psychology](https://steamcommunity.com/sharedfiles/filedetails/?id=1552507180).\
+*Training Dummy* and *Target Stand* originally designed by Shinzy for [Practise Target](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778).\
+Some textures based on [designs by Freepik](http://www.freepik.com).\
+Many thanks to Brrains and erdelf on the Harmony Discord channel for the help.\
+**Thank you!**
 
 ## GitHub
-
-Open for collaborations on: https://github.com/jptrrs/OpenTheWindows
+Open for collaborations on: https://github.com/jptrrs/HumanResources
 
