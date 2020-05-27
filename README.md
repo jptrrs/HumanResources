@@ -22,38 +22,33 @@ Here are the details on how it works:
 
 ## Knowledge is **power.**
 Every pawn gets a new inspector tab: _Tech_. It displays everything he or she knows: technological expertise on one side and weapons proficiency on the other. Both lists are derived from the current game database, so all modded research projects and weapons are automatically included. Newly generated pawns, including NPCs, are assigned a number of techs based on his faction tech level and his background. That number depends on a pawn's age and faction level: tribals get more and cheaper techs, and the more advanced their starting level is the more specialized they tend to be. This list limits what a pawn can build, repair, grow or craft. To acquire new knowledge, he or she will need to study! That's one of the uses of the new _study desk_.
-The weapon proficiency works similarly, limiting what weapons the pawn can equip. Some weapons are just too simple to use and don't require any special training, so all pawns start with those. Specially good shooters and brawlers get access to all their tech level's ranged and melee weapons, respectively (at the cost of one less tech on their expertise). Additionally, pawns who know how to craft a weapon automatically know how to use it. Beyond this starting proficiency, any weapon that's linked with a research project will require the pawn to learn how to use it before equipping. To train with a new weapon, that tech must have already been unlocked and the pawn will need to spend some time with the _training dummy_ or at the _target stand_. More on that below.
+
+The weapon proficiency works similarly, limiting what weapons the pawn can equip. Some weapons are just too simple to use and don't require any special training, so all pawns start with those. Specially good shooters and brawlers get access to all ranged and melee weapons on their tech level, respectively (at the cost of one less tech on their expertise). Additionally, pawns who know how to craft a weapon are automatically proficient with it. Beyond this starting proficiency, any weapon that's linked with a research project will require the pawn to learn how to use it before equipping. To train with a new weapon, that tech must have already been unlocked and the pawn will need to spend some time with the _training dummy_ or at the _target stand_. More on that below.
 
 ## Books are **mandatory.**
-Yes, books! This is how humanity stores and shares knowledge, and this is how you're going to store and share your technology now. There's a book for every research project on the game (even modded ones), and you can only unlock a technology when you add that book to your library. Of course, this is RimWorld, so finding useful books is not so easy. You can eventually buy them from the new specialized traders, but that's expensive and they rarely visit. You can maybe get them as a quest reward too. But mostly you'll have to write them yourself, by assinging a pawn to a _document technology_ task on the _study desk_. The pawn, of course, will only be able to write about what he knows! This means in order to expand your horizons you'll need to either recruit more talents or do some research!
+Yes, books! This is how humanity stores and shares knowledge, and this is how you're going to store and share your technology now. There's a book for every research project on the game (even modded ones), and you can only unlock a technology when you add that book to your library. Of course, this is RimWorld, so finding useful books is not so easy. You can eventually buy them from the new specialized traders, but that's expensive and they rarely visit. You can maybe get them as a quest reward too. But mostly you'll have to write them yourself, by assinging a colonist to a _document technology_ task on the _study desk_. He will only be able to write about what he knows, of course! This means in order to expand your horizons you'll need to either recruit more talents or do some research!
 
 ## Researching is **hard.**
 Researching with _**Human Resources**_ is a little different from the base game. Selecting a technology on the research tab will accomplish nothing. Instead, the research benches now function like the other work stations: you set up a bill with the subject to be researched and you can restrict skill levels or even assign individual pawns for the task. Your pawns will come to work if they're assigned to researching, as usual. However, their work no longer outputs to the research project on the main research tab, but to their own individual expertise instead, and it takes a little longer. If the tech you're researching has any pre-requisites, your pawns will only be able to proceed if they already mastered those. On the other hand, if what they are researching is itself a pre-requisite to something they already know, their research speed is doubled.
+
 As you can see, the technology advancemnt for your colony will become it's own **production chain**:
-research tech > | document it into a book > | add book to library > | study tech > | do stuff with it
+
+research tech > | document it into a book > | add book to library > | study tech > | do stuff with it.
 :---|:---|:---|:---|:---
 (research bench)|(study bench)|(book shelf)|(study bench)|(build/repair/grow/craft)
 
-## Changed Research Benches
-
+#### To Do: include an option for the hardcore player to forego tech research entirely. 
 
 ## Weapon training
+The _training dummy_ and the _target stand_ are the facilities for learning to use melee and ranged weapons, respectively. Any weapon will be made avaiable for this once their associated technology is unlocked (_i.e._ added to the library). Pawns must be assigned to learning. 
 
-## Let **natural light** in!
 
-Once your pawns realize they've been cut off from nature's light cycles, they're going to crave it! The outdoors need levels are going to decay 3x faster* if they are stuck indoors without windows. You are going to need them all over the place! But you better plan well. Be prepared to set aside some land, because the windows can only pump light in if they have acess to wide open areas. So say goodbye to the infinite hallways of rooms glued to one another in unhealthy bunkers and welcome to the real-world architecture needs! Also, if you are playing with [Dubs Skylights](https://steamcommunity.com/sharedfiles/filedetails/?id=833899765) or [Expanded Roofing](https://steamcommunity.com/sharedfiles/filedetails/?id=1512478761), all light coming from your skylights or transparent roofs counts as natural light too. But just like in real life, it suffers a small 10% loss when crossing the glass framings.*
 
-## Circulate **air**!
+## Changed Research Benches
 
-Your windows can act as vents. But you will need to research glass-making before you can build windows that can filter air or light independently. More advanced windows can ventilate even with their shutters closed, even if at a lower rate. If you're playing with [Glass+Lights](https://steamcommunity.com/sharedfiles/filedetails/?id=826153738), all research and production chains will be integrated.
+Books you buy or write yourself will only count as unlocked technologies when they're stored on a _book shelf_. These constitute your library, and you should take good care of them! After all, a destroyed book literally means  
 
-## **Shoot** through the windows!
 
-Who needs embrasures when you can use a window that opens and closes? That's right: your pawns can shoot while ducking behind a window, with a cover value equivalent to sandbags. When the enemies get too close, the window can be closed and it will become equivalent to a wall. Let them come! Of course, they might decide to charge the windows themselves, and they are weaker than a regular wall. You might find yourself with a breach on your hands! But don't worry, there's a fortified window you can install on more sensitive locations. They just won't come cheap!
-
-## Enjoy **beautiful** landscapes!
-
-If you're playing with [Nature is Beautiful](https://steamcommunity.com/sharedfiles/filedetails/?id=1530259312), its [rebalanced version](https://steamcommunity.com/sharedfiles/filedetails/?id=1551147619) or [Beautiful Outdoors](https://steamcommunity.com/sharedfiles/filedetails/?id=2011794898), the windows will calculate their own beauty stat by summing up all the beauty on their outside field of view. This means your rooms will actually benefit from having a garden next door! For balancing reasons, we've inculded a "beauty sensitivity reduction" factor*. * These adjustments are customizable on the mod's options panel, so you can totally have it your way!
 
 [![](https://i.imgur.com/EEgQ2Ss.png)](http://ko-fi.com/jptrrs)
 
