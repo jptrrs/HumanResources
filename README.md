@@ -1,6 +1,6 @@
 ![Preview](About/Preview.png)
 
-# [JPT] Human Resources!
+# [JPT] Human Resources - Alpha
 A technology overhaul for RimWorld 
 
 [**>>> DOWNLOAD IT HERE <<<**](https://github.com/jptrrs/HumanResources/releases/latest)
