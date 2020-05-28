@@ -44,17 +44,24 @@ research tech > | document it into a book > | add book to library > | study tech
 #### To Do: include an option for the hardcore player to forego tech research entirely! 
 
 ## New and Improved facilities
+
+![BookShelf](https://i.imgur.com/uOLvVV4.png)\
 Books you buy or write yourself will only count as unlocked technologies when they're stored on a _book shelf_. These constitute your library, and you should take good care of them. After all, a destroyed book means literally lost knowledge! Each shelf can store up to 12 books, and they link with research benches and study desks to improve researching and studying speed. This boost isn't a fixed and linear number, though. It depends on how many books your library holds on total: the more books you have, the smaller the buff each book gives.
 
+
+![ResearchBenches](https://i.imgur.com/scoC79s.png)\
 The _simple_ and _high tech research benches_ have been modified to work as regular work stations, with only one recipe each: _research_. We also made them more compact, considering you'll need lots of space for your new book shelves. Remember: books on connected book shelves improve research speed. Other than that, they keep their base characteristics, including the ability to connect with a _multi-analyser_.
 
+
+![StudyDesk](https://i.imgur.com/ZivxfT4.png)\
 The new work station is the _study desk_. This is where your pawns will acquire knowledge, using the _study technology_ recipe, and also output their own expertise into books, using the _document technology_ recipe. You can select which knowledge will be studied or documented on the ingredients panel. Both tasks are governed by the pawn's _intellectual_ skill and the time it takes to complete them depends on the technology complexity.
 
 In order to **study** a technolgy, pawns must be assigned to _learn_ on the work tab, its book must be available on your library and the pawn must already know all ancestor techs. Only discovered techs will show up on the ingredients filter panel. 
 
 When it comes to **writing books**, the pawn must be assigned to _Research_ on the work tab and, obviously, he must know the desired tech already. Only undiscovered techs will show up on the ingredients filter panel.
 
-![Books and Shelf](https://i.imgur.com/2o9elHT.png)\
+
+![WeaponTraining](https://i.imgur.com/W7lBKOr.png)\
 The _training dummy_ and the _target stand_ are the facilities for learning to use melee and ranged weapons, respectively. Any weapon will be made avaiable for this once their associated technology is unlocked (_i.e._ added to the library). There are **two** recipes: use _learn weapon_ to aquire a new proficiency and _Practice melee/shooting_ to simply improve the pawn's skill on that kind of weapon (an easy way to gain XP and keep them sharp!). Pawns must be assigned to _learn_ on the work tab, and the relevant skill corresponds to the used weapon.
 
 [![](https://i.imgur.com/EEgQ2Ss.png)](http://ko-fi.com/jptrrs)
