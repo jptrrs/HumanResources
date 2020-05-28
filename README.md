@@ -21,12 +21,13 @@ Expect many issues and incompatibilities. We're counting on your collaboration t
 Here are the details on how it works:
 
 ## Knowledge is **power.**
+![books](https://i.imgur.com/3kuHr7M.png)\
 Every pawn gets a new inspector tab: _Tech_. It displays everything he or she knows: technological expertise on one side and weapons proficiency on the other. Both lists are derived from the current game database, so all modded research projects and weapons are automatically included. Newly generated pawns, including NPCs, are assigned a number of techs based on his faction tech level and his background. That number depends on a pawn's age and faction level: tribals get more and cheaper techs, and the more advanced their starting level is the more specialized they tend to be. This list limits what a pawn can build, repair, grow or craft. To acquire new knowledge, he or she will need to study! That's one of the uses of the new _study desk_.
 
 The weapon proficiency works similarly, limiting what weapons the pawn can equip. Some weapons are just too simple to use and don't require any special training, so all pawns start with those. Specially good shooters and brawlers get access to all ranged and melee weapons on their tech level, respectively (at the cost of one less tech on their expertise). Additionally, pawns who know how to craft a weapon are automatically proficient with it. Beyond this starting proficiency, any weapon that's linked with a research project will require the pawn to learn how to use it before equipping. To train with a new weapon, that tech must have already been unlocked and the pawn will need to spend some time with the _training dummy_ or at the _target stand_. More on that below.
 
 ## Books are **mandatory.**
-![books](https://imgur.com/xLgTSL4.png)\
+![books](https://i.imgur.com/2o9elHT.png)\
 Yes, books! This is how humanity stores and shares knowledge and this is how you're going to store and share your technology now. There's a book for every research project on the game (even modded ones), and you can only unlock a technology when you add that book to your library. Of course, this is RimWorld, so finding useful books is not so easy. You can eventually buy them from the new specialized traders, but that's expensive and they rarely visit. You can maybe get them as a quest reward too. But mostly you'll have to write them yourself, by assinging a colonist to a _document technology_ task on the _study desk_. He will only be able to write about what he knows, of course! This means in order to expand your horizons you'll need to either recruit more talents or do some research!
 
 ## Researching is **hard.**
