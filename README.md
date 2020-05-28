@@ -1,4 +1,4 @@
-![Preview](https://github.com/jptrrs/HumanResources/blob/master/About/Preview.png)
+![Preview](About/Preview.png)
 
 # [JPT] Human Resources!
 A technology overhaul for RimWorld 
