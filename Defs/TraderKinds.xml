@@ -21,7 +21,7 @@
 
   <TraderKindDef>
     <defName>Orbital_Tech</defName>
-    <label>enciclopedia seller</label>
+    <label>offworld publisher</label>
     <commonality>1</commonality>
     <orbital>true</orbital>
     <stockGenerators>

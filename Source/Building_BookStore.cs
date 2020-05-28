@@ -42,22 +42,15 @@ namespace HumanResources
         public Building_BookStore()
         {
             innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
-            //slotGroup = new SlotGroup_BookStore(this);
         }
         
-        //public bool TryAccept(Thing thing)
-        //{
-        //    return true;
-        //}
-
         public bool Accepts(Thing thing)
         {
             if (thing.Stuff != null && thing.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
             {
-                //bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;
-                bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;//innerContainer.Any(x => x.Stuff == thing.Stuff);
+                bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;
                 return allowed && fits && !duplicate;
             }
             return false;
@@ -93,17 +86,13 @@ namespace HumanResources
         {
         Thing outThing;
         droppedThing = null;
-        if (innerContainer.Count > 0)
-        {
-            innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
-            if (forbid) outThing.SetForbidden(true);
-            droppedThing = outThing as ThingWithComps;
-            return true;
-        }
-        else
-        {
-            Log.Warning("Building_InternalStorage : TryDropRandom - failed to get a book.");
-        }
+            if (innerContainer.Count > 0)
+            {
+                innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
+                if (forbid) outThing.SetForbidden(true);
+                droppedThing = outThing as ThingWithComps;
+                return true;
+            }
             return false;
         }
 
@@ -177,12 +166,9 @@ namespace HumanResources
             Map map = Map;
             if (innerContainer.Count != 0)
             {
-                //foreach (ThingBook current in innerContainer)
                 foreach (Thing current in innerContainer)
                 {
                     string text = current.Label;
-                    //if (current.TryGetComp<CompArt>() is CompArt compArt)
-                    //    text = TranslatorFormattedStringExtensions.Translate("RimWriter_BookTitle", compArt.Title, compArt.AuthorName);
                     List<FloatMenuOption> menu = list;
                     Func<Rect, bool> extraPartOnGUI = (Rect rect) => Widgets.InfoCardButton(rect.x + 5f, rect.y + (rect.height - 24f) / 2f, current);
                     menu.Add(new FloatMenuOption(text, delegate { TryDrop(current); }, MenuOptionPriority.Default, null, null, 29f, extraPartOnGUI, null));

@@ -21,32 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B
 		Defs\StuffCategories.xml = Defs\StuffCategories.xml
 		Defs\ThingCategories.xml = Defs\ThingCategories.xml
 		Defs\Things.xml = Defs\Things.xml
-		TraderKinds.xml = TraderKinds.xml
+		Defs\TraderKinds.xml = Defs\TraderKinds.xml
 		Defs\WorkGivers.xml = Defs\WorkGivers.xml
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "English", "English", "{09F3603A-0073-497A-ACAA-541F5006FFCD}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{2E40F710-D92E-4778-8170-90E0C139B601}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\English\Keyed\HumanResources_keys.xml = Languages\English\Keyed\HumanResources_keys.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portuguese", "Portuguese", "{C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{BD7B65EA-E59C-4123-853E-EE0A7F4E1B8E}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Portuguese\Keyed\BurnItForFuel_keys.xml = Languages\Portuguese\Keyed\BurnItForFuel_keys.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PortugueseBrazilian", "PortugueseBrazilian", "{EE02142C-EF8D-4A9D-8AB2-CDC293042218}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{E35F3389-1928-4A41-A186-77CC05AEDCE6}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml = Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{6A809623-353B-411E-BDB4-7C4428221C02}"
@@ -127,13 +104,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{DD698DDA-6D8B-4ADD-B702-4821AC16F6CC} = {A425CC4D-B9E9-4338-8845-ACD73F533D7D}
-		{09F3603A-0073-497A-ACAA-541F5006FFCD} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
-		{2E40F710-D92E-4778-8170-90E0C139B601} = {09F3603A-0073-497A-ACAA-541F5006FFCD}
-		{C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
-		{BD7B65EA-E59C-4123-853E-EE0A7F4E1B8E} = {C5E84C0F-D11C-4F0E-B8F3-C4EC4D55C921}
-		{EE02142C-EF8D-4A9D-8AB2-CDC293042218} = {DD698DDA-6D8B-4ADD-B702-4821AC16F6CC}
-		{E35F3389-1928-4A41-A186-77CC05AEDCE6} = {EE02142C-EF8D-4A9D-8AB2-CDC293042218}
 		{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB} = {6A809623-353B-411E-BDB4-7C4428221C02}
 		{433382EE-88BC-4265-97D3-BD88C6A45CBC} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
 		{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}

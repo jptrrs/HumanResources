@@ -221,7 +221,7 @@
   <!--Borrewed from ItchyFlea's Practise Target-->
   <ThingDef ParentName="FurnitureBase">
     <defName>Target</defName>
-    <label>Target</label>
+    <label>Target Stand</label>
     <description>A target for your sharpshooters to hone their skills with.</description>
     <thingClass>Building_WorkTable</thingClass>
     <uiIconPath>Things/Building/Target_MenuIcon</uiIconPath>
@@ -256,7 +256,7 @@
 
   <ThingDef ParentName="FurnitureBase">
     <defName>MrDummy</defName>
-    <label>training dummy</label>
+    <label>Training Dummy</label>
     <thingClass>Building_WorkTable</thingClass>
     <description>A straw dummy for training melee skill.</description>
     <uiIconPath>Things/Building/MrDummy_north</uiIconPath>

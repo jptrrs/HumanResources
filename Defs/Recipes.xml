@@ -3,7 +3,7 @@
 
   <RecipeDef>
     <defName>LearnTech</defName>
-    <label>Study technologies</label>
+    <label>Study technology</label>
     <description>Study to acquire knowledge about a new technology.</description>
     <jobString>Studying a new technology.</jobString>
     <workAmount>240</workAmount>
@@ -32,7 +32,7 @@
 
   <RecipeDef>
     <defName>DocumentTech</defName>
-    <label>Document technologies</label>
+    <label>Document technology</label>
     <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
