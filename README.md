@@ -18,6 +18,8 @@ If you don't use one of them yet, what are you doing with your life? They're pre
 #### Warning #3: This is a public test phase for an unifinished mod. 
 Expect many issues and incompatibilities. We're counting on your collaboration to identify them and suggest improvements. Bear in mind the final product might be very different, and changes made during this process might break your game. If you're planning on starting a long-term playthrough (and we encourage you to do so, so we can test long-term effects), be prepared to make a local copy to avoid game-breaking updates.
 
+This is how it works:
+
 ## Knowledge is **power.**
 ![Tech Tab](https://i.imgur.com/3kuHr7M.png)
 
@@ -42,7 +44,6 @@ research tech > | document it into a book > | add book to library > | study tech
 #### To Do: include an option for the hardcore player to forego tech research entirely! 
 
 ## New and Improved facilities
-
 Books you buy or write yourself will only count as unlocked technologies when they're stored on a _book shelf_. These constitute your library, and you should take good care of them. After all, a destroyed book means literally lost knowledge! Each shelf can store up to 12 books, and they link with research benches and study desks to improve researching and studying speed. This boost isn't a fixed and linear number, though. It depends on how many books your library holds on total: the more books you have, the smaller the buff each book gives.
 
 The _simple_ and _high tech research benches_ have been modified to work as regular work stations, with only one recipe each: _research_. We also made them more compact, considering you'll need lots of space for your new book shelves. Remember: books on connected book shelves improve research speed. Other than that, they keep their base characteristics, including the ability to connect with a _multi-analyser_.
@@ -63,7 +64,7 @@ This was not designed to be added to an ongoing game, please only enable it if y
 
 #### Depends on:
 * **[ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759)** or its branch, **[ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822)**. Please pick one. 
-* **[Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077)**
+* **[HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=818773962)**
 
 #### Integrates with:
 * **[Go Explore](https://steamcommunity.com/sharedfiles/filedetails/?id=1814100216):** When a pawn succeds on a _Research Request_ event, instead of your faction progressing toward the discovered tech, that is added to the pawns individual expertise. In order for the colony benefit as a whole, he will have to write a book about it!
@@ -81,4 +82,3 @@ Many thanks to Brrains and erdelf on the Harmony Discord channel for the help.\
 
 ## GitHub
 Open for collaborations on: https://github.com/jptrrs/HumanResources
-
