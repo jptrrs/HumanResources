@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <HugsLib.UpdateFeatureDef Abstract="true" Name="HumanResources.UpdateFeatureBase">
+    <modNameReadable>Human Resources</modNameReadable>
+    <modIdentifier>JPT_HumanResources</modIdentifier>
+    <linkUrl>https://ko-fi.com/jptrrs</linkUrl>
+  </HugsLib.UpdateFeatureDef>
+
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+	<defName>HumanResources_0_1</defName>
+	<assemblyVersion>0.1</assemblyVersion>
+	<content>
+&lt;b&gt;You've been recruited to test this out!&lt;/b&gt;
+|This is a work in progress, and we're thrilled you are giving it a shot! Bear in mind you might encounter some errors and incompatibilities. If you do, please let me know. Don't forget to hit Ctrl+F12 to upload the error log and send me that link. I'm also open to any suggestions you might have, so please keep in touch!
+|
+|&lt;b&gt;Here's a quick guide to get you started:&lt;/b&gt;
+|img:TechButton
+|Check out the new tab for yout colonists. It displays the sum of their knowledge, and that represents the limit of what they are able to build, repair, craft, grow and also the weapons they are able to equip. A starting knowledge set is generated for every pawn based on background, age and faction. From there, its your task to educate them!
+|
+|img:Study+Shelf
+|Build a &lt;i&gt;study desk&lt;/i&gt; and a &lt;i&gt;bookshelf&lt;/i&gt; as soon as you can. This allows your colonists to &lt;i&gt;document&lt;/i&gt; their knowledge into books (when assigned to &lt;i&gt;research&lt;/i&gt; on the work tab) and then &lt;i&gt;study&lt;/i&gt; books to acquire new knowledge (when assigned to &lt;i&gt;learn&lt;/i&gt;). 
+|
+|img:ResearchBenches
+|These are the new research benches. Now they operate like the other work stations: you'll need to assign bills for your colonists to perform research. And what they learn will remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
+|
+|img:Target+Dummy
+|When you discover new weapons, your colonists will need to train at these facilities in order to learn how to use them (for that, they must also be assigned to &lt;i&gt;learn&lt;/i&gt;). The &lt;i&gt;training dummy&lt;/i&gt; is for meleee weapons and the &lt;i&gt;target stand&lt;/i&gt; is for ranged ones. You can also task them with &lt;i&gt;practicing&lt;/i&gt; a weapon. This will allow them to sharpen their melee or shooting skills!
+|
+|img:Quarantine|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; 
+This is being made as I try to mantain myself as isolated as possible during the COVID-19 crisis. Like many people around the world, my living has been impacted by the global efforts to contain the pandemic, and this is my effort to remain productive. If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. 
+Many, many thanks for your support!
+    </content>
+	</HugsLib.UpdateFeatureDef>
+  
+</Defs>
