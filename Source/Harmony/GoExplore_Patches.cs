@@ -1,5 +1,7 @@
-﻿using RimWorld;
+﻿using HarmonyLib;
+using RimWorld;
 using RimWorld.Planet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +11,15 @@ namespace HumanResources
 {
     public static class GoExplore_Patches
     {
+        public static void Execute(Harmony instance)
+        {
+            Type ResearchRequestType = AccessTools.TypeByName("LetsGoExplore.WorldObject_ResearchRequestLGE");
+            instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Success", new Type[] { typeof(Caravan) }),
+                new HarmonyMethod(typeof(GoExplore_Patches), nameof(Outcome_Success_Prefix)), null, null);
+            instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Triumph", new Type[] { typeof(Caravan) }),
+                new HarmonyMethod(typeof(GoExplore_Patches), nameof(Outcome_Triumph_Prefix)), null, null);
+        }
+
         public static bool Outcome_Success_Prefix(WorldObject __instance, Caravan caravan, ref IntRange ___SuccessFactionRelationOffset, ref FloatRange ___SuccessResearchAmount)
         {
             int factionRelationGain = ___SuccessFactionRelationOffset.RandomInRange;

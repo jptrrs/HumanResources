@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using System;
 using System.Linq;
 using Verse;
@@ -54,10 +55,12 @@ namespace HumanResources
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))
             {
                 Log.Message("[HumanResources] Go Explore detected! Integrating...");
-                Instance.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Outcome_Success"),
-                    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Success_Prefix)), null, null);
-                Instance.Patch(AccessTools.Method("LetsGoExplore.WorldObject_ResearchRequestLGE:Outcome_Triumph"),
-                    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Triumph_Prefix)), null, null);
+                GoExplore_Patches.Execute(Instance);
+                //Type ResearchRequestType = AccessTools.TypeByName("LetsGoExplore.WorldObject_ResearchRequestLGE");
+                //Instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Success", new Type[] { typeof(Caravan) }),
+                //    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Success_Prefix)), null, null);
+                //Instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Triumph", new Type[] { typeof(Caravan) }),
+                //    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Triumph_Prefix)), null, null);
             }
 
         }
