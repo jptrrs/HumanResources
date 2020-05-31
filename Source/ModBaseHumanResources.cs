@@ -55,12 +55,22 @@ namespace HumanResources
                 foreach (ThingDef weapon in tech.UnlockedWeapons()) UniversalWeapons.Remove(weapon);
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
+            List<string> ForbiddenWeaponTags = DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags").weaponTags;
+            if (Prefs.LogVerbose) Log.Message("[HumanResources] Preventing these weapon types from being commom: " + ForbiddenWeaponTags.ToStringSafeEnumerable());
+            foreach (string tag in ForbiddenWeaponTags)
+            {
+                UniversalWeapons.RemoveAll(x => !x.weaponTags.NullOrEmpty() && x.weaponTags.Any(t => t.Contains(tag)));
+            }
+            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags") });
 
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
-            //Log.Message("[HumanResources] Codified technologies:" + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
-            //Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
-            //Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
-            Log.Message("[HumanResources] This is what we know: "+codifiedTech.EnumerableCount() +" technologies processed, "+UniversalCrops.Count()+" basic crops, "+UniversalWeapons.Count()+" basic weapons");
+            if (Prefs.LogVerbose)
+            {
+                Log.Message("[HumanResources] Codified technologies:" + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
+                Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
+                Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+            }
+            else Log.Message("[HumanResources] This is what we know: "+codifiedTech.EnumerableCount() +" technologies processed, "+UniversalCrops.Count()+" basic crops, "+UniversalWeapons.Count()+" basic weapons");
 
             //TechBook dirty trick, but only now this is possible!
             //DefDatabase<ThingDef>.GetNamed("TechBook").stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));

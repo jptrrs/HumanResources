@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using System;
 using Verse;
 
 namespace HumanResources
@@ -7,8 +8,9 @@ namespace HumanResources
     [HarmonyPatch(typeof(ThingOwner), "NotifyAdded")]
     public static class ThingOwner_NotifyAdded
     {
-        public static void NotifyAdded_Postfix(Thing item, IThingHolder ___owner)
+        public static void Postfix(Thing item, IThingHolder ___owner)
         {
+            //Log.Message("NotifyAdded_Postfix");
             if (___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
             {
                 ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];

@@ -19,7 +19,7 @@ namespace HumanResources
                 if (!requisites.NullOrEmpty())
                 {
                     var knownPlants = pawn.TryGetComp<CompKnowledge>().knownPlants;
-                    //Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
+                    if (Prefs.LogVerbose) Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
                     bool flag = true;
                     if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
                     else flag = false;

@@ -27,16 +27,71 @@
           </inspectorTabs>
         </value>
       </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>
+        <match Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps/li/linkableFacilities</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>
+            <value>
+              <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities/>
+              </li>
+            </value>
+          </nomatch>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]</xpath>
+          <value>
+            <comps>
+              <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities/>
+              </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      
+      <!--<li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps/li/linkableFacilities</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps/li/linkableFacilities</xpath>
+          <value>
+            <li>BookShelf</li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>
+            <value>
+                <li Class="CompProperties_AffectedByFacilities">
+                  <linkableFacilities>
+                    <li>BookShelf</li>
+                  </linkableFacilities>
+                </li>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]</xpath>
+            <value>
+              <comps>
+                <li Class="CompProperties_AffectedByFacilities">
+                  <linkableFacilities>
+                    <li>BookShelf</li>
+                  </linkableFacilities>
+                </li>
+              </comps>
+            </value>
+          </nomatch>
+        </nomatch>
+      </li>-->
+      
       <li Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]</xpath>
+        <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps/li/linkableFacilities</xpath>
         <value>
-          <comps>
-            <li Class="CompProperties_AffectedByFacilities">
-              <linkableFacilities>
-                <li>BookShelf</li>
-              </linkableFacilities>
-            </li>
-          </comps>
+          <li>BookShelf</li>
         </value>
       </li>
       <li Class="PatchOperationAdd">

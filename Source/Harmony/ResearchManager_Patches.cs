@@ -19,8 +19,7 @@ namespace HumanResources
             if (weapons.Count > 0)
             {
                 ModBaseHumanResources.unlocked.UnlockWeapons(weapons);
-                Log.Message("[HumanResources] " + proj + " discovered, unlocked weapons: " + weapons.ToStringSafeEnumerable());
-                //Log.Message("[HumanResources] Currently unlocked weapons: " + ModBaseHumanResources.unlocked.weapons.Count());
+                if (Prefs.LogVerbose) Log.Message("[HumanResources] " + proj + " discovered, unlocked weapons: " + weapons.ToStringSafeEnumerable());
             }
         }
 

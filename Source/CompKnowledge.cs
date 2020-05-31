@@ -64,12 +64,12 @@ namespace HumanResources
             int slots = Mathf.Max(minSlots, FactionExpertiseRange(startingTechLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) + oldBonus - fighterHandicap);
             if (slots == 0)
             {
-                //Log.Warning("GetExpertiseDefsFor "+pawn+": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
+                if (Prefs.LogVerbose) Log.Warning("GetExpertiseDefsFor "+pawn+": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
                 return null;
             }
             bool guru = startingTechLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
             var filtered = Extension_Research.SkillsByTech.Where(e => e.Key.techLevel.Equals(startingTechLevel));
-            //Log.Warning("GetExpertiseDefsFor: " + pawn + "'s techLevel is " + startingTechLevel);
+            if (Prefs.LogVerbose) Log.Warning("GetExpertiseDefsFor " + pawn + ", techLevel is " + startingTechLevel);
             int pass = 0;
             List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
             if (guru) startingTechLevel++;
@@ -144,21 +144,21 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                //Log.Warning("aquiring expertise for " + pawn+ "...");
+                if (Prefs.LogVerbose) Log.Warning("aquiring expertise for " + pawn+ "...");
                 var acquiredExpertise = GetExpertiseDefsFor(pawn);
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
                     expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
-                    //Log.Message("...known techs: " + expertise.Count());
+                    if (Prefs.LogVerbose) Log.Message("...known techs: " + expertise.Count());
                 }
                 else
                 {
                     Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
                 }
                 AcquireWeaponKnowledge();
-                //Log.Message("...known weapons: " + proficientWeapons.Count());
+                if (Prefs.LogVerbose) Log.Message("...known weapons: " + proficientWeapons.Count());
                 AcquirePlantKnowledge();
-                //Log.Message("...known plants: " + proficientPlants.Count());
+                if (Prefs.LogVerbose) Log.Message("...known plants: " + proficientPlants.Count());
             }
         }
 
@@ -180,27 +180,27 @@ namespace HumanResources
                 if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
                 if (isFighter)
                 {
-                    //Log.Warning("extra melee weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    if (Prefs.LogVerbose) Log.Warning("extra melee weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
                         var weapons = tech.UnlockedWeapons().Where(x => x.IsMeleeWeapon);
                         if (weapons.Any()) foreach (ThingDef w in weapons)
                         {
                             proficientWeapons.Add(w);
-                            //Log.Message("added " + w);
+                            if (Prefs.LogVerbose) Log.Message("added " + w);
                         }
                     }
                 }
                 if (isShooter)
                 {
-                    //Log.Warning("extra ranged weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    if (Prefs.LogVerbose) Log.Warning("extra ranged weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
                         var weapons = tech.UnlockedWeapons().Where(x => x.IsRangedWeapon);
                         if (weapons.Any()) foreach (ThingDef w in weapons)
                         {
                             proficientWeapons.Add(w);
-                            //Log.Message("added " + w);
+                            if (Prefs.LogVerbose) Log.Message("added " + w);
                         }
                     }
                 }
@@ -237,8 +237,6 @@ namespace HumanResources
                     JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
                     return;
                 }
-                //List<ResearchProjectDef> nextProjects = starters.Concat(derived).ToList();
-                //HomeWork.AddRange(nextProjects);
                 HomeWork.AddRange(starters.Concat(derived));
             }
         }
@@ -247,12 +245,11 @@ namespace HumanResources
         {
             if (!HomeWork.NullOrEmpty())
             {
-                //var selectedAnywhere = Find.map .CurrentMap.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>().SelectMany(x => x.billStack.Bills).Where(x => x.recipe.defName.StartsWith("Tech_")).SelectMany(x => x.SelectedTech()).Distinct();
                 var excess = HomeWork.Except(SelectedAnywhere);
                 if (excess.Any())
                 {
                     HomeWork.RemoveAll(x => excess.Contains(x));
-                    //Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
+                    if (Prefs.LogVerbose) Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
                 }
             }
         }
@@ -267,13 +264,13 @@ namespace HumanResources
         public void LearnCrops(ResearchProjectDef tech)
         {
             proficientPlants.AddRange(tech.UnlockedPlants());
-            //Log.Message(parent + " can cultivate the followin plants: " + proficientPlants.ToStringSafeEnumerable());
+            if (Prefs.LogVerbose) Log.Message(parent + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
         }
 
         public void LearnWeapons(ResearchProjectDef tech)
         {
             proficientWeapons.AddRange(tech.UnlockedWeapons());
-            //Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
+            if (Prefs.LogVerbose) Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
         }
 
         public override void PostExposeData()
@@ -290,7 +287,7 @@ namespace HumanResources
             Scribe_Collections.Look(ref expertise, "Expertise");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
-            //Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
+            if (Prefs.LogVerbose) Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

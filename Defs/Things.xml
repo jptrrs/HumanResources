@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
+ 
   <ThingDef ParentName="BenchBase">
     <defName>StudyDesk</defName>
     <label>Study Desk</label>
@@ -155,6 +155,7 @@
     </inspectorTabs>
   </ThingDef>
 
+  <!--Technical Book-->
   <ThingDef ParentName="UnfinishedBase">
     <defName>UnfinishedTechBook</defName>
     <label>unfinished technical book</label>
@@ -288,6 +289,16 @@
     <inspectorTabs>
       <li>ITab_Bills</li>
     </inspectorTabs>
+  </ThingDef>
+  
+  <!--This is just to sort out WeaponTags that indicate weapons to be excluded from universal use-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>ForbiddenWeaponTags</defName>
+    <label>ForbiddenWeaponTags</label>
+    <weaponTags>
+      <li>Gun</li>
+    </weaponTags>
   </ThingDef>
 
 </Defs>

@@ -64,6 +64,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1A49A134-082B-49CA-BAED-1708C8422690}"
 	ProjectSection(SolutionItems) = preProject
 		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}"
