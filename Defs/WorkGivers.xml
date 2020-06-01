@@ -9,7 +9,8 @@
     <verb>research</verb>
     <gerund>researching at</gerund>
     <fixedBillGiverDefs>
-      <li>StudyDesk</li>
+      <li>SimpleResearchBench</li>
+      <li>HiTechResearchBench</li>
     </fixedBillGiverDefs>
   </WorkGiverDef>
 

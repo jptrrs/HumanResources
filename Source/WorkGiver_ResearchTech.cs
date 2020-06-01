@@ -25,11 +25,11 @@ namespace HumanResources
 			{
 				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
 				{
-					//Log.Message("...no job on desk.");
+					Log.Message("...no job on desk.");
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
-				//Log.Message("...relevant bills: " + RelevantBills(Desk).Count);
+				//Log.Message("...relevant bills: " + RelevantBills(Desk, pawn).Count);
 				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
@@ -39,10 +39,10 @@ namespace HumanResources
 				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
-				//Log.Message("...homework count is " + techComp.HomeWork.Count());
+				Log.Message("...homework count is " + techComp.HomeWork.Count());
 				//if (techComp.HomeWork.Count() > 0) return true;
 				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
-				//JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
+				JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
 				return false;
 			}
 			//Log.Message("case 4");
