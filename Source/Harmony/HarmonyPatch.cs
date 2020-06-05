@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using RimWorld;
-using RimWorld.Planet;
 using System;
 using System.Linq;
 using Verse;
@@ -56,13 +55,7 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Go Explore detected! Integrating...");
                 GoExplore_Patches.Execute(Instance);
-                //Type ResearchRequestType = AccessTools.TypeByName("LetsGoExplore.WorldObject_ResearchRequestLGE");
-                //Instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Success", new Type[] { typeof(Caravan) }),
-                //    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Success_Prefix)), null, null);
-                //Instance.Patch(AccessTools.Method(ResearchRequestType, "Outcome_Triumph", new Type[] { typeof(Caravan) }),
-                //    new HarmonyMethod(patchType, nameof(GoExplore_Patches.Outcome_Triumph_Prefix)), null, null);
             }
-
         }
 
         public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
@@ -74,9 +67,6 @@ namespace HumanResources
         {
             if (!__result && carrier.CurJobDef != null)
             {
-                //string test = carrier.CurJobDef != null ? "ok" : "bad";
-                //Log.Message("test: " + test);
-
                 Log.Message(carrier.CurJobDef.label);
             }
             

@@ -12,8 +12,6 @@ namespace HumanResources
         {
 			IEnumerable<ResearchProjectDef> expertise = pawn.TryGetComp<CompKnowledge>().expertise.Keys;
 			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise);
-			//bool flag = available.ToList().Count > 0;
-			//return !flag;
 			return !available.Any();
 		}
 

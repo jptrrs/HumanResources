@@ -217,19 +217,19 @@ namespace HumanResources
 
         public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
         {
-            //Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count()/* + ", " + studyMaterial.Except(expertise).Except(HomeWork).Count() + " are relevant"*/);
+            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + "projects, homework count is " + HomeWork.Count());
             if (pawn.Faction.IsPlayer)
             {
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f
                                     select x.Key;
-                var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
+                var available = studyMaterial.Except(expertiseKeys).Where(x => x.CanStartNow).Except(HomeWork);
                 if (!available.Any())
                 {
                     JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
                     return;
                 }
-                //Log.Warning("...Available projects: " + available.ToStringSafeEnumerable());
+                if (Prefs.LogVerbose) Log.Message("...Available projects: " + available.ToStringSafeEnumerable());
                 var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
                 var starters = available.Where(t => t.prerequisites.NullOrEmpty());
                 if (!starters.Any() && !derived.Any())

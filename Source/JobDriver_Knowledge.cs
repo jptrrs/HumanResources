@@ -56,7 +56,6 @@ namespace HumanResources
 					Messages.Message("MessageBillComplete".Translate(bill.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
 				}
 			}
-			//Log.Message("Notify_IterationCompleted bill is " + bill.Label);
 		}
 	}
 }

@@ -3,6 +3,10 @@ using Verse;
 using RimWorld;
 using System.Linq;
 using Verse.AI;
+using System.Reflection;
+using HarmonyLib;
+using System;
+using System.Security.Cryptography;
 
 namespace HumanResources
 {
@@ -78,14 +82,53 @@ namespace HumanResources
 			yield return gotoBillGiver;
 			yield return MakeUnfinishedThingIfNeeded();
 			yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return Toils_Recipe.FinishRecipeAndStartStoringProduct();
+			yield return FinishRecipeAndStartStoringProduct();
+
 			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
 			{
-				//Log.Warning("reached alternative conclusion");
-				yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
-				findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
-				yield return findPlaceTarget;
-				yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
+				yield return Toils_Reserve.Reserve(TargetIndex.B);
+				//yield return Toils_Reserve.Reserve(TargetIndex.A);
+				yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
+				findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
+				yield return findPlaceTarget; 
+				Toil prepare = Toils_General.Wait(250);
+				prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
+				yield return prepare;
+				yield return new Toil
+				{
+					initAction = delegate
+					{
+						Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
+						CurToil.FailOn(() => shelf == null);
+						Thing book = pawn.carryTracker.CarriedThing;
+						if (pawn.carryTracker.CarriedThing == null)
+						{
+							Log.Error(this.pawn + " tried to place a book on shelf but is not hauling anything.");
+							return;
+						}
+						if (shelf.Accepts(book))
+						{
+							bool flag = false;
+							if (book.holdingOwner != null)
+							{
+								book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
+								flag = true;
+							}
+							else
+							{
+								flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
+							}
+							shelf.CompStorageGraphic.UpdateGraphics();
+							pawn.carryTracker.innerContainer.Remove(book);
+						}
+						else
+						{
+							Log.Error(pawn + " tried to place a book in " + shelf + ", but won't accept it.");
+							return;
+						}
+						pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+					}
+				};
 			}
 			yield break;
 		}
@@ -120,6 +163,124 @@ namespace HumanResources
 				GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
 				curJob.SetTarget(TargetIndex.B, unfinishedThing);
 				actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
+			};
+			return toil;
+		}
+
+		private Toil FinishRecipeAndStartStoringProduct()
+		{
+			//Reflection info
+			MethodInfo CalculateIngredientsInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateIngredients", new Type[] { typeof(Job), typeof(Pawn) });
+			MethodInfo CalculateDominantIngredientInfo = AccessTools.Method(typeof(Toils_Recipe), "CalculateDominantIngredient", new Type[] { typeof(Job), typeof(List<Thing>) });
+			MethodInfo ConsumeIngredientsInfo = AccessTools.Method(typeof(Toils_Recipe), "ConsumeIngredients", new Type[] { typeof(List<Thing>), typeof(RecipeDef), typeof(Map) });
+			//
+
+			Toil toil = new Toil();
+			toil.initAction = delegate ()
+			{
+				Pawn actor = toil.actor;
+				Job curJob = actor.jobs.curJob;
+				JobDriver_DoBill jobDriver_DoBill = (JobDriver_DoBill)actor.jobs.curDriver;
+				if (curJob.RecipeDef.workSkill != null && !curJob.RecipeDef.UsesUnfinishedThing)
+				{
+					float xp = (float)jobDriver_DoBill.ticksSpentDoingRecipeWork * 0.1f * curJob.RecipeDef.workSkillLearnFactor;
+					actor.skills.GetSkill(curJob.RecipeDef.workSkill).Learn(xp, false);
+				}
+				List<Thing> ingredients = (List<Thing>)CalculateIngredientsInfo.Invoke(this,new object[] { curJob, actor });
+				Thing dominantIngredient = (Thing)CalculateDominantIngredientInfo.Invoke(this, new object[] { curJob, ingredients });
+				List<Thing> list = GenRecipe.MakeRecipeProducts(curJob.RecipeDef, actor, ingredients, dominantIngredient, jobDriver_DoBill.BillGiver).ToList<Thing>();
+				ConsumeIngredientsInfo.Invoke(this, new object[] { ingredients, curJob.RecipeDef, actor.Map });
+				curJob.bill.Notify_IterationCompleted(actor, ingredients);
+				RecordsUtility.Notify_BillDone(actor, list);
+				UnfinishedThing unfinishedThing = curJob.GetTarget(TargetIndex.B).Thing as UnfinishedThing;
+				if (curJob.bill.recipe.WorkAmountTotal((unfinishedThing != null) ? unfinishedThing.Stuff : null) >= 10000f && list.Count > 0)
+				{
+					TaleRecorder.RecordTale(TaleDefOf.CompletedLongCraftingProject, new object[]
+					{
+						actor,
+						list[0].GetInnerIfMinified().def
+					});
+				}
+				if (list.Any<Thing>())
+				{
+					Find.QuestManager.Notify_ThingsProduced(actor, list);
+				}
+				if (list.Count == 0)
+				{
+					actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+					return;
+				}
+				if (curJob.bill.GetStoreMode() == BillStoreModeDefOf.DropOnFloor)
+				{
+					for (int i = 0; i < list.Count; i++)
+					{
+						if (!GenPlace.TryPlaceThing(list[i], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
+						{
+							Log.Error(string.Concat(new object[]
+							{
+								actor,
+								" could not drop recipe product ",
+								list[i],
+								" near ",
+								actor.Position
+							}), false);
+						}
+					}
+					actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+					return;
+				}
+				if (list.Count > 1)
+				{
+					for (int j = 1; j < list.Count; j++)
+					{
+						if (!GenPlace.TryPlaceThing(list[j], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
+						{
+							Log.Error(string.Concat(new object[]
+							{
+								actor,
+								" could not drop recipe product ",
+								list[j],
+								" near ",
+								actor.Position
+							}), false);
+						}
+					}
+				}
+				IHaulDestination destination;
+				//IntVec3 invalid = IntVec3.Invalid;
+				if (curJob.bill.GetStoreMode() == BillStoreModeDefOf.BestStockpile)
+				{
+					StoreUtility.TryFindBestBetterNonSlotGroupStorageFor(list[0], actor, actor.Map, StoragePriority.Unstored, actor.Faction, out destination);
+					curJob.targetB = destination as Thing;
+					curJob.targetA = list[0];
+					curJob.count = 1;
+				}
+				//else if (curJob.bill.GetStoreMode() == BillStoreModeDefOf.SpecificStockpile)
+				//{
+				//	StoreUtility.TryFindBestBetterStoreCellForIn(list[0], actor, actor.Map, StoragePriority.Unstored, actor.Faction, curJob.bill.GetStoreZone().slotGroup, out invalid, true);
+				//}
+				else
+				{
+					Log.ErrorOnce("Unknown store mode", 9158246, false);
+				}
+				//if (invalid.IsValid)
+				//{
+				//	actor.carryTracker.TryStartCarry(list[0]);
+				//	curJob.targetB = invalid;
+				//	curJob.targetA = list[0];
+				//	curJob.count = 99999;
+				//	return;
+				//}
+				if (!GenPlace.TryPlaceThing(list[0], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
+				{
+					Log.Error(string.Concat(new object[]
+					{
+						"Bill doer could not drop product ",
+						list[0],
+						" near ",
+						actor.Position
+					}), false);
+				}
 			};
 			return toil;
 		}
