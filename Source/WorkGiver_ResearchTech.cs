@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -34,7 +35,7 @@ namespace HumanResources
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
-					studyMaterial.AddRange(bill.SelectedTech().Where(x => !x.IsFinished));
+					studyMaterial.AddRange(bill.SelectedTech().Where(x => !x.IsFinished && x.TechprintRequirementMet && (x.requiredResearchBuilding == null || (bool)AccessTools.Property(typeof(ResearchProjectDef),"PlayerHasAnyAppropriateResearchBench").GetValue(x))));
 				}
 				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();

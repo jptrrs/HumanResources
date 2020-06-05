@@ -223,7 +223,7 @@ namespace HumanResources
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f
                                     select x.Key;
-                var available = studyMaterial.Except(expertiseKeys).Where(x => x.CanStartNow).Except(HomeWork);
+                var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
                 if (!available.Any())
                 {
                     JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
