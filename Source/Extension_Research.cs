@@ -42,7 +42,7 @@ namespace HumanResources
 
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
-			//Verse.Log.Message("InferSkillBias Starting for "+tech.LabelCap);
+			//Log.Message("InferSkillBias Starting for "+tech.LabelCap);
 
 			//1. check what it unlocks
 			//List<Pair<Def, string>> unlocks = tech.GetUnlockDefsAndDescs();
@@ -89,7 +89,7 @@ namespace HumanResources
 					if (r.workSkill != null)
 					{
 						//FieldInfo workskillInfo = AccessTools.Field(typeof(ResearchNode_Extensions), r.workSkill.label + "Tag");
-						//Verse.Log.Message(r + " worksill is " + r.workSkill);// +", field is "+ workskillInfo.GetValue(research));
+						//Log.Message(r + " worksill is " + r.workSkill);// +", field is "+ workskillInfo.GetValue(research));
 						AccessTools.Field(typeof(Extension_Research), r.workSkill.label + "Tag").SetValue(tech, true);
 					}
 				}
@@ -110,7 +110,7 @@ namespace HumanResources
 			int ThingDefCount = thingDefs.Count();
 			int RecipeDefCount = recipeDefs.Count();
 			int TerrainDefCount = terrainDefs.Count();
-			//Verse.Log.Message("Skills for " + tech + ": " + scoreTableReport + " with " + matches + " matches, " + ThingDefCount + " thingDefs and " + RecipeDefCount + " recipes.");
+			//Log.Message("Skills for " + tech + ": " + scoreTableReport + " with " + matches + " matches, " + ThingDefCount + " thingDefs and " + RecipeDefCount + " recipes.");
 
 			List<SkillDef> relevantSkills = new List<SkillDef>();
 			if (shootingTag)
@@ -175,7 +175,7 @@ namespace HumanResources
 			}
 			//if (ThingDefCount > 0)
 			//{
-			//Verse.Log.Message("Skills for " + tech + ": " + relevantSkills.ToStringSafeEnumerable() + " (with " + matches + " matches, " + ThingDefCount + " thingDefs, " + RecipeDefCount + " recipes and " + TerrainDefCount + " terrainDefs).");
+			//Log.Message("Skills for " + tech + ": " + relevantSkills.ToStringSafeEnumerable() + " (with " + matches + " matches, " + ThingDefCount + " thingDefs, " + RecipeDefCount + " recipes and " + TerrainDefCount + " terrainDefs).");
 			//}
 
 			SkillsByTech.Add(tech, relevantSkills);
@@ -252,21 +252,16 @@ namespace HumanResources
 
 		public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
 		{
-			//Verse.Log.Message("looking for unlocked weapons for "+tech+"...");
 			List<ThingDef> result = new List<ThingDef>();
 			foreach (RecipeDef r in tech.GetRecipesUnlocked().Where(x => !x.products.NullOrEmpty()))
 			{
-				//Verse.Log.Message("...checking recipe " + r.label);
 				foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(t => t.Contains("Basic"))) && !(x.defName.Contains("Tool") || x.defName.Contains("tool"))))
 				{
-					//string test = (weapon.defName.Contains("Tool")) ? "gotcha!" : "";
-					//Verse.Log.Message("...found " + weapon.defName+" "+test);
 					result.Add(weapon);
 				}
 			}
-			foreach (ThingDef weapon in tech.GetThingsUnlocked().Where(x => x.building.turretGunDef != null).Select(x => x.building.turretGunDef))
+			foreach (ThingDef weapon in tech.GetThingsUnlocked().Where(x => x.building != null && x.building.turretGunDef != null).Select(x => x.building.turretGunDef))
 			{
-				//Verse.Log.Message("...checking weapon " + weapon.label);
 				result.Add(weapon);
 			}
 			return result;
@@ -332,7 +327,7 @@ namespace HumanResources
 			}
 			float num = tech.GetProgress(expertise);
 			num += amount/total;
-			//Verse.Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
+			//Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
 			expertise[tech] = num;
 		}
 

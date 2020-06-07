@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
+using HugsLib.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -48,14 +51,22 @@ namespace HumanResources
             }
         }
 
+        private static Func<SkillRecord, SkillRecord, SkillRecord> AccessHighestSkill = (A, B) =>
+        {
+            int a = A.levelInt;
+            int b = B.levelInt;
+            if (a == b) return (A.passion >= B.passion) ? A : B;
+            return (a > b) ? A : B;
+        };
+
         public static IEnumerable<ResearchProjectDef> GetExpertiseDefsFor(Pawn pawn)
         {
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
             startingTechLevel = faction?.techLevel ?? 0;
             if (startingTechLevel == 0) startingTechLevel = InferTechLevelfromBG(pawn);
-            SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate((l, r) => l.levelInt > r.levelInt ? l : r);
+            SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate(AccessHighestSkill);
             SkillDef highestSkill = highestSkillRecord.def;
-            SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate((l, r) => l.levelInt >= r.levelInt ? l : r).def;
+            SkillDef secondSkill = pawn.skills.skills.Except(highestSkillRecord).Aggregate(AccessHighestSkill).def;
             isFighter = highestSkill == SkillDefOf.Melee;
             isShooter = highestSkill == SkillDefOf.Shooting;
             int fighterHandicap = (isFighter | isShooter) ? 1 : 0;
@@ -64,12 +75,16 @@ namespace HumanResources
             int slots = Mathf.Max(minSlots, FactionExpertiseRange(startingTechLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) + oldBonus - fighterHandicap);
             if (slots == 0)
             {
-                if (Prefs.LogVerbose) Log.Warning("GetExpertiseDefsFor "+pawn+": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
+                if (Prefs.LogVerbose) Log.Warning("Expertise generation for " + pawn + ": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
                 return null;
             }
             bool guru = startingTechLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
             var filtered = Extension_Research.SkillsByTech.Where(e => e.Key.techLevel.Equals(startingTechLevel));
-            if (Prefs.LogVerbose) Log.Warning("GetExpertiseDefsFor " + pawn + ", techLevel is " + startingTechLevel);
+            if (Prefs.LogVerbose)
+            {
+                string guruNote = guru ? " (with intellectual bounus)" : "";
+                Log.Message("Expertise generation for " + pawn + ": techLevel is " + startingTechLevel + guruNote + ", highest skills: " + highestSkill.label + " & "+ secondSkill.label + ", "+slots+" calculated slots.");
+            }
             int pass = 0;
             List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
             if (guru) startingTechLevel++;
@@ -144,21 +159,22 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                if (Prefs.LogVerbose) Log.Warning("aquiring expertise for " + pawn+ "...");
+                if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn+ "...");
                 var acquiredExpertise = GetExpertiseDefsFor(pawn);
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
                     expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
-                    if (Prefs.LogVerbose) Log.Message("...known techs: " + expertise.Count());
+                    if (Prefs.LogVerbose) Log.Message(parent + "'s expertise: " + expertise.Keys.ToStringSafeEnumerable());
                 }
                 else
                 {
                     Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
                 }
                 AcquireWeaponKnowledge();
-                if (Prefs.LogVerbose) Log.Message("...known weapons: " + proficientWeapons.Count());
+                if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
                 AcquirePlantKnowledge();
-                if (Prefs.LogVerbose) Log.Message("...known plants: " + proficientPlants.Count());
+                if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(parent + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+
             }
         }
 
@@ -167,7 +183,6 @@ namespace HumanResources
             if (proficientPlants == null)
             {
                 proficientPlants = new List<ThingDef>();
-                //proficientPlants.AddRange(ModBaseHumanResources.UniversalCrops);
                 if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
             }
         }
@@ -177,41 +192,42 @@ namespace HumanResources
             if (proficientWeapons == null)
             {
                 proficientWeapons = new List<ThingDef>();
-                if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
+                if (!expertise.EnumerableNullOrEmpty())
+                {
+                    foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
+                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) Log.Message(pawn + " can craft some weapons...");
+                }
                 if (isFighter)
                 {
-                    if (Prefs.LogVerbose) Log.Warning("extra melee weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    if (Prefs.LogVerbose) Log.Message(pawn + " is a fighter, adding extra " + startingTechLevel + " melee weapons proficiencies...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
                         var weapons = tech.UnlockedWeapons().Where(x => x.IsMeleeWeapon);
-                        if (weapons.Any()) foreach (ThingDef w in weapons)
-                        {
-                            proficientWeapons.Add(w);
-                            if (Prefs.LogVerbose) Log.Message("added " + w);
-                        }
+                        if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
                     }
+                    if (pawn.Faction.IsPlayer) proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => x.IsMeleeWeapon));
                 }
                 if (isShooter)
                 {
-                    if (Prefs.LogVerbose) Log.Warning("extra ranged weapons for " + pawn + ", techLevel is "+startingTechLevel+"...");
+                    if (Prefs.LogVerbose) Log.Warning(pawn + " is a shooter, adding extra " + startingTechLevel + " ranged weapons proficiencies...");
                     foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.techLevel == startingTechLevel))
                     {
-                        var weapons = tech.UnlockedWeapons().Where(x => x.IsRangedWeapon);
-                        if (weapons.Any()) foreach (ThingDef w in weapons)
-                        {
-                            proficientWeapons.Add(w);
-                            if (Prefs.LogVerbose) Log.Message("added " + w);
-                        }
+                        var weapons = tech.UnlockedWeapons().Concat(ModBaseHumanResources.unlocked.startingWeapons).Where(x => x.IsRangedWeapon);
+                        if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
                     }
+                    if (pawn.Faction.IsPlayer) proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => x.IsRangedWeapon));
                 }
                 if (pawn.Faction != null && !pawn.Faction.IsPlayer && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
                     if (!knownWeapons.Contains(weapon.def))
                     {
+                        if (Prefs.LogVerbose) Log.Warning(pawn + " is using a " + weapon.def.label + "...");
                         proficientWeapons.Add(weapon.def);
                     }
                 }
+                proficientWeapons.RemoveDuplicates();
+                if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) Log.Message("...final weapon proficiencies: " + proficientWeapons.ListElements());
             }
         }
 
@@ -264,13 +280,11 @@ namespace HumanResources
         public void LearnCrops(ResearchProjectDef tech)
         {
             proficientPlants.AddRange(tech.UnlockedPlants());
-            if (Prefs.LogVerbose) Log.Message(parent + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
         }
 
         public void LearnWeapons(ResearchProjectDef tech)
         {
             proficientWeapons.AddRange(tech.UnlockedWeapons());
-            if (Prefs.LogVerbose) Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
         }
 
         public override void PostExposeData()

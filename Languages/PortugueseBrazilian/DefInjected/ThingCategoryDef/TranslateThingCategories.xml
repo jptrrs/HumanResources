@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <Knowledge.label>Conhecimentos</Knowledge.label>
+  <Neolithic.label>Neolítico</Neolithic.label>
+  <Medieval.label>Medieval</Medieval.label>
+  <Industrial.label>Industrial</Industrial.label>
+  <Spacer.label>Espacial</Spacer.label>
+  <Ultra.label>Ultra</Ultra.label>
+  <Archotech.label>Archotech</Archotech.label>
+</LanguageData>

@@ -90,6 +90,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{9D9198D1
 		Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml = Languages\PortugueseBrazilian\Keyed\BurnItForFuel_keys.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{FB43E893-944D-41CA-854B-49B12159459C}"
+	ProjectSection(SolutionItems) = preProject
+		News\HumanResources_UpdateFeatures.xml = News\HumanResources_UpdateFeatures.xml
+		News\Quarantine.png = News\Quarantine.png
+		News\ResearchBenches.png = News\ResearchBenches.png
+		News\Study+Shelf.png = News\Study+Shelf.png
+		News\Target+Dummy.png = News\Target+Dummy.png
+		News\TechButton.png = News\TechButton.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

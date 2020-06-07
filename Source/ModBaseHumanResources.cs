@@ -4,6 +4,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine.SceneManagement;
 using Verse;
 
 namespace HumanResources
@@ -107,11 +108,19 @@ namespace HumanResources
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
+        public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
 
         public override void WorldLoaded()
         {
-            //unlocked = new UnlockManager();
             unlocked.RecacheUnlockedWeapons();
+        }
+
+        public override void MapComponentsInitializing(Map map)
+        {
+            if (GenScene.InPlayScene)
+            {
+                unlocked.RegisterStartingWeapons();
+            }
         }
     }   
 }

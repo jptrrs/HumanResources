@@ -60,7 +60,7 @@ namespace HumanResources
                 }
                 if (pawn == null)
                 {
-                    //Verse.Log.Error("Knowledge tab found no selected pawn to display.");
+                    //Log.Error("Knowledge tab found no selected pawn to display.");
                     return null;
                 }
                 return pawn;

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace HumanResources
 {
     public class UnlockManager : IExposable
-    {
+    {       
         public List<ThingDef> weapons = new List<ThingDef>();
+        public IEnumerable<ThingDef> startingWeapons;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
         
@@ -32,13 +34,20 @@ namespace HumanResources
                 {
                     UnlockWeapons(tech.UnlockedWeapons());
                 }
-                //Log.Warning("Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
+                if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
             }
         }
 
         public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
         {
             weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
+        }
+
+        public void RegisterStartingWeapons()
+        {
+            FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
+            startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
+            Log.Message("[HumanResources] Starting scenario weapons: " + startingWeapons.Count() + " " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
         }
 
         private const float decay = 0.02f;

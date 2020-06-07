@@ -98,7 +98,7 @@
 
   <RecipeDef>
     <defName>TrainWeaponShooting</defName>
-    <label>learn to shoot a weapon</label>
+    <label>Learn to shoot a weapon</label>
     <description>Train with a ranged weapon to acquire proficiency.</description>
     <jobString>Training to use a ranged weapon.</jobString>
     <workAmount>3000</workAmount>
@@ -126,7 +126,7 @@
 
   <RecipeDef>
     <defName>TrainWeaponMelee</defName>
-    <label>learn to wield a weapon</label>
+    <label>Learn to wield a weapon</label>
     <description>Train with a melee weapon to acquire proficiency.</description>
     <jobString>Training to use a melee weapon.</jobString>
     <workAmount>3000</workAmount>
@@ -157,7 +157,7 @@
   <!--From ItchyFlea's Practise Target-->
   <RecipeDef>
     <defName>PracticeShooting</defName>
-    <label>practice shooting</label>
+    <label>Practice shooting</label>
     <description>Shoots at a target to practice shooting accuracy.</description>
     <jobString>Practicing shooting.</jobString>
     <workAmount>350</workAmount>
@@ -187,7 +187,7 @@
 
   <RecipeDef>
     <defName>PracticeMelee</defName>
-    <label>practice melee</label>
+    <label>Practice melee</label>
     <description>Practices close quarters combat against a straw dummy.</description>
     <jobString>Practicing melee.</jobString>
     <workAmount>700</workAmount>

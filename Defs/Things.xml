@@ -158,7 +158,7 @@
   <!--Technical Book-->
   <ThingDef ParentName="UnfinishedBase">
     <defName>UnfinishedTechBook</defName>
-    <label>unfinished technical book</label>
+    <label>Unfinished technical book</label>
     <statBases>
       <Flammability>1.2</Flammability>
     </statBases>
