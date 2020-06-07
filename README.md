@@ -13,7 +13,7 @@ This experimental mod with far-reaching consequences completely changes the way 
 Please, start a new one.
 
 #### Warning #2: This mod relies on [ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759) (or its branch, [ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822)). 
-If you don't use one of them yet, what are you doing with your life? They're pretty much mandatory mods. Please, choose one and install it. We could have incorporated Fluffy's code into ours, but we'd rather mantain a lean mod and give you an incentive to get know and support his work.
+If you don't use one of them yet, what are you doing with your life? They're pretty much mandatory mods. Please, choose one and install it. We could have incorporated Fluffy's code into ours, but we'd rather mantain a lean mod and give you an incentive to get to know and support his work.
 
 #### Warning #3: This is a public test phase for an unifinished mod. 
 Expect many issues and incompatibilities. We're counting on your collaboration to identify them and suggest improvements. Bear in mind the final product might be very different, and changes made during this process might break your game. If you're planning on starting a long-term playthrough (and we encourage you to do so, so we can test long-term effects), be prepared to make a local copy to avoid game-breaking updates.
@@ -74,7 +74,7 @@ This was not designed to be added to an ongoing game, please only enable it if y
 * **[HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=818773962)**
 
 #### Integrates with:
-* **[Go Explore](https://steamcommunity.com/sharedfiles/filedetails/?id=1814100216):** When a pawn succeds on a _Research Request_ event, instead of your faction progressing toward the discovered tech, that is added to the pawns individual expertise. In order for the colony benefit as a whole, he will have to write a book about it!
+* **[Go Explore](https://steamcommunity.com/sharedfiles/filedetails/?id=1814100216):** When a pawn succeds on a _Research Request_ event, instead of your faction progressing toward the discovered tech, that is added to the pawns individual expertise. In order for the colony to benefit as a whole, he will have to write a book about it!
 * more to come, depending on what's requested by the players during this alpha phase.
 
 #### Not compatible with:
