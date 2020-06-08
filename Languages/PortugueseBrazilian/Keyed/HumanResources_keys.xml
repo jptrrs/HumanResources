@@ -7,6 +7,15 @@
   <ShowCommon>mostrar comuns</ShowCommon>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
 
+  <!--Settings-->
+  <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
+  <TechPoolModeDesc>Define o conjunto de tecnologias que alimenta a geração de conhecimento para os colonos quando eles são criados.</TechPoolModeDesc>
+  <TechPoolMode_Both>de ambas as configurações da facção</TechPoolMode_Both>
+  <TechPoolMode_TechLevel>do nível tecnológico da facção, somente</TechPoolMode_TechLevel>
+  <TechPoolMode_Starting>das tecnologias iniciais da facção, somente</TechPoolMode_Starting>
+  <TechPoolIncludesScenarioTitle>Incluir também tecnologias que constem em partes acrescentadas ao cenário</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>Quando marcado, qualquer tecnologia que você acrescentar no editor do cenário também será incluída.</TechPoolIncludesScenarioDesc> 
+  
   <!--Things-->
   <BookStoreEmpty>Vazia</BookStoreEmpty>
   <BookStoreCapacity>Tecnologias em arquivo: {0}/{1}</BookStoreCapacity>

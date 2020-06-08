@@ -45,7 +45,6 @@ namespace HumanResources
 			//Log.Message("InferSkillBias Starting for "+tech.LabelCap);
 
 			//1. check what it unlocks
-			//List<Pair<Def, string>> unlocks = tech.GetUnlockDefsAndDescs();
 			List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
 			IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
 			IEnumerable<ThingDef> thingDefs = from d in defs
@@ -82,15 +81,15 @@ namespace HumanResources
 			{
 				foreach (RecipeDef r in recipeDefs)
 				{
+					//Log.Message("trying recipe " + r.label);
 					foreach (ThingDef t in r.products.Select(x => x.thingDef))
 					{
 						InvestigateThingDef(t);
 					}
 					if (r.workSkill != null)
 					{
-						//FieldInfo workskillInfo = AccessTools.Field(typeof(ResearchNode_Extensions), r.workSkill.label + "Tag");
-						//Log.Message(r + " worksill is " + r.workSkill);// +", field is "+ workskillInfo.GetValue(research));
-						AccessTools.Field(typeof(Extension_Research), r.workSkill.label + "Tag").SetValue(tech, true);
+						//Log.Message(r + " workskill is " + r.workSkill.label.ToLower());// +", field is "+ workskillInfo.GetValue(research));
+						AccessTools.Field(typeof(Extension_Research), r.workSkill.label.ToLower() + "Tag").SetValue(tech, true);
 					}
 				}
 			}
@@ -173,10 +172,6 @@ namespace HumanResources
 				relevantSkills.Add(SkillDefOf.Intellectual);
 				intellectualTag = false;
 			}
-			//if (ThingDefCount > 0)
-			//{
-			//Log.Message("Skills for " + tech + ": " + relevantSkills.ToStringSafeEnumerable() + " (with " + matches + " matches, " + ThingDefCount + " thingDefs, " + RecipeDefCount + " recipes and " + TerrainDefCount + " terrainDefs).");
-			//}
 
 			SkillsByTech.Add(tech, relevantSkills);
 			//Bias = scoreTable.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
@@ -194,7 +189,7 @@ namespace HumanResources
 				if (!plantsTag) try { plantsTag |= t.plant != null; } catch { };
 				if (!craftingTag) try { craftingTag |= t.IsApparel | t.IsWeapon; } catch { };
 				if (!artisticTag) try { artisticTag |= t.IsArt | t.IsWithinCategory(ThingCategoryDefOf.BuildingsArt); } catch { };
-				if (medicineTag) try { medicineTag |= t.IsMedicine | t.IsDrug; } catch { };
+				if (!medicineTag) try { medicineTag |= t.IsMedicine | t.IsDrug; } catch { };
 			}
 		}
 

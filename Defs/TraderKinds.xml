@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <TraderKindDef>
+  <!--<TraderKindDef>
     <defName>Caravan_Tech</defName>
     <label>enciclopedia seller</label>
     <commonality>1</commonality>
@@ -34,6 +34,6 @@
         <countRange>1~1</countRange>
       </li>
     </stockGenerators>
-  </TraderKindDef>
+  </TraderKindDef>-->
 
 </Defs>

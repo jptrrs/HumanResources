@@ -7,6 +7,15 @@
   <ShowCommon>show common</ShowCommon>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
 
+  <!--Settings-->
+  <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>
+  <TechPoolModeDesc>Defines the pool from which to draw technologies for the player's colonists when they are created.</TechPoolModeDesc>
+  <TechPoolMode_Both>both faction settings</TechPoolMode_Both>
+  <TechPoolMode_TechLevel>the faction's tech level only</TechPoolMode_TechLevel>
+  <TechPoolMode_Starting>the starting techs for that faction only</TechPoolMode_Starting>
+  <TechPoolIncludesScenarioTitle>Also include starting research parts from scenario</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included</TechPoolIncludesScenarioDesc>
+  
   <!--Things-->
   <BookStoreEmpty>Empty</BookStoreEmpty>
   <BookStoreCapacity>Archived technologies: {0}/{1}</BookStoreCapacity>
