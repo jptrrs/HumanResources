@@ -24,7 +24,7 @@ namespace HumanResources
 		private static bool animalsTag = false; //revert to secondary
 		private static bool craftingTag = false;
 		private static bool artisticTag = false;
-		private static bool medicineTag = false;
+		private static bool medicalTag = false;
 		private static bool socialTag = false; //broader knowledge
 		private static bool intellectualTag = false; //higher tech level
 
@@ -42,7 +42,7 @@ namespace HumanResources
 
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
-			//Log.Message("InferSkillBias Starting for "+tech.LabelCap);
+			//Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
 
 			//1. check what it unlocks
 			List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
@@ -63,7 +63,7 @@ namespace HumanResources
 			int matches = 0;
 			if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; matches++; };
 
-			if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; matches++; };
+			if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicalTag = true; matches++; };
 
 			if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; matches++; };
 
@@ -157,10 +157,10 @@ namespace HumanResources
 				relevantSkills.Add(SkillDefOf.Artistic);
 				artisticTag = false;
 			}
-			if (medicineTag)
+			if (medicalTag)
 			{
 				relevantSkills.Add(SkillDefOf.Medicine);
-				medicineTag = false;
+				medicalTag = false;
 			}
 			if (socialTag)
 			{
@@ -189,7 +189,7 @@ namespace HumanResources
 				if (!plantsTag) try { plantsTag |= t.plant != null; } catch { };
 				if (!craftingTag) try { craftingTag |= t.IsApparel | t.IsWeapon; } catch { };
 				if (!artisticTag) try { artisticTag |= t.IsArt | t.IsWithinCategory(ThingCategoryDefOf.BuildingsArt); } catch { };
-				if (!medicineTag) try { medicineTag |= t.IsMedicine | t.IsDrug; } catch { };
+				if (!medicalTag) try { medicalTag |= t.IsMedicine | t.IsDrug; } catch { };
 			}
 		}
 
