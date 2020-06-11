@@ -27,10 +27,14 @@ namespace HumanResources
             if (equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))
             {
                 string labelShort = equipment.LabelShort;
-                string flavoredExplanation = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
-                FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + flavoredExplanation + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
-                opts.RemoveAt(opts.FindIndex(x => x.Label.Contains("Equip".Translate(labelShort))));
-                opts.Add(item);
+                int Index = opts.FindIndex(x => x.Label.Contains(labelShort));
+                if(Index != -1)
+                {
+                    string flavoredExplanation = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
+                    FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + flavoredExplanation + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
+                    opts.RemoveAt(Index);
+                    opts.Add(item);
+                }
             }
         }
     }
