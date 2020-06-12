@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
+  <!--
   <WorkGiverDef>
     <defName>ResearchTech</defName>
     <label>Research technologies</label>
@@ -14,6 +15,7 @@
       <li>HiTechResearchBench</li>
     </fixedBillGiverDefs>
   </WorkGiverDef>
+  -->
 
   <WorkGiverDef>
     <defName>DocumentTech</defName>
