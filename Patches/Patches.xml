@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 
+  <!--remove vanilla Research WorkGiverDef-->
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/WorkGiverDef[defName = "Research"]</xpath>
+  </Operation>
+
   <!--to Stats_Building_Special-->
   <Operation Class="PatchOperationAdd">
     <xpath>*/StatDef[defName = "ResearchSpeedFactor"]/parts</xpath>
