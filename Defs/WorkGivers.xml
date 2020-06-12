@@ -8,6 +8,7 @@
     <workType>Research</workType>
     <verb>research</verb>
     <gerund>researching at</gerund>
+    <priorityInType>100</priorityInType>
     <fixedBillGiverDefs>
       <li>SimpleResearchBench</li>
       <li>HiTechResearchBench</li>
@@ -21,6 +22,7 @@
     <workType>Research</workType>
     <verb>write</verb>
     <gerund>writing at</gerund>
+    <priorityInType>101</priorityInType>
     <fixedBillGiverDefs>
       <li>StudyDesk</li>
     </fixedBillGiverDefs>
