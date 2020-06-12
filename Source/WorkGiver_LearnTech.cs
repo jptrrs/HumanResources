@@ -10,7 +10,7 @@ namespace HumanResources
     {
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-			IEnumerable<ResearchProjectDef> expertise = pawn.TryGetComp<CompKnowledge>().expertise.Keys;
+			IEnumerable<ResearchProjectDef> expertise = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => x.Value < 1f).Select(x => x.Key);
 			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise);
 			return !available.Any();
 		}
@@ -27,7 +27,6 @@ namespace HumanResources
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
-				//Log.Message("...relevant bills: " + RelevantBills(Desk).Count);
 				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
@@ -42,7 +41,7 @@ namespace HumanResources
 				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
 				return false;
 			}
-			//Log.Message("case 4");
+			Log.Message("case 4");
 			return false;
 
 		}

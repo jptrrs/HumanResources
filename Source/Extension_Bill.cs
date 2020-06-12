@@ -11,8 +11,7 @@ namespace HumanResources
         public static IEnumerable<ResearchProjectDef> SelectedTech(this Bill bill)
         {
             IEnumerable<ThingDef> allowedThings = bill.ingredientFilter.AllowedThingDefs;
-            //IEnumerable<ResearchProjectDef> availableTech = ModBaseHumanResources.unlocked.techByStuff.Where(x => allowed.Contains(x.Key)).Select(x => x.Value);
-            IEnumerable<ResearchProjectDef> allowedTechs = allowedThings.Select(x => ModBaseHumanResources.unlocked.techByStuff[x]);
+            IEnumerable<ResearchProjectDef> allowedTechs = allowedThings.Where(x => ModBaseHumanResources.unlocked.techByStuff[x] != null).Select(x => ModBaseHumanResources.unlocked.techByStuff[x]);
             return allowedTechs;
         }
 

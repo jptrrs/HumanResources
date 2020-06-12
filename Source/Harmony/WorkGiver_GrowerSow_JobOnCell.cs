@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static void Postfix(Pawn pawn, ThingDef ___wantedPlantDef, ref Job __result)
         {
-            if (__result != null)
+            if (__result != null && pawn.RaceProps.Humanlike)
             {
                 var requisites = ___wantedPlantDef.researchPrerequisites;
                 if (!requisites.NullOrEmpty())

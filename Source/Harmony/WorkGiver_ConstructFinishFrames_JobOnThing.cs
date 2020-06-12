@@ -13,25 +13,28 @@ namespace HumanResources
     {
         public static bool Prefix(Pawn pawn, Thing t)
         {
-            if (t.Faction != pawn.Faction)
+            if (pawn.RaceProps.Humanlike)
             {
-                return true;
-            }
-            Frame frame = t as Frame;
-            if (frame == null)
-            {
-                return true;
-            }
-            if (frame.MaterialsNeeded().Count > 0)
-            {
-                return true;
-            }
-            var requisites = t.def.entityDefToBuild.researchPrerequisites;
-            if (!requisites.NullOrEmpty())
-            {
-                string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
-                JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
-                return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                if (t.Faction != pawn.Faction)
+                {
+                    return true;
+                }
+                Frame frame = t as Frame;
+                if (frame == null)
+                {
+                    return true;
+                }
+                if (frame.MaterialsNeeded().Count > 0)
+                {
+                    return true;
+                }
+                var requisites = t.def.entityDefToBuild.researchPrerequisites;
+                if (!requisites.NullOrEmpty())
+                {
+                    string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                    JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
+                    return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                }
             }
             return true;
         }

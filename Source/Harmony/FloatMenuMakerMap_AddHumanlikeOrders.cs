@@ -13,27 +13,30 @@ namespace HumanResources
     {
         public static void Postfix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
-            IntVec3 c = IntVec3.FromVector3(clickPos);
-            ThingWithComps equipment = null;
-            List<Thing> thingList = c.GetThingList(pawn.Map);
-            for (int i = 0; i < thingList.Count; i++)
+            if (pawn.RaceProps.Humanlike)
             {
-                if (thingList[i].TryGetComp<CompEquippable>() != null)
+                IntVec3 c = IntVec3.FromVector3(clickPos);
+                ThingWithComps equipment = null;
+                List<Thing> thingList = c.GetThingList(pawn.Map);
+                for (int i = 0; i < thingList.Count; i++)
                 {
-                    equipment = (ThingWithComps)thingList[i];
-                    break;
+                    if (thingList[i].TryGetComp<CompEquippable>() != null)
+                    {
+                        equipment = (ThingWithComps)thingList[i];
+                        break;
+                    }
                 }
-            }
-            if (equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))
-            {
-                string labelShort = equipment.LabelShort;
-                int Index = opts.FindIndex(x => x.Label.Contains(labelShort));
-                if(Index != -1)
+                if (equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))
                 {
-                    string flavoredExplanation = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
-                    FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + flavoredExplanation + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
-                    opts.RemoveAt(Index);
-                    opts.Add(item);
+                    string labelShort = equipment.LabelShort;
+                    int Index = opts.FindIndex(x => x.Label.Contains(labelShort));
+                    if (Index != -1)
+                    {
+                        string flavoredExplanation = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
+                        FloatMenuOption item = new FloatMenuOption("CannotEquip".Translate(labelShort) + " (" + flavoredExplanation + ")", null, MenuOptionPriority.Default, null, null, 0f, null, null);
+                        opts.RemoveAt(Index);
+                        opts.Add(item);
+                    }
                 }
             }
         }

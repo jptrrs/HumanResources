@@ -11,8 +11,6 @@ namespace HumanResources
     {
         private static Type patchType = typeof(HarmonyPatches);
         public static Harmony instance = null;
-
-        //Tweaks to ingredients visibility on knowledge recipes
         public static bool CurrentTech;
         public static bool FutureTech;
         public static bool WeaponTrainingSelection;
