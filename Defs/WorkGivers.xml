@@ -22,7 +22,7 @@
     <workType>Research</workType>
     <verb>write</verb>
     <gerund>writing at</gerund>
-    <priorityInType>101</priorityInType>
+    <priorityInType>110</priorityInType>
     <fixedBillGiverDefs>
       <li>StudyDesk</li>
     </fixedBillGiverDefs>
