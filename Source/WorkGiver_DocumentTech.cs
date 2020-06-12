@@ -28,7 +28,7 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
+				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
 				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{

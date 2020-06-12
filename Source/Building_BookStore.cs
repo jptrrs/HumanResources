@@ -46,7 +46,7 @@ namespace HumanResources
         
         public bool Accepts(Thing thing)
         {
-            if (thing.Stuff != null && thing.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            if (thing.def.defName == "TechBook" && thing.Stuff != null && thing.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
             {
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;

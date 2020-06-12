@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using HarmonyLib;
 using HugsLib.Utils;
 using RimWorld;
@@ -110,7 +111,7 @@ namespace HumanResources
                 return null;
             }
 
-            //3. Distribute knowlege
+            //3. Distribute knowledge
             if (Prefs.LogVerbose)
             {
                 string guruNote = guru ? " (with intellectual bounus)" : "";
@@ -192,22 +193,22 @@ namespace HumanResources
         {
             if (expertise == null)
             {
-                if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn+ "...");
+                if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
                 FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
                 var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
                     expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
-                    if (Prefs.LogVerbose) Log.Message(parent + "'s expertise: " + expertise.Keys.ToStringSafeEnumerable());
+                    if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
                 }
                 else
                 {
                     Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
                 }
                 AcquireWeaponKnowledge(faction);
-                if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(parent + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
+                if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
                 AcquirePlantKnowledge();
-                if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(parent + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+                if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
 
             }
         }
@@ -231,10 +232,11 @@ namespace HumanResources
             if (proficientWeapons == null)
             {
                 proficientWeapons = new List<ThingDef>();
+                StringBuilder stringBuilder = new StringBuilder();
                 if (!expertise.EnumerableNullOrEmpty())
                 {
                     foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
-                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) Log.Message(pawn + " can craft some weapons...");
+                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " can craft some weapons. ");
                 }
                 bool isPlayer = pawn.Faction?.IsPlayer ?? false;
                 if (isFighter | isShooter)
@@ -242,26 +244,36 @@ namespace HumanResources
                     if (Prefs.LogVerbose)
                     {
                         string[] role = isFighter ? new [] {"fighter","melee"} : new [] { "shooter","ranged"};
-                        Log.Message(pawn + " is a " + role[0] + ", adding extra " + startingTechLevel + " " + role[1] + " weapons proficiencies...");
+                        stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is a " + role[0] + " and gets extra " + role[1] + " weapons from ");
                     }
-                    foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, startingTechLevel, faction)))
+                    if (ModBaseHumanResources.WeaponPoolIncludesTechLevel)
                     {
-                        var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
-                        if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
+                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, startingTechLevel, faction)))
+                        {
+                            var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
+                            if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
+                        }
+                        if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                    if (isPlayer) proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
+                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario)
+                    {
+                        proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
+                        string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
+                        if (Prefs.LogVerbose) stringBuilder.Append(connector + "the starting scenario");
+                    }
+                    if(Prefs.LogVerbose) stringBuilder.Append(".");
                 }
                 if (!isPlayer && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
                     if (!knownWeapons.Contains(weapon.def))
                     {
-                        if (Prefs.LogVerbose) Log.Warning(pawn + " is using a " + weapon.def.label + "...");
                         proficientWeapons.Add(weapon.def);
+                        if (Prefs.LogVerbose) stringBuilder.AppendLine(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
                     }
                 }
                 proficientWeapons.RemoveDuplicates();
-                if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) Log.Message("...final weapon proficiencies: " + proficientWeapons.ListElements());
+                if (Prefs.LogVerbose && stringBuilder.Length > 0) Log.Message(stringBuilder.ToString());
             }
         }
 

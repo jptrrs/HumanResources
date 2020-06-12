@@ -29,6 +29,13 @@ namespace HumanResources
         public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
 
         public static SettingHandle<bool> TechPoolIncludesScenario;
+        public enum FactionWeaponPool { Both, TechLevel, Scenario }
+
+        public static FactionWeaponPool WeaponPoolMode;
+
+        public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
+
+        public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
 
         public ModBaseHumanResources()
         {
@@ -138,6 +145,7 @@ namespace HumanResources
             //4. Finally, preparing settings
             TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
+            WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
         }
 
         public override void MapComponentsInitializing(Map map)
