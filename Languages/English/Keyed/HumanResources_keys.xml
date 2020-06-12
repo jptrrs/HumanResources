@@ -3,8 +3,8 @@
   
   <!--UI-->
   <TabKnowledge>Tech</TabKnowledge>
-  <TabKnowledgeTitle>Conhecimentos</TabKnowledgeTitle>
-  <TabKnowledgeWeapons>Perícia com armas</TabKnowledgeWeapons>
+  <TabKnowledgeTitle>Knowledge</TabKnowledgeTitle>
+  <TabKnowledgeWeapons>Weapons Proficiency</TabKnowledgeWeapons>
   <TabCatalogue>Catalog</TabCatalogue>
   <ShowCommon>show common</ShowCommon>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
