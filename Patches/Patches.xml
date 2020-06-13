@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 
+  <!--to Research WorkGiverDef-->
+  <Operation Class="PatchOperationSequence">
+    <success>Always</success>
+    <operations>
+       <li Class="PatchOperationReplace">
+        <xpath>/Defs/WorkGiverDef[defName = "Research"]/giverClass</xpath>
+        <value>
+          <giverClass>HumanResources.WorkGiver_ResearchTech</giverClass>
+        </value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/WorkGiverDef[defName = "Research"]</xpath>
+	    <value>
+          <fixedBillGiverDefs>
+            <li>SimpleResearchBench</li>
+            <li>HiTechResearchBench</li>
+          </fixedBillGiverDefs>
+        </value>
+      </li>
+	</operations>
+  </Operation>
+
   <!--to Stats_Building_Special-->
   <Operation Class="PatchOperationAdd">
     <xpath>*/StatDef[defName = "ResearchSpeedFactor"]/parts</xpath>
@@ -13,7 +35,7 @@
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
-       <li Class="PatchOperationReplace">
+      <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]/thingClass</xpath>
         <value>
           <thingClass>Building_WorkTable</thingClass>
