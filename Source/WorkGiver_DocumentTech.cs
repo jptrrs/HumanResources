@@ -109,17 +109,8 @@ namespace HumanResources
 
 		private static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
 		{
-			if (uft.Creator != pawn)
+			if (pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f && x.Key.LabelCap == uft.Stuff.stuffProps.stuffAdjective).Any() == false)
 			{
-				Log.Error(string.Concat(new object[]
-				{
-					"Tried to get FinishUftJob for ",
-					pawn,
-					" finishing ",
-					uft,
-					" but its creator is ",
-					uft.Creator
-				}), false);
 				return null;
 			}
 			Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, bill.billStack.billGiver, uft);
