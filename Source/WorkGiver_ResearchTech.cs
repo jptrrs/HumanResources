@@ -43,7 +43,7 @@ namespace HumanResources
 				//Log.Message("...homework count is " + techComp.HomeWork.Count());
 				//if (techComp.HomeWork.Count() > 0) return true;
 				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
-				JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
+				if (!JobFailReason.HaveReason) JobFailReason.Is("AlreadyKnowsThoseProjects".Translate(pawn), null);
 				return false;
 			}
 			//Log.Message("case 4");
