@@ -110,7 +110,7 @@ namespace HumanResources
 		private static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
 		{
 			if (pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f && x.Key.LabelCap == uft.Stuff.stuffProps.stuffAdjective).Any() == false)
-            {
+			{
 				return null;
 			}
 			Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, bill.billStack.billGiver, uft);
