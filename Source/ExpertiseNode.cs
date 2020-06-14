@@ -139,12 +139,11 @@ namespace HumanResources
                 if (!BuildingPresent())
                 {
                     string languageKey = null;
-
                     if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "fluffy.researchtree"))
                     {
                         languageKey = "Fluffy.ResearchTree.MissingFacilities";
                     }
-                    else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "notfood.ResearchPal"))
+                    else
                     {
                         languageKey = "ResearchPal.MissingFacilities";
                     }
