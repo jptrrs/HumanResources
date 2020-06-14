@@ -138,15 +138,8 @@ namespace HumanResources
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Research.GetHashCode());
                 if (!BuildingPresent())
                 {
-                    string languageKey = null;
-                    if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "fluffy.researchtree"))
-                    {
-                        languageKey = "Fluffy.ResearchTree.MissingFacilities";
-                    }
-                    else
-                    {
-                        languageKey = "ResearchPal.MissingFacilities";
-                    }
+                    string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
+                    string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(Rect, languageKey.Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
                 }
 
