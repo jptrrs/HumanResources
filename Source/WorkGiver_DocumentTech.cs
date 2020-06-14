@@ -12,9 +12,13 @@ namespace HumanResources
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
-			IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
-			bool flag = advantage.ToList().Count > 0;
-			return !flag;
+			if (!base.ShouldSkip(pawn, forced))
+			{
+				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
+				bool flag = advantage.ToList().Count > 0;
+				return !flag;
+			}
+			return true;
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static void Postfix(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
         {
-            if (pawn.RaceProps.Humanlike)
+            if (pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
             {
                 IntVec3 c = IntVec3.FromVector3(clickPos);
                 ThingWithComps equipment = null;

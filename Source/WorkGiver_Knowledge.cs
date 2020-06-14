@@ -8,6 +8,10 @@ namespace HumanResources
 {
 	class WorkGiver_Knowledge : WorkGiver_DoBill
 	{
+		public override bool ShouldSkip(Pawn pawn, bool forced = false)
+		{
+			return pawn.TryGetComp<CompKnowledge>()?.expertise == null;
+		}
 
 		protected bool CheckJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{

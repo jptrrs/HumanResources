@@ -113,7 +113,7 @@ namespace HumanResources
             //3. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
-            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x.defName.Contains("TechBook")))
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x.defName.EndsWith("TechBook") && x.modContentPack.Name.Contains("JPT")))
             {
                 t.stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));
             }
@@ -124,7 +124,7 @@ namespace HumanResources
                 foreach (ThingCategoryDef c in t.thingCategories)
                 {
                     c.childThingDefs.Add(t);
-                    if (!knowledgeCat.childCategories.Contains(c))
+                    if (!knowledgeCat.childCategories.NullOrEmpty() && !knowledgeCat.childCategories.Contains(c))
                     {
                         knowledgeCat.childCategories.Add(c);
                     }

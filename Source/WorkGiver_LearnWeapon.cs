@@ -59,10 +59,14 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
-            IEnumerable<ThingDef> studyMaterial = available.Except(knownWeapons);
-            return !studyMaterial.Any();
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
+            if (knownWeapons != null)
+            {
+                IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
+                IEnumerable<ThingDef> studyMaterial = available.Except(knownWeapons);
+                return !studyMaterial.Any();
+            }
+            return true;
         }
 
         private Job StartBillJob(Pawn pawn, IBillGiver giver)
@@ -153,12 +157,16 @@ namespace HumanResources
             //
             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
             {
-                //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
+                var studyWeapons = StudyWeapons(bill, pawn);
+                //Log.Warning("ValidateChosenWeapons for "+pawn+"...");
+                //Log.Warning("..." + chosenIngThings.Count() + " chosen ingredients:  " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
+                //Log.Warning("..." + studyWeapons.EnumerableCount() + " weapons to study: " + studyWeapons.Select(x => x.defName).ToStringSafeEnumerable());
+                chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
                 if (chosenIngThings.Any())
                 {
+                    //Log.Message("ValidateChosenWeapons for " + pawn + ": proceeed!");
                     //chosenIngThings.Clear();
-                    return StudyWeapons(bill, pawn).Any();
+                    return studyWeapons.Any();
                 }
             }
             return false;

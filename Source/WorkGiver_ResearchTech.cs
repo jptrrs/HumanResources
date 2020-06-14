@@ -11,11 +11,17 @@ namespace HumanResources
     {
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-			IEnumerable<ResearchProjectDef> expertise = from x in pawn.TryGetComp<CompKnowledge>().expertise
-														where x.Value >= 1f
-														select x.Key;
-			IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.IsFinished).Except(expertise);
-			return !available.Any();
+			if (!base.ShouldSkip(pawn, forced))
+			{
+				IEnumerable<ResearchProjectDef> expertise = from x in pawn.TryGetComp<CompKnowledge>().expertise
+															where x.Value >= 1f
+															select x.Key;
+				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.IsFinished).Except(expertise);
+				return !available.Any();
+			}
+			return true;
+
+
 		}
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

@@ -263,13 +263,13 @@ namespace HumanResources
                     }
                     if(Prefs.LogVerbose) stringBuilder.Append(".");
                 }
-                if (!isPlayer && pawn.equipment.HasAnything())
+                if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack") && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
                     if (!knownWeapons.Contains(weapon.def))
                     {
                         proficientWeapons.Add(weapon.def);
-                        if (Prefs.LogVerbose) stringBuilder.AppendLine(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
+                        if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
                     }
                 }
                 proficientWeapons.RemoveDuplicates();

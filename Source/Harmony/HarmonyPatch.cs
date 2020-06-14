@@ -72,7 +72,7 @@ namespace HumanResources
 
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)
         {
-            var knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
+            var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
             bool result = true;
             if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(thing.def);
             else result = false;

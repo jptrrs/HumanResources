@@ -38,8 +38,8 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            return !knownWeapons.Any();
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
+            return knownWeapons == null || !knownWeapons.Any();
         }
 
         protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)

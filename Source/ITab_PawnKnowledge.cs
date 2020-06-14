@@ -79,7 +79,7 @@ namespace HumanResources
             Rect titleRect = new Rect(leftColumn.x, leftColumn.y, leftColumn.width, Text.LineHeight);
             Widgets.Label(titleRect, "TabKnowledgeTitle".Translate());
             Text.Font = GameFont.Small;
-            var expertise = PawnToShowInfoAbout.TryGetComp<CompKnowledge>().expertise;
+            var expertise = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.expertise;
             if (!expertise.EnumerableNullOrEmpty())
             {
                 var expertiseList = expertise.Keys.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
@@ -112,7 +112,7 @@ namespace HumanResources
             Widgets.Label(titleRect2, "TabKnowledgeWeapons".Translate()+":");
             Text.Anchor = TextAnchor.UpperLeft;
             Rect scrollrect2 = new Rect(rightColumn.x, titleRect2.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect2.height - rowHeight - margin - padding - 2f);
-            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>().knownWeapons;
+            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons;
             if (!knownWeapons.NullOrEmpty())
             {
                 var filteredKnownWeapons = knownWeapons.Where(x => !x.menuHidden);
