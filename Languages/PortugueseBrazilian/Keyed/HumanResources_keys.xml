@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+  <!--UI-->
+  <TabKnowledge>Tech</TabKnowledge>
+  <TabKnowledgeTitle>Conhecimentos</TabKnowledgeTitle>
+  <TabKnowledgeWeapons>Perícia com armas</TabKnowledgeWeapons>
+  <TabCatalogue>Catálogo</TabCatalogue>
+  <ShowCommon>mostrar comuns</ShowCommon>
+  <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
+
+  <!--Settings-->
+  <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
+  <TechPoolModeDesc>Define o conjunto de tecnologias que alimenta a geração de conhecimento para os colonos quando eles são criados.</TechPoolModeDesc>
+  <TechPoolMode_Both>de ambas as configurações da facção</TechPoolMode_Both>
+  <TechPoolMode_TechLevel>do nível tecnológico da facção, somente</TechPoolMode_TechLevel>
+  <TechPoolMode_Starting>das tecnologias iniciais da facção, somente</TechPoolMode_Starting>
+  <TechPoolIncludesScenarioTitle>Incluir também tecnologias que constem em partes acrescentadas ao cenário.</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>Quando marcado, qualquer tecnologia que você acrescentar no editor do cenário também será incluída.</TechPoolIncludesScenarioDesc>
+  <WeaponPoolModeTitle>Especialistas em combate começam com armas...</WeaponPoolModeTitle>
+  <WeaponPoolModeDesc>Define a lista de armas que vão compor a perícia dos colonos que são prioritariamente atiradores ou combatentes corpo-a-corpo quando eles são criados.</WeaponPoolModeDesc>
+  <WeaponPoolMode_Both>de ambas as listas</WeaponPoolMode_Both>
+  <WeaponPoolMode_TechLevel>do nível tecnológico da facção, somente</WeaponPoolMode_TechLevel>
+  <WeaponPoolMode_Scenario>dentre as incluídas no cenário, somente</WeaponPoolMode_Scenario>
+  
+  <!--Things-->
+  <BookStoreEmpty>Vazia</BookStoreEmpty>
+  <BookStoreCapacity>Tecnologias em arquivo: {0}/{1}</BookStoreCapacity>
+  <BookStoreRetrieveBook>Retirar Livro</BookStoreRetrieveBook>
+  <BookStoreRetrieveBookDesc>Encontrar e remover um determinado livro da estante.</BookStoreRetrieveBookDesc>
+  <BookStoreNoInternalStorage>{0} não cabe em nenhuma estante.</BookStoreNoInternalStorage>
+  <KnowledgeLabel>conhecimento de {0}</KnowledgeLabel>
+  <Book>O Livro de {0}</Book>
+  <BookCompendium>Compêndio de {0}</BookCompendium>
+  <BookManual>Manual de {0}</BookManual>
+  <BookTheory>Teoria de {0}</BookTheory>
+  <BookDatabase>Banco de dados sobre {0}</BookDatabase>
+
+  <!--Feedback-->
+  <MessageStudyComplete>{0_nameDef} aprendeu {1}.</MessageStudyComplete>
+  <MessageDocumentComplete>{0_nameDef} escreveu um livro sobre {1}.</MessageDocumentComplete>
+  <MessageFiledTech>O conhecimento de for {0} foi acrescentado à biblioteca.</MessageFiledTech>
+  <MessageEjectedTech>O conhecimento de {0} foi removido da biblioteca.</MessageEjectedTech>
+  <MessageTrainingComplete>{0_nameDef} dominou {1}.</MessageTrainingComplete>
+  <NothingToAddToLibrary>Você não sabe nada, {0_nameFull}.</NothingToAddToLibrary>
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} já leu todos os livros.</AlreadyKnowsTheWholeLibrary>
+  <LacksFundamentalKnowledge>{0_nameDef} não domina conhecimentos básicos nessa matéria.</LacksFundamentalKnowledge>
+  <NoWeaponToLearn>{0_nameDef} já é capaz de usar estas armas.</NoWeaponToLearn>
+  <DoesntKnowHowToBuild>{0_nameDef} não sabe como construir isso (requer {2}).</DoesntKnowHowToBuild>
+  <DoesntKnowHowToRepair>{0_nameDef} não sabe como consertar isso (requer {2}).</DoesntKnowHowToRepair>
+  <DoesntKnowHowToCraft>{0_nameDef} não sabe como {1} (requer {2}).</DoesntKnowHowToCraft>
+  <DoesntKnowThisPlant>{0_nameDef} não sabe como cultivar isso (requer {2}).</DoesntKnowThisPlant>
+  <UnknownWeapon>{0_nameDef} não foi treinado para usar essa arma.</UnknownWeapon>
+  <EvilWeapon>{0_nameDef} acredita que essa arma esquisita é amaldiçoada, {0_pronoun} não vai nem encostar nela.</EvilWeapon>
+  <TechAlreadyKnown>{0} já é algo conhecido.</TechAlreadyKnown>
+  
+  <!--Go Explore-->
+  <LetterResearchRequest_SuccessHR>A investigação foi um sucesso. Trabalhando juntos vocês avançaram no entendimento de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_TriumphHR>A investigação foi um triunfo! Trabalhando juntos você conseguiram desvendar todos os segredos de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_TriumphHR>
+  <ResearchRequestXPGainHR>{0}, seu investigador, adquiriu uma conhecimentos valiosos acerca de {1} e ganhou {2} em experiência intelectual.</ResearchRequestXPGainHR>
+
+</LanguageData> 

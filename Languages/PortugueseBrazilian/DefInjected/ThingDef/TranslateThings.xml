@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <StudyDesk.label>Escrivaninha</StudyDesk.label>
+  <StudyDesk.description>Uma mesa para estudar e pesquisar tecnologias. Acompanha todo o conhecimento inicial da sua facção</StudyDesk.description>
+
+  <BookShelf.label>Estante</BookShelf.label>
+  <BookShelf.description>Uma estante robusta para armazenar conhecimento na forma de livros.</BookShelf.description>
+
+  <UnfinishedTechBook.label>livro técnico inacabado</UnfinishedTechBook.label>
+
+  <TechBook.label>Livro Técnico</TechBook.label>
+  <TechBook.description>Um livro cheio de conhecimentos.</TechBook.description>
+
+  <Target.label>Alvo</Target.label>
+  <Target.description>Um estande de tiro para seus atiradores desenvolverem suas habilidades.</Target.description>
+
+  <Target.label>Boneco de Treino</Target.label>
+  <Target.description>Um boneco de palha para treinar habilidades de combate.</Target.description>
+
+</LanguageData>

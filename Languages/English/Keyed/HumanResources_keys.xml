@@ -15,13 +15,13 @@
   <TechPoolMode_Both>both faction settings</TechPoolMode_Both>
   <TechPoolMode_TechLevel>the faction's tech level only</TechPoolMode_TechLevel>
   <TechPoolMode_Starting>the starting techs for that faction only</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>Also include starting research parts from the scenario</TechPoolIncludesScenarioTitle>
-  <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included</TechPoolIncludesScenarioDesc>
+  <TechPoolIncludesScenarioTitle>Also include starting research parts from the scenario.</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.</TechPoolIncludesScenarioDesc>
   <WeaponPoolModeTitle>Combat specialists start with weapons from...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.</WeaponPoolModeDesc>
   <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
   <WeaponPoolMode_TechLevel>the faction's tech level only</WeaponPoolMode_TechLevel>
-  <WeaponPoolMode_Scenario>the weapons on the scenario only</WeaponPoolMode_Scenario>
+  <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
 
   <!--Things-->
   <BookStoreEmpty>Empty</BookStoreEmpty>

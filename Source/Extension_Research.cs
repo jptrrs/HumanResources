@@ -24,7 +24,7 @@ namespace HumanResources
 		private static bool animalsTag = false; //revert to secondary
 		private static bool craftingTag = false;
 		private static bool artisticTag = false;
-		private static bool medicalTag = false;
+		private static bool medicineTag = false;
 		private static bool socialTag = false; //broader knowledge
 		private static bool intellectualTag = false; //higher tech level
 
@@ -43,7 +43,6 @@ namespace HumanResources
 		public static void InferSkillBias(this ResearchProjectDef tech)
 		{
 			//Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
-
 			//1. check what it unlocks
 			List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
 			IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
@@ -63,7 +62,7 @@ namespace HumanResources
 			int matches = 0;
 			if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; matches++; };
 
-			if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicalTag = true; matches++; };
+			if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; matches++; };
 
 			if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; matches++; };
 
@@ -88,8 +87,7 @@ namespace HumanResources
 					}
 					if (r.workSkill != null)
 					{
-						//Log.Message(r + " workskill is " + r.workSkill.label.ToLower());// +", field is "+ workskillInfo.GetValue(research));
-						AccessTools.Field(typeof(Extension_Research), r.workSkill.label.ToLower() + "Tag").SetValue(tech, true);
+						AccessTools.Field(typeof(Extension_Research), r.workSkill.defName.ToLower() + "Tag").SetValue(tech, true);
 					}
 				}
 			}
@@ -109,7 +107,6 @@ namespace HumanResources
 			int ThingDefCount = thingDefs.Count();
 			int RecipeDefCount = recipeDefs.Count();
 			int TerrainDefCount = terrainDefs.Count();
-			//Log.Message("Skills for " + tech + ": " + scoreTableReport + " with " + matches + " matches, " + ThingDefCount + " thingDefs and " + RecipeDefCount + " recipes.");
 
 			List<SkillDef> relevantSkills = new List<SkillDef>();
 			if (shootingTag)
@@ -157,10 +154,10 @@ namespace HumanResources
 				relevantSkills.Add(SkillDefOf.Artistic);
 				artisticTag = false;
 			}
-			if (medicalTag)
+			if (medicineTag)
 			{
 				relevantSkills.Add(SkillDefOf.Medicine);
-				medicalTag = false;
+				medicineTag = false;
 			}
 			if (socialTag)
 			{
@@ -174,7 +171,6 @@ namespace HumanResources
 			}
 
 			SkillsByTech.Add(tech, relevantSkills);
-			//Bias = scoreTable.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 		}
 
 		public static void InvestigateThingDef(ThingDef t)
@@ -189,7 +185,7 @@ namespace HumanResources
 				if (!plantsTag) try { plantsTag |= t.plant != null; } catch { };
 				if (!craftingTag) try { craftingTag |= t.IsApparel | t.IsWeapon; } catch { };
 				if (!artisticTag) try { artisticTag |= t.IsArt | t.IsWithinCategory(ThingCategoryDefOf.BuildingsArt); } catch { };
-				if (!medicalTag) try { medicalTag |= t.IsMedicine | t.IsDrug; } catch { };
+				if (!medicineTag) try { medicineTag |= t.IsMedicine | t.IsDrug; } catch { };
 			}
 		}
 

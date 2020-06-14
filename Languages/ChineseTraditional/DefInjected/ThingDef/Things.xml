@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <StudyDesk.label>寫字檯</StudyDesk.label>
+  <StudyDesk.description>一個用於研究新技術的工作檯，適用於基礎的入門級研究工作。</StudyDesk.description>
+
+
+  <!-- Borrowed from Jecrell's RimWriter -->
+
+  <BookShelf.label>書架</BookShelf.label>
+  <BookShelf.description>一個堅固的架子，知識以書本爲載體放置其間。</BookShelf.description>
+
+
+  <!-- Technical Book -->
+
+  <UnfinishedTechBook.label>未完成的技能書</UnfinishedTechBook.label>
+
+  <TechBook.label>技術書</TechBook.label>
+  <TechBook.description>一本充滿知識的書。</TechBook.description>
+
+
+  <!-- Borrewed from ItchyFlea's Practise Target -->
+
+  <Target.label>靶子</Target.label>
+  <Target.description>您的神槍手可以用此練習射擊。</Target.description>
+
+  <MrDummy.label>訓練假人</MrDummy.label>
+  <MrDummy.description>用於訓練格鬥技能的假人。</MrDummy.description>
+
+
+  <!-- This is just to sort out WeaponTags that indicate weapons to be excluded from universal use -->
+
+  <ForbiddenWeaponTags.label>禁止武器</ForbiddenWeaponTags.label>
+
+
+</LanguageData>

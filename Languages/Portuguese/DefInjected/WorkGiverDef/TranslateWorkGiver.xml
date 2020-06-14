@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+  <DocumentTech.label>Documentar tecnologias</DocumentTech.label>
+  <DocumentTech.gerund>escrevendo</DocumentTech.gerund>
+  <DocumentTech.verb>escrever</DocumentTech.verb>
+  
+  <LearnTech.label>Estudar tecnologias</LearnTech.label>
+  <LearnTech.gerund>estudando</LearnTech.gerund>
+  <LearnTech.verb>estudar</LearnTech.verb>
+  
+  <TrainWeapon.label>Treinar uma arma</TrainWeapon.label>
+  <TrainWeapon.gerund>treinando</TrainWeapon.gerund>
+  <TrainWeapon.verb>treinar</TrainWeapon.verb>
+  
+  <PracticeShooting.label>Praticar tiro</PracticeShooting.label>
+  <PracticeShooting.gerund>praticando</PracticeShooting.gerund>
+  <PracticeShooting.verb>praticar</PracticeShooting.verb>
+  
+  <PracticeMelee.label>Praticar combate corpo-a-corpo</PracticeMelee.label>
+  <PracticeMelee.gerund>praticando</PracticeMelee.gerund>
+  <PracticeMelee.verb>praticar</PracticeMelee.verb>
+  
+</LanguageData>

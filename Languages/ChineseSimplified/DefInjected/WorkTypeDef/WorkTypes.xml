@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <HR_Learn.label>学习</HR_Learn.label>
+  <HR_Learn.description>获得新知识。</HR_Learn.description>
+  <HR_Learn.labelShort>学习</HR_Learn.labelShort>
+  <HR_Learn.pawnLabel>学生</HR_Learn.pawnLabel>
+  <HR_Learn.gerundLabel>学习中</HR_Learn.gerundLabel>
+  <HR_Learn.verb>学习</HR_Learn.verb>
+
+
+</LanguageData>

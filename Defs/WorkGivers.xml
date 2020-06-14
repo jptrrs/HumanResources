@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <!--
-  <WorkGiverDef>
-    <defName>ResearchTech</defName>
-    <label>Research technologies</label>
-    <giverClass>HumanResources.WorkGiver_ResearchTech</giverClass>
-    <workType>Research</workType>
-    <verb>research</verb>
-    <gerund>researching at</gerund>
-    <priorityInType>100</priorityInType>
-    <fixedBillGiverDefs>
-      <li>SimpleResearchBench</li>
-      <li>HiTechResearchBench</li>
-    </fixedBillGiverDefs>
-  </WorkGiverDef>
-  -->
-
   <WorkGiverDef>
     <defName>DocumentTech</defName>
     <label>Document technologies</label>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <DocumentTech.label>记录技术</DocumentTech.label>
+  <DocumentTech.verb>记录</DocumentTech.verb>
+  <DocumentTech.gerund>记录</DocumentTech.gerund>
+
+  <LearnTech.label>学习技术</LearnTech.label>
+  <LearnTech.verb>学习</LearnTech.verb>
+  <LearnTech.gerund>学习</LearnTech.gerund>
+
+  <TrainWeapon.label>学习使用武器</TrainWeapon.label>
+  <TrainWeapon.verb>练习</TrainWeapon.verb>
+  <TrainWeapon.gerund>练习</TrainWeapon.gerund>
+
+  <PracticeShooting.label>练习射击</PracticeShooting.label>
+  <PracticeShooting.verb>练习</PracticeShooting.verb>
+  <PracticeShooting.gerund>练习</PracticeShooting.gerund>
+
+  <PracticeMelee.label>练习格斗</PracticeMelee.label>
+  <PracticeMelee.verb>练习</PracticeMelee.verb>
+  <PracticeMelee.gerund>练习</PracticeMelee.gerund>
+
+
+</LanguageData>

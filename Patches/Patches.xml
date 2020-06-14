@@ -5,7 +5,7 @@
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
-       <li Class="PatchOperationReplace">
+      <li Class="PatchOperationReplace">
         <xpath>/Defs/WorkGiverDef[defName = "Research"]/giverClass</xpath>
         <value>
           <giverClass>HumanResources.WorkGiver_ResearchTech</giverClass>
@@ -13,21 +13,21 @@
       </li>
       <li Class="PatchOperationAdd">
         <xpath>/Defs/WorkGiverDef[defName = "Research"]</xpath>
-	    <value>
+        <value>
           <fixedBillGiverDefs>
             <li>SimpleResearchBench</li>
             <li>HiTechResearchBench</li>
           </fixedBillGiverDefs>
         </value>
       </li>
-	</operations>
+    </operations>
   </Operation>
 
   <!--to Stats_Building_Special-->
   <Operation Class="PatchOperationAdd">
     <xpath>*/StatDef[defName = "ResearchSpeedFactor"]/parts</xpath>
     <value>
-      <li Class="HumanResources.StatPart_AvailableBooks"/>
+      <li Class="HumanResources.StatPart_AvailableBooks" />
     </value>
   </Operation>
 
@@ -57,7 +57,7 @@
             <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>
             <value>
               <li Class="CompProperties_AffectedByFacilities">
-                <linkableFacilities/>
+                <linkableFacilities />
               </li>
             </value>
           </nomatch>
@@ -67,7 +67,7 @@
           <value>
             <comps>
               <li Class="CompProperties_AffectedByFacilities">
-                <linkableFacilities/>
+                <linkableFacilities />
               </li>
             </comps>
           </value>
@@ -105,7 +105,7 @@
       </li>
     </operations>
   </Operation>
-  
+
   <!--to TraderKinds-->
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/TraderKindDef[defName = "Caravan_Outlander_Exotic" or defName = "Orbital_Exotic"]/stockGenerators</xpath>
@@ -132,5 +132,4 @@
       </li>-->
     </value>
   </Operation>>
-
 </Patch>

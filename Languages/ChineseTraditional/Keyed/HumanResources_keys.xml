@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--UI-->
+  <TabKnowledge>科技</TabKnowledge>
+  <!--MISSING:--> <TabKnowledgeTitle>Knowledge</TabKnowledgeTitle>
+  <!--MISSING:--><TabKnowledgeWeapons>Weapons Proficiency</TabKnowledgeWeapons>
+  <TabCatalogue>目錄</TabCatalogue>
+  <ShowCommon>顯示原版</ShowCommon>
+  <AvailableBooksReport>{1}號書架中有{0}本書</AvailableBooksReport>
+
+  <!--Settings-->
+  <TechPoolModeTitle>知識泉源...</TechPoolModeTitle>
+  <TechPoolModeDesc>定義生成的玩家派系殖民者的技術池。</TechPoolModeDesc>
+  <TechPoolMode_Both>陣營相互關係設置</TechPoolMode_Both>
+  <TechPoolMode_TechLevel>僅該派系的技術水平</TechPoolMode_TechLevel>
+  <TechPoolMode_Starting>僅該派系的起始技術</TechPoolMode_Starting>
+  <TechPoolIncludesScenarioTitle>包括劇本設定的開局科技</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>如果選中，還將包括您在劇本編輯器中添加的開局科技。</TechPoolIncludesScenarioDesc>
+  <!--MISSING:--> <WeaponPoolModeTitle>Combat specialists start with weapons from...</WeaponPoolModeTitle>
+  <!--MISSING:--> <WeaponPoolModeDesc>Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.</WeaponPoolModeDesc>
+  <!--MISSING:--> <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
+  <!--MISSING:--> <WeaponPoolMode_TechLevel>the faction's tech level only</WeaponPoolMode_TechLevel>
+  <!--MISSING:--> <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
+
+  <!--Things-->
+  <BookStoreEmpty>空的</BookStoreEmpty>
+  <BookStoreCapacity>存檔技術：{0} / {1}</BookStoreCapacity>
+  <BookStoreRetrieveBook>書籍檢索</BookStoreRetrieveBook>
+  <BookStoreRetrieveBookDesc>在暑假中查找並取出指定的書籍</BookStoreRetrieveBookDesc>
+  <BookStoreNoInternalStorage>{0}沒有匹配到任何書架。</BookStoreNoInternalStorage>
+  <KnowledgeLabel>{0}知識</KnowledgeLabel>
+  <Book>{0}之書</Book>
+  <BookCompendium>{0}綱要</BookCompendium>
+  <BookManual>{0}手冊</BookManual>
+  <BookTheory>{0}論著</BookTheory>
+  <BookDatabase>{0}資料庫</BookDatabase>
+
+  <!--Feedback-->
+  <MessageStudyComplete>{0_nameDef}已經了解了{1}的祕密。</MessageStudyComplete>
+  <MessageDocumentComplete>{0_nameDef}在{1}上寫了一本書。</MessageDocumentComplete>
+  <MessageFiledTech>{0}的知識已添加到我們的庫中。</MessageFiledTech>
+  <MessageEjectedTech>{0}的知識已從我們的庫中刪除。</MessageEjectedTech>
+  <MessageTrainingComplete>{0_nameDef}已掌握{1}。</MessageTrainingComplete>
+  <NothingToAddToLibrary>你什麼都不懂，{0_nameFull}！</NothingToAddToLibrary>
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef}已閱讀所有書籍。</AlreadyKnowsTheWholeLibrary>
+  <LacksFundamentalKnowledge>{0_nameDef}缺少有關這些課題的基本知識。</LacksFundamentalKnowledge>
+  <NoWeaponToLearn>{0_nameDef}已經知道如何使用這些武器。</NoWeaponToLearn>
+  <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
+  <DoesntKnowHowToRepair>{0_nameDef}不知道如何修復{1}（需要{2}）。</DoesntKnowHowToRepair>
+  <DoesntKnowHowToCraft>{0_nameDef}不知道如何製作{1}（需要{2}）。</DoesntKnowHowToCraft>
+  <DoesntKnowThisPlant>{0_nameDef}不知道如何栽種{1}（需要{2}）。</DoesntKnowThisPlant>
+  <UnknownWeapon>{0_nameDef}尚未接受使用此武器的訓練。</UnknownWeapon>
+  <EvilWeapon>{0_nameDef}認爲這種奇怪的武器是邪惡的，{0_pronoun}不會碰它。</EvilWeapon>
+  <TechAlreadyKnown>{0}是已知的技術。</TechAlreadyKnown>
+
+  <!--Go Explore-->
+  <LetterResearchRequest_SuccessHR>這項研究是成功的。通過合作，您對{2}的理解有所提高。\n\n與{0}的關係已改善了{1}。</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_TriumphHR>研究取得了巨大的成功！通過一同通力合作，您取得了突破，並發現了{2}的祕密。\n\n與{0}的關係已改善了{1}。</LetterResearchRequest_TriumphHR>
+  <ResearchRequestXPGainHR>{0}，您的研究人員，在{1}獲得了寶貴的專業知識，並獲得了{2}的智識。</ResearchRequestXPGainHR>
+
+</LanguageData> 
