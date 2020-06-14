@@ -136,7 +136,12 @@ namespace HumanResources
 
                 // attach description and further info to a tooltip
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Research.GetHashCode());
-                if (!BuildingPresent()) TooltipHandler.TipRegion(Rect, "Fluffy.ResearchTree.MissingFacilities".Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
+                if (!BuildingPresent())
+                {
+                    string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
+                    string languageKey = root + ".MissingFacilities";
+                    TooltipHandler.TipRegion(Rect, languageKey.Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
+                }
 
                 // draw unlock icons
                 if (detailedMode)

@@ -16,6 +16,7 @@ namespace HumanResources
         public static bool WeaponTrainingSelection;
         public static bool Ball;
         public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
+        public static bool ResearchPal = false;
 
         public static Harmony Instance
         {
@@ -42,6 +43,7 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal.");
                 ResearchTree_Patches.Execute(Instance, "ResearchPal");
+                ResearchPal = true;
             }
             else
             {
