@@ -8,6 +8,13 @@ namespace HumanResources
 	[HarmonyPatch(typeof(ResearchProjectDef))]
 	public static class ResearchProjectDef_Patches
 	{
+		[HarmonyPostfix]
+		[HarmonyPatch("CanBeResearchedAt")]
+		public static void CanBeResearchedAt_Postfix()
+		{
+			Log.Warning("One of your Mods called 'CanBeResearchedAt(Building_ResearchBench bench, bool ignoreResearchBenchPowerStatus)', which doesn't work with [JPT] Human Resources. Please share this Log with the Devs of Human Resources");
+		}
+
 		[HarmonyPrefix]
 		[HarmonyPatch("PlayerHasAnyAppropriateResearchBench", MethodType.Getter)]
 		public static bool PlayerHasAnyAppropriateResearchBench_Prefix(ResearchProjectDef __instance, ref bool __result)
