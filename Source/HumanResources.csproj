@@ -326,7 +326,6 @@
     <Compile Include="CompProperties_TitleMaker.cs" />
     <Compile Include="CompProperties_StorageGraphic.cs" />
     <Compile Include="CompStorageGraphic.cs" />
-    <Compile Include="Extension_Building_WorkTable.cs" />
     <Compile Include="Extension_ResearchProjectDef.cs" />
     <Compile Include="Harmony\HarmonyPatch.cs" />
     <Compile Include="Harmony\GoExplore_Patches.cs" />
