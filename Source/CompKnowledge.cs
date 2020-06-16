@@ -25,7 +25,7 @@ namespace HumanResources
         {
             get
             {
-                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons).ToList();
+                return proficientWeapons;
             }
         }
         public List<ThingDef> knownPlants
@@ -231,7 +231,9 @@ namespace HumanResources
         {
             if (proficientWeapons == null)
             {
-                proficientWeapons = new List<ThingDef>();
+                proficientWeapons = ModBaseHumanResources.UniversalWeapons.Where(x => x.techLevel <= startingTechLevel)
+                    .Concat(ModBaseHumanResources.UniversalWeapons.Where(x => !x.thingSetMakerTags.NullOrEmpty() && x.thingSetMakerTags.Contains("SingleUseWeapon")))
+                    .Concat(ModBaseHumanResources.UniversalWeapons.Where(x => !x.weaponTags.NullOrEmpty() && x.weaponTags.Contains("GunSingleUse"))).ToList();
                 StringBuilder stringBuilder = new StringBuilder();
                 if (!expertise.EnumerableNullOrEmpty())
                 {
