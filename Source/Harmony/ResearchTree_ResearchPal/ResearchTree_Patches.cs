@@ -39,6 +39,11 @@ namespace HumanResources
                 null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(BuildingPresent_Postfix)), null);
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchNode:MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
+            instance.Patch(AccessTools.Method(modName + ".ResearchNode:MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
+                null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(MissingFacilities_Postfix)));
+
+            _buildingPresentCache = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, bool>;
+            _missingFacilitiesCache = AccessTools.Field(ResearchNodeType(), "_missingFacilitiesCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, List<ThingDef>>;
 
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
@@ -54,13 +59,16 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
-        private static FieldInfo buildingPresentCacheInfo = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache");
-        //private static MethodInfo buildingPresentCacheSetMethod => buildingPresentCacheInfo.FieldType.GetMethod("set_Item", new Type[] { typeof(ResearchProjectDef), typeof(bool) });
+        private static Dictionary<ResearchProjectDef, bool> _buildingPresentCache;
+        private static Dictionary<ResearchProjectDef, List<ThingDef>> _missingFacilitiesCache;
 
         public static void BuildingPresent_Postfix(ResearchProjectDef research, ref bool __result)
         {
+            if (__result == true)
+                return;
+
             bool flag = false;
-            if (!__result && research.requiredResearchBuilding != null)
+            if (research.requiredResearchBuilding != null)
             {
                 flag = Find.Maps.SelectMany((Map map) => map.listerBuildings.allBuildingsColonist).OfType<Building_WorkTable>().Any((Building_WorkTable b) => research.Alt_CanBeResearchedAt(b));
             }
@@ -68,18 +76,60 @@ namespace HumanResources
             {
                 flag = research.Ancestors().All(new Func<ResearchProjectDef, bool>(BuildingPresent));
             }
-            string test = buildingPresentCacheInfo != null ? "ok" : "bad";
-            Log.Warning("DEBUG buildingPresentCacheInfo is " + test);
-            //FieldInfo buildingPresentCacheInfo = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache");
-            MethodInfo buildingPresentCacheSetMethod = buildingPresentCacheInfo.FieldType.GetMethod("set_Item");
-            //object dict = buildingPresentCacheInfo.GetValue(ResearchNodeType());
-            //buildingPresentCacheSetMethod.Invoke(dict, new object[] { research, flag });
-            
-            string test2 = buildingPresentCacheSetMethod != null ? "ok" : "bad";
-            Log.Warning("DEBUG buildingPresentCacheSetMethod is " + test2);
 
+            if (flag)
+            {
+                _buildingPresentCache.Remove(research);
+                _buildingPresentCache.Add(research, flag);
+            }
 
             __result = flag;
+        }
+
+        public static void MissingFacilities_Postfix(ref ResearchProjectDef research, ref List<ThingDef> __result)
+        {
+            if (__result.NullOrEmpty())
+                return;
+
+            List<ThingDef> missing;
+
+            // get list of all researches required before this
+            var thisAndPrerequisites = research.Ancestors().Where(rpd => !rpd.IsFinished).ToList();
+            thisAndPrerequisites.Add(research);
+
+            // get list of all available research benches
+            var availableBenches = Find.Maps.SelectMany(map => map.listerBuildings.allBuildingsColonist)
+                                       .OfType<Building_WorkTable>();
+            var availableBenchDefs = availableBenches.Select(b => b.def).Distinct();
+            missing = new List<ThingDef>();
+
+            // check each for prerequisites
+            // TODO: We should really build this list recursively so we can re-use results for prerequisites.
+            foreach (var rpd in thisAndPrerequisites)
+            {
+                if (rpd.requiredResearchBuilding == null)
+                    continue;
+
+                if (!availableBenchDefs.Contains(rpd.requiredResearchBuilding))
+                    missing.Add(rpd.requiredResearchBuilding);
+
+                if (rpd.requiredResearchFacilities.NullOrEmpty())
+                    continue;
+
+                foreach (var facility in rpd.requiredResearchFacilities)
+                    if (!availableBenches.Any(b => b.HasFacility(facility)))
+                        missing.Add(facility);
+            }
+
+            // add to cache
+            missing = missing.Distinct().ToList();
+            if (missing != _missingFacilitiesCache[research])
+            {
+                _missingFacilitiesCache.Remove(research);
+                _missingFacilitiesCache.Add(research, missing);
+            }
+
+            __result = missing;
         }
     }
 }
