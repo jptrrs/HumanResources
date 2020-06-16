@@ -1,5 +1,6 @@
 ﻿using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Verse;
 
@@ -26,11 +27,11 @@ namespace HumanResources
             if (req.HasThing)
             {
                 CompAffectedByFacilities comp = req.Thing.TryGetComp<CompAffectedByFacilities>();
-                if (comp != null && !comp.LinkedFacilitiesListForReading.NullOrEmpty())
+                if (comp != null && comp.LinkedFacilitiesListForReading.Any(x => x is Building_BookStore))
                 {
                     StringBuilder stringBuilder = new StringBuilder();
                     float libraryContribution;
-                    stringBuilder.AppendLine("AvailableBooksReport".Translate(LibraryCount(comp.LinkedFacilitiesListForReading, out libraryContribution), comp.LinkedFacilitiesListForReading.Count) + ": +" + libraryContribution.ToStringPercent());
+                    stringBuilder.AppendLine("AvailableBooksReport".Translate(LibraryCount(comp.LinkedFacilitiesListForReading, out libraryContribution), comp.LinkedFacilitiesListForReading.Where(x => x is Building_BookStore).Count()) + ": +" + libraryContribution.ToStringPercent());
                     return stringBuilder.ToString().TrimEndNewlines();
                 }
             }
