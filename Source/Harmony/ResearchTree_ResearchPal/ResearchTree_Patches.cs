@@ -54,7 +54,7 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
-        private static FieldInfo buildingPresentCacheInfo = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache");
+        //private static FieldInfo buildingPresentCacheInfo = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache");
         //private static MethodInfo buildingPresentCacheSetMethod => buildingPresentCacheInfo.FieldType.GetMethod("set_Item", new Type[] { typeof(ResearchProjectDef), typeof(bool) });
 
         public static void BuildingPresent_Postfix(ResearchProjectDef research, ref bool __result)
@@ -66,19 +66,22 @@ namespace HumanResources
             }
             if (flag)
             {
-                flag = research.Ancestors().All(new Func<ResearchProjectDef, bool>(BuildingPresent));
+                //Log.Warning("DEBUG BuildingPresent_Postfix: result is " + flag);
+                flag = research.Ancestors().All(BuildingPresent);
             }
-            string test = buildingPresentCacheInfo != null ? "ok" : "bad";
-            Log.Warning("DEBUG buildingPresentCacheInfo is " + test);
+
+            //string test = buildingPresentCacheInfo != null ? "ok" : "bad";
+            //Log.Warning("DEBUG buildingPresentCacheInfo is " + test);
+
             //FieldInfo buildingPresentCacheInfo = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache");
-            MethodInfo buildingPresentCacheSetMethod = buildingPresentCacheInfo.FieldType.GetMethod("set_Item");
+            //MethodInfo buildingPresentCacheSetMethod = buildingPresentCacheInfo.FieldType.GetMethod("set_Item");
             //object dict = buildingPresentCacheInfo.GetValue(ResearchNodeType());
             //buildingPresentCacheSetMethod.Invoke(dict, new object[] { research, flag });
-            
-            string test2 = buildingPresentCacheSetMethod != null ? "ok" : "bad";
-            Log.Warning("DEBUG buildingPresentCacheSetMethod is " + test2);
 
+            //string test2 = buildingPresentCacheSetMethod != null ? "ok" : "bad";
+            //Log.Warning("DEBUG buildingPresentCacheSetMethod is " + test2);
 
+            Log.Warning("DEBUG BuildingPresent_Postfix: result is " + flag);
             __result = flag;
         }
     }
