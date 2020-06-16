@@ -1,4 +1,4 @@
-﻿using RimWorld;
+using RimWorld;
 using System.Collections.Generic;
 using Verse;
 
@@ -6,21 +6,13 @@ namespace HumanResources
 {
     public static class Extension_ResearchProjectDef
 	{
-		public static bool CanBeResearchedAt(this ResearchProjectDef researchProjectDef, Building_WorkTable bench, bool ignoreResearchBenchPowerStatus)
+		public static bool Alt_CanBeResearchedAt(this ResearchProjectDef project, Building_WorkTable bench)
 		{
-			if (researchProjectDef.requiredResearchBuilding != null && bench.def != researchProjectDef.requiredResearchBuilding)
+			if (project.requiredResearchBuilding != null && bench.def != project.requiredResearchBuilding)
 			{
 				return false;
 			}
-			if (!ignoreResearchBenchPowerStatus)
-			{
-				CompPowerTrader comp = bench.GetComp<CompPowerTrader>();
-				if (comp != null && !comp.PowerOn)
-				{
-					return false;
-				}
-			}
-			if (!researchProjectDef.requiredResearchFacilities.NullOrEmpty<ThingDef>())
+			if (!project.requiredResearchFacilities.NullOrEmpty<ThingDef>())
 			{
 				CompAffectedByFacilities affectedByFacilities = bench.TryGetComp<CompAffectedByFacilities>();
 				if (affectedByFacilities == null)
@@ -30,9 +22,9 @@ namespace HumanResources
 				List<Thing> linkedFacilitiesListForReading = affectedByFacilities.LinkedFacilitiesListForReading;
 				int j;
 				int i;
-				for (i = 0; i < researchProjectDef.requiredResearchFacilities.Count; i = j + 1)
+				for (i = 0; i < project.requiredResearchFacilities.Count; i = j + 1)
 				{
-					if (linkedFacilitiesListForReading.Find((Thing x) => x.def == researchProjectDef.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
+					if (linkedFacilitiesListForReading.Find((Thing x) => x.def == project.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
 					{
 						return false;
 					}
