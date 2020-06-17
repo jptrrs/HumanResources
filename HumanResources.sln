@@ -52,19 +52,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{C1DD231C-4
 		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backup", "backup", "{0A1DCD6C-9285-40CF-8CC4-47EAF9ED2429}"
-	ProjectSection(SolutionItems) = preProject
-		Source\JobDriver_DocumentTech0.cs = Source\JobDriver_DocumentTech0.cs
-		Source\JobDriver_FileTech.cs = Source\JobDriver_FileTech.cs
-		Source\SlotGroup_BookStore.cs = Source\SlotGroup_BookStore.cs
-		Source\WorkGiver_FileTech.cs = Source\WorkGiver_FileTech.cs
-		Source\WorkGiver_LearnWeapon  - Copy.cs = Source\WorkGiver_LearnWeapon  - Copy.cs
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1A49A134-082B-49CA-BAED-1708C8422690}"
 	ProjectSection(SolutionItems) = preProject
 		Patches\Patches.xml = Patches\Patches.xml
 		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
+		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{EFBB300F-18F9-4192-A2A8-0DD9DE3A8615}"
