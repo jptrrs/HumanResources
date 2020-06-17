@@ -3,7 +3,6 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -88,9 +87,7 @@ namespace HumanResources
 
         public static void MissingFacilities_Postfix(ref ResearchProjectDef research, ref List<ThingDef> __result)
         {
-            if (__result.NullOrEmpty())
-                return;
-
+            if (__result.NullOrEmpty()) return;
             List<ThingDef> missing;
 
             // get list of all researches required before this
@@ -98,27 +95,20 @@ namespace HumanResources
             thisAndPrerequisites.Add(research);
 
             // get list of all available research benches
-            var availableBenches = Find.Maps.SelectMany(map => map.listerBuildings.allBuildingsColonist)
-                                       .OfType<Building_WorkTable>();
+            var availableBenches = Find.Maps.SelectMany(map => map.listerBuildings.allBuildingsColonist).OfType<Building_WorkTable>();
             var availableBenchDefs = availableBenches.Select(b => b.def).Distinct();
             missing = new List<ThingDef>();
 
             // check each for prerequisites
-            // TODO: We should really build this list recursively so we can re-use results for prerequisites.
             foreach (var rpd in thisAndPrerequisites)
             {
-                if (rpd.requiredResearchBuilding == null)
-                    continue;
-
-                if (!availableBenchDefs.Contains(rpd.requiredResearchBuilding))
-                    missing.Add(rpd.requiredResearchBuilding);
-
-                if (rpd.requiredResearchFacilities.NullOrEmpty())
-                    continue;
-
+                if (rpd.requiredResearchBuilding == null) continue;
+                if (!availableBenchDefs.Contains(rpd.requiredResearchBuilding)) missing.Add(rpd.requiredResearchBuilding);
+                if (rpd.requiredResearchFacilities.NullOrEmpty()) continue;
                 foreach (var facility in rpd.requiredResearchFacilities)
-                    if (!availableBenches.Any(b => b.HasFacility(facility)))
-                        missing.Add(facility);
+                {
+                    if (!availableBenches.Any(b => b.HasFacility(facility))) missing.Add(facility);
+                }
             }
 
             // add to cache
