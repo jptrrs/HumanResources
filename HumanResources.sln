@@ -284,6 +284,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{1C96A526
 		Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml = Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraderKindDefs", "TraderKindDefs", "{6DC76E17-8646-4A2C-9300-2764A9489B37}"
+	ProjectSection(SolutionItems) = preProject
+		Defs\TraderKindDefs\ResourceTrader.xml = Defs\TraderKindDefs\ResourceTrader.xml
+		Defs\TraderKindDefs\TraderKinds.xml = Defs\TraderKindDefs\TraderKinds.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -350,6 +356,7 @@ Global
 		{D0EC87E4-7801-47E7-AA00-1D6F56EF4D54} = {7333F2FA-4043-4CB9-AE5A-35D6771B0513}
 		{612D832F-165A-4CB5-84A0-37C506DD9536} = {7333F2FA-4043-4CB9-AE5A-35D6771B0513}
 		{1C96A526-CA61-4C45-9285-2DD74BFE817A} = {66A48285-4CB7-4A5E-87F7-4937E217BEDF}
+		{6DC76E17-8646-4A2C-9300-2764A9489B37} = {A425CC4D-B9E9-4338-8845-ACD73F533D7D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

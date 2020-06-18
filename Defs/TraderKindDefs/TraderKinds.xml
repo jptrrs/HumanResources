@@ -1,12 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!--<TraderKindDef>
+  <TraderKindDef>
     <defName>Caravan_Tech</defName>
     <label>enciclopedia seller</label>
-    <commonality>1</commonality>
+    <commonality>3</commonality>
     <stockGenerators>
-      <li Class="StockGenerator_Category">
+      <li Class="HumanResources.StockGenerator_TechBooks">
+        <countRange>
+          <min>10</min>
+          <max>10</max>
+        </countRange>
+      </li>
+      <!--<li Class="StockGenerator_Category">
         <categoryDef>Knowledge</categoryDef>
         <excludedCategories>
           <li>Spacer</li>
@@ -15,7 +21,7 @@
         </excludedCategories>
         <thingDefCountRange>6~12</thingDefCountRange>
         <countRange>1~1</countRange>
-      </li>
+      </li>-->
     </stockGenerators>
   </TraderKindDef>
 
@@ -25,15 +31,21 @@
     <commonality>1</commonality>
     <orbital>true</orbital>
     <stockGenerators>
-      <li Class="StockGenerator_Category">
+      <li Class="HumanResources.StockGenerator_TechBooks">
+        <countRange>
+          <min>10</min>
+          <max>10</max>
+        </countRange>
+      </li>
+      <!--<li Class="StockGenerator_Category">
         <categoryDef>Knowledge</categoryDef>
         <excludedCategories>
           <li>Neolithic</li>
         </excludedCategories>
         <thingDefCountRange>8~20</thingDefCountRange>
         <countRange>1~1</countRange>
-      </li>
+      </li>-->
     </stockGenerators>
-  </TraderKindDef>-->
+  </TraderKindDef>
 
 </Defs>

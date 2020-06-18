@@ -130,31 +130,31 @@ namespace HumanResources
             bool isPlayer = pawn.Faction?.IsPlayer ?? false;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, startingTechLevel, faction));
             int pass = 0;
-            List<KeyValuePair<ResearchProjectDef, List<SkillDef>>> result = new List<KeyValuePair<ResearchProjectDef, List<SkillDef>>>();
+            List<ResearchProjectDef> result = new List<ResearchProjectDef>();
             if (guru) startingTechLevel++;
             while (result.Count() < slots)
             {
-                var remaining = filtered.Except(result);
+                pass++;
+                var remaining = filtered.Where(x => !result.Contains(x.Key));
                 if (remaining.EnumerableNullOrEmpty()) break;
-                if (remaining.Any(e => e.Value.Contains(highestSkill)))
+                if (pass == 1 && remaining.Any(e => e.Value.Contains(highestSkill)))
                 {
-                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, highestSkill, slots, pass), 1f));
+                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, highestSkill, slots, pass), 1f).Key);
                 }
-                else if (remaining.Any(e => e.Value.Contains(secondSkill)))
+                else if (pass == 2 && remaining.Any(e => e.Value.Contains(secondSkill)))
                 {
-                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, secondSkill, slots, pass), 1f));
+                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, secondSkill, slots, pass), 1f).Key);
                 }
                 else if (remaining.Any())
                 {
-                    result.Add(remaining.RandomElement());
+                    result.Add(remaining.RandomElement().Key);
                 }
-                pass++;
                 if ((guru && pass == 1) | result.NullOrEmpty()) startingTechLevel--;
                 if (startingTechLevel == 0) break;
             }
             if (!result.NullOrEmpty())
             {
-                return result.Select(e => e.Key).ToList();
+                return result;
             }
             Log.Warning("Couldn't calculate any expertise for " + pawn);
             return null;
@@ -162,7 +162,6 @@ namespace HumanResources
 
         private static TechLevel InferTechLevelfromBG(Pawn pawn)
         {
-            Log.Warning("InferTechLevelfromBG starting...");
             if (pawn.story != null)
             {
                 string child = (pawn.story.childhood.title + " " + pawn.story.childhood.baseDesc).ToLower();
@@ -219,7 +218,6 @@ namespace HumanResources
                 if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
                 AcquirePlantKnowledge();
                 if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
-
             }
         }
 

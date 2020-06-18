@@ -321,13 +321,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Building_BookStore.cs" />
-    <Compile Include="CompTitleMaker.cs" />
-    <Compile Include="CompProperties_TitleMaker.cs" />
-    <Compile Include="CompProperties_StorageGraphic.cs" />
-    <Compile Include="CompStorageGraphic.cs" />
-    <Compile Include="Extension_Building_WorkTable.cs" />
-    <Compile Include="Extension_ResearchProjectDef.cs" />
+    <Compile Include="Books\Building_BookStore.cs" />
+    <Compile Include="Books\StockGenerator_TechBooks.cs" />
+    <Compile Include="Books\CompTitleMaker.cs" />
+    <Compile Include="Books\CompProperties_TitleMaker.cs" />
+    <Compile Include="Books\CompProperties_StorageGraphic.cs" />
+    <Compile Include="Books\CompStorageGraphic.cs" />
+    <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
+    <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
     <Compile Include="Harmony\HarmonyPatch.cs" />
     <Compile Include="Harmony\GoExplore_Patches.cs" />
     <Compile Include="Harmony\ResearchProjectDef_PlayerHasAnyAppropriateResearchBench.cs" />
@@ -346,29 +347,29 @@
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
     <Compile Include="Harmony\Dialog_BillConfig_DoWindowContents.cs" />
-    <Compile Include="ITab_Inventory.cs" />
-    <Compile Include="JobDriver_DocumentTech.cs" />
-    <Compile Include="JobDriver_LearnWeapon.cs" />
-    <Compile Include="ExpertiseNode.cs" />
+    <Compile Include="Books\ITab_Inventory.cs" />
+    <Compile Include="Work\JobDriver_DocumentTech.cs" />
+    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
+    <Compile Include="Knowledge\ExpertiseNode.cs" />
     <Compile Include="Graphic\Node.cs" />
-    <Compile Include="RoomRoleWorker_Library.cs" />
-    <Compile Include="StatPart_AvailableBooks.cs" />
-    <Compile Include="UnlockManager.cs" />
-    <Compile Include="Extension_Bill.cs" />
-    <Compile Include="ITab_PawnKnowledge.cs" />
-    <Compile Include="JobDriver_Knowledge.cs" />
-    <Compile Include="JobDriver_LearnTech.cs" />
-    <Compile Include="Extension_Research.cs" />
-    <Compile Include="CompProperties_Knowledge.cs" />
-    <Compile Include="CompKnowledge.cs" />
-    <Compile Include="ModBaseHumanResources.cs" />
+    <Compile Include="Books\RoomRoleWorker_Library.cs" />
+    <Compile Include="Books\StatPart_AvailableBooks.cs" />
+    <Compile Include="Base\UnlockManager.cs" />
+    <Compile Include="Extensions\Extension_Bill.cs" />
+    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
+    <Compile Include="Work\JobDriver_Knowledge.cs" />
+    <Compile Include="Work\JobDriver_LearnTech.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
+    <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkGiver_DocumentTech.cs" />
-    <Compile Include="WorkGiver_LearnWeapon.cs" />
-    <Compile Include="WorkGiver_PracticeWeapon.cs" />
-    <Compile Include="WorkGiver_ResearchTech.cs" />
-    <Compile Include="WorkGiver_Knowledge.cs" />
-    <Compile Include="WorkGiver_LearnTech.cs" />
+    <Compile Include="Work\WorkGiver_DocumentTech.cs" />
+    <Compile Include="Work\WorkGiver_LearnWeapon.cs" />
+    <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
+    <Compile Include="Work\WorkGiver_ResearchTech.cs" />
+    <Compile Include="Work\WorkGiver_Knowledge.cs" />
+    <Compile Include="Work\WorkGiver_LearnTech.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
