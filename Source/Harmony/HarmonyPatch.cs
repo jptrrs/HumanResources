@@ -56,6 +56,13 @@ namespace HumanResources
                 Log.Message("[HumanResources] Go Explore detected! Integrating...");
                 GoExplore_Patches.Execute(Instance);
             }
+
+            //Material Filter Patch
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "KamiKatze.MaterialFilter"))
+            {
+                Log.Message("[HumanResources] Material Filter detected! Patching...");
+                MaterialFilter_Patch.Execute(Instance);
+            }
         }
 
         public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
