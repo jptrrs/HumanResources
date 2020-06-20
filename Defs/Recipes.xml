@@ -142,6 +142,7 @@
         <filter>
           <categories>
             <li>WeaponsMelee</li>
+            <li>WeaponsMeleeBladelink</li>
           </categories>
         </filter>
         <count>1</count>
@@ -150,6 +151,7 @@
     <fixedIngredientFilter>
       <categories>
         <li>WeaponsMelee</li>
+        <li>WeaponsMeleeBladelink</li>
       </categories>
     </fixedIngredientFilter>
   </RecipeDef>
