@@ -108,8 +108,12 @@ namespace HumanResources
                 Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
+                Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
+
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + "+SimpleWeapons.Count()+ " that require training.");
+
+
 
             //3. Filling gaps on the database
 
@@ -165,6 +169,7 @@ namespace HumanResources
         private static bool SplitSimpleWeapons (ThingDef t, List<string> forbiddenWeaponTags)
         {
             bool flag = false;
+            //if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains("TurretGun")))
             foreach (string tag in forbiddenWeaponTags)
             {
                 if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains(tag)))
@@ -173,6 +178,11 @@ namespace HumanResources
                     SimpleWeapons.Add(t);
                     break;
                 }
+            }
+            if (!flag && t.IsRangedWeapon && t.defName.ToLower().Contains("gun"))
+            {
+                flag = true;
+                SimpleWeapons.Add(t);
             }
             return flag;
         }

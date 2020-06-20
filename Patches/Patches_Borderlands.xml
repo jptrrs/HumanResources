@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--deon.borderlands-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Borderlands: The Rim</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <value>
+        <li>AtlasRifle</li>
+        <li>AtlasSMG</li>
+        <li>AtlasPistol</li>
+        <li>AtlasCombatShotgun</li>
+        <li>AtlasSniperRifle</li>
+        <li>HyperionPistol</li>
+        <li>HyperionSMG</li>
+        <li>HyperionPistol</li>
+        <li>HyperionAssault</li>
+        <li>HyperionShotgun</li>
+        <li>DahlPistol</li>
+        <li>DahlSMG</li>
+        <li>DahlAssaultRifle</li>
+        <li>ScavHeavy</li>
+        <li>ScavAssault</li>
+        <li>ScavPistol</li>
+        <li>ScavSMG</li>
+        <li>ScavShotgun</li>
+        <li>ScavSniper</li>
+        <li>ScavMelee</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

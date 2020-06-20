@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-
 	<Operation Class="PatchOperationFindMod">
 		<mods>
 			<li>Weapon Tech 1.1</li>
 		</mods>
 		<match Class="PatchOperationAdd">
-			<xpath>Defs/ThingDef[defName = "ForbiddenWeaponTags"]/weaponTags</xpath>
+			<xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
 			<value>
 				<li>SniperRifle</li>
 			</value>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--rimsenal.federation-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Rimsenal - Federation Faction Pack</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <value>
+        <li>AuxPistol</li>
+        <li>Sentinel</li>
+        <li>FedBomb</li>
+        <li>FedRifle</li>
+        <li>FedMelee</li>
+        <li>FedSniper</li>
+        <li>FedPistol</li>
+        <li>FedCarbine</li>
+        <li>FedGrenade</li>
+        <li>Federator</li>
+        <li>FedCC</li>
+        <li>FedDemolition</li>
+        <li>FedMelee</li>
+        <li>FedGun</li>
+        <li>FeralGun</li>
+        <li>FeralRifle</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

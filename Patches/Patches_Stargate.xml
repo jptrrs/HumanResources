@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--neronix17.stargate.core-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>[O21] Stargate</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <value>
+        <li>StaffWeaponOC</li>
+        <li>JaffaRanged</li>
+        <li>GoauldRanged</li>
+        <li>SG_Stunner</li>
+        <li>WraithRanged</li>
+        <li>WraithPistol</li>
+        <li>WraithHeavyRifle</li>
+        <li>WraithLightRifle</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

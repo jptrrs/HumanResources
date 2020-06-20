@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B
 		Defs\StuffCategories.xml = Defs\StuffCategories.xml
 		Defs\ThingCategories.xml = Defs\ThingCategories.xml
 		Defs\Things.xml = Defs\Things.xml
+		Defs\Things_WeaponsNotBasic.xml = Defs\Things_WeaponsNotBasic.xml
 		Defs\TraderKinds.xml = Defs\TraderKinds.xml
 		Defs\WorkGivers.xml = Defs\WorkGivers.xml
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml

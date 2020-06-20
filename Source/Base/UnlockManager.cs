@@ -15,6 +15,8 @@ namespace HumanResources
         public IEnumerable<ResearchProjectDef> startingTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
+        private static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
+        private static FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
 
         public void ExposeData()
         {
@@ -22,20 +24,19 @@ namespace HumanResources
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 RecacheUnlockedWeapons();
+                RegisterStartingResources();
             }
         }
 
         public void RecacheUnlockedWeapons()
         {
-            if (weapons.NullOrEmpty())
+            weapons.Clear();
+            UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
+            foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
             {
-                UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
-                foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
-                {
-                    UnlockWeapons(tech.UnlockedWeapons());
-                }
-                if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
+                UnlockWeapons(tech.UnlockedWeapons());
             }
+            if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
         }
 
         public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
@@ -45,10 +46,8 @@ namespace HumanResources
 
         public void RegisterStartingResources()
         {
-            FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
             startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " starting scenario weapons: " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
-            FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
             startingTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingTechs.Count() + " starting scenario techs: " + startingTechs.Select(x => x.label).ToStringSafeEnumerable());
             if (!Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " weapons and " + startingTechs.Count() + " techs on the starting scenario, preparing for pawn expertise generation");

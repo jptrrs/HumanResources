@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--cp.rimmunation.weapons-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>[CP] Rimmu-Nation - Weapons</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <value>
+        <li>RN_HK417HRT</li>
+        <li>RN_Shotgun</li>
+        <li>RN_Remington870HRT</li>
+        <li>SniperRifle</li>
+        <li>RN_G3SG1</li>
+        <li>RN_HK417</li>
+        <li>RN_WA2000</li>
+        <li>RN_Type88</li>
+        <li>RN_AR10</li>
+        <li>RN_M14EBR</li>
+        <li>RN_M39EMR</li>
+        <li>RN_M39EMRMilSpec</li>
+        <li>RN_MK14EBR</li>
+        <li>RN_M110SASS</li>
+        <li>RN_M21SWS</li>
+        <li>RN_M110SASSSD</li>
+        <li>RN_RFB</li>
+        <li>RN_SCARMK20</li>
+        <li>RN_MK11</li>
+        <li>RN_Dragunov</li>
+        <li>RN_ZastavaM76</li>
+        <li>RN_SVU</li>
+        <li>RN_SVUA</li>
+        <li>RN_Revolvers</li>
+        <li>SimpleGun</li>
+        <li>Revolver</li>
+        <li>RN_NagantRevolver</li>
+        <li>RN_RagingBull</li>
+        <li>RN_Remington1858</li>
+        <li>RN_ColtPeacemaker</li>
+        <li>RN_ColtPeacemaker_II</li>
+        <li>RN_ColtCobra</li>
+        <li>RN_Mateba</li>
+        <li>RN_SWModel29</li>
+        <li>RN_ASVAL</li>
+        <li>RN_KS23</li>
+        <li>RN_KSG</li>
+        <li>RN_Model1887</li>
+        <li>RN_Mossberg500</li>
+        <li>RN_Remington870</li>
+        <li>RN_Remington870Tactical</li>
+        <li>RN_SuperShorty</li>
+        <li>RN_Supernova</li>
+        <li>RN_UTS15</li>
+        <li>RN_M1014</li>
+        <li>RN_Spacer</li>
+        <li>RN_Railgun</li>
+        <li>RN_Airstrikes</li>
+        <li>RN_EnemyAirstrike</li>
+        <li>RN_SerbAirstrike</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
