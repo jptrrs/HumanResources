@@ -13,7 +13,7 @@ namespace HumanResources
         public static Harmony instance = null;
         public static bool CurrentTech;
         public static bool FutureTech;
-        public static bool WeaponTrainingSelection;
+        //public static bool WeaponTrainingSelection;
         public static bool Ball;
         public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
         public static bool ResearchPal = false;

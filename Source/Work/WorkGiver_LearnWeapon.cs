@@ -124,10 +124,12 @@ namespace HumanResources
 
         protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons;
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            IEnumerable<ThingDef> known = techComp.knownWeapons;
+            IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
+            IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            return chosen.Intersect(available).Except(knownWeapons);
+            return chosen.Intersect(available).Except(known);
         }
 
         private Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)

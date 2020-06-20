@@ -80,6 +80,8 @@ namespace HumanResources
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
+            Log.Warning("Pesquisando armas: " + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon && x.techLevel == 0).ToStringSafeEnumerable());
+
             //b. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
@@ -90,14 +92,14 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //b. Also removing atipical weapons
-            List<string> ForbiddenWeaponTags = DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags").weaponTags;
-            if (Prefs.LogVerbose) Log.Message("[HumanResources] Preventing these weapon types from being commom: " + ForbiddenWeaponTags.ToStringSafeEnumerable());
-            foreach (string tag in ForbiddenWeaponTags)
-            {
-                UniversalWeapons.RemoveAll(x => !x.weaponTags.NullOrEmpty() && x.weaponTags.Any(t => t.Contains(tag)));
-            }
-            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags") });
+            ////b. Also removing atipical weapons
+            //List<string> ForbiddenWeaponTags = DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags").weaponTags;
+            //if (Prefs.LogVerbose) Log.Message("[HumanResources] Preventing these weapon types from being commom: " + ForbiddenWeaponTags.ToStringSafeEnumerable());
+            //foreach (string tag in ForbiddenWeaponTags)
+            //{
+            //    UniversalWeapons.RemoveAll(x => !x.weaponTags.NullOrEmpty() && x.weaponTags.Any(t => t.Contains(tag)));
+            //}
+            //AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags") });
 
             //c. Telling humans what's going on
             ThingCategoryDef knowledgeCat = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");

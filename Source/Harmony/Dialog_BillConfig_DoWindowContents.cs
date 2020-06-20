@@ -20,14 +20,14 @@ namespace HumanResources
                 if (bill.IsResearch()) HarmonyPatches.FutureTech = true;
                 else HarmonyPatches.CurrentTech = true;
             }
-            if (bill.IsWeaponsTraining()) HarmonyPatches.WeaponTrainingSelection = true;
+            //if (bill.IsWeaponsTraining()) HarmonyPatches.WeaponTrainingSelection = true;
         }
 
         public static void Postfix()
         {
             HarmonyPatches.CurrentTech = false;
             HarmonyPatches.FutureTech = false;
-            HarmonyPatches.WeaponTrainingSelection = false;
+            //HarmonyPatches.WeaponTrainingSelection = false;
         }
     }
 }

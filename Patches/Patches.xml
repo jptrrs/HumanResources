@@ -110,7 +110,14 @@
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/TraderKindDef[defName = "Caravan_Outlander_Exotic" or defName = "Orbital_Exotic"]/stockGenerators</xpath>
     <value>
-      <li Class="StockGenerator_Tag">
+      <li Class="HumanResources.StockGenerator_TechBooks">
+        <countRange>
+          <min>10</min>
+          <max>10</max>
+        </countRange>
+      </li>
+
+      <!--<li Class="StockGenerator_Tag">
         <tradeTag>TechBook</tradeTag>
         <thingDefCountRange>
           <min>1</min>
@@ -120,7 +127,7 @@
           <min>1</min>
           <max>1</max>
         </countRange>
-      </li>
+      </li>-->
       <!--<li Class="StockGenerator_Category">
         <categoryDef>Knowledge</categoryDef>
         <excludedCategories>

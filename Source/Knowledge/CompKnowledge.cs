@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using HarmonyLib;
-using HugsLib.Utils;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,12 +18,14 @@ namespace HumanResources
         protected static bool isFighter = false;
         protected static bool isShooter = false;
         protected static TechLevel startingTechLevel;
-        
+        public IEnumerable<ResearchProjectDef> knownTechs => expertise.Where(x => x.Value >= 1f).Select(x => x.Key);
+        public IEnumerable<ResearchProjectDef> partiallyKnownTechs => expertise.Where(x => x.Value < 1f).Select(x => x.Key);
+
         public List<ThingDef> knownWeapons
         {
             get
             {
-                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons.Where(AvailableWeapons)).ToList();
+                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons/*.Where(AvailableWeapons)*/).ToList();
             }
         }
 

@@ -13,7 +13,6 @@ namespace HumanResources
         public List<ThingDef> weapons = new List<ThingDef>();
         public IEnumerable<ThingDef> startingWeapons;
         public IEnumerable<ResearchProjectDef> startingTechs;
-        //public List<ResearchProjectDef> startingTechs = new List<ResearchProjectDef>();
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
 
@@ -50,8 +49,6 @@ namespace HumanResources
             startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " starting scenario weapons: " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
             FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
-            //startingTechs.Clear();
-            //startingTechs.AddRange(Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x)));
             startingTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingTechs.Count() + " starting scenario techs: " + startingTechs.Select(x => x.label).ToStringSafeEnumerable());
             if (!Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " weapons and " + startingTechs.Count() + " techs on the starting scenario, preparing for pawn expertise generation");

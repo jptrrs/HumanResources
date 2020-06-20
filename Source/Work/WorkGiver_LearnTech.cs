@@ -12,8 +12,7 @@ namespace HumanResources
         {
 			if (!base.ShouldSkip(pawn, forced))
 			{
-				IEnumerable<ResearchProjectDef> expertise = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => x.Value < 1f).Select(x => x.Key);
-				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise);
+				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs);
 				return !available.Any();
 			}
 			return true;
