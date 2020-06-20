@@ -2,6 +2,7 @@
 using HugsLib;
 using HugsLib.Settings;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,8 @@ namespace HumanResources
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
 
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
+
+        public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
 
         public static UnlockManager unlocked = new UnlockManager();
 
@@ -80,8 +83,6 @@ namespace HumanResources
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
-            Log.Warning("Pesquisando armas: " + DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon && x.techLevel == 0).ToStringSafeEnumerable());
-
             //b. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
@@ -92,14 +93,11 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            ////b. Also removing atipical weapons
-            //List<string> ForbiddenWeaponTags = DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags").weaponTags;
-            //if (Prefs.LogVerbose) Log.Message("[HumanResources] Preventing these weapon types from being commom: " + ForbiddenWeaponTags.ToStringSafeEnumerable());
-            //foreach (string tag in ForbiddenWeaponTags)
-            //{
-            //    UniversalWeapons.RemoveAll(x => !x.weaponTags.NullOrEmpty() && x.weaponTags.Any(t => t.Contains(tag)));
-            //}
-            //AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { DefDatabase<ThingDef>.GetNamed("ForbiddenWeaponTags") });
+            //b. Also removing atipical weapons
+            ThingDef WeaponsNotBasicDef = DefDatabase<ThingDef>.GetNamed("NotBasic");
+            List<string> ForbiddenWeaponTags = WeaponsNotBasicDef.weaponTags;
+            UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
+            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { WeaponsNotBasicDef });
 
             //c. Telling humans what's going on
             ThingCategoryDef knowledgeCat = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
@@ -109,8 +107,9 @@ namespace HumanResources
                 Log.Message("[HumanResources] Codified technologies:" + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
+                Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
             }
-            else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons");
+            else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + "+SimpleWeapons.Count()+ " that require training.");
 
             //3. Filling gaps on the database
 
@@ -162,5 +161,20 @@ namespace HumanResources
         //public override void WorldLoaded()
         //{
         //}
+
+        private static bool SplitSimpleWeapons (ThingDef t, List<string> forbiddenWeaponTags)
+        {
+            bool flag = false;
+            foreach (string tag in forbiddenWeaponTags)
+            {
+                if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains(tag)))
+                {
+                    flag = true;
+                    SimpleWeapons.Add(t);
+                    break;
+                }
+            }
+            return flag;
+        }
     }
 }

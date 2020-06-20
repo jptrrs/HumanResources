@@ -29,7 +29,7 @@ namespace HumanResources
         {
             if (weapons.NullOrEmpty())
             {
-                UnlockWeapons(ModBaseHumanResources.UniversalWeapons);
+                UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
                 foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
                 {
                     UnlockWeapons(tech.UnlockedWeapons());

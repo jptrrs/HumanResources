@@ -45,6 +45,9 @@
   <NothingToAddToLibrary>你什么都不懂，{0_nameFull}！</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef}已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef}缺少有关这些课题的基本知识。</LacksFundamentalKnowledge>
+  <!--MISSING:--> <NoWeaponsFoundToLearn>No available weapons to train.</NoWeaponsFoundToLearn>
+  <!--MISSING:--> <MissingRequirementToLearnWeapon>{0_nameDef} has no corresponding knowledge or books to learn about {1}.</MissingRequirementToLearnWeapon>
+  <!--MISSING:--> <ThoseWeapons>those weapons</ThoseWeapons>
   <NoWeaponToLearn>{0_nameDef}已经知道如何使用这些武器。</NoWeaponToLearn>
   <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
   <DoesntKnowHowToRepair>{0_nameDef}不知道如何修复{1}（需要{2}）。</DoesntKnowHowToRepair>

@@ -27,7 +27,7 @@ namespace HumanResources
                         requisite = ___recipe.researchPrerequisite;
                     }
 
-                    //If not, only for complex recipes, inspect it's home buildings. 
+                    //If not, only for complex recipes, inspect its home buildings. 
                     //In this case, it will only look for the first pre-requisite on a given building's list.
                     else if (!___recipe.recipeUsers.NullOrEmpty() && (___recipe.UsesUnfinishedThing || ___recipe.defName.StartsWith("Make_")))
                     {

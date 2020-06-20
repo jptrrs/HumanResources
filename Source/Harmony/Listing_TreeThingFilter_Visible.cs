@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace HumanResources
@@ -16,10 +17,10 @@ namespace HumanResources
                 else if (HarmonyPatches.CurrentTech) __result = ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;
                 else __result = true;
             }
-            //else if (HarmonyPatches.WeaponTrainingSelection)
-            //{
-            //    __result = ModBaseHumanResources.unlocked.weapons.Contains(td);
-            //}
+            else if (HarmonyPatches.WeaponTrainingSelection)
+            {
+                __result = !ModBaseHumanResources.UniversalWeapons.Contains(td);
+            }
         }
     }
 }

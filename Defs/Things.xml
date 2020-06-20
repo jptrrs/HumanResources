@@ -291,15 +291,5 @@
       <li>ITab_Bills</li>
     </inspectorTabs>
   </ThingDef>
-  
-  <!--This is just to sort out WeaponTags that indicate weapons to be excluded from universal use-->
-  <ThingDef>
-    <thingClass>Thing</thingClass>
-    <defName>ForbiddenWeaponTags</defName>
-    <label>ForbiddenWeaponTags</label>
-    <weaponTags>
-      <li>Gun</li>
-    </weaponTags>
-  </ThingDef>
 
 </Defs>

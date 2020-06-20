@@ -45,6 +45,9 @@
   <NothingToAddToLibrary>Não sabes nada, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} já leu todos os livros.</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} não domina conhecimentos básicos nessa matéria.</LacksFundamentalKnowledge>
+  <NoWeaponsFoundToLearn>Não há armas disponíveis para treinar.</NoWeaponsFoundToLearn>
+  <MissingRequirementToLearnWeapon>{0_nameDef} não possui o conhecimento ou livro correspondente para aprender {1}.</MissingRequirementToLearnWeapon>
+  <ThoseWeapons>estas armas</ThoseWeapons>
   <NoWeaponToLearn>{0_nameDef} já é capaz de usar estas armas.</NoWeaponToLearn>
   <DoesntKnowHowToBuild>{0_nameDef} não sabe como construir isso (requer {2}).</DoesntKnowHowToBuild>
   <DoesntKnowHowToRepair>{0_nameDef} não sabe como consertar isso (requer {2}).</DoesntKnowHowToRepair>

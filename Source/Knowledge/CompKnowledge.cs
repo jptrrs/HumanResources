@@ -25,7 +25,7 @@ namespace HumanResources
         {
             get
             {
-                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons/*.Where(AvailableWeapons)*/).ToList();
+                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons).Concat(ModBaseHumanResources.SimpleWeapons.Where(x => x.techLevel <= startingTechLevel)).ToList();
             }
         }
 
@@ -59,14 +59,6 @@ namespace HumanResources
             int b = B.levelInt;
             if (a == b) return (A.passion >= B.passion) ? A : B;
             return (a > b) ? A : B;
-        };
-
-        private static Func<ThingDef, bool> AvailableWeapons = (x) =>
-        {
-            bool singleUse = !x.thingSetMakerTags.NullOrEmpty() && x.thingSetMakerTags.Contains("SingleUseWeapon");
-            bool gunSingleUse = !x.weaponTags.NullOrEmpty() && x.weaponTags.Contains("GunSingleUse");
-            bool adequate = x.techLevel <= startingTechLevel;
-            return singleUse | gunSingleUse | adequate;
         };
 
         private static bool TechPool(bool isPlayer, ResearchProjectDef tech, TechLevel startingTechLevel, FactionDef faction)
@@ -354,7 +346,6 @@ namespace HumanResources
             Scribe_Collections.Look(ref expertise, "Expertise");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
-            if (Prefs.LogVerbose) Log.Message("PostExposeData for " + parent + ". proficientWeapons count is " + proficientWeapons.Count());
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

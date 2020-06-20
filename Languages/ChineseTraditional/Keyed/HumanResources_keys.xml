@@ -44,6 +44,9 @@
   <MessageTrainingComplete>{0_nameDef}已掌握{1}。</MessageTrainingComplete>
   <NothingToAddToLibrary>你什麼都不懂，{0_nameFull}！</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef}已閱讀所有書籍。</AlreadyKnowsTheWholeLibrary>
+  <!--MISSING:--> <NoWeaponsFoundToLearn>No available weapons to train.</NoWeaponsFoundToLearn>
+  <!--MISSING:--> <MissingRequirementToLearnWeapon>{0_nameDef} has no corresponding knowledge or books to learn about {1}.</MissingRequirementToLearnWeapon>
+  <!--MISSING:--> <ThoseWeapons>those weapons</ThoseWeapons>
   <LacksFundamentalKnowledge>{0_nameDef}缺少有關這些課題的基本知識。</LacksFundamentalKnowledge>
   <NoWeaponToLearn>{0_nameDef}已經知道如何使用這些武器。</NoWeaponToLearn>
   <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>

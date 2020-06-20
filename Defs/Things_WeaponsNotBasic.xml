@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+   
+  <!--This is just to sort out weapons that aren't ulocked by research but should require training-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>NotBasic</defName>
+    <label>NotBasic</label>
+    <weaponTags>
+      <li>Gun</li>
+    </weaponTags>
+  </ThingDef>
+
+</Defs>

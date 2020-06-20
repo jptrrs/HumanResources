@@ -11,6 +11,7 @@ namespace HumanResources
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
         public List<ThingCount> chosenIngThings = new List<ThingCount>();
+        private MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
@@ -28,10 +29,8 @@ namespace HumanResources
                 {
                     return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
                 }
-                JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                 return false;
             }
-            //Log.Message("case 4");
             return false;
         }
 
@@ -97,7 +96,7 @@ namespace HumanResources
                                     chosenIngThings.Clear();
                                     return result;
                                 }
-                                else JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
+                                else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
                             //}
                             if (FloatMenuMakerMap.makingFor != pawn)
                             {
@@ -129,7 +128,15 @@ namespace HumanResources
             IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            return chosen.Intersect(available).Except(known);
+            IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
+            if (!unavailable.EnumerableNullOrEmpty())
+            {
+                string thoseWeapons = "ThoseWeapons".Translate();
+                string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
+                JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
+            }
+            var result = chosen.Intersect(available).Except(known);
+            return result;
         }
 
         private Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
@@ -154,25 +161,22 @@ namespace HumanResources
 
         private bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
-            //reflection info
-            MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-            //
             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
             {
                 var studyWeapons = StudyWeapons(bill, pawn);
-                //Log.Warning("ValidateChosenWeapons for "+pawn+"...");
+                //Log.Warning("ValidateChosenWeapons for " + pawn + "...");
                 //Log.Warning("..." + chosenIngThings.Count() + " chosen ingredients:  " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
                 //Log.Warning("..." + studyWeapons.EnumerableCount() + " weapons to study: " + studyWeapons.Select(x => x.defName).ToStringSafeEnumerable());
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
                 if (chosenIngThings.Any())
                 {
                     //Log.Message("ValidateChosenWeapons for " + pawn + ": proceeed!");
-                    //chosenIngThings.Clear();
+                    if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                     return studyWeapons.Any();
                 }
             }
+            if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
             return false;
-            //return StudyWeapons(bill, pawn).Any();
         }
     }
 }
