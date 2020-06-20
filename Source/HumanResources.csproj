@@ -329,9 +329,10 @@
     <Compile Include="Books\CompStorageGraphic.cs" />
     <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
     <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
+    <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\HarmonyPatch.cs" />
-    <Compile Include="Harmony\GoExplore_Patches.cs" />
-    <Compile Include="Harmony\MaterialFilter_Patch.cs" />
+    <Compile Include="Harmony\Compatibility\GoExplore_Patches.cs" />
+    <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\ResearchProjectDef_PlayerHasAnyAppropriateResearchBench.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
