@@ -18,7 +18,7 @@ namespace HumanResources
         {
             if (stuffToFilter.defName == "Technic")
             {
-                Log.Message("[HumanResources] Skipped StuffCategoryDef: " + stuffToFilter.defName);
+                if (Prefs.LogVerbose) Log.Message("[HumanResources] Skipped StuffCategoryDef: " + stuffToFilter.defName);
                 return false;
             }
             return true;
