@@ -16,6 +16,7 @@
   <loadAfter>
     <li>UnlimitedHugs.HugsLib</li>
     <li>jelly.survivaltoolsreborn</li>
+    <li>roolo.whatthehack</li>
   </loadAfter>
   <incompatibleWith>
     <li>GHXX.TechAdvancing</li>
