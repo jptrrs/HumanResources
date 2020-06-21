@@ -36,7 +36,7 @@
     <description>Consolidate knowledge into a technical book.</description>
     <jobString>Documenting a technology.</jobString>
     <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <requiredGiverWorkType>Research</requiredGiverWorkType>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>

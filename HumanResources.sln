@@ -56,6 +56,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1A49A134-082B-49CA-BAED-1708C8422690}"
 	ProjectSection(SolutionItems) = preProject
 		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
+		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
+		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
+		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
+		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
 		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
 		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection

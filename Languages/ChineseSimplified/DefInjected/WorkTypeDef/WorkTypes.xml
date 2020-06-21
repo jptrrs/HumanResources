@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <HR_Learn.label>学习</HR_Learn.label>
+  <HR_Learn.label>学习</HR_Learn.label> <!--I changed from "learn" to "study", please review-->
   <HR_Learn.description>获得新知识。</HR_Learn.description>
   <HR_Learn.labelShort>学习</HR_Learn.labelShort>
   <HR_Learn.pawnLabel>学生</HR_Learn.pawnLabel>

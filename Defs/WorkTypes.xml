@@ -3,11 +3,11 @@
 
 	<WorkTypeDef>
 		<defName>HR_Learn</defName>
-		<labelShort>Learn</labelShort>
+		<labelShort>Study</labelShort>
 		<pawnLabel>Student</pawnLabel>
-		<gerundLabel>learning</gerundLabel>
+		<gerundLabel>studying</gerundLabel>
 		<description>Acquire new knowledge.</description>
-		<verb>Learn at</verb>
+		<verb>Study at</verb>
 		<naturalPriority>90</naturalPriority>
 		<relevantSkills>
 		  <li>Intellectual</li>

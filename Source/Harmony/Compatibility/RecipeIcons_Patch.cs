@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
-using RimWorld;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Verse;
 
@@ -22,7 +19,7 @@ namespace HumanResources
         public static bool ShowAt_Prefix(object __instance, FloatMenuOption option)
         {
             RecipeDef recipe = (RecipeDef)FindRecipeInfo.Invoke(__instance, new object[] { option });
-            if (recipe.defName.EndsWith("Tech"))
+            if (recipe != null && recipe.defName.EndsWith("Tech"))
             {
                 return false;
             }
