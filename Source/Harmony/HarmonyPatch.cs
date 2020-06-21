@@ -9,7 +9,6 @@ namespace HumanResources
     [StaticConstructorOnStartup]
     public static class HarmonyPatches
     {
-        private static Type patchType = typeof(HarmonyPatches);
         public static Harmony instance = null;
         public static bool CurrentTech;
         public static bool FutureTech;
@@ -83,15 +82,13 @@ namespace HumanResources
             {
                 Log.Message(carrier.CurJobDef.label);
             }
-            
         }
 
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)
         {
             var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
-            bool result = true;
+            bool result = false;
             if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(thing.def);
-            else result = false;
             return result;
         }
 

@@ -113,8 +113,6 @@ namespace HumanResources
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + "+SimpleWeapons.Count()+ " that require training.");
 
-
-
             //3. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
@@ -123,7 +121,7 @@ namespace HumanResources
                 t.stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));
             }
 
-            //b. Filling main technic category with subcategories
+            //b. Filling main tech category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
                 foreach (ThingCategoryDef c in t.thingCategories)

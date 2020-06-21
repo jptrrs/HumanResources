@@ -4,24 +4,16 @@
   <TraderKindDef>
     <defName>Caravan_Tech</defName>
     <label>enciclopedia seller</label>
-    <commonality>3</commonality>
+    <commonality>1</commonality>
     <stockGenerators>
       <li Class="HumanResources.StockGenerator_TechBooks">
-        <countRange>
-          <min>10</min>
-          <max>10</max>
-        </countRange>
-      </li>
-      <!--<li Class="StockGenerator_Category">
-        <categoryDef>Knowledge</categoryDef>
+        <countRange>6~12</countRange>
         <excludedCategories>
           <li>Spacer</li>
           <li>Ultra</li>
           <li>Archotech</li>
         </excludedCategories>
-        <thingDefCountRange>6~12</thingDefCountRange>
-        <countRange>1~1</countRange>
-      </li>-->
+      </li>
     </stockGenerators>
   </TraderKindDef>
 
@@ -32,19 +24,11 @@
     <orbital>true</orbital>
     <stockGenerators>
       <li Class="HumanResources.StockGenerator_TechBooks">
-        <countRange>
-          <min>10</min>
-          <max>10</max>
-        </countRange>
-      </li>
-      <!--<li Class="StockGenerator_Category">
-        <categoryDef>Knowledge</categoryDef>
+        <countRange>8~20</countRange>
         <excludedCategories>
           <li>Neolithic</li>
         </excludedCategories>
-        <thingDefCountRange>8~20</thingDefCountRange>
-        <countRange>1~1</countRange>
-      </li>-->
+      </li>
     </stockGenerators>
   </TraderKindDef>
 

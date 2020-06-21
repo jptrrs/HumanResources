@@ -20,9 +20,8 @@ namespace HumanResources
                 {
                     var knownPlants = pawn.TryGetComp<CompKnowledge>().knownPlants;
                     if (Prefs.LogVerbose) Log.Warning(pawn + "'s plant knowledge: " + knownPlants);
-                    bool flag = true;
+                    bool flag = false;
                     if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
-                    else flag = false;
                     if (!flag)
                     {
                         string preReqText = requisites.Any() ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;

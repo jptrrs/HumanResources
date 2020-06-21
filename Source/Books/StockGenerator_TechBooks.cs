@@ -1,13 +1,54 @@
 ﻿using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace HumanResources
 {
 	public class StockGenerator_TechBooks : StockGenerator_MiscItems
 	{
-		public override bool HandlesThingDef(ThingDef td)
+		private List<ThingCategoryDef> excludedCategories;
+
+		private TechLevel defaultLevel = TechLevel.Undefined;
+
+		public override IEnumerable<Thing> GenerateThings(int forTile, Faction faction = null)
 		{
-			return base.HandlesThingDef(td) && td.defName == "TechBook";
+			if (faction?.def.techLevel != null) defaultLevel = faction.def.techLevel;
+			return base.GenerateThings(forTile, faction);
+		}
+
+		protected override Thing MakeThing(ThingDef def)
+		{
+			if (!def.tradeability.TraderCanSell())
+			{
+				Log.Error("Tried to make non-trader-sellable thing for trader stock: " + def, false);
+				return null;
+			}
+			ThingDef stuff = null;
+			if (def.MadeFromStuff)
+			{
+				if (!GenStuff.AllowedStuffsFor(def, TechLevel.Undefined).Where(x => AppropriateTechLevel(x)).TryRandomElementByWeight((ThingDef x) => x.stuffProps.commonality, out stuff))
+
+				{
+					stuff = GenStuff.RandomStuffByCommonalityFor(def, TechLevel.Undefined);
+				}
+			}
+			Thing thing = ThingMaker.MakeThing(def, stuff);
+			thing.stackCount = 1;
+			return thing;
+		}
+
+		private bool AppropriateTechLevel(ThingDef x) 
+		{
+			if (!excludedCategories.NullOrEmpty()) return !excludedCategories.Intersect(x.thingCategories).Any();
+			else if (defaultLevel != 0) return x.techLevel == defaultLevel;
+			else return true;
+		}
+
+		public override bool HandlesThingDef(ThingDef thingDef)
+		{
+			return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef.defName == "TechBook";
 		}
 
 		protected override float SelectionWeight(ThingDef thingDef)

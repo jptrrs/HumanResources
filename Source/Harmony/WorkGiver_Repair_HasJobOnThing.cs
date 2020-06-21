@@ -18,7 +18,6 @@ namespace HumanResources
                 var requisites = t.def.researchPrerequisites;
                 if (!requisites.NullOrEmpty())
                 {
-                    Log.Warning("repair patch working");
                     __result = pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
                     if (!__result)
                     {
