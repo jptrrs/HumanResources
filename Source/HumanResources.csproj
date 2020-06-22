@@ -335,6 +335,7 @@
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\ResearchProjectDef_PlayerHasAnyAppropriateResearchBench.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\Constants.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyAdded.cs" />
@@ -352,7 +353,7 @@
     <Compile Include="Books\ITab_Inventory.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
-    <Compile Include="Knowledge\ExpertiseNode.cs" />
+    <Compile Include="Graphic\ExpertiseNode.cs" />
     <Compile Include="Graphic\Node.cs" />
     <Compile Include="Books\RoomRoleWorker_Library.cs" />
     <Compile Include="Books\StatPart_AvailableBooks.cs" />

@@ -5,10 +5,10 @@
     <defName>DocumentTech</defName>
     <label>Document technologies</label>
     <giverClass>HumanResources.WorkGiver_DocumentTech</giverClass>
-    <workType>Research</workType>
+    <workType>HR_Learn</workType>
     <verb>write</verb>
     <gerund>writing at</gerund>
-    <priorityInType>110</priorityInType>
+    <priorityInType>10</priorityInType>
     <fixedBillGiverDefs>
       <li>StudyDesk</li>
     </fixedBillGiverDefs>
@@ -21,7 +21,8 @@
 		<workType>HR_Learn</workType>
 		<verb>study</verb>
 		<gerund>studying at</gerund>
-		<fixedBillGiverDefs>
+    <priorityInType>9</priorityInType>
+    <fixedBillGiverDefs>
 			<li>StudyDesk</li>
 		</fixedBillGiverDefs>
 	</WorkGiverDef>
@@ -33,6 +34,7 @@
     <workType>HR_Learn</workType>
     <verb>train</verb>
     <gerund>training</gerund>
+    <priorityInType>7</priorityInType>
     <fixedBillGiverDefs>
       <li>Target</li>
       <li>MrDummy</li>
@@ -47,6 +49,7 @@
     <workType>HR_Learn</workType>
     <verb>train</verb>
     <gerund>training</gerund>
+    <priorityInType>2</priorityInType>
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>
@@ -58,11 +61,11 @@
   <WorkGiverDef>
     <defName>PracticeMelee</defName>
     <label>melee practice</label>
-    <!--<giverClass>WorkGiver_DoBill</giverClass>-->
     <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
     <workType>HR_Learn</workType>
     <verb>train</verb>
     <gerund>training</gerund>
+    <priorityInType>1</priorityInType>
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>

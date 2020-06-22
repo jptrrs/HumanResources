@@ -95,8 +95,14 @@ namespace HumanResources
                     var progressBarRect = Rect.ContractedBy(3f);
                     //GUI.color = Assets.ColorAvailable[Research.techLevel];
                     GUI.color = Widgets.WindowBGFillColor;
-                    //progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
+                if (techComp.expertise.ContainsKey(Research))
+                {
                     progressBarRect.xMin += techComp.expertise[Research] * progressBarRect.width;
+                }
+                //else
+                //{
+                //    progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
+                //}
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 //}
 
@@ -119,7 +125,7 @@ namespace HumanResources
                 {
                     Text.Anchor = TextAnchor.MiddleCenter;
                     Text.WordWrap = false;
-                    Text.Font = GameFont.Medium;
+                    Text.Font = GameFont.Small;//GameFont.Medium;
                     Widgets.Label(Rect, Research.LabelCap);
                 }
 
@@ -185,7 +191,7 @@ namespace HumanResources
         public void DrawAt(Vector2 pos, Rect visibleRect, bool forceDetailedMode = false)
         {
             SetRects(pos);
-            Draw(visibleRect, forceDetailedMode);
+            Draw(visibleRect, !forceDetailedMode);
             SetRects();
         }
 

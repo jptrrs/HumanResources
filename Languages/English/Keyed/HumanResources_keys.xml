@@ -6,7 +6,9 @@
   <TabKnowledgeTitle>Knowledge</TabKnowledgeTitle>
   <TabKnowledgeWeapons>Weapons Proficiency</TabKnowledgeWeapons>
   <TabCatalogue>Catalog</TabCatalogue>
-  <ShowCommon>show common</ShowCommon>
+  <ShowCommon>show common weapons</ShowCommon>
+  <ShowAvailable>show techs available to learn</ShowAvailable>
+  <ShowCompact>compact view</ShowCompact>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
 
   <!--Settings-->

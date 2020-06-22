@@ -50,7 +50,7 @@ namespace HumanResources
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " starting scenario weapons: " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
             startingTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingTechs.Count() + " starting scenario techs: " + startingTechs.Select(x => x.label).ToStringSafeEnumerable());
-            if (!Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " weapons and " + startingTechs.Count() + " techs on the starting scenario, preparing for pawn expertise generation");
+            if (!Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " weapons and " + startingTechs.Count() + " techs on the starting scenario.");
         }
 
         private const float decay = 0.02f;

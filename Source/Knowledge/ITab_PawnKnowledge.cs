@@ -2,30 +2,29 @@
 using RimWorld;
 using Verse;
 using UnityEngine;
+using System.Collections.Generic;
+using Verse.Sound;
+using HarmonyLib;
+using System;
+using System.Reflection;
 
 namespace HumanResources
 {
     public class ITab_PawnKnowledge : ITab
     {
         private const int iconSize = 29;
-
         private const int margin = (int)Constants.Margin;
-
-        private const int rowHeight = 30;
-
+        private const int rowHeight = 32;
         private const float scrollBarWidth = 17f;
-
         private const float tabSizeAdjust = 50f;
-
         private static Vector2 scrollPosition = Vector2.zero;
-
         private static Vector2 scrollPosition2 = Vector2.zero;
-
         private int cellWidth = 200;
-
-        private Vector2 nodeSize = Constants.NodeSize;
-        
+        private Vector2 nodeSize => Constants.NodeSize;
         private static bool filterWeapons = false;
+        private static bool showAvailable = false;
+        private static bool expandTab = false;
+        private Vector2 buttonSize = new Vector2(rowHeight, rowHeight);
 
         public ITab_PawnKnowledge()
         {
@@ -60,7 +59,7 @@ namespace HumanResources
                 }
                 if (pawn == null)
                 {
-                    //Log.Error("Knowledge tab found no selected pawn to display.");
+                    Log.Error("[HumanResources] Knowledge tab found no selected pawn to display.");
                     return null;
                 }
                 return pawn;
@@ -74,7 +73,8 @@ namespace HumanResources
             GUI.BeginGroup(canvas);
 
             //Left Column
-            Rect leftColumn = new Rect(canvas.x, canvas.y, nodeSize.x + scrollBarWidth + margin, canvas.height);
+            float columnWidth = expandTab ? canvas.width : nodeSize.x + scrollBarWidth + margin;
+            Rect leftColumn = new Rect(canvas.x, canvas.y, columnWidth, canvas.height);
             Text.Font = GameFont.Medium;
             Rect titleRect = new Rect(leftColumn.x, leftColumn.y, leftColumn.width, Text.LineHeight);
             Widgets.Label(titleRect, "TabKnowledgeTitle".Translate());
@@ -82,69 +82,116 @@ namespace HumanResources
             var expertise = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.expertise;
             if (!expertise.EnumerableNullOrEmpty())
             {
-                var expertiseList = expertise.Keys.OrderByDescending(x => x.techLevel).ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
-                Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - margin - padding - 2f);
+                var unknownList = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise.Keys);
+                bool unknownEnabled = !unknownList.EnumerableNullOrEmpty();
+                var currentList = (unknownEnabled && showAvailable) ? unknownList : expertise.Keys;
+                var orderedList = expandTab ? currentList.OrderBy(x => x.techLevel) : currentList.OrderByDescending(x => x.techLevel);
+                var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();                
                 float viewHeight = (nodeSize.y + margin) * expertiseList.Count();
-                Rect viewRect = new Rect(0f, 0f, nodeSize.x/*canvas.width*/, viewHeight);
+                Rect viewRect = new Rect(0f, 0f, nodeSize.x, viewHeight);
+                Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - rowHeight - margin - padding - 2f);
                 Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
-                var pos = new Vector2(0f, 0f);//canvas.min;
-                for (int i = 0; i < expertiseList.Count && pos.x + nodeSize.x < leftColumn.xMax; i++)
+                var pos = new Vector2(0f, 0f);
+                if (!showAvailable | unknownEnabled)
                 {
-                    var node = expertiseList[i];
-                    var rect = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
-                    node.DrawAt(pos, rect, true);
-                    pos.y += nodeSize.y + margin;
+                    int columnBreak = (int)expertiseList.First().Research.techLevel;
+                    for (int i = 0; i < expertiseList.Count && pos.x + nodeSize.x < leftColumn.xMax; i++)
+                    {
+                        var node = expertiseList[i];
+                        if (expandTab && (int)node.Research.techLevel != columnBreak)
+                        {
+                            pos.x += nodeSize.x + margin;
+                            pos.y = 0f;
+                            columnBreak++;
+                        }
+                        var rect = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
+                        node.DrawAt(pos, rect, Constants.showCompact);
+                        pos.y += nodeSize.y + margin;
+                    }
                 }
                 if (Event.current.type == EventType.Layout)
                 {
                     viewHeight = size.y;
                 }
                 Widgets.EndScrollView();
+                if (unknownEnabled)
+                {
+                    Text.Font = GameFont.Tiny;
+                    float baselineY = scrollrect.max.y;
+                    float baselineX = leftColumn.x;
+                    
+                    Vector2 position1 = new Vector2(baselineX, baselineY);
+                    Rect button1 = new Rect(position1, buttonSize);
+                    TooltipHandler.TipRegionByKey(button1, "ShowAvailable");
+                    Widgets.Checkbox(position1, ref showAvailable, 24, false, false, ContentFinder<Texture2D>.Get("UI/available_on", true), ContentFinder<Texture2D>.Get("UI/available_off", true));
+                    
+                    baselineX += rowHeight;
+                    Vector2 position2 = new Vector2(baselineX, baselineY);
+                    Rect button2 = new Rect(position2, buttonSize);
+                    TooltipHandler.TipRegionByKey(button2, "ShowCompact");
+                    Widgets.Checkbox(position2, ref Constants.showCompact, 24, false, false, ContentFinder<Texture2D>.Get("UI/compact_on", true), ContentFinder<Texture2D>.Get("UI/compact_off", true));
+                    
+                    baselineX += rowHeight;
+                    Vector2 position3 = new Vector2(baselineX, baselineY);
+                    Rect button3 = new Rect(position3, buttonSize);
+                    TooltipHandler.TipRegionByKey(button3, "Expand");
+                    Widgets.Checkbox(position3, ref expandTab, 24, false, false, ContentFinder<Texture2D>.Get("UI/expand_on", true), ContentFinder<Texture2D>.Get("UI/expand_off", true));
+                }
             }
 
             //Right Column
-            Rect rightColumn = new Rect(leftColumn.xMax, canvas.y, canvas.width - leftColumn.width, canvas.height);
-            //GUI.DrawTexture(rightColumn, TexUI.TitleBGTex);
-            Text.Font = GameFont.Medium;
-            Rect titleRect2 = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, Text.LineHeight);
-            Text.Font = GameFont.Small;
-            Text.Anchor = TextAnchor.LowerLeft;
-            Widgets.Label(titleRect2, "TabKnowledgeWeapons".Translate()+":");
-            Text.Anchor = TextAnchor.UpperLeft;
-            Rect scrollrect2 = new Rect(rightColumn.x, titleRect2.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect2.height - rowHeight - margin - padding - 2f);
-            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons;
-            if (!knownWeapons.NullOrEmpty())
+            if (!expandTab)
             {
-                var filteredKnownWeapons = knownWeapons.Where(x => !x.menuHidden);
-                var noCommomWeapons = filteredKnownWeapons.Where(x => !x.weaponTags.NullOrEmpty());
-                var filteredWeapons = filterWeapons ? filteredKnownWeapons : noCommomWeapons;
-                var weaponsList = filteredWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
-                float viewHeight2 = rowHeight * weaponsList.Count();
-                cellWidth = (int)(scrollrect2.width - scrollBarWidth);
-                Rect viewRect2 = new Rect(0f, 0f, cellWidth, viewHeight2);
-                Widgets.BeginScrollView(scrollrect2, ref scrollPosition2, viewRect2);
-                int num = 0;
-                foreach (ThingDef item in weaponsList)
+                Rect rightColumn = new Rect(leftColumn.xMax, canvas.y, canvas.width - leftColumn.width, canvas.height);
+                Text.Font = GameFont.Medium;
+                Rect titleRect2 = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, Text.LineHeight);
+                Text.Font = GameFont.Small;
+                Text.Anchor = TextAnchor.LowerLeft;
+                Widgets.Label(titleRect2, "TabKnowledgeWeapons".Translate() + ":");
+                Text.Anchor = TextAnchor.UpperLeft;
+                Rect scrollrect2 = new Rect(rightColumn.x, titleRect2.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect2.height - rowHeight - margin - padding - 2f);
+                var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons;
+                if (!knownWeapons.NullOrEmpty())
                 {
-                    DrawRow(item, num, viewRect2.width);
-                    num++;
+                    var filteredKnownWeapons = knownWeapons.Where(x => !x.menuHidden);
+                    var noCommomWeapons = filteredKnownWeapons.Where(x => !x.weaponTags.NullOrEmpty());
+                    var filteredWeapons = filterWeapons ? filteredKnownWeapons : noCommomWeapons;
+                    var weaponsList = filteredWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
+                    float viewHeight2 = rowHeight * weaponsList.Count();
+                    cellWidth = (int)(scrollrect2.width - scrollBarWidth);
+                    Rect viewRect2 = new Rect(0f, 0f, cellWidth, viewHeight2);
+                    Widgets.BeginScrollView(scrollrect2, ref scrollPosition2, viewRect2);
+                    int num = 0;
+                    foreach (ThingDef item in weaponsList)
+                    {
+                        DrawRow(item, num, viewRect2.width);
+                        num++;
+                    }
+                    if (Event.current.type == EventType.Layout)
+                    {
+                        viewHeight2 = size.y;
+                    }
+                    Widgets.EndScrollView();
                 }
-                if (Event.current.type == EventType.Layout)
-                {
-                    viewHeight2 = size.y;
-                }
-                Widgets.EndScrollView();
+                Text.Font = GameFont.Tiny;
+                float rightBaselineX = rightColumn.max.x - rowHeight - margin;
+                float rightBaselineY = scrollrect2.max.y;
+                Vector2 rightposition1 = new Vector2(rightBaselineX, rightBaselineY);
+                Rect rightButton1 = new Rect(rightposition1, buttonSize);
+                TooltipHandler.TipRegionByKey(rightButton1, "ShowCommon");
+                Widgets.Checkbox(rightposition1, ref filterWeapons, 24, false, false, ContentFinder<Texture2D>.Get("UI/commomWeapons_on", true), ContentFinder<Texture2D>.Get("UI/commomWeapons_off", true));
             }
-            Text.Font = GameFont.Tiny;
-            Rect filterRect = new Rect(rightColumn.x, scrollrect2.max.y, rightColumn.width - margin - padding, rowHeight);
-            Widgets.CheckboxLabeled(filterRect, "ShowCommon".Translate(), ref filterWeapons, false);
+            Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
         }
 
         protected override void UpdateSize()
         {
             base.UpdateSize();
-            size = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) + new Vector2(17f, 17f) * 2f - new Vector2(tabSizeAdjust, 0f);
+            Vector2 margins = new Vector2(17f, 17f) * 2f;
+            Vector2 defaultSize = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) - new Vector2(tabSizeAdjust, 0f);
+            Vector2 expandedSize = new Vector2(ResearchTree_Tree.RelevantTechLevels.Count() * (nodeSize.x + margin) - margin, defaultSize.y) ;
+            size = expandTab ? expandedSize+ margins : defaultSize+ margins;
         }
 
         private void DrawBase(int row, float w)
