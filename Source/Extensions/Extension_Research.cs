@@ -9,15 +9,43 @@ using System.Globalization;
 
 namespace HumanResources
 {
-	public static class Extension_Research
-	{
-		public static SkillDef Bias = new SkillDef();
+    public static class Extension_Research
+    {
+        public static SkillDef Bias = new SkillDef();
 
-		public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
+        public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
 
         private const float MarketValueOffset = 200f;
-        private const float ResearchPointsPerWorkTick = 0.0075f; // aprox. 10% down down from vanilla 0.00825f, neutralized with half available techs in library;
-        private const float StudyPointsPerWorkTick = 1f;
+
+        private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
+
+        private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
+        {
+            get
+            {
+                float delta = 1 - Find.Storyteller.difficulty.researchSpeedFactor;
+                float adjusted = delta > 0 ? delta : delta / 2;
+                return 1 - (adjusted + 0.2f);
+            }
+        }
+
+        private static float ResearchPointsPerWorkTick // default is aprox. 10% down down from vanilla 0.00825f, neutralized with half available techs in library.
+        {
+            get
+            {
+                float baseValue = (float)ResearchPointsPerWorkTickInfo.GetValue(new ResearchManager());
+                return ModBaseHumanResources.ResearchSpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue * 0.9f;
+            }
+        }
+
+        private static float StudyPointsPerWorkTick // 100% on easy, 90% on medium, 85% on rough & 80% on hard.
+        {
+            get
+            {
+                float baseValue = 1.1f;
+                return ModBaseHumanResources.StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
+            }
+        }
 
         private static bool animalsTag = false;
         private static bool artisticTag = false;
@@ -269,7 +297,6 @@ namespace HumanResources
         {
             float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
             amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
-            amount *= Find.Storyteller.difficulty.researchSpeedFactor;
             Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
             foreach (ResearchProjectDef ancestor in expertise.Keys)
             {

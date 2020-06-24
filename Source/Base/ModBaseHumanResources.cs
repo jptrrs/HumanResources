@@ -32,6 +32,11 @@ namespace HumanResources
         public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
 
         public static SettingHandle<bool> TechPoolIncludesScenario;
+
+        public static SettingHandle<bool> ResearchSpeedTiedToDifficulty;
+
+        public static SettingHandle<bool> StudySpeedTiedToDifficulty;
+
         public enum FactionWeaponPool { Both, TechLevel, Scenario }
 
         public static FactionWeaponPool WeaponPoolMode;
@@ -149,6 +154,8 @@ namespace HumanResources
             TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
+            ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
+            StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), false);
         }
 
         public override void MapComponentsInitializing(Map map)

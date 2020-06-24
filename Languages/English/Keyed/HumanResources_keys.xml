@@ -5,10 +5,14 @@
   <TabKnowledge>Tech</TabKnowledge>
   <TabKnowledgeTitle>Knowledge</TabKnowledgeTitle>
   <TabKnowledgeWeapons>Weapons Proficiency</TabKnowledgeWeapons>
+  <ShowCommon>Show common weapons.</ShowCommon>
+  <ShowMelee>Show melee weapons.</ShowMelee>
+  <ShowRanged>Show ranged weapons.</ShowRanged>
+  <ShowAvailable>Show techs available to learn.</ShowAvailable>
+  <ShowCompact>Compact view.</ShowCompact>
+  <Expand>Expand.</Expand>
+  <Contract>Contract.</Contract>
   <TabCatalogue>Catalog</TabCatalogue>
-  <ShowCommon>show common weapons</ShowCommon>
-  <ShowAvailable>show techs available to learn</ShowAvailable>
-  <ShowCompact>compact view</ShowCompact>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
 
   <!--Settings-->
@@ -24,6 +28,10 @@
   <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
   <WeaponPoolMode_TechLevel>the faction's tech level only</WeaponPoolMode_TechLevel>
   <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
+  <ResearchSpeedTiedToDifficultyTitle>Difficulty settings slows down research.</ResearchSpeedTiedToDifficultyTitle>
+  <ResearchSpeedTiedToDifficultyDesc>If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 70% decrease on Hard. If unchecked, it defaults to 90% slower than vanilla.</ResearchSpeedTiedToDifficultyDesc>
+  <StudySpeedTiedToDifficultyTitle>Difficulty settings slows down tech studying.</StudySpeedTiedToDifficultyTitle>
+  <StudySpeedTiedToDifficultyDesc>If checked, the base speed for studying new techs is tied to the difficulty settings, dropping to 90% on Medium up to 80% on hard.</StudySpeedTiedToDifficultyDesc>
 
   <!--Things-->
   <BookStoreEmpty>Empty</BookStoreEmpty>
