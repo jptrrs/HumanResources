@@ -3,11 +3,6 @@ using RimWorld;
 using Verse;
 using UnityEngine;
 using System;
-//using System.Collections.Generic;
-//using Verse.Sound;
-//using HarmonyLib;
-//using System;
-//using System.Reflection;
 
 namespace HumanResources
 {
@@ -26,7 +21,7 @@ namespace HumanResources
         private static Vector2 scrollPosition = Vector2.zero;
         private static Vector2 scrollPosition2 = Vector2.zero;
         private static bool showAvailable = false;
-        private Vector2 buttonSize = /*new Vector2(rowHeight, rowHeight);*/new Vector2(24f, 24f);
+        private Vector2 buttonSize = new Vector2(24f, 24f);
         public ITab_PawnKnowledge()
         {
             labelKey = "TabKnowledge";
@@ -73,10 +68,9 @@ namespace HumanResources
         {
             float padding = Mathf.Max(margin, 10f);
             Rect canvas = new Rect(margin, 2 * margin, size.x - margin - 1f, size.y - 2 * margin);
-            string expandTT = expandTab ? "Contract" : "Expand";
+            string expandTT = expandTab ? "Collapse" : "Expand";
             GUI.BeginGroup(canvas);
 
-            //float columnWidth = nodeSize.x + scrollBarWidth + margin;
             float firstColumnWidth = canvas.width;
 
             //Left Column
@@ -138,7 +132,6 @@ namespace HumanResources
                         float next = baselineX;
                         next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
                         next = DrawToggle(next, baselineY, "ShowCompact", ref Constants.showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
-                        //next = DrawToggle(next, baselineY, "Expand", ref fullTechs, ContentFinder<Texture2D>.Get("UI/expand_on", true), ContentFinder<Texture2D>.Get("UI/expand_off", true));
                     }
                 }
             }

@@ -70,20 +70,6 @@ namespace HumanResources
                 RecipeIcons_Patch.Execute(Instance);
             }
         }
-
-        public static void TryFindBestBetterNonSlotGroupStorageFor_Postfix(Thing t, IHaulDestination haulDestination, ref bool __result)
-        {
-            if (__result && t.def.defName == "TechBook") Log.Warning("TryFindBestBetterNonSlotGroupStorageFor found " + haulDestination);
-        }
-
-        public static void TryFindBestBetterStoreCellFor_Postfix(Thing t, Pawn carrier, Map map, StoragePriority currentPriority, Faction faction, ref IntVec3 foundCell, ref bool __result, bool needAccurateResult = true)
-        {
-            if (!__result && carrier.CurJobDef != null)
-            {
-                Log.Message(carrier.CurJobDef.label);
-            }
-        }
-
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)
         {
             var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;

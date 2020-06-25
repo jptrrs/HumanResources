@@ -12,6 +12,7 @@ namespace HumanResources
     {
         public List<ThingCount> chosenIngThings = new List<ThingCount>();
         private MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+        private FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
@@ -24,7 +25,6 @@ namespace HumanResources
                     //Log.Message("...no job on target.");
                     return false;
                 }
-                IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
                 foreach (Bill bill in RelevantBills(Target, pawn))
                 {
                     return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
@@ -76,11 +76,7 @@ namespace HumanResources
                 Bill bill = giver.BillStack[i];
                 if (bill.recipe.requiredGiverWorkType == null || bill.recipe.requiredGiverWorkType == def.workType)
                 {
-                    //reflection info
-                    FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
                     IntRange range = (IntRange)rangeInfo.GetValue(this);
-                    MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-                    //
                     if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
                     {
                         bill.lastIngredientSearchFailTicks = 0;
@@ -88,15 +84,15 @@ namespace HumanResources
                         {
                             //if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
                             //{
-                                //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                                chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
-                                if (chosenIngThings.Any())
-                                {
-                                    Job result = TryStartNewDoBillJob(pawn, bill, giver);
-                                    chosenIngThings.Clear();
-                                    return result;
-                                }
-                                else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
+                            //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
+                            chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
+                            if (chosenIngThings.Any())
+                            {
+                                Job result = TryStartNewDoBillJob(pawn, bill, giver);
+                                chosenIngThings.Clear();
+                                return result;
+                            }
+                            else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
                             //}
                             if (FloatMenuMakerMap.makingFor != pawn)
                             {
@@ -164,13 +160,9 @@ namespace HumanResources
             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
             {
                 var studyWeapons = StudyWeapons(bill, pawn);
-                //Log.Warning("ValidateChosenWeapons for " + pawn + "...");
-                //Log.Warning("..." + chosenIngThings.Count() + " chosen ingredients:  " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                //Log.Warning("..." + studyWeapons.EnumerableCount() + " weapons to study: " + studyWeapons.Select(x => x.defName).ToStringSafeEnumerable());
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
                 if (chosenIngThings.Any())
                 {
-                    //Log.Message("ValidateChosenWeapons for " + pawn + ": proceeed!");
                     if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                     return studyWeapons.Any();
                 }
@@ -178,5 +170,15 @@ namespace HumanResources
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
             return false;
         }
+
+        public static bool ShouldReserve(Pawn p, LocalTargetInfo target, int maxPawns = 1, int stackCount = -1, ReservationLayerDef layer = null, bool ignoreOtherReservations = false)
+        {
+            if (p.TryGetComp<CompKnowledge>().knownWeapons.Contains(target.Thing.def))
+            {
+                return false;
+            }
+            return p.CanReserve(target, maxPawns, stackCount, layer, ignoreOtherReservations);
+        }
     }
+
 }

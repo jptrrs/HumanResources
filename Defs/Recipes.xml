@@ -133,6 +133,8 @@
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+
     <workSkill>Melee</workSkill>
     <recipeUsers>
       <li>MrDummy</li>

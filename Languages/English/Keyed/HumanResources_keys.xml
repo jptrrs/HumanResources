@@ -10,8 +10,8 @@
   <ShowRanged>Show ranged weapons.</ShowRanged>
   <ShowAvailable>Show techs available to learn.</ShowAvailable>
   <ShowCompact>Compact view.</ShowCompact>
-  <Expand>Expand.</Expand>
-  <Contract>Contract.</Contract>
+  <Expand>Expand</Expand>
+  <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
 
