@@ -10,7 +10,6 @@ namespace HumanResources
     {
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            //Log.Message("NotifyAdded_Postfix");
             if (___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
             {
                 ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];

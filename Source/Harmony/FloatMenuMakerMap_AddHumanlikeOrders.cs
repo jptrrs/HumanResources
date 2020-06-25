@@ -7,7 +7,7 @@ using Verse;
 
 namespace HumanResources
 {
-    //Checks if pawn knows a weapon before equiping it, 3/3
+    //Checks if pawn knows a weapon before equiping it via right-click command
     [HarmonyPatch(typeof(FloatMenuMakerMap), "AddHumanlikeOrders", new Type[] { typeof(Vector3), typeof(Pawn), typeof(List<FloatMenuOption>) })]
     class FloatMenuMakerMap_AddHumanlikeOrders
     {

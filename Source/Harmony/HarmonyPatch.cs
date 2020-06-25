@@ -69,12 +69,25 @@ namespace HumanResources
                 Log.Message("[HumanResources] Recipe Icons detected! Patching...");
                 RecipeIcons_Patch.Execute(Instance);
             }
+
+            //Simple Sidearms integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "PeteTimesSix.SimpleSidearms"))
+            {
+                Log.Message("[HumanResources] Simple Sidearms detected! Integrating...");
+                SimpleSidearms_Patches.Execute(Instance);
+            }
         }
+
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)
+        {
+            return CheckKnownWeapons(pawn, thing.def);
+        }
+
+        public static bool CheckKnownWeapons(Pawn pawn, ThingDef def)
         {
             var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
             bool result = false;
-            if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(thing.def);
+            if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(def);
             return result;
         }
 
