@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using HarmonyLib;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -92,9 +94,9 @@ namespace HumanResources
                 // grey out center to create a progress bar effect, completely greying out research not started.
                 //if (Available)
                 //{
-                    var progressBarRect = Rect.ContractedBy(3f);
-                    //GUI.color = Assets.ColorAvailable[Research.techLevel];
-                    GUI.color = Widgets.WindowBGFillColor;
+                var progressBarRect = Rect.ContractedBy(3f);
+                //GUI.color = Assets.ColorAvailable[Research.techLevel];
+                GUI.color = Widgets.WindowBGFillColor;
                 if (techComp.expertise.ContainsKey(Research))
                 {
                     progressBarRect.xMin += techComp.expertise[Research] * progressBarRect.width;
@@ -103,7 +105,7 @@ namespace HumanResources
                 //{
                 //    progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                 //}
-                    GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
+                GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 //}
 
                 Highlighted = false;
@@ -134,7 +136,7 @@ namespace HumanResources
                 {
                     Text.Anchor = TextAnchor.UpperRight;
                     Text.Font = Research.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, Research.CostApparent.ToStringByStyle( ToStringStyle.Integer ));
+                    Widgets.Label(CostLabelRect, Research.CostApparent.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
                 }
 
@@ -181,6 +183,13 @@ namespace HumanResources
                     }
                 }
             }
+
+            if (Widgets.ButtonInvisible(Rect, true))
+            {
+                MainButtonDefOf.Research.Worker.InterfaceTryActivate();
+                ResearchTree_Patches.subjectToShow = Research;
+            }
+
         }
 
         public List<ThingDef> MissingFacilities()
@@ -195,6 +204,11 @@ namespace HumanResources
             SetRects();
         }
 
-        private string GetResearchTooltipString() => (string)GetResearchTooltipStringInfo.Invoke(pseudoParent, new object[] { });
+        private string GetResearchTooltipString()
+        {
+            var text = new StringBuilder();
+            text.AppendLine(Research.description );
+            return text.ToString();
+        }
     }
 }

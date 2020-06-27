@@ -30,14 +30,15 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
+				var relevantBills = RelevantBills(Desk, pawn);
+				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
 					//Log.Message("...no job on desk.");
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
 				//Log.Message("...relevant bills: " + RelevantBills(Desk, pawn).Count);
-				foreach (Bill bill in RelevantBills(Desk, pawn))
+				foreach (Bill bill in relevantBills)
 				{
 					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());

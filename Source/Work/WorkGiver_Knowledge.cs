@@ -28,12 +28,12 @@ namespace HumanResources
 			return false;
 		}
 
-		protected List<Bill_Production> RelevantBills(Thing thing, Pawn pawn)
+		protected IEnumerable<Bill_Production> RelevantBills(Thing thing, Pawn pawn)
 		{
 			Building_WorkTable desk = thing as Building_WorkTable;	
 			if (desk != null)
 			{
-				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(def.defName) && x.ShouldDoNow()/*x.repeatCount > 0*/ && x.PawnAllowedToStartAnew(pawn)).ToList();
+				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(def.defName) && x.ShouldDoNow()/*x.repeatCount > 0*/ && x.PawnAllowedToStartAnew(pawn));
 			}
 			return null;
 		}

@@ -1,8 +1,10 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -15,6 +17,8 @@ namespace HumanResources
         public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
+        public static Type NodeType() => AccessTools.TypeByName(ModName + ".Node");
+        public static Type MainTabType() => AccessTools.TypeByName(ModName + ".MainTabWindow_ResearchTree");
 
         public static void Execute(Harmony instance, string modName)
         {
@@ -33,14 +37,16 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Ancestors)))).Patch();
 
             //ResearchNode
-            instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchNode:BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
+            instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
-            instance.Patch(AccessTools.Method(modName + ".ResearchNode:BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
-                null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(BuildingPresent_Postfix)), null);
-            instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchNode:MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
+            instance.Patch(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
+                null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(BuildingPresent_Postfix)));
+            instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            instance.Patch(AccessTools.Method(modName + ".ResearchNode:MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
+            instance.Patch(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(MissingFacilities_Postfix)));
+            instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
 
             _buildingPresentCache = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, bool>;
             _missingFacilitiesCache = AccessTools.Field(ResearchNodeType(), "_missingFacilitiesCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, List<ThingDef>>;
@@ -48,6 +54,25 @@ namespace HumanResources
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
+
+            //MainTabWindow_ResearchTree
+            instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+            if (modName != "ResearchPal")
+            {
+                instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
+            }
+
+            //Tree
+            instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
+            if (modName == "ResearchPal")
+            {
+                instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
+            }
         }
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
@@ -121,6 +146,52 @@ namespace HumanResources
             }
 
             __result = missing;
+        }
+
+        public static ResearchProjectDef subjectToShow;
+        private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
+        private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
+
+        public static void DoWindowContents_Postfix(object __instance)
+        {
+            if (subjectToShow != null && treeReady)
+            {
+                int idx = treeNodesResearchCache.IndexOf(subjectToShow);
+                MainTabCenterOnInfo.Invoke(__instance, new object[] { treeNodesList[idx] });
+                subjectToShow = null;
+            }
+        }
+
+        private static IList treeNodesList;
+
+        private static bool treeReady = false;
+
+        private static List<ResearchProjectDef> treeNodesResearchCache = new List<ResearchProjectDef>();
+
+        public static void TreeInitialized_Postfix(object __instance)
+        {
+            treeNodesList = (IList)TreeNodesListInfo.GetValue(__instance);
+            treeReady = !treeNodesResearchCache.NullOrEmpty();
+        }
+
+        private static bool populating = false;
+
+        private static void PopulateNodes_Prefix()
+        {
+            populating = true;
+        }
+
+        private static void PopulateNodes_Postfix()
+        {
+            populating = false;
+        }
+
+        private static void ResearchNode_Postfix(ResearchProjectDef research)
+        {
+            if (populating)
+            {
+                treeNodesResearchCache.Add(research);
+            }
         }
     }
 }

@@ -22,8 +22,8 @@ namespace HumanResources
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			Bill bill = job.bill;
-			//Log.Message("Toil start:" + pawn + " is trying to learn " + project+ ", globalFailConditions count:" + globalFailConditions.Count);
-			Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
+            //Log.Message("Toil start:" + pawn + " is trying to learn " + project + ", globalFailConditions count:" + globalFailConditions.Count);
+            Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
 			AddEndCondition(delegate
 			{
 				if (!desk.Spawned)
@@ -46,6 +46,12 @@ namespace HumanResources
 					{
 						return true;
 					}
+					if (project == null)
+                    {
+						Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
+						TryMakePreToilReservations(true);
+						return true;
+                    }
 				}
 				return false;
 			});

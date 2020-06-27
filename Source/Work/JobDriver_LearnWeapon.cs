@@ -65,7 +65,7 @@ namespace HumanResources
 			{
 				//Log.Message("LearnWeapon: finishing");
 				ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
-				pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
+				if (pawn.equipment.Primary != null) pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());

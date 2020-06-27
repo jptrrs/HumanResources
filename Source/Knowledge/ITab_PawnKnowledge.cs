@@ -198,8 +198,8 @@ namespace HumanResources
                 float rightBaselineY = scrollrect.max.y + padding;
                 float next = rightBaselineX;
                 next = DrawToggle(next, rightBaselineY, "ShowCommon", ref commomWeapons, ContentFinder<Texture2D>.Get("UI/commomWeapons", true), null, true);
-                next = DrawToggle(next, rightBaselineY, "ShowMelee", ref meleeWeapons, ContentFinder<Texture2D>.Get("UI/melee", true), null, true);
                 next = DrawToggle(next, rightBaselineY, "ShowRanged", ref rangedWeapons, ContentFinder<Texture2D>.Get("UI/ranged", true), null, true);
+                next = DrawToggle(next, rightBaselineY, "ShowMelee", ref meleeWeapons, ContentFinder<Texture2D>.Get("UI/melee", true), null, true);
             }
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();

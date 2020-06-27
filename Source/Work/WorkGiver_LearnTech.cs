@@ -24,24 +24,25 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
+				var relevantBills = RelevantBills(Desk, pawn);
+				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
 					//Log.Message("...no job on desk.");
 					return false;
 				}
 				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
-				foreach (Bill bill in RelevantBills(Desk, pawn))
+				foreach (Bill bill in relevantBills)
 				{
-					//Log.Message("...checking recipe: " + bill.recipe+", on bill "+bill.GetType());
-					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
-					studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
+                    //Log.Message("...checking recipe: " + bill.recipe + ", on bill " + bill.GetType());
+                    //Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
+                    studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
 				}
-				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
-				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+                //Log.Message("...studyMaterial count is " + studyMaterial.Count());
+                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
-				//Log.Message("...homework count is " + techComp.HomeWork.Count());
-				//if (techComp.HomeWork.Count() > 0) return true;
-				if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
+                //Log.Message("...homework count is " + techComp.HomeWork.Count());
+                if (techComp.HomeWork.Count() > 0) return true;
+                if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
 				return false;
 			}
 			Log.Message("case 4");

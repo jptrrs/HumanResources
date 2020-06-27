@@ -36,10 +36,7 @@ namespace HumanResources
 			{
 				result = pawn.Reserve(target, job, 1, -1, null, errorOnFailed);
 			}
-			else
-			{
-				result = false;
-			}
+			else result = false;
 			return result;
 		}
 
