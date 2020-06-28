@@ -56,9 +56,9 @@ The _simple_ and _high tech research benches_ have been modified to work as regu
 ![StudyDesk](https://i.imgur.com/ZivxfT4.png)\
 The new work station is the _study desk_. This is where your pawns will acquire knowledge, using the _study technology_ recipe, and also output their own expertise into books, using the _document technology_ recipe. You can select which knowledge will be studied or documented on the ingredients panel. Both tasks are governed by the pawn's _intellectual_ skill and the time it takes to complete them depends on the technology complexity.
 
-In order to **study** a technolgy, pawns must be assigned to _learn_ on the work tab, its book must be available on your library and the pawn must already know all parent techs. Only discovered techs will show up on the ingredients filter panel. 
+In order to **study** a technolgy, pawns must be assigned to _study_ on the work tab, its book must be available on your library and the pawn must already know all parent techs. Only discovered techs will show up on the ingredients filter panel. 
 
-When it comes to **writing books**, the pawn must be assigned to _Research_ on the work tab and, obviously, he must know the desired tech already. Only undiscovered techs will show up on the ingredients filter panel.
+When it comes to **writing books**, the pawn must be also be assigned to _study_ on the work tab and, obviously, he must know the desired tech already. Only undiscovered techs will show up on the ingredients filter panel.
 
 
 ![WeaponTraining](https://i.imgur.com/W7lBKOr.png)\
@@ -84,8 +84,10 @@ This was not designed to be added to an ongoing game, please only enable it if y
 Borrowed code from Fluffy's [Research Tree](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778), Jecrell's [RimWriter](https://steamcommunity.com/sharedfiles/filedetails/?id=1521844535) & notfood's _ThingDef injection_ for [Psychology](https://steamcommunity.com/sharedfiles/filedetails/?id=1552507180).\
 *Training Dummy* and *Target Stand* originally designed by Shinzy for [Practise Target](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778).\
 Some textures based on [designs by Freepik](http://www.freepik.com).\
-Many thanks to Brrains and erdelf on the Harmony Discord channel for the help.\
-**Thank you!**
+Code contributions by MinerSebas.
+Translated into chinese by leafzxg.\
+Made possible thanks to the help of Brrains and erdelf on the Harmony Discord channel.\
+**Many thanks to all these awesome people!**
 
 ## GitHub
 Open for collaborations on: https://github.com/jptrrs/HumanResources
