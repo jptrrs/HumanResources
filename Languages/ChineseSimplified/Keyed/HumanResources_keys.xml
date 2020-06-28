@@ -3,15 +3,15 @@
 
   <!--UI-->
   <TabKnowledge>科技</TabKnowledge>
-  <!--MISSING:--> <TabKnowledgeTitle>Knowledge</TabKnowledgeTitle>
-  <!--MISSING:--> <TabKnowledgeWeapons>Weapons Proficiency</TabKnowledgeWeapons>
+  <TabKnowledgeTitle>知识</TabKnowledgeTitle>
+  <TabKnowledgeWeapons>武器熟练度</TabKnowledgeWeapons>
   <ShowCommon>显示原版</ShowCommon>
-  <!--MISSING:--><ShowMelee>Show melee weapons.</ShowMelee>
-  <!--MISSING:--><ShowRanged>Show ranged weapons.</ShowRanged>
-  <!--MISSING:--><ShowAvailable>Show techs available to learn.</ShowAvailable>
-  <!--MISSING:--><ShowCompact>Compact view.</ShowCompact>
-  <!--MISSING:--><Expand>Expand</Expand>
-  <!--MISSING:--><Collapse>Collapse</Collapse>
+  <ShowMelee>显示近战武器。</ShowMelee>
+  <ShowRanged>显示远程武器。</ShowRanged>
+  <ShowAvailable>显示可供学习的技术。</ShowAvailable>
+  <ShowCompact>小窗口</ShowCompact>
+  <Expand>扩展</Expand>
+  <Collapse>失败</Collapse>
   <TabCatalogue>目录</TabCatalogue>
   <AvailableBooksReport>{1}号书架中有{0}本书</AvailableBooksReport>
 
@@ -23,15 +23,15 @@
   <TechPoolMode_Starting>仅该派系的起始技术</TechPoolMode_Starting>
   <TechPoolIncludesScenarioTitle>包括剧本设定的开局科技</TechPoolIncludesScenarioTitle>
   <TechPoolIncludesScenarioDesc>如果选中，还将包括您在剧本编辑器中添加的开局科技。</TechPoolIncludesScenarioDesc>
-  <!--MISSING:--> <WeaponPoolModeTitle>Combat specialists start with weapons from...</WeaponPoolModeTitle>
-  <!--MISSING:--> <WeaponPoolModeDesc>Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.</WeaponPoolModeDesc>
-  <!--MISSING:--> <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
-  <!--MISSING:--> <WeaponPoolMode_TechLevel>the faction's tech level only</WeaponPoolMode_TechLevel>
-  <!--MISSING:--> <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
-  <!--MISSING:--> <ResearchSpeedTiedToDifficultyTitle>Difficulty settings slows down research.</ResearchSpeedTiedToDifficultyTitle>
-  <!--MISSING:--> <ResearchSpeedTiedToDifficultyDesc>If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 70% decrease on Hard. If unchecked, it defaults to 90% slower than vanilla.</ResearchSpeedTiedToDifficultyDesc>
-  <!--MISSING:--> <StudySpeedTiedToDifficultyTitle>Difficulty settings slows down tech studying.</StudySpeedTiedToDifficultyTitle>
-  <!--MISSING:--> <StudySpeedTiedToDifficultyDesc>If checked, the base speed for studying new techs is tied to the difficulty settings, dropping to 90% on Medium up to 80% on hard.</StudySpeedTiedToDifficultyDesc>
+  <WeaponPoolModeTitle>初始携带武器的战斗专家</WeaponPoolModeTitle>
+  <WeaponPoolModeDesc>定义当玩家的殖民者（仅限于射击或格斗专精）被生成时可携带的武器池。</WeaponPoolModeDesc>
+  <WeaponPoolMode_Both>两种武器清单</WeaponPoolMode_Both>
+  <WeaponPoolMode_TechLevel>该阵营的技术等级</WeaponPoolMode_TechLevel>
+  <WeaponPoolMode_Scenario>仅剧本</WeaponPoolMode_Scenario>
+  <ResearchSpeedTiedToDifficultyTitle>高难度会减缓研究速度。</ResearchSpeedTiedToDifficultyTitle>
+  <ResearchSpeedTiedToDifficultyDesc>开启此项研究速度将随难度增加而减缓，最多降低70%。不开启此项时，默认为原版的90%。</ResearchSpeedTiedToDifficultyDesc>
+  <StudySpeedTiedToDifficultyTitle>高难度会减缓学习速度。</StudySpeedTiedToDifficultyTitle>
+  <StudySpeedTiedToDifficultyDesc>开启此项学习新技术的基本速度将与难度设置相关联，其中中等难度降至90％，最高降至80％。</StudySpeedTiedToDifficultyDesc>
 
   <!--Things-->
   <BookStoreEmpty>空的</BookStoreEmpty>
@@ -55,9 +55,9 @@
   <NothingToAddToLibrary>你什么都不懂，{0_nameFull}！</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef}已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef}缺少有关这些课题的基本知识。</LacksFundamentalKnowledge>
-  <!--MISSING:--> <NoWeaponsFoundToLearn>No available weapons to train.</NoWeaponsFoundToLearn>
-  <!--MISSING:--> <MissingRequirementToLearnWeapon>{0_nameDef} has no corresponding knowledge or books to learn about {1}.</MissingRequirementToLearnWeapon>
-  <!--MISSING:--> <ThoseWeapons>those weapons</ThoseWeapons>
+  <NoWeaponsFoundToLearn>没有可训练的武器。</NoWeaponsFoundToLearn>
+  <MissingRequirementToLearnWeapon>{0_nameDef}没有有关{1}的知识或书籍。</MissingRequirementToLearnWeapon>
+  <ThoseWeapons>those weapons</ThoseWeapons>
   <NoWeaponToLearn>{0_nameDef}已经知道如何使用这些武器。</NoWeaponToLearn>
   <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
   <DoesntKnowHowToRepair>{0_nameDef}不知道如何修复{1}（需要{2}）。</DoesntKnowHowToRepair>
@@ -71,5 +71,7 @@
   <LetterResearchRequest_SuccessHR>这项研究是成功的。通过合作，您对{2}的理解有所提高。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_SuccessHR>
   <LetterResearchRequest_TriumphHR>研究取得了巨大的成功！通过一同通力合作，您取得了突破，并发现了{2}的秘密。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_TriumphHR>
   <ResearchRequestXPGainHR>{0}，您的研究人员，在{1}获得了宝贵的专业知识，并获得了{2}的智识。</ResearchRequestXPGainHR>
+
+  <!--MISSING:-->
 
 </LanguageData> 

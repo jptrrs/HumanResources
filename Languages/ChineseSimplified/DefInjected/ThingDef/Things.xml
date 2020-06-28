@@ -29,8 +29,6 @@
 
 
   <!-- This is just to sort out WeaponTags that indicate weapons to be excluded from universal use -->
-
-  <ForbiddenWeaponTags.label>禁止武器</ForbiddenWeaponTags.label>
-
+  <!--<ForbiddenWeaponTags.label>禁止武器</ForbiddenWeaponTags.label>-->
 
 </LanguageData>
