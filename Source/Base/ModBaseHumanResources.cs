@@ -105,7 +105,7 @@ namespace HumanResources
             AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { WeaponsNotBasicDef });
 
             //c. Telling humans what's going on
-            ThingCategoryDef knowledgeCat = DefDatabase<ThingCategoryDef>.GetNamed("Knowledge");
+            ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose)
             {
@@ -121,9 +121,9 @@ namespace HumanResources
             //3. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
-            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x.defName.EndsWith("TechBook") && x.modContentPack.Name.Contains("JPT")))
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x == TechDefOf.TechBook))
             {
-                t.stuffCategories.Add(DefDatabase<StuffCategoryDef>.GetNamed("Technic"));
+                t.stuffCategories.Add(TechDefOf.Technic);
             }
 
             //b. Filling main tech category with subcategories

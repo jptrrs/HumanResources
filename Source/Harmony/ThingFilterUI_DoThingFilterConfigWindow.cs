@@ -10,9 +10,9 @@ namespace HumanResources
     {
         public static void Prefix(ThingFilter parentFilter, int openMask)
         {
-            if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"))))
+            if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(TechDefOf.Knowledge)))
             {
-                openMask = 4;
+                openMask = 2;
                 HarmonyPatches.Ball = true;
             }
         }

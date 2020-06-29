@@ -17,10 +17,10 @@ namespace HumanResources
             Bill_Production bill = billInfo.GetValue(__instance) as Bill_Production;
             if (bill.UsesKnowledge())
             {
-                if (bill.IsResearch()) HarmonyPatches.FutureTech = true;
+                if (bill.recipe == TechDefOf.ResearchTech || bill.recipe == TechDefOf.DocumentTech) HarmonyPatches.FutureTech = true;
                 else HarmonyPatches.CurrentTech = true;
             }
-            if (bill.IsWeaponsTraining()) HarmonyPatches.WeaponTrainingSelection = true;
+            if (bill.recipe == TechDefOf.TrainWeaponMelee || bill.recipe == TechDefOf.TrainWeaponShooting) HarmonyPatches.WeaponTrainingSelection = true;
         }
 
         public static void Postfix()

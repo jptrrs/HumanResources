@@ -24,14 +24,9 @@ namespace HumanResources
         {
             if (bill.recipe.fixedIngredientFilter.AnyAllowedDef != null)
             {
-                return bill.recipe.fixedIngredientFilter.AnyAllowedDef.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge"));
+                return bill.recipe.fixedIngredientFilter.AnyAllowedDef.IsWithinCategory(TechDefOf.Knowledge);
             }
             return false;
-        }
-
-        public static bool IsWeaponsTraining(this Bill bill)
-        {
-            return bill.recipe.defName.StartsWith("TrainWeapon");
         }
     }
 }

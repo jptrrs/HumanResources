@@ -72,7 +72,7 @@ namespace HumanResources
 						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
 							//Log.Message("probing bill: pawn allowed is " + bill.PawnAllowedToStartAnew(pawn) + " for " + pawn);
-							return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
+							return new Job(TechJobDefOf.ResearchTech, target)
 							{
 								bill = bill
 							};

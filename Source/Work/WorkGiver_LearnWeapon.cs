@@ -142,7 +142,7 @@ namespace HumanResources
             {
                 return job;
             }
-            Job job2 = new Job(DefDatabase<JobDef>.GetNamed("TrainWeapon"), (Thing)giver);
+            Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
             job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
             job2.countQueue = new List<int>(chosenIngThings.Count);
             for (int i = 0; i < chosenIngThings.Count; i++)

@@ -10,7 +10,7 @@ namespace HumanResources
     {
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            if (___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            if (___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(TechDefOf.Knowledge))
             {
                 ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];
                 bookStore.CompStorageGraphic.UpdateGraphics();

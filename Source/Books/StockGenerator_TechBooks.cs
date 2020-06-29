@@ -47,7 +47,7 @@ namespace HumanResources
 
 		public override bool HandlesThingDef(ThingDef thingDef)
 		{
-			return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef.defName == "TechBook";
+			return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef == TechDefOf.TechBook;
 		}
 
 		protected override float SelectionWeight(ThingDef thingDef)

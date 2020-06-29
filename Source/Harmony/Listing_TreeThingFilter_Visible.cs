@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
 using Verse;
 
 namespace HumanResources
@@ -11,7 +10,7 @@ namespace HumanResources
     {
         public static void Postfix(ThingDef td, ref bool __result)
         {
-            if (HarmonyPatches.Ball && td.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("Knowledge")))
+            if (HarmonyPatches.Ball && td.IsWithinCategory(TechDefOf.Knowledge))
             {
                 if (HarmonyPatches.FutureTech) __result = !ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;
                 else if (HarmonyPatches.CurrentTech) __result = ModBaseHumanResources.unlocked.techByStuff[td].IsFinished;

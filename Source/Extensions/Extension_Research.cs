@@ -91,7 +91,7 @@ namespace HumanResources
                 menuHidden = true,
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { DefDatabase<StuffCategoryDef>.GetNamed("Technic") },
+                    categories = new List<StuffCategoryDef>() { TechDefOf.Technic },
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()

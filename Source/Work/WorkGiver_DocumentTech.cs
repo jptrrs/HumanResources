@@ -99,7 +99,7 @@ namespace HumanResources
 								}
 							}
 						}
-						Job result = new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
+						Job result = new Job(TechJobDefOf.DocumentTech, target)
 						{
 							bill = bill
 						};
@@ -122,7 +122,7 @@ namespace HumanResources
 			{
 				return job;
 			}
-			Job job2 = JobMaker.MakeJob(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), (Thing)bill.billStack.billGiver);
+			Job job2 = JobMaker.MakeJob(TechJobDefOf.DocumentTech, (Thing)bill.billStack.billGiver);
 			job2.bill = bill;
 			job2.targetQueueB = new List<LocalTargetInfo> { uft };
 			job2.countQueue = new List<int> { 1 };

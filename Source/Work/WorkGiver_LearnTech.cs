@@ -45,7 +45,7 @@ namespace HumanResources
                 if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
 				return false;
 			}
-			Log.Message("case 4");
+			//Log.Message("case 4");
 			return false;
 
 		}
@@ -63,7 +63,7 @@ namespace HumanResources
 					{
 						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 						{
-							return new Job(DefDatabase<JobDef>.GetNamed(bill.recipe.defName), target)
+							return new Job(TechJobDefOf.LearnTech, target)
 							{
 								bill = bill
 							};
