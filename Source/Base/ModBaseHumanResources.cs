@@ -113,7 +113,7 @@ namespace HumanResources
                 Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
-                Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
+                Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
 
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + "+SimpleWeapons.Count()+ " that require training.");
@@ -121,7 +121,7 @@ namespace HumanResources
             //3. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
-            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x == TechDefOf.TechBook))
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x == TechDefOf.TechBook || x == TechDefOf.UnfinishedTechBook))
             {
                 t.stuffCategories.Add(TechDefOf.Technic);
             }
@@ -185,6 +185,11 @@ namespace HumanResources
                 }
             }
             if (!flag && t.IsRangedWeapon && t.defName.ToLower().Contains("gun"))
+            {
+                flag = true;
+                SimpleWeapons.Add(t);
+            }
+            if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
             {
                 flag = true;
                 SimpleWeapons.Add(t);

@@ -20,5 +20,6 @@ namespace HumanResources
         public static ThingCategoryDef Knowledge;
         public static StuffCategoryDef Technic;
         public static ThingDef TechBook;
+        public static ThingDef UnfinishedTechBook;
     }
 }
