@@ -262,7 +262,7 @@ namespace HumanResources
                     }
                     if(Prefs.LogVerbose) stringBuilder.Append(".");
                 }
-                if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack") && pawn.equipment.HasAnything())
+                if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack" || pawn.kindDef?.defName == "VSE_ManInTheCoat") && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
                     if (!knownWeapons.Contains(weapon.def))
