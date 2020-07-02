@@ -349,7 +349,6 @@
     <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
-    <Compile Include="Harmony\FloatMenuMakerMap_AddHumanlikeOrders.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />

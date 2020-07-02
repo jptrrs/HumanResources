@@ -44,6 +44,7 @@ namespace HumanResources
 					//Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
 					studyMaterial.AddRange(bill.SelectedTech().Where(x => !x.IsFinished && x.TechprintRequirementMet && (x.requiredResearchBuilding == null || (bool)AccessTools.Property(typeof(ResearchProjectDef),"PlayerHasAnyAppropriateResearchBench").GetValue(x))));
 				}
+				availableTechs = studyMaterial;
 				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
@@ -69,7 +70,7 @@ namespace HumanResources
 					billGiver.BillStack.RemoveIncompletableBills();
 					foreach (Bill bill in RelevantBills(thing, pawn))
 					{
-						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) && bill.SelectedTech().Intersect(availableTechs).Any())
 						{
 							//Log.Message("probing bill: pawn allowed is " + bill.PawnAllowedToStartAnew(pawn) + " for " + pawn);
 							return new Job(TechJobDefOf.ResearchTech, target)

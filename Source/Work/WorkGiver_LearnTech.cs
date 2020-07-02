@@ -18,6 +18,8 @@ namespace HumanResources
 			return true;
 		}
 
+
+
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			//Log.Message(pawn + " is looking for a study job...");
@@ -37,8 +39,9 @@ namespace HumanResources
                     //Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
                     studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
 				}
-                //Log.Message("...studyMaterial count is " + studyMaterial.Count());
-                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+				availableTechs = studyMaterial;
+				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
+				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
                 //Log.Message("...homework count is " + techComp.HomeWork.Count());
                 if (techComp.HomeWork.Count() > 0) return true;
@@ -61,7 +64,7 @@ namespace HumanResources
 					billGiver.BillStack.RemoveIncompletableBills();
 					foreach (Bill bill in RelevantBills(thing, pawn))
 					{
-						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) && bill.SelectedTech().Intersect(availableTechs).Any())
 						{
 							return new Job(TechJobDefOf.LearnTech, target)
 							{

@@ -37,5 +37,7 @@ namespace HumanResources
 			}
 			return null;
 		}
+
+		protected IEnumerable<ResearchProjectDef> availableTechs;
 	}
 }

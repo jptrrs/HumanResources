@@ -32,11 +32,12 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
+				//IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
+				availableTechs = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
 				foreach (Bill bill in RelevantBills(Desk, pawn))
 				{
-					if (advantage.Intersect(bill.SelectedTech()).Any()) return true;
+					if (availableTechs.Intersect(bill.SelectedTech()).Any()) return true;
 				}
 				JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
 				return false;
@@ -68,7 +69,7 @@ namespace HumanResources
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
-				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) && bill.SelectedTech().Intersect(availableTechs).Any())
 				{
 					SkillRequirement skillRequirement = bill.recipe.FirstSkillRequirementPawnDoesntSatisfy(pawn);
 					if (skillRequirement != null)
