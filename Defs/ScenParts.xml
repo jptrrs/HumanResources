@@ -5,7 +5,7 @@
 		<scenPartClass>ScenPart_Rule_DisallowDesignator</scenPartClass>
 		<category>Rule</category>
 		<label>know all starting weapons</label>
-		<description>All Characters will know how to wield Weapons from this Scenario</description>
+		<description>Player starting characters will know how to wield Weapons from this Scenario</description>
 		<selectionWeight>0.25</selectionWeight>
 		<summaryPriority>450</summaryPriority>
 		<maxUses>1</maxUses>
