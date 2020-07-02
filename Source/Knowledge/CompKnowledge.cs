@@ -198,7 +198,7 @@ namespace HumanResources
                 var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
-                    expertise = acquiredExpertise.ToDictionary(x => x, x => 1f);
+                    expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
                     if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
                 }
                 else
