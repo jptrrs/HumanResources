@@ -254,14 +254,23 @@ namespace HumanResources
                         }
                         if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario)
+                }
+                if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario)
+                {
+                    if (ModBaseHumanResources.unlocked.knowAllStartingWeapons) {
+                        proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons);
+                        string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
+                        if (Prefs.LogVerbose) stringBuilder.Append(connector + "the starting scenario");
+                    }
+                    else if (isFighter | isShooter)
                     {
                         proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
                         string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
                         if (Prefs.LogVerbose) stringBuilder.Append(connector + "the starting scenario");
                     }
-                    if(Prefs.LogVerbose) stringBuilder.Append(".");
                 }
+                if (Prefs.LogVerbose && ((isFighter | isShooter) || (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && ModBaseHumanResources.unlocked.knowAllStartingWeapons)))
+                    stringBuilder.Append(".");
                 if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack") && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
