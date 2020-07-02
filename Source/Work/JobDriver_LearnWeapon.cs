@@ -114,7 +114,7 @@ namespace HumanResources
 				ticksSpentDoingRecipeWork = 0;
 				curJob.bill.Notify_DoBillStarted(actor);
 				//sound:
-				if (weapon.soundInteract != null) weapon.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
+				//if (weapon.soundInteract != null) weapon.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
 			};
 			train.tickAction = delegate ()
 			{
