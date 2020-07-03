@@ -238,48 +238,40 @@ namespace HumanResources
                     if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " can craft some weapons. ");
                 }
                 bool isPlayer = pawn.Faction?.IsPlayer ?? false;
-                if (Prefs.LogVerbose && (isFighter || isShooter) && (ModBaseHumanResources.WeaponPoolIncludesTechLevel || (isPlayer && !ModBaseHumanResources.unlocked.knowAllStartingWeapons && ModBaseHumanResources.WeaponPoolIncludesScenario)))
+                if (isPlayer && ModBaseHumanResources.unlocked.knowAllStartingWeapons)
                 {
-                    string[] role = isFighter ? new[] { "fighter", "melee" } : new[] { "shooter", "ranged" };
-                    stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is a " + role[0] + " and gets extra " + role[1] + " weapons from ");
+                    proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons);
+                    if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " gets all weapons from the starting Scenario. ");
                 }
-                if ((isFighter || isShooter) && ModBaseHumanResources.WeaponPoolIncludesTechLevel)
+                if (isFighter || isShooter)
                 {
-                    foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, startingTechLevel, faction)))
+                    bool WeaponPoolIncludesTechLevel = ModBaseHumanResources.WeaponPoolIncludesTechLevel;
+                    bool WeaponPoolIncludesScenario = isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && !ModBaseHumanResources.unlocked.knowAllStartingWeapons;
+                    if (Prefs.LogVerbose && (WeaponPoolIncludesTechLevel || WeaponPoolIncludesScenario))
                     {
-                        var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
-                        if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
+                        string[] role = isFighter ? new[] { "fighter", "melee" } : new[] { "shooter", "ranged" };
+                        stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is a " + role[0] + " and gets extra " + role[1] + " weapons from ");
+                    }
+                    if (WeaponPoolIncludesTechLevel)
+                    {
+                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, startingTechLevel, faction)))
+                        {
+                            var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
+                            if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
+                        }
                         if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                }
-                if (isPlayer)
-                {
-                    if (ModBaseHumanResources.unlocked.knowAllStartingWeapons) {
-                        proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons);
-                        if (Prefs.LogVerbose)
-                        {
-                            if (ModBaseHumanResources.WeaponPoolIncludesTechLevel && (isFighter || isShooter))
-                            {
-                                stringBuilder.Append(" and the starting scenario.");
-                            }
-                            else
-                            {
-                                stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " gets all weapons from the starting Scenario.");
-                            }
-                        }
-                    }
-                    else if (ModBaseHumanResources.WeaponPoolIncludesScenario && (isFighter || isShooter))
+                    if (WeaponPoolIncludesScenario)
                     {
                         proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
                         if (Prefs.LogVerbose)
                         {
-                            string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
-                            stringBuilder.Append(connector + "the starting scenario.");
+                            string connector = WeaponPoolIncludesTechLevel ? " and " : "";
+                            stringBuilder.Append(connector + "the starting scenario. ");
                         }
                     }
+                    else if (Prefs.LogVerbose)  stringBuilder.Append(". ");
                 }
-                if (Prefs.LogVerbose && !isPlayer && (isFighter || isShooter) && ModBaseHumanResources.WeaponPoolIncludesTechLevel)
-                    stringBuilder.Append(".");
                 if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack" || pawn.kindDef?.defName == "VSE_ManInTheCoat") && pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
