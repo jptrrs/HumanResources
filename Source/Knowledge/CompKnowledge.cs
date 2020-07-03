@@ -128,18 +128,17 @@ namespace HumanResources
                 pass++;
                 var remaining = filtered.Where(x => !result.Contains(x.Key));
                 if (remaining.EnumerableNullOrEmpty()) break;
+                SkillDef skill = null;
                 if (pass == 1 && remaining.Any(e => e.Value.Contains(highestSkill)))
                 {
-                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, highestSkill, slots, pass), 1f).Key);
+                    skill = highestSkill;
                 }
                 else if (pass == 2 && remaining.Any(e => e.Value.Contains(secondSkill)))
                 {
-                    result.Add(remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, secondSkill, slots, pass), 1f).Key);
+                    skill = secondSkill;
                 }
-                else if (remaining.Any())
-                {
-                    result.Add(remaining.RandomElement().Key);
-                }
+                ResearchProjectDef selected = remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, slots, pass, skill), 1f).Key ?? remaining.RandomElement().Key;
+                result.Add(selected);
                 if ((guru && pass == 1) | result.NullOrEmpty()) startingTechLevel--;
                 if (startingTechLevel == 0) break;
             }
@@ -377,15 +376,18 @@ namespace HumanResources
             return i;
         }
 
-        private static float TechLikelihoodForSkill(Pawn pawn, List<SkillDef> skills, SkillDef highestSkill, int slots, int pass)
+        private static float TechLikelihoodForSkill(Pawn pawn, List<SkillDef> skills, int slots, int pass, SkillDef highestSkill = null)
         {
             List<SkillDef> unskilled = (from x in pawn.skills.skills
                                         where x.Level < 2
                                         select x.def).ToList();
             float chance = ((slots - pass) / slots)*100f;
-            if (skills.Contains(highestSkill)) return chance;
-            else if (skills.All(s => unskilled.Contains(s))) return (100f - chance) / 10;
-            else return 100f - chance;
+            if (highestSkill != null)
+            {
+                if (highestSkill != null && skills.Contains(highestSkill)) return chance;
+                else if (skills.All(s => unskilled.Contains(s))) return (100f - chance) / 10;
+            }
+            return 100f - chance;
         }
     }
 }
