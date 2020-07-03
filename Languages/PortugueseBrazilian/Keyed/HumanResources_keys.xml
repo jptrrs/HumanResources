@@ -28,6 +28,8 @@
   <WeaponPoolMode_Both>de ambas as listas</WeaponPoolMode_Both>
   <WeaponPoolMode_TechLevel>do nível tecnológico da facção, somente</WeaponPoolMode_TechLevel>
   <WeaponPoolMode_Scenario>dentre as incluídas no cenário, somente</WeaponPoolMode_Scenario>
+  <FreeScenarioWeaponsTitle>Todos os colonos começam com as armas do cenário.</FreeScenarioWeaponsTitle>
+  <FreeScenarioWeaponsDesc>Quando marcado, qualquer arma incluída no cenário também será acrescentada à lista de armas que os colonos podem usar. (O cenário do "Explorador Rico" foi modificado para sempre fazer isso, independente do que for marcado aqui.)</FreeScenarioWeaponsDesc>
   <ResearchSpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de pesquisa.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>Quando marcado, a velocidade de pesquisa é vinculada ao nível de dificuldade selecionado. No nível fácil ela parmanece a mesma, mas ela é reduzida até em 70% no nível difícil. Quando desmarcado, ela retorna ao padrão de 90% mais lento que o jogo base.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de estudo.</StudySpeedTiedToDifficultyTitle>

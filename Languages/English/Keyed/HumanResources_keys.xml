@@ -29,7 +29,7 @@
   <WeaponPoolMode_TechLevel>the faction's tech level only</WeaponPoolMode_TechLevel>
   <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
   <FreeScenarioWeaponsTitle>All colonists start with scenario weapons.</FreeScenarioWeaponsTitle>
-  <FreeScenarioWeaponsDesc>If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use.</FreeScenarioWeaponsDesc>
+  <FreeScenarioWeaponsDesc>If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here) </FreeScenarioWeaponsDesc>
   <ResearchSpeedTiedToDifficultyTitle>Difficulty settings slows down research.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 70% decrease on Hard. If unchecked, it defaults to 90% slower than vanilla.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Difficulty settings slows down tech studying.</StudySpeedTiedToDifficultyTitle>

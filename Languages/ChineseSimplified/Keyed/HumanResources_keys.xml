@@ -28,6 +28,8 @@
   <WeaponPoolMode_Both>两种武器清单</WeaponPoolMode_Both>
   <WeaponPoolMode_TechLevel>该阵营的技术等级</WeaponPoolMode_TechLevel>
   <WeaponPoolMode_Scenario>仅剧本</WeaponPoolMode_Scenario>
+  <!--MISSING--><FreeScenarioWeaponsTitle>All colonists start with scenario weapons.</FreeScenarioWeaponsTitle>
+  <!--MISSING--><FreeScenarioWeaponsDesc>If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here) </FreeScenarioWeaponsDesc>
   <ResearchSpeedTiedToDifficultyTitle>高难度会减缓研究速度。</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>开启此项研究速度将随难度增加而减缓，最多降低70%。不开启此项时，默认为原版的90%。</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>高难度会减缓学习速度。</StudySpeedTiedToDifficultyTitle>
