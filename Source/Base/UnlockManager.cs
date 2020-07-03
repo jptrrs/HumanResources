@@ -11,6 +11,7 @@ namespace HumanResources
     public class UnlockManager : IExposable
     {       
         public List<ThingDef> weapons = new List<ThingDef>();
+        public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
         public IEnumerable<ResearchProjectDef> startingTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
@@ -46,6 +47,7 @@ namespace HumanResources
 
         public void RegisterStartingResources()
         {
+            knowAllStartingWeapons = Find.Scenario.AllParts.Where(x => x.def.defName == "Rule_knowAllStartingWeapons").Any();
             startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " starting scenario weapons: " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
             startingTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
