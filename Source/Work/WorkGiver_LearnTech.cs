@@ -40,16 +40,16 @@ namespace HumanResources
                     studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
 				}
 				availableTechs = studyMaterial;
-				//Log.Message("...studyMaterial count is " + studyMaterial.Count());
-				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+                //Log.Message("...studyMaterial count is " + studyMaterial.Count());
+                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				techComp.AssignHomework(studyMaterial);
                 //Log.Message("...homework count is " + techComp.HomeWork.Count());
                 if (techComp.HomeWork.Count() > 0) return true;
                 if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
 				return false;
 			}
-			//Log.Message("case 4");
-			return false;
+            Log.Message("case 4");
+            return false;
 
 		}
 
