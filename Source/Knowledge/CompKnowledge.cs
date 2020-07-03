@@ -238,7 +238,12 @@ namespace HumanResources
                     if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " can craft some weapons. ");
                 }
                 bool isPlayer = pawn.Faction?.IsPlayer ?? false;
-                if (isFighter | isShooter)
+                if (isPlayer && ModBaseHumanResources.FreeScenarioWeapons)
+                {
+                    proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons);
+                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " gets the scenario starting weapons. ");
+                }
+                if (isFighter || isShooter)
                 {
                     if (Prefs.LogVerbose)
                     {
@@ -254,7 +259,7 @@ namespace HumanResources
                         }
                         if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario)
+                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && !ModBaseHumanResources.FreeScenarioWeapons)
                     {
                         proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
                         string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
