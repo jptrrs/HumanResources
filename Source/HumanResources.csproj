@@ -335,7 +335,7 @@
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
-    <Compile Include="Harmony\HarmonyPatch.cs" />
+    <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Compatibility\GoExplore_Patches.cs" />
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />

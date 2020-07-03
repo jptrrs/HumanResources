@@ -16,6 +16,7 @@ namespace HumanResources
         public static bool Ball;
         public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
         public static bool ResearchPal = false;
+        public static bool PrisonLabor = false;
 
         public static Harmony Instance
         {
@@ -59,14 +60,14 @@ namespace HumanResources
             //Material Filter patch
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "KamiKatze.MaterialFilter"))
             {
-                Log.Message("[HumanResources] Material Filter detected! Patching...");
+                Log.Message("[HumanResources] Material Filter detected! Adapting...");
                 MaterialFilter_Patch.Execute(Instance);
             }
 
             //Recipe icons patch
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "automatic.recipeicons"))
             {
-                Log.Message("[HumanResources] Recipe Icons detected! Patching...");
+                Log.Message("[HumanResources] Recipe Icons detected! Adapting...");
                 RecipeIcons_Patch.Execute(Instance);
             }
 
@@ -75,6 +76,13 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Simple Sidearms detected! Integrating...");
                 SimpleSidearms_Patches.Execute(Instance);
+            }
+
+            //Prison Labor integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "avius.prisonlabor"))
+            {
+                Log.Message("[HumanResources] Prison Labor detected! Integrating...");
+                PrisonLabor = true;
             }
         }
 

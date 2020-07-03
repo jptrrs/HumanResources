@@ -274,7 +274,14 @@ namespace HumanResources
                 intellectualTag = false;
             }
 
-            SkillsByTech.Add(tech, relevantSkills);
+            if (!relevantSkills.NullOrEmpty())
+            {
+                SkillsByTech.Add(tech, relevantSkills);
+            }
+            else
+            {
+                Log.Warning("[HumanResources] No relevant skills could be calculated for " + tech+". It won't be known by anyone.");
+            }
         }
 
         public static void InvestigateThingDef(ThingDef t)
