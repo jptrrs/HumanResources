@@ -331,6 +331,7 @@
     <Compile Include="Books\CompStorageGraphic.cs" />
     <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
     <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
+    <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
