@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace HumanResources
@@ -138,8 +138,8 @@ namespace HumanResources
                     float baselineX = leftColumn.x;
                     float baselineY = scrollrect.max.y + padding;
                     float next = baselineX;
-                    next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
                     next = DrawToggle(next, baselineY, "ShowCompact", ref Constants.showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
+                    next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
                     if (!fullTechs)
                     {
                         foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
@@ -207,7 +207,6 @@ namespace HumanResources
                         Widgets.EndScrollView();
                     }
                 }
-                //Text.Font = GameFont.Tiny;
                 float rightBaselineX = rightColumn.max.x - margin;
                 float rightBaselineY = scrollrect.max.y + padding;
                 float next = rightBaselineX;
@@ -259,10 +258,18 @@ namespace HumanResources
             next = DrawIcons(next, row, width, thing, shift);
             PrintCell(thing.LabelCap, row, next, shift, width - (iconSize + margin/2), thing.description);
         }
+
         private void DrawTechColorBar(float w, int x)
         {
             Rect rowRect = new Rect(x * w, 0, w - margin, margin - 2);
             GUI.DrawTexture(rowRect, ResearchTree_Assets.ButtonActive);
+        }
+
+        private void PrintCell(string content, int row, float x, int shift, float width = rowHeight, string tooltip = "")
+        {
+            Rect rect = new Rect(x, (rowHeight * row) + shift + 3, width, rowHeight - 3);
+            Widgets.Label(rect, content);
+            if (!string.IsNullOrEmpty(tooltip)) TooltipHandler.TipRegion(rect, tooltip);
         }
 
         private float DrawToggle(float posX, float posY, string tooltip, ref bool toggle, Texture2D textOn, Texture2D texOff = null, bool left = false, Color? c = null)
@@ -292,15 +299,8 @@ namespace HumanResources
             TooltipHandler.TipRegionByKey(box, techLevel.ToStringHuman());
             Text.Font = curFont;
             Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
-            if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/available", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
+            if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
             return posX + rowHeight;
-        }
-
-        private void PrintCell(string content, int row, float x, int shift, float width = rowHeight, string tooltip = "")
-        {
-            Rect rect = new Rect(x, (rowHeight * row) + shift + 3, width, rowHeight - 3);
-            Widgets.Label(rect, content);
-            if (!string.IsNullOrEmpty(tooltip)) TooltipHandler.TipRegion(rect, tooltip);
         }
     }
 }

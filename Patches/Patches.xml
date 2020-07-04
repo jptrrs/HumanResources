@@ -142,4 +142,12 @@
 	  </value>
   </Operation>
 
+  <!--Safeguard for modded weapons-->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[category="Item" and not(techLevel)]</xpath>
+      <value>
+        <techLevel>Neolithic</techLevel>
+      </value>
+  </Operation>
+
 </Patch>
