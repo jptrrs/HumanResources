@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<!--OskarPotocki.VanillaFactionsExpanded.SettlersModule-->
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Vanilla Factions Expanded - Settlers</li>
+		</mods>
+		<match Class="PatchOperationAdd">
+			<xpath>Defs/ScenarioDef[defName = "VFES_Bandits"]/scenario/parts</xpath>
+			<value>
+				<li Class="ScenPart_Rule_DisallowDesignator">
+					<def>Rule_knowAllStartingWeapons</def>
+				</li>
+			</value>
+		</match>
+	</Operation>
+</Patch>
