@@ -13,7 +13,7 @@ namespace HumanResources
         {
             ThingWithComps equipment = null;
             if (thing.TryGetComp<CompEquippable>() != null) equipment = thing as ThingWithComps;
-            if (equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))
+            if (pawn.RaceProps.Humanlike && equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))
             {
                 cantReason = ModBaseHumanResources.unlocked.weapons.Contains(equipment.def) ? "UnknownWeapon".Translate(pawn) : "EvilWeapon".Translate(pawn);
                 return false;
