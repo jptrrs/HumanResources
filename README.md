@@ -1,6 +1,6 @@
 ![Preview](About/Preview.png)
 
-# [JPT] Human Resources - Alpha
+# [JPT] Human Resources - Beta
 A technology overhaul for RimWorld 
 
 [**>>> DOWNLOAD IT HERE <<<**](https://github.com/jptrrs/HumanResources/releases/latest)
@@ -25,7 +25,7 @@ This is how it works:
 
 Every pawn gets a new inspector tab: _Tech_. It displays everything he or she knows: technological expertise on one side and weapons proficiency on the other. Both lists are derived from the current game database, so all modded research projects and weapons are automatically included. Newly generated pawns, including NPCs, are assigned a number of techs based on his faction tech level and his background. That number depends on a pawn's age and faction level: tribals get more and cheaper techs, and the more advanced their starting level is the more specialized they tend to be. This list limits what a pawn can build, repair, grow or craft. To acquire new knowledge, he or she will need to study! That's one of the uses of the new _study desk_.
 
-The weapon proficiency works similarly, limiting what weapons the pawn can equip. Some weapons are just too simple to use and don't require any special training, so all pawns start with those. Specially good shooters and brawlers get access to all ranged and melee weapons on their tech level, respectively (at the cost of one less tech on their expertise). Additionally, pawns who know how to craft a weapon are automatically proficient with it. Beyond this starting proficiency, any weapon that's linked with a research project will require the pawn to learn how to use it before equipping. To train with a new weapon, that tech must have already been unlocked and the pawn will need to spend some time with the _training dummy_ or at the _target stand_. More on that below.
+The weapon proficiency works similarly, limiting what weapons the pawn can equip. Any weapon that's linked to a research project will require the pawn to learn how to use it before equipping. Some simple weapons are exempted, and specially good shooters and brawlers start with better weapon knowledge, as do pawns who know how to craft their own. But all pawns will have to spend some time training at the _training dummy_ or the _target stand_ if they want to wield the latest weapons and stay on top of their game.
 
 ## Books are **mandatory.**
 ![Books and Shelf](https://i.imgur.com/2o9elHT.png)
@@ -41,28 +41,7 @@ research tech > | document it into a book > | add book to library > | study tech
 :---|:---|:---|:---|:---
 (research bench)|(study bench)|(book shelf)|(study bench)|(build/repair/grow/craft)
 
-#### To Do: include an option for the hardcore player to forego tech research entirely! 
-
-## New and Improved facilities
-
-![BookShelf](https://i.imgur.com/uOLvVV4.png)\
-Books you buy or write yourself will only count as unlocked technologies when they're stored on a _book shelf_. These constitute your library, and you should take good care of them. After all, a destroyed book means literally lost knowledge! Each shelf can store up to 12 books, and they link with research benches and study desks to improve researching and studying speed. This boost isn't a fixed and linear number, though. It depends on how many books your library holds on total, and the more books you have, the smaller the buff each book gives.
-
-
-![ResearchBenches](https://i.imgur.com/scoC79s.png)\
-The _simple_ and _high tech research benches_ have been modified to work as regular work stations, with only one recipe each: _research_. We also made them more compact, considering you'll need lots of space for your new book shelves. Remember: books on connected book shelves improve research speed. Other than that, they keep their base characteristics, including the ability to connect with a _multi-analyser_.
-
-
-![StudyDesk](https://i.imgur.com/ZivxfT4.png)\
-The new work station is the _study desk_. This is where your pawns will acquire knowledge, using the _study technology_ recipe, and also output their own expertise into books, using the _document technology_ recipe. You can select which knowledge will be studied or documented on the ingredients panel. Both tasks are governed by the pawn's _intellectual_ skill and the time it takes to complete them depends on the technology complexity.
-
-In order to **study** a technolgy, pawns must be assigned to _study_ on the work tab, its book must be available on your library and the pawn must already know all parent techs. Only discovered techs will show up on the ingredients filter panel. 
-
-When it comes to **writing books**, the pawn must be also be assigned to _study_ on the work tab and, obviously, he must know the desired tech already. Only undiscovered techs will show up on the ingredients filter panel.
-
-
-![WeaponTraining](https://i.imgur.com/W7lBKOr.png)\
-The _training dummy_ and the _target stand_ are the facilities for learning to use melee and ranged weapons, respectively. Any weapon will be made avaiable for this once their associated technology is unlocked (_i.e._ added to the library). There are **two** recipes: use _learn weapon_ to aquire a new proficiency and _Practice melee/shooting_ to simply improve the pawn's skill on that kind of weapon (an easy way to gain XP and keep them sharp!). Pawns must be assigned to _learn_ on the work tab, and the relevant skill corresponds to the used weapon.
+### [Full details and guide on how to use this mod here](https://github.com/jptrrs/HumanResources/wiki)
 
 <!--[![](https://i.imgur.com/EEgQ2Ss.png)](http://ko-fi.com/jptrrs)-->
 
@@ -79,6 +58,7 @@ This was not designed to be added to an ongoing game, please only enable it if y
 
 #### Not compatible with:
 * [Tech Advancing](https://steamcommunity.com/sharedfiles/filedetails/?id=735268789)
+* [Tech Sales](https://steamcommunity.com/sharedfiles/filedetails/1935360087)
 
 ## Acknowledgements
 Borrowed code from Fluffy's [Research Tree](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778), Jecrell's [RimWriter](https://steamcommunity.com/sharedfiles/filedetails/?id=1521844535) & notfood's _ThingDef injection_ for [Psychology](https://steamcommunity.com/sharedfiles/filedetails/?id=1552507180).\
@@ -88,6 +68,3 @@ Code contributions by MinerSebas.
 Translated into chinese by leafzxg.\
 Made possible thanks to the help of Brrains and erdelf on the Harmony Discord channel.\
 **Many thanks to all these awesome people!**
-
-## GitHub
-Open for collaborations on: https://github.com/jptrrs/HumanResources
