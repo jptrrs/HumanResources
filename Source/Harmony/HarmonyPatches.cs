@@ -30,7 +30,7 @@ namespace HumanResources
 
         static HarmonyPatches()
         {
-            //Harmony.DEBUG = true;
+            Harmony.DEBUG = true;
             Instance.PatchAll();
 
             //ResearchTree/ResearchPal integration
@@ -49,6 +49,13 @@ namespace HumanResources
             {
                 Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");
             }
+
+            ////Royalty integration
+            //if (ModLister.RoyaltyInstalled)
+            //{
+            //    Log.Message("[HumanResources] Royalty detected! Integrating...");
+            //    Royalty_Patches.Execute(Instance);
+            //}
 
             //Go Explore! integration
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))

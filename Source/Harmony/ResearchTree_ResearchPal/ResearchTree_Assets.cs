@@ -8,6 +8,7 @@ using Verse;
 
 namespace HumanResources
 {
+    [StaticConstructorOnStartup]
     public static class ResearchTree_Assets
     {
         private static Type AssetsType = ResearchTree_Patches.AssetsType();
