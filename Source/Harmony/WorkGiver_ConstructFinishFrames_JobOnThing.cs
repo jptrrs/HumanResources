@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static bool Prefix(Pawn pawn, Thing t)
         {
-            if (pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
+            if (pawn.Faction != null && pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
             {
                 if (t.Faction != pawn.Faction)
                 {

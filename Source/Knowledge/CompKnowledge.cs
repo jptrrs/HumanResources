@@ -283,8 +283,8 @@ namespace HumanResources
 
         public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
         {
-            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", faction is " + pawn.Faction.IsPlayer + ", received " + studyMaterial.Count() + " projects, homework count is " + HomeWork.Count());
-            if (pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
+            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + HomeWork.Count());
+            if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
             {
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f

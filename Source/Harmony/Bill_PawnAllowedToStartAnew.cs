@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static bool Prefix(Pawn p, RecipeDef ___recipe)
         {
-            if (p.Faction.IsPlayer && p.RaceProps.Humanlike && p.TryGetComp<CompKnowledge>() != null)
+            if (p.Faction !=null && p.Faction.IsPlayer && p.RaceProps.Humanlike && p.TryGetComp<CompKnowledge>() != null)
             {
                 var expertise = p.TryGetComp<CompKnowledge>().expertise;
                 if (expertise != null)
