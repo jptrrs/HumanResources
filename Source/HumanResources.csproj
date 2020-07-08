@@ -329,8 +329,10 @@
     <Compile Include="Books\CompProperties_TitleMaker.cs" />
     <Compile Include="Books\CompProperties_StorageGraphic.cs" />
     <Compile Include="Books\CompStorageGraphic.cs" />
+    <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
     <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
+    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />

@@ -331,6 +331,18 @@ namespace HumanResources
             expertise[tech] = num;
         }
 
+        public static void LearnInstantly(this ResearchProjectDef tech, Pawn researcher)
+        {
+            Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
+            if (expertise != null)
+            {
+                if (!expertise.ContainsKey(tech)) expertise.Add(tech, 1f);
+                else expertise[tech] = 1f;
+                Messages.Message("MessageStudyComplete".Translate(researcher, tech.LabelCap), researcher, MessageTypeDefOf.TaskCompletion, true);
+            }
+            else Log.Warning("[HumanResources] " + researcher + " tried to learn a technology without being able to.");
+        }
+
         public static int Matches(this ResearchProjectDef tech, string query)
         {
             var culture = CultureInfo.CurrentUICulture;

@@ -132,22 +132,29 @@
       </li>
     </operations>
   </Operation>
-  
+
   <Operation Class="PatchOperationAdd">
-	<xpath>Defs/ScenarioDef[defName = "TheRichExplorer"]/scenario/parts</xpath>
-	  <value>
-		<li Class="ScenPart_Rule_DisallowDesignator">
-		  <def>Rule_knowAllStartingWeapons</def>
-		</li>
-	  </value>
+    <xpath>Defs/ScenarioDef[defName = "TheRichExplorer"]/scenario/parts</xpath>
+    <value>
+      <li Class="ScenPart_Rule_DisallowDesignator">
+        <def>Rule_knowAllStartingWeapons</def>
+      </li>
+    </value>
+  </Operation>
+
+  <!--to Items_Exotic-->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef/comps/li/compClass[.="CompUseEffect_FinishRandomResearchProject"]</xpath>
+    <value>
+      <compClass>HumanResources.CompUseEffect_LearnRandomResearchProject</compClass>
+    </value>
   </Operation>
 
   <!--Safeguard for modded weapons-->
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/ThingDef[category="Item" and not(techLevel)]</xpath>
-      <value>
-        <techLevel>Neolithic</techLevel>
-      </value>
+    <value>
+      <techLevel>Neolithic</techLevel>
+    </value>
   </Operation>
-
 </Patch>
