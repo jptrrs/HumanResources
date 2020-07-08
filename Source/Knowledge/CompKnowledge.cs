@@ -259,7 +259,7 @@ namespace HumanResources
                         }
                         if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && !ModBaseHumanResources.FreeScenarioWeapons)
+                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && !(ModBaseHumanResources.FreeScenarioWeapons || ModBaseHumanResources.unlocked.knowAllStartingWeapons))
                     {
                         proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
                         string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
