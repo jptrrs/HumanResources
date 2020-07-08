@@ -30,7 +30,7 @@ namespace HumanResources
 
         static HarmonyPatches()
         {
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
             Instance.PatchAll();
 
             //ResearchTree/ResearchPal integration
