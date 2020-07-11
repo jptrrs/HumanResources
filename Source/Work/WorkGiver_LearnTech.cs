@@ -18,8 +18,6 @@ namespace HumanResources
 			return true;
 		}
 
-
-
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			//Log.Message(pawn + " is looking for a study job...");

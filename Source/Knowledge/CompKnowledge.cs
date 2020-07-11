@@ -298,12 +298,13 @@ namespace HumanResources
                 if (Prefs.LogVerbose) Log.Message("...Available projects: " + available.ToStringSafeEnumerable());
                 var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
                 var starters = available.Where(t => t.prerequisites.NullOrEmpty());
-                if (!starters.Any() && !derived.Any())
+                var preceding = expertiseKeys.Where(t => t.prerequisites != null).SelectMany(t => t.prerequisites).Intersect(available);
+                if (!starters.Any() && !derived.Any() && !preceding.Any())
                 {
                     JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
                     return;
                 }
-                HomeWork.AddRange(starters.Concat(derived));
+                HomeWork.AddRange(starters.Concat(derived).Concat(preceding));
             }
         }
 
