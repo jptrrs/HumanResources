@@ -13,45 +13,33 @@ namespace HumanResources
     public class ModBaseHumanResources : ModBase
     {
 
+        public static SettingHandle<bool> FreeScenarioWeapons;
+        public static SettingHandle<bool> ResearchSpeedTiedToDifficulty;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
 
+        public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
+        public static SettingHandle<bool> StudySpeedTiedToDifficulty;
+        public static SettingHandle<bool> TechPoolIncludesScenario;
+        public static FactionTechPool TechPoolMode;
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
 
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
-
-        public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
-
         public static UnlockManager unlocked = new UnlockManager();
 
-        public enum FactionTechPool { Both, TechLevel, Starting }
-
-        public static FactionTechPool TechPoolMode;
-
-        public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
-
-        public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
-
-        public static SettingHandle<bool> TechPoolIncludesScenario;
-
-        public static SettingHandle<bool> ResearchSpeedTiedToDifficulty;
-
-        public static SettingHandle<bool> StudySpeedTiedToDifficulty;
-
-        public enum FactionWeaponPool { Both, TechLevel, Scenario }
-
         public static FactionWeaponPool WeaponPoolMode;
-
-        public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
-
-        public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
-
-        public static SettingHandle<bool> FreeScenarioWeapons;
 
         public ModBaseHumanResources()
         {
             Settings.EntryName = "Human Resources";
         }
 
+        public enum FactionTechPool { Both, TechLevel, Starting }
+        public enum FactionWeaponPool { Both, TechLevel, Scenario }
+
+        public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
+        public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
+        public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
+        public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
         public override string ModIdentifier
         {
             get
@@ -152,12 +140,7 @@ namespace HumanResources
             }
 
             //4. Finally, preparing settings
-            TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
-            TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
-            WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
-            FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
-            ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
-            StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
+            UpdateSettings();
         }
 
         public override void MapComponentsInitializing(Map map)
@@ -172,6 +155,22 @@ namespace HumanResources
         //public override void WorldLoaded()
         //{
         //}
+
+        public override void SettingsChanged()
+        {
+            base.SettingsChanged();
+            UpdateSettings();
+        }
+
+        public void UpdateSettings()
+        {
+            TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
+            TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
+            WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
+            FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
+            ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
+            StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
+        }
 
         private static bool SplitSimpleWeapons (ThingDef t, List<string> forbiddenWeaponTags)
         {

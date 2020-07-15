@@ -86,6 +86,31 @@ namespace HumanResources
 
         public static IEnumerable<ResearchProjectDef> GetExpertiseDefsFor(Pawn pawn, FactionDef faction)
         {
+            //0. Info for debugging.
+            if (Prefs.LogVerbose)
+            {
+                bool flag = false;
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("[HumanResources] Including technologies from");
+                if (ModBaseHumanResources.TechPoolIncludesTechLevel)
+                {
+                    stringBuilder.Append(" the faction tech level,");
+                    flag = true;
+                }
+                if (ModBaseHumanResources.TechPoolIncludesScenario)
+                {
+                    stringBuilder.Append(" the scenario,");
+                    flag = true;
+                }
+                if (ModBaseHumanResources.TechPoolIncludesStarting)
+                { 
+                    stringBuilder.Append(" the starting techs");
+                    flag = true;
+                }
+                if (flag) Log.Message(stringBuilder.ToString().TrimEnd(new char[] { ',' }) + ".");
+                else Log.Message("[HumanResources] Empty technology pool!");
+            }
+
             //1. Gather info on that pawn
 
             //a. tech level
