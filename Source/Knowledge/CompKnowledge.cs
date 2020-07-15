@@ -72,7 +72,7 @@ namespace HumanResources
             {
                 if (ModBaseHumanResources.TechPoolIncludesTechLevel && tech.techLevel == startingTechLevel) return true;
                 if (ModBaseHumanResources.TechPoolIncludesScenario.Value && !ModBaseHumanResources.unlocked.startingTechs.EnumerableNullOrEmpty() && ModBaseHumanResources.unlocked.startingTechs.Contains(tech)) return true;
-                if (ModBaseHumanResources.TechPoolIncludesStarting && faction.startingResearchTags.Any())
+                if (ModBaseHumanResources.TechPoolIncludesStarting && !faction.startingResearchTags.NullOrEmpty() && faction.startingResearchTags.Any())
                 {
                     foreach (ResearchProjectTagDef tag in faction.startingResearchTags)
                     {
