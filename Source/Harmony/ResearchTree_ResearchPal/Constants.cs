@@ -8,6 +8,7 @@ namespace HumanResources
     public static class Constants
     {
         public const double Epsilon = 1e-4;
+        public const float DetailedModeZoomLevelCutoff = 1.5f;
         public const float Margin = 6f;
         public const float QueueLabelSize = 30f;
         public static readonly Vector2 IconSize = new Vector2(18f, 18f);

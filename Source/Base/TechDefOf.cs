@@ -21,5 +21,6 @@ namespace HumanResources
         public static StuffCategoryDef Technic;
         public static ThingDef TechBook;
         public static ThingDef UnfinishedTechBook;
+        public static WorkTypeDef HR_Learn;
     }
 }

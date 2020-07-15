@@ -188,9 +188,12 @@ namespace HumanResources
             {
                 MainButtonDefOf.Research.Worker.InterfaceTryActivate();
                 ResearchTree_Patches.subjectToShow = Research;
+                //SelectMenu();
             }
 
         }
+
+
 
         public List<ThingDef> MissingFacilities()
         {

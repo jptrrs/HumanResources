@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.AccessControl;
 using UnityEngine;
 using Verse;
 
@@ -48,6 +49,10 @@ namespace HumanResources
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
 
+            //TEST
+            instance.Patch(AccessTools.Method(NodeType(), "Draw"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
+
             _buildingPresentCache = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, bool>;
             _missingFacilitiesCache = AccessTools.Field(ResearchNodeType(), "_missingFacilitiesCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, List<ThingDef>>;
 
@@ -73,6 +78,8 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
+
+            Log.Warning("DEBUG " + AccessTools.GetPropertyNames(NodeType()).ToStringSafeEnumerable());
         }
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
@@ -192,6 +199,265 @@ namespace HumanResources
             {
                 treeNodesResearchCache.Add(research);
             }
+        }
+
+        //TEST
+        //Node
+        public static MethodInfo IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
+        public static PropertyInfo HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted");
+        public static PropertyInfo RectInfo = AccessTools.Property(ResearchNodeType(), "Rect");
+        //public static MethodInfo RectInfo = AccessTools.PropertyGetter(NodeType(), "Rect");
+
+        public static FieldInfo largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
+        public static PropertyInfo LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
+        public static PropertyInfo CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
+        public static PropertyInfo CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
+        public static PropertyInfo IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
+        //Reserarch Node
+        public static MethodInfo GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
+        public static PropertyInfo ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
+        public static PropertyInfo ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
+        public static PropertyInfo AvailableInfo = AccessTools.Property(ResearchNodeType(), "Available");
+        public static FieldInfo ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
+        public static PropertyInfo CompletedInfo = AccessTools.Property(ResearchNodeType(), "Completed");
+        public static MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
+        public static MethodInfo BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent");
+        //MainTabType
+        public static PropertyInfo InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
+        public static PropertyInfo ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
+
+        public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
+        {
+            Log.Warning("DEBUG " + AccessTools.GetPropertyNames(ResearchNodeType()).ToStringSafeEnumerable());
+            string test = (RectInfo != null) ? "ok" : "bad";
+            Log.Warning("DEBUG step 1: RectInfo is " + test);
+            Rect rect = (Rect)RectInfo.GetValue(__instance);
+            //Rect rect = (Rect)RectInfo.Invoke(__instance,new object[] { });
+            Log.Warning("DEBUG step 1a");
+
+            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+            Log.Warning("DEBUG step 1b");
+
+            bool available = (bool)AvailableInfo.GetValue(__instance);
+            Log.Warning("DEBUG step 1c");
+
+            bool completed = (bool)CompletedInfo.GetValue(__instance);
+            Log.Warning("DEBUG step 1d");
+
+
+            Log.Warning("DEBUG step 2");
+            if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect }))
+            {
+                HighlightedInfo.SetValue(__instance, false);
+                return false;
+            }
+
+            var detailedMode = forceDetailedMode || (float)ZoomLevelInfo.GetValue(InstanceInfo.GetValue(__instance)) < Constants.DetailedModeZoomLevelCutoff;
+            var mouseOver = Mouse.IsOver(rect);
+            Log.Warning("DEBUG step 3");
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                // researches that are completed or could be started immediately, and that have the required building(s) available
+                GUI.color = mouseOver ? GenUI.MouseoverColor : (Color)ColorInfo.GetValue(__instance);
+
+                if (mouseOver || (bool)HighlightedInfo.GetValue(__instance))
+                    GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
+                else
+                    GUI.DrawTexture(rect, ResearchTree_Assets.Button);
+
+                // grey out center to create a progress bar effect, completely greying out research not started.
+                if (available)
+                {
+                    var progressBarRect = rect.ContractedBy(3f);
+                    GUI.color = ResearchTree_Assets.ColorAvailable[Research.techLevel];
+                    progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
+                    GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
+                }
+
+                HighlightedInfo.SetValue(__instance, false);
+
+                // draw the research label
+                if (!completed && !available)
+                    GUI.color = Color.grey;
+                else
+                    GUI.color = Color.white;
+
+                if (detailedMode)
+                {
+                    Text.Anchor = TextAnchor.UpperLeft;
+                    Text.WordWrap = false;
+                    Text.Font = (bool)largeLabelInfo.GetValue(__instance) ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label((Rect)LabelRectInfo.GetValue(__instance), Research.LabelCap);
+                }
+                else
+                {
+                    Text.Anchor = TextAnchor.MiddleCenter;
+                    Text.WordWrap = false;
+                    Text.Font = GameFont.Medium;
+                    Widgets.Label(rect, Research.LabelCap);
+                }
+
+                // draw research cost and icon
+                if (detailedMode)
+                {
+                    Text.Anchor = TextAnchor.UpperRight;
+                    Text.Font = Research.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label((Rect)CostLabelRectInfo.GetValue(__instance), Research.CostApparent.ToStringByStyle(ToStringStyle.Integer));
+                    GUI.DrawTexture((Rect)CostIconRectInfo.GetValue(__instance), !completed && !available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon,
+                                     ScaleMode.ScaleToFit);
+                }
+
+                Text.WordWrap = true;
+
+                // attach description and further info to a tooltip
+                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
+                TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
+                if (!(bool)BuildingPresentInfo.Invoke(__instance, new object[] { }))
+                {
+                    string languageKey = root + ".MissingFacilities";
+                    TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
+                }
+                else if (!Research.TechprintRequirementMet)
+                    TooltipHandler.TipRegion(rect, root + ".MissingTechprints".Translate(Research.TechprintsApplied, Research.techprintCount));
+
+                // draw unlock icons
+                if (detailedMode)
+                {
+                    Rect IconsRect = (Rect)IconsRectInfo.GetValue(__instance);
+                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Research);
+                    for (var i = 0; i < unlocks.Count; i++)
+                    {
+                        var iconRect = new Rect(
+                            IconsRect.xMax - (i + 1) * (Constants.IconSize.x + 4f),
+                            IconsRect.yMin + (IconsRect.height - Constants.IconSize.y) / 2f,
+                            Constants.IconSize.x,
+                            Constants.IconSize.y);
+
+                        if (iconRect.xMin - Constants.IconSize.x < IconsRect.xMin &&
+                             i + 1 < unlocks.Count)
+                        {
+                            // stop the loop if we're about to overflow and have 2 or more unlocks yet to print.
+                            iconRect.x = IconsRect.x + 4f;
+                            GUI.DrawTexture(iconRect, ResearchTree_Assets.MoreIcon, ScaleMode.ScaleToFit);
+                            var tip = string.Join("\n", unlocks.GetRange(i, unlocks.Count - i).Select(p => p.Second).ToArray());
+                            TooltipHandler.TipRegion(iconRect, tip);
+                            // new TipSignal( tip, Settings.TipID, TooltipPriority.Pawn ) );
+                            break;
+                        }
+
+                        // draw icon
+                        unlocks[i].First.DrawColouredIcon(iconRect);
+
+                        // tooltip
+                        TooltipHandler.TipRegion(iconRect, unlocks[i].Second);
+                    }
+                }
+
+                if (mouseOver)
+                {
+                    // highlight prerequisites if research available
+                    if (available)
+                    {
+                        HighlightedInfo.SetValue(__instance, true);
+                        foreach (var prerequisite in (List<object>)GetMissingRequiredRecursiveInfo.Invoke(__instance, new object[] { }))
+                            HighlightedInfo.SetValue(prerequisite, true);
+                    }
+                    // highlight children if completed
+                    else if (completed)
+                    {
+                        foreach (var child in (List<object>)ChildrenInfo.GetValue(__instance))
+                            HighlightedInfo.SetValue(child, true);
+                    }
+                }
+            }
+
+            Log.Warning("DEBUG step 4");
+
+            // if clicked and not yet finished, queue up this research and all prereqs.
+            if (Widgets.ButtonInvisible(rect) && available)
+            {
+                // LMB is queue operations, RMB is info
+                if (Event.current.button == 0 && !Research.IsFinished)
+                {
+                    //if (!Queue.IsQueued(this))
+                    //{
+                    //    // if shift is held, add to queue, otherwise replace queue
+                    //    var queue = GetMissingRequiredRecursive()
+                    //               .Concat(new List<ResearchNode>(new[] { this }))
+                    //               .Distinct();
+                    //    Queue.EnqueueRange(queue, Event.current.shift);
+                    //}
+                    //else
+                    //{
+                    //    Queue.Dequeue(this);
+                    //}
+                    SelectMenu();
+                }
+
+                if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
+                {
+                    Find.ResearchManager.FinishProject(Research);
+                    //Queue.Notify_InstantFinished();
+                }
+            }
+            return false;
+        }
+
+        private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions()
+        {
+            WorkTypeDef workGiver = TechDefOf.HR_Learn;
+            SkillDef skill = SkillDefOf.Intellectual;
+            IEnumerable<Pawn> enumerable = PawnsFinder.AllMaps_FreeColonists.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
+            using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Pawn pawn = enumerator.Current;
+                    if (pawn.WorkTypeIsDisabled(TechDefOf.HR_Learn))
+                    {
+                        yield return new Widgets.DropdownMenuElement<Pawn>
+                        {
+                            option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.Default, null, null, 0f, null, null),
+                            payload = pawn
+                        };
+                    }
+                    else if (!pawn.workSettings.WorkIsActive(workGiver))
+                    {
+                        yield return new Widgets.DropdownMenuElement<Pawn>
+                        {
+                            option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
+                            {
+                                Log.Message("do something");
+                            }, MenuOptionPriority.Default, null, null, 0f, null, null),
+                            payload = pawn
+                        };
+                    }
+                    else
+                    {
+                        yield return new Widgets.DropdownMenuElement<Pawn>
+                        {
+                            option = new FloatMenuOption(string.Format("{0}", pawn.LabelShortCap), delegate ()
+                            {
+                                Log.Message("do something");
+                            }, MenuOptionPriority.Default, null, null, 0f, null, null),
+                            payload = pawn
+                        };
+                    }
+                }
+            }
+            //IEnumerator<Pawn> enumerator = null;
+            yield break;
+        }
+
+        public static void SelectMenu()
+        {
+            Find.WindowStack.FloatMenu?.Close(false);
+            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions()
+                                             select opt.option).ToList<FloatMenuOption>();
+            if (!options.Any())
+                options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
+            Find.WindowStack.Add(new FloatMenu(options));
         }
     }
 }
