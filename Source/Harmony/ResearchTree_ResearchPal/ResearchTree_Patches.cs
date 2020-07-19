@@ -51,7 +51,7 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
 
             //TEST
-            instance.Patch(AccessTools.Method(NodeType(), "Draw"),
+            instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
             instance.Patch(AccessTools.Constructor(MainTabType(), new Type[] { }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MainTabWindow_Prefix))));
@@ -212,6 +212,7 @@ namespace HumanResources
         public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
         {
             //Reflection info. Why can't I cache it?
+            //Node
             MethodInfo IsVisibleInfo = AccessTools.Method(__instance.GetType().BaseType, "IsVisible");
             PropertyInfo HighlightedInfo = AccessTools.Property(__instance.GetType().BaseType, "Highlighted");
             PropertyInfo RectInfo = AccessTools.Property(__instance.GetType().BaseType, "Rect");
@@ -220,20 +221,21 @@ namespace HumanResources
             PropertyInfo CostLabelRectInfo = AccessTools.Property(__instance.GetType().BaseType, "CostLabelRect");
             PropertyInfo CostIconRectInfo = AccessTools.Property(__instance.GetType().BaseType, "CostIconRect");
             PropertyInfo IconsRectInfo = AccessTools.Property(__instance.GetType().BaseType, "IconsRect");
+            //Reserarch Node
+            MethodInfo GetMissingRequiredRecursiveInfo = AccessTools.Method(__instance.GetType(), "GetMissingRequiredRecursive");
+            PropertyInfo ChildrenInfo = AccessTools.Property(__instance.GetType(), "Children");
             PropertyInfo ColorInfo = AccessTools.Property(__instance.GetType(), "Color");
             PropertyInfo AvailableInfo = AccessTools.Property(__instance.GetType(), "Available");
             PropertyInfo CompletedInfo = AccessTools.Property(__instance.GetType(), "Completed");
-            PropertyInfo parentInfo = AccessTools.Property(__instance.GetType(), "Parent");
-            object parent = parentInfo.GetValue(__instance);
-            MethodInfo GetMissingRequiredRecursiveInfo = AccessTools.Method(parent.GetType(), "GetMissingRequiredRecursive");
-            PropertyInfo ChildrenInfo = AccessTools.Property(parent.GetType(), "Children");
-            FieldInfo ResearchInfo = AccessTools.Field(parent.GetType(), "Research");
-            MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(parent.GetType(), "GetResearchTooltipString");
-            MethodInfo BuildingPresentInfo = AccessTools.Method(parent.GetType(), "BuildingPresent");
+            FieldInfo ResearchInfo = AccessTools.Field(__instance.GetType(), "Research");
+            MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(__instance.GetType(), "GetResearchTooltipString");
+            MethodInfo BuildingPresentInfo = AccessTools.Method(__instance.GetType(), "BuildingPresent");
+            //MainTabType
             PropertyInfo InstanceInfo = AccessTools.Property(MainWindow.GetType(), "Instance");
             PropertyInfo ZoomLevelInfo = AccessTools.Property(MainWindow.GetType(), "ZoomLevel");
+
             Rect rect = (Rect)RectInfo.GetValue(__instance);
-            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(parent);
+            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
             bool completed = (bool)CompletedInfo.GetValue(__instance);
             //End of reflection info.
@@ -294,7 +296,7 @@ namespace HumanResources
                     Text.Font = Research.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
                     Widgets.Label((Rect)CostLabelRectInfo.GetValue(__instance), Research.CostApparent.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture((Rect)CostIconRectInfo.GetValue(__instance), !completed && !available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon,
-                                     ScaleMode.ScaleToFit);
+                                        ScaleMode.ScaleToFit);
                 }
 
                 Text.WordWrap = true;
@@ -302,14 +304,14 @@ namespace HumanResources
                 //attach description and further info to a tooltip
                 string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
                 TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
-                if (!(bool)BuildingPresentInfo.Invoke(parent, new object[] { }))
+                if (!(bool)BuildingPresentInfo.Invoke(__instance, new object[] { }))
                 {
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
                 }
                 else if (!Research.TechprintRequirementMet)
                     TooltipHandler.TipRegion(rect, root + ".MissingTechprints".Translate(Research.TechprintsApplied, Research.techprintCount));
-               
+
                 //draw unlock icons
                 if (detailedMode)
                 {
@@ -324,7 +326,7 @@ namespace HumanResources
                             Constants.IconSize.y);
 
                         if (iconRect.xMin - Constants.IconSize.x < IconsRect.xMin &&
-                             i + 1 < unlocks.Count)
+                                i + 1 < unlocks.Count)
                         {
                             //stop the loop if we're about to overflow and have 2 or more unlocks yet to print.
                             iconRect.x = IconsRect.x + 4f;
@@ -344,21 +346,19 @@ namespace HumanResources
                 }
 
                 if (mouseOver)
-                {
                     //highlight prerequisites if research available
                     if (available)
                     {
                         HighlightedInfo.SetValue(__instance, true);
-                        foreach (var prerequisite in (List<object>)GetMissingRequiredRecursiveInfo.Invoke(__instance, new object[] { }))
-                            HighlightedInfo.SetValue(prerequisite, true);
+                        foreach (var prerequisite in (IEnumerable<object>)GetMissingRequiredRecursiveInfo.Invoke(__instance, new object[] { }))
+                            HighlightedInfo.SetValue(Convert.ChangeType(prerequisite, ResearchNodeType()), true);
                     }
                     //highlight children if completed
                     else if (completed)
                     {
-                        foreach (var child in (List<object>)ChildrenInfo.GetValue(parent))
-                            HighlightedInfo.SetValue(child, true);
+                        foreach (var child in (IEnumerable<object>)ChildrenInfo.GetValue(__instance))
+                            HighlightedInfo.SetValue(Convert.ChangeType(child, ResearchNodeType()), true);
                     }
-                }
             }
 
             //if clicked and not yet finished, queue up this research and all prereqs.
