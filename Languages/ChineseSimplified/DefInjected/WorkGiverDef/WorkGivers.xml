@@ -1,24 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <DocumentTech.label>记录技术</DocumentTech.label>
-  <DocumentTech.verb>记录</DocumentTech.verb>
-  <DocumentTech.gerund>记录</DocumentTech.gerund>
+  <!--EN: Document technologies-->
+  <DocumentTech.label>记录科技</DocumentTech.label>
+  <!--EN: write-->
+  <DocumentTech.verb>书写</DocumentTech.verb>
+  <!--EN: writing at-->
+  <DocumentTech.gerund>书写</DocumentTech.gerund>
 
-  <LearnTech.label>学习技术</LearnTech.label>
+  <!--EN: Study Technologies-->
+  <LearnTech.label>学习科技</LearnTech.label>
+  <!--EN: study-->
   <LearnTech.verb>学习</LearnTech.verb>
+  <!--EN: studying at-->
   <LearnTech.gerund>学习</LearnTech.gerund>
 
-  <TrainWeapon.label>学习使用武器</TrainWeapon.label>
+  <!--EN: Learn weapon use-->
+  <TrainWeapon.label>学习武器的使用方法</TrainWeapon.label>
+  <!--EN: train-->
   <TrainWeapon.verb>练习</TrainWeapon.verb>
+  <!--EN: training-->
   <TrainWeapon.gerund>练习</TrainWeapon.gerund>
 
+  <!--EN: shooting practice-->
   <PracticeShooting.label>练习射击</PracticeShooting.label>
+  <!--EN: train-->
   <PracticeShooting.verb>练习</PracticeShooting.verb>
+  <!--EN: training-->
   <PracticeShooting.gerund>练习</PracticeShooting.gerund>
 
+  <!--EN: melee practice-->
   <PracticeMelee.label>练习格斗</PracticeMelee.label>
+  <!--EN: train-->
   <PracticeMelee.verb>练习</PracticeMelee.verb>
+  <!--EN: training-->
   <PracticeMelee.gerund>练习</PracticeMelee.gerund>
 
 

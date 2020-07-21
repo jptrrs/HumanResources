@@ -1,10 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <LearnTech.reportString>学习TargetB。</LearnTech.reportString>
-  <DocumentTech.reportString>记录TargetB。</DocumentTech.reportString>
-  <ResearchTech.reportString>正在研究TargetB。</ResearchTech.reportString>
-  <TrainWeapon.reportString>练习TargetB。</TrainWeapon.reportString>
+  <!--EN: learning TargetB.-->
+  <LearnTech.reportString>正在学习 TargetB。</LearnTech.reportString>
+  <!--EN: documenting TargetB.-->
+  <DocumentTech.reportString>正在记录 TargetB。</DocumentTech.reportString>
+  <!--EN: researching TargetB.-->
+  <ResearchTech.reportString>正在研究 TargetB。</ResearchTech.reportString>
+  <!--EN: practicing TargetB.-->
+  <TrainWeapon.reportString>正在练习使用 TargetB。</TrainWeapon.reportString>
 
 
-</LanguageData>
+</LanguageData> 

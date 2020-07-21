@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--UI-->
+  
+  <!--EN: Tech-->
+  <TabKnowledge>テクノロジー</TabKnowledge>
+  <!--EN: Knowledge-->
+  <TabKnowledgeTitle>知識</TabKnowledgeTitle>
+  <!--EN: Weapons Proficiency-->
+  <TabKnowledgeWeapons>武器熟練度</TabKnowledgeWeapons>
+  <!--EN: Show common weapons.-->
+  <ShowCommon>汎用武器を表示</ShowCommon>
+  <!--EN: Show melee weapons.-->
+  <ShowMelee>近接武器を表示</ShowMelee>
+  <!--EN: Show ranged weapons.-->
+  <ShowRanged>遠隔武器を表示</ShowRanged>
+  <!--EN: Show techs available to learn.-->
+  <ShowAvailable>学習できるテクノロジーを表示</ShowAvailable>
+  <!--EN: Compact view.-->
+  <ShowCompact>縮小表示</ShowCompact>
+  <!--EN: Expand-->
+  <Expand>展開</Expand>
+  <!--EN: Collapse-->
+  <Collapse>折り畳む</Collapse>
+  <!--EN: Catalog-->
+  <TabCatalogue>目録</TabCatalogue>
+  <!--EN: {0} books in {1} shelves-->
+  <AvailableBooksReport>{1}台の本棚に{0}冊の本</AvailableBooksReport>
+
+  <!--Settings-->
+  
+  <!--EN: Knowledge generation draws from...-->
+  <TechPoolModeTitle>入植者の初期テクノロジーを決めるのは…</TechPoolModeTitle>
+  <!--EN: Defines the pool from which to draw technologies for the player's colonists when they are created.-->
+  <TechPoolModeDesc>プレーヤー派閥の入植者が作成される時、その身に付くテクノロジーを抽選するプールを設定します。</TechPoolModeDesc>
+  <!--EN: both faction settings-->
+  <TechPoolMode_Both>下記両方</TechPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <TechPoolMode_TechLevel>プレーヤー派閥のテクノロジーレベル</TechPoolMode_TechLevel>
+  <!--EN: the starting techs for that faction only-->
+  <TechPoolMode_Starting>プレーヤー派閥の初期テクノロジー</TechPoolMode_Starting>
+  <!--EN: Also include starting research parts from the scenario.-->
+  <TechPoolIncludesScenarioTitle>シナリオで設定された初期テクノロジーも含みます。</TechPoolIncludesScenarioTitle>
+  <!--EN: If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.-->
+  <TechPoolIncludesScenarioDesc>これをチェックすると、あなたがシナリオに追加したテクノロジーも抽選プールに含まれます。</TechPoolIncludesScenarioDesc>
+  <!--EN: Combat specialists start with weapons from...-->
+  <WeaponPoolModeTitle>戦闘専門家が最初から使える武器を決めるのは…</WeaponPoolModeTitle>
+  <!--EN: Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.-->
+  <WeaponPoolModeDesc>射撃や格闘のスキルに優れているプレーヤー派閥の入植者が作成された時、その者が最初から使える武器を抽選するプールを設定します。</WeaponPoolModeDesc>
+  <!--EN: both weapon lists-->
+  <WeaponPoolMode_Both>下記両方</WeaponPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <WeaponPoolMode_TechLevel>プレーヤー派閥のテクノロジーレベル</WeaponPoolMode_TechLevel>
+  <!--EN: the scenario only-->
+  <WeaponPoolMode_Scenario>シナリオ</WeaponPoolMode_Scenario>
+  <!--EN: All colonists start with scenario weapons.-->
+  <FreeScenarioWeaponsTitle>全入植者はシナリオで設定された初期武器を最初から使えます。</FreeScenarioWeaponsTitle>
+  <!--EN: If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here)-->
+  <FreeScenarioWeaponsDesc>これをチェックすると、あなたがシナリオに追加した武器は、全ての入植者が最初から使えます。（バニラシナリオの「リッチ エクスプローラー」は既にパッチされ、本項のチェックの有無に関わらず、本オプションを有効にしています）</FreeScenarioWeaponsDesc>
+  <!--EN: Difficulty settings slows down research.-->
+  <ResearchSpeedTiedToDifficultyTitle>難易度は研究速度に影響します。</ResearchSpeedTiedToDifficultyTitle>
+  <!--EN: If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.-->
+  <ResearchSpeedTiedToDifficultyDesc>これをチェックすると、基本研究速度は難易度によって決められ、Easyの場合はバニラと変わりませんが、Hardの場合は30%下げられます。これをチェックしないと、基本研究速度はバニラと比べて10%下げられます。</ResearchSpeedTiedToDifficultyDesc>
+  <!--EN: Difficulty settings slows down tech studying.</-->
+  <StudySpeedTiedToDifficultyTitle>難易度は学習速度に影響します。</StudySpeedTiedToDifficultyTitle>
+  <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
+  <StudySpeedTiedToDifficultyDesc>これをチェックすると、基本学習速度は難易度に影響を受けます。Mediumの場合は10%、Hardの場合は20%下げられます。</StudySpeedTiedToDifficultyDesc>
+
+  <!--Things-->
+  
+  <!--EN: Empty-->
+  <BookStoreEmpty>空っぽ</BookStoreEmpty>
+  <!--EN: Archived technologies: {0}/{1}-->
+  <BookStoreCapacity>保管中のテクノロジー：{0} / {1}</BookStoreCapacity>
+  <!--EN: Retrieve Book-->
+  <BookStoreRetrieveBook>本を回収</BookStoreRetrieveBook>
+  <!--EN: Find and remove a particular book from the book shelf.-->
+  <BookStoreRetrieveBookDesc>本棚にある本を見つけて、取り出します。</BookStoreRetrieveBookDesc>
+  <!--EN: {0} doesn't fit at any book shelf.-->
+  <BookStoreNoInternalStorage>{0} はどの本棚にも入れられません。</BookStoreNoInternalStorage>
+  <!--EN: {0} knowledge-->
+  <KnowledgeLabel>{0} の知識</KnowledgeLabel>
+  <!--EN: Book of {0}-->
+  <Book>{0} の書</Book>
+  <!--EN: {0} Compendium-->
+  <BookCompendium>{0} の概論</BookCompendium>
+  <!--EN: {0} Manual-->
+  <BookManual>{0} の手引</BookManual>
+  <!--EN: {0} Theory-->
+  <BookTheory>{0} の理論</BookTheory>
+  <!--EN: {0} Database-->
+  <BookDatabase>{0} のデータベース</BookDatabase>
+
+  <!--Feedback-->
+  
+  <!--EN: {0_nameDef} has learned the secrets of {1}.-->
+  <MessageStudyComplete>{0_nameDef} は {1} の秘密を解明しました。</MessageStudyComplete>
+  <!--EN: {0_nameDef} wrote a book on {1}.-->
+  <MessageDocumentComplete>{0_nameDef} は {1} に関する本を書きました。</MessageDocumentComplete>
+  <!--EN: The knowledge for {0} was added to our library.-->
+  <MessageFiledTech>{0} の知識は我々の図書館に追加されました。</MessageFiledTech>
+  <!--EN: The knowledge for {0} was removed from our library.-->
+  <MessageEjectedTech>{0} の知識は我々の図書館から取り除かれました。</MessageEjectedTech>
+  <!--EN: {0_nameDef} has mastered the {1}.-->
+  <MessageTrainingComplete>{0_nameDef} は {1} を使いこなすようになりました。</MessageTrainingComplete>
+  <!--EN: You know nothing, {0_nameFull}.-->
+  <NothingToAddToLibrary>{0_nameFull} は何も知らないようです。</NothingToAddToLibrary>
+  <!--EN: {0_nameDef} has read all the books.-->
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} は全ての本を読破しました。</AlreadyKnowsTheWholeLibrary>
+  <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
+  <LacksFundamentalKnowledge>{0_nameDef} は、これらの課題の前置き知識を知りません。</LacksFundamentalKnowledge>
+  <!--EN: No available weapons to train.-->
+  <NoWeaponsFoundToLearn>練習できる武器はありません。</NoWeaponsFoundToLearn>
+  <!--EN: {0_nameDef} has no corresponding knowledge or books to learn about {1}.-->
+  <MissingRequirementToLearnWeapon>関連知識あるいは専門書を持っていないため、{0_nameDef} は {1} を学習できません。</MissingRequirementToLearnWeapon>
+  <!--EN: those weapons-->
+  <ThoseWeapons>それらの武器</ThoseWeapons>
+  <!--EN: {0_nameDef} already knows how to use those weapons.-->
+  <NoWeaponToLearn>{0_nameDef} はそれらの武器の使い方を既に知っているようです。</NoWeaponToLearn>
+  <!--EN: {0_nameDef} doesn't know how to build a {1} (requires {2}).-->
+  <DoesntKnowHowToBuild>{0_nameDef} は {1} を建設する方法が分かりません（{2} の知識が必要）。</DoesntKnowHowToBuild>
+  <!--EN: {0_nameDef} doesn't know how to repair a {1} (requires {2}).-->
+  <DoesntKnowHowToRepair>{0_nameDef} は {1} を修理する方法が分かりません（{2} の知識が必要）。</DoesntKnowHowToRepair>
+  <!--EN: {0_nameDef} doesn't know how to {1} (requires {2}).-->
+  <DoesntKnowHowToCraft>{0_nameDef} は「{1}」を完成させる方法が分かりません（{2} の知識が必要）。</DoesntKnowHowToCraft>
+  <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
+  <DoesntKnowThisPlant>{0_nameDef} は {1} を植える方法が分かりません（{2} の知識が必要）。</DoesntKnowThisPlant>
+  <!--EN: {0_nameDef} has not been trained to use this weapon.-->
+  <UnknownWeapon>{0_nameDef} はまだこの武器の訓練を十分に受けていません。</UnknownWeapon>
+  <!--EN: {0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.-->
+  <EvilWeapon>{0_nameDef} はこの武器が邪悪だと思い込んでおり、触りません。</EvilWeapon>
+  <!--EN: {0} is already known.-->
+  <TechAlreadyKnown>{0} は既知です。</TechAlreadyKnown>
+
+  <!--Go Explore-->
+  
+  <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_SuccessHR>研究は成功でした！共同作業により、あなたは {2} への理解を深めました。\n\n{0} との関係が {1} 上がりました。</LetterResearchRequest_SuccessHR>
+  <!--EN: The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_TriumphHR>研究は大成功でした！共同作業により、あなたが大きな進歩を遂げ、{2} の秘密を解明しました。\n\n{0} との関係が {1} 上がりました。</LetterResearchRequest_TriumphHR>
+  <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
+  <ResearchRequestXPGainHR>あなたの研究者 {0} は、{1} における貴重な専門知識を身に付け、{2} 点の知力経験値を得ました。</ResearchRequestXPGainHR>
+
+  <!--MISSING:-->
+
+</LanguageData> 

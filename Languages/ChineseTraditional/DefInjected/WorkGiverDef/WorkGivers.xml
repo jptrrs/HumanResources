@@ -1,24 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <DocumentTech.label>記錄技術</DocumentTech.label>
-  <DocumentTech.verb>記錄</DocumentTech.verb>
-  <DocumentTech.gerund>記錄</DocumentTech.gerund>
+  <!--EN: Document technologies-->
+  <DocumentTech.label>記錄科技</DocumentTech.label>
+  <!--EN: write-->
+  <DocumentTech.verb>書寫</DocumentTech.verb>
+  <!--EN: writing at-->
+  <DocumentTech.gerund>書寫</DocumentTech.gerund>
 
-  <LearnTech.label>學習技術</LearnTech.label>
+  <!--EN: Study Technologies-->
+  <LearnTech.label>學習科技</LearnTech.label>
+  <!--EN: study-->
   <LearnTech.verb>學習</LearnTech.verb>
+  <!--EN: studying at-->
   <LearnTech.gerund>學習</LearnTech.gerund>
 
-  <TrainWeapon.label>學習使用武器</TrainWeapon.label>
+  <!--EN: Learn weapon use-->
+  <TrainWeapon.label>學習武器的使用方法</TrainWeapon.label>
+  <!--EN: train-->
   <TrainWeapon.verb>練習</TrainWeapon.verb>
+  <!--EN: training-->
   <TrainWeapon.gerund>練習</TrainWeapon.gerund>
 
+  <!--EN: shooting practice-->
   <PracticeShooting.label>練習射擊</PracticeShooting.label>
+  <!--EN: train-->
   <PracticeShooting.verb>練習</PracticeShooting.verb>
+  <!--EN: training-->
   <PracticeShooting.gerund>練習</PracticeShooting.gerund>
 
+  <!--EN: melee practice-->
   <PracticeMelee.label>練習格鬥</PracticeMelee.label>
+  <!--EN: train-->
   <PracticeMelee.verb>練習</PracticeMelee.verb>
+  <!--EN: training-->
   <PracticeMelee.gerund>練習</PracticeMelee.gerund>
 
 

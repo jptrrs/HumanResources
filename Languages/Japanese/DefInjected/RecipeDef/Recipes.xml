@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  
+  <!--EN: Study technology-->
+  <LearnTech.label>テクノロジーを学習する</LearnTech.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTech.description>新しいテクノロジーに関する知識を得るために、本を勉強する。</LearnTech.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTech.jobString>新しいテクノロジーを学習している。</LearnTech.jobString>
+
+  <!--EN: Document technology-->
+  <DocumentTech.label>テクノロジーを文書化する</DocumentTech.label>
+  <!--EN: Consolidate knowledge into a technical book.-->
+  <DocumentTech.description>脳内の知識を専門書にする。</DocumentTech.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTech.jobString>テクノロジーを文書化している。</DocumentTech.jobString>
+
+  <!--EN: Research technologie-->
+  <ResearchTech.label>テクノロジーを研究する</ResearchTech.label>
+  <!--EN: Expand the frontier of knowledge by researching new technologies.-->
+  <ResearchTech.description>新しいテクノロジーを研究することによって、知識の限界を広げる。</ResearchTech.description>
+  <!--EN: Researching.-->
+  <ResearchTech.jobString>研究中。</ResearchTech.jobString>
+
+  <!--EN: Learn to shoot a weapon-->
+  <TrainWeaponShooting.label>遠隔武器を練習する</TrainWeaponShooting.label>
+  <!--EN: Train with a ranged weapon to acquire proficiency.-->
+  <TrainWeaponShooting.description>遠隔武器を練習し、熟練度を上げる。</TrainWeaponShooting.description>
+  <!--EN: Training to use a ranged weapon.-->
+  <TrainWeaponShooting.jobString>遠隔武器の使い方を練習している。</TrainWeaponShooting.jobString>
+
+  <!--EN: Learn to wield a weapon-->
+  <TrainWeaponMelee.label>近接武器を練習する</TrainWeaponMelee.label>
+  <!--EN: Train with a melee weapon to acquire proficiency.-->
+  <TrainWeaponMelee.description>近接武器を練習し、熟練度を上げる。</TrainWeaponMelee.description>
+  <!--EN: Training to use a melee weapon.-->
+  <TrainWeaponMelee.jobString>近接武器の使い方を練習している。</TrainWeaponMelee.jobString>
+
+
+  <!-- From ItchyFlea's Practise Target -->
+
+  <!--EN: Practice shooting-->
+  <PracticeShooting.label>射撃を練習する</PracticeShooting.label>
+  <!--EN: Shoots at a target to practice shooting accuracy.-->
+  <PracticeShooting.description>標的に射撃し、命中度を上げる。</PracticeShooting.description>
+  <!--EN: Practicing shooting.-->
+  <PracticeShooting.jobString>射撃を練習している。</PracticeShooting.jobString>
+
+  <!--EN: Practice melee-->
+  <PracticeMelee.label>近接戦闘を練習する</PracticeMelee.label>
+  <!--EN: Practices close quarters combat against a straw dummy.-->
+  <PracticeMelee.description>わら製人形を相手にし、近接戦闘を練習する。</PracticeMelee.description>
+  <!--EN: Practicing melee.-->
+  <PracticeMelee.jobString>近接戦闘を練習している。</PracticeMelee.jobString>
+
+
+</LanguageData>

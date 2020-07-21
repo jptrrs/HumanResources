@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <Caravan_Tech.label>百科全書</Caravan_Tech.label>
-  <Orbital_Tech.label>外部勢力出版商</Orbital_Tech.label>
+  <!--EN: enciclopedia seller-->
+  <Caravan_Tech.label>百科全書經銷商</Caravan_Tech.label>
+  <!--EN: offworld publisher-->
+  <Orbital_Tech.label>外星出版社</Orbital_Tech.label>
 
 
 </LanguageData>

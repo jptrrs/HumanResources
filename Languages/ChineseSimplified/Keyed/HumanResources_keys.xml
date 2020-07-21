@@ -2,77 +2,145 @@
 <LanguageData>
 
   <!--UI-->
+  
+  <!--EN: Tech-->
   <TabKnowledge>科技</TabKnowledge>
+  <!--EN: Knowledge-->
   <TabKnowledgeTitle>知识</TabKnowledgeTitle>
+  <!--EN: Weapons Proficiency-->
   <TabKnowledgeWeapons>武器熟练度</TabKnowledgeWeapons>
-  <ShowCommon>显示原版</ShowCommon>
-  <ShowMelee>显示近战武器。</ShowMelee>
-  <ShowRanged>显示远程武器。</ShowRanged>
-  <ShowAvailable>显示可供学习的技术。</ShowAvailable>
+  <!--EN: Show common weapons.-->
+  <ShowCommon>显示通用武器</ShowCommon>
+  <!--EN: Show melee weapons.-->
+  <ShowMelee>显示近战武器</ShowMelee>
+  <!--EN: Show ranged weapons.-->
+  <ShowRanged>显示远程武器</ShowRanged>
+  <!--EN: Show techs available to learn.-->
+  <ShowAvailable>显示可供学习的科技。</ShowAvailable>
+  <!--EN: Compact view.-->
   <ShowCompact>小窗口</ShowCompact>
+  <!--EN: Expand-->
   <Expand>扩展</Expand>
-  <Collapse>失败</Collapse>
+  <!--EN: Collapse-->
+  <Collapse>折叠</Collapse>
+  <!--EN: Catalog-->
   <TabCatalogue>目录</TabCatalogue>
-  <AvailableBooksReport>{1}号书架中有{0}本书</AvailableBooksReport>
+  <!--EN: {0} books in {1} shelves-->
+  <AvailableBooksReport>{1}个书架上有{0}本书</AvailableBooksReport>
 
   <!--Settings-->
-  <TechPoolModeTitle>知识泉源...</TechPoolModeTitle>
-  <TechPoolModeDesc>定义生成的玩家派系殖民者的技术池。</TechPoolModeDesc>
-  <TechPoolMode_Both>阵营相互关系设置</TechPoolMode_Both>
-  <TechPoolMode_TechLevel>仅该派系的技术水平</TechPoolMode_TechLevel>
-  <TechPoolMode_Starting>仅该派系的起始技术</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>包括剧本设定的开局科技</TechPoolIncludesScenarioTitle>
+  
+  <!--EN: Knowledge generation draws from...-->
+  <TechPoolModeTitle>殖民者的开局自带科技来自…</TechPoolModeTitle>
+  <!--EN: Defines the pool from which to draw technologies for the player's colonists when they are created.-->
+  <TechPoolModeDesc>定义玩家派系殖民者的科技池。当玩家派系的殖民者被生成时，将从中随机抽选若干项开局自带科技。</TechPoolModeDesc>
+  <!--EN: both faction settings-->
+  <TechPoolMode_Both>以下二者</TechPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <TechPoolMode_TechLevel>玩家派系的科技水平</TechPoolMode_TechLevel>
+  <!--EN: the starting techs for that faction only-->
+  <TechPoolMode_Starting>玩家派系的开局科技</TechPoolMode_Starting>
+  <!--EN: Also include starting research parts from the scenario.-->
+  <TechPoolIncludesScenarioTitle>同时包括剧本设定的开局科技</TechPoolIncludesScenarioTitle>
+  <!--EN: If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.-->
   <TechPoolIncludesScenarioDesc>如果选中，还将包括您在剧本编辑器中添加的开局科技。</TechPoolIncludesScenarioDesc>
-  <WeaponPoolModeTitle>初始携带武器的战斗专家</WeaponPoolModeTitle>
-  <WeaponPoolModeDesc>定义当玩家的殖民者（仅限于射击或格斗专精）被生成时可携带的武器池。</WeaponPoolModeDesc>
-  <WeaponPoolMode_Both>两种武器清单</WeaponPoolMode_Both>
-  <WeaponPoolMode_TechLevel>该阵营的技术等级</WeaponPoolMode_TechLevel>
-  <WeaponPoolMode_Scenario>仅剧本</WeaponPoolMode_Scenario>
-  <!--MISSING--><FreeScenarioWeaponsTitle>All colonists start with scenario weapons.</FreeScenarioWeaponsTitle>
-  <!--MISSING--><FreeScenarioWeaponsDesc>If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here) </FreeScenarioWeaponsDesc>
+  <!--EN: Combat specialists start with weapons from...-->
+  <WeaponPoolModeTitle>战斗精英殖民者的初始武器精通列表来自…</WeaponPoolModeTitle>
+  <!--EN: Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.-->
+  <WeaponPoolModeDesc>定义擅长战斗的玩家派系殖民者的初始武器精通列表。</WeaponPoolModeDesc>
+  <!--EN: both weapon lists-->
+  <WeaponPoolMode_Both>以下二者</WeaponPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <WeaponPoolMode_TechLevel>玩家派系的科技水平</WeaponPoolMode_TechLevel>
+  <!--EN: the scenario only-->
+  <WeaponPoolMode_Scenario>剧本</WeaponPoolMode_Scenario>
+  <!--EN: All colonists start with scenario weapons.-->
+  <FreeScenarioWeaponsTitle>所有殖民者一开始就知道如何使用剧本添加的武器。</FreeScenarioWeaponsTitle>
+  <!--EN: If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here)-->
+  <FreeScenarioWeaponsDesc>若开启此项，所有您在剧本编辑器里添加的武器会被自动添加至殖民者的初始武器精通列表。（原版游戏所带的“富有的探险家”剧本已强制开启此选项，不受此项勾选与否影响）</FreeScenarioWeaponsDesc>
+  <!--EN: Difficulty settings slows down research.-->
   <ResearchSpeedTiedToDifficultyTitle>高难度会减缓研究速度。</ResearchSpeedTiedToDifficultyTitle>
-  <ResearchSpeedTiedToDifficultyDesc>开启此项研究速度将随难度增加而减缓，最多降低70%。不开启此项时，默认为原版的90%。</ResearchSpeedTiedToDifficultyDesc>
+  <!--EN: If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.-->
+  <ResearchSpeedTiedToDifficultyDesc>若开启此项，研究速度将随难度增加而减缓（简单难度不变，困难难度降低30%）。不开启此项时，一律较原版降低10%。</ResearchSpeedTiedToDifficultyDesc>
+  <!--EN: Difficulty settings slows down tech studying.</-->
   <StudySpeedTiedToDifficultyTitle>高难度会减缓学习速度。</StudySpeedTiedToDifficultyTitle>
-  <StudySpeedTiedToDifficultyDesc>开启此项学习新技术的基本速度将与难度设置相关联，其中中等难度降至90％，最高降至80％。</StudySpeedTiedToDifficultyDesc>
+  <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
+  <StudySpeedTiedToDifficultyDesc>若开启此项，学习新科技的基础速度将与难度设置相关联（中等难度降低10％，困难难度降低20％）。</StudySpeedTiedToDifficultyDesc>
 
   <!--Things-->
+  
+  <!--EN: Empty-->
   <BookStoreEmpty>空的</BookStoreEmpty>
-  <BookStoreCapacity>存档技术：{0} / {1}</BookStoreCapacity>
-  <BookStoreRetrieveBook>书籍检索</BookStoreRetrieveBook>
-  <BookStoreRetrieveBookDesc>在暑假中查找并取出指定的书籍</BookStoreRetrieveBookDesc>
-  <BookStoreNoInternalStorage>{0}没有匹配到任何书架。</BookStoreNoInternalStorage>
-  <KnowledgeLabel>{0}知识</KnowledgeLabel>
-  <Book>{0}之书</Book>
-  <BookCompendium>{0}纲要</BookCompendium>
-  <BookManual>{0}手册</BookManual>
-  <BookTheory>{0}论著</BookTheory>
-  <BookDatabase>{0}数据库</BookDatabase>
+  <!--EN: Archived technologies: {0}/{1}-->
+  <BookStoreCapacity>归档科技：{0} / {1}</BookStoreCapacity>
+  <!--EN: Retrieve Book-->
+  <BookStoreRetrieveBook>取出书本</BookStoreRetrieveBook>
+  <!--EN: Find and remove a particular book from the book shelf.-->
+  <BookStoreRetrieveBookDesc>在书架中查找并取出特定的书籍</BookStoreRetrieveBookDesc>
+  <!--EN: {0} doesn't fit at any book shelf.-->
+  <BookStoreNoInternalStorage>{0} 无法被放入任何书架。</BookStoreNoInternalStorage>
+  <!--EN: {0} knowledge-->
+  <KnowledgeLabel>{0} 的知识</KnowledgeLabel>
+  <!--EN: Book of {0}-->
+  <Book>{0} 之书</Book>
+  <!--EN: {0} Compendium-->
+  <BookCompendium>{0} 大纲</BookCompendium>
+  <!--EN: {0} Manual-->
+  <BookManual>{0} 手册</BookManual>
+  <!--EN: {0} Theory-->
+  <BookTheory>{0} 理论</BookTheory>
+  <!--EN: {0} Database-->
+  <BookDatabase>{0} 数据库</BookDatabase>
 
   <!--Feedback-->
-  <MessageStudyComplete>{0_nameDef}已经了解了{1}的秘密。</MessageStudyComplete>
-  <MessageDocumentComplete>{0_nameDef}在{1}上写了一本书。</MessageDocumentComplete>
-  <MessageFiledTech>{0}的知识已添加到我们的库中。</MessageFiledTech>
-  <MessageEjectedTech>{0}的知识已从我们的库中删除。</MessageEjectedTech>
-  <MessageTrainingComplete>{0_nameDef}已掌握{1}。</MessageTrainingComplete>
-  <NothingToAddToLibrary>你什么都不懂，{0_nameFull}！</NothingToAddToLibrary>
-  <AlreadyKnowsTheWholeLibrary>{0_nameDef}已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
-  <LacksFundamentalKnowledge>{0_nameDef}缺少有关这些课题的基本知识。</LacksFundamentalKnowledge>
+  
+  <!--EN: {0_nameDef} has learned the secrets of {1}.-->
+  <MessageStudyComplete>{0_nameDef} 已经弄懂了 {1} 的秘密。</MessageStudyComplete>
+  <!--EN: {0_nameDef} wrote a book on {1}.-->
+  <MessageDocumentComplete>{0_nameDef} 写了一本关于 {1} 的书。</MessageDocumentComplete>
+  <!--EN: The knowledge for {0} was added to our library.-->
+  <MessageFiledTech>{0} 的知识已添加到我们的图书馆中。</MessageFiledTech>
+  <!--EN: The knowledge for {0} was removed from our library.-->
+  <MessageEjectedTech>{0} 的知识已从我们的图书馆中移除。</MessageEjectedTech>
+  <!--EN: {0_nameDef} has mastered the {1}.-->
+  <MessageTrainingComplete>{0_nameDef} 已能熟练使用 {1}。</MessageTrainingComplete>
+  <!--EN: You know nothing, {0_nameFull}.-->
+  <NothingToAddToLibrary>{0_nameFull}，我看你完全是不懂哦。</NothingToAddToLibrary>
+  <!--EN: {0_nameDef} has read all the books.-->
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} 已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
+  <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
+  <LacksFundamentalKnowledge>{0_nameDef} 缺少这些课题的前置知识。</LacksFundamentalKnowledge>
+  <!--EN: No available weapons to train.-->
   <NoWeaponsFoundToLearn>没有可训练的武器。</NoWeaponsFoundToLearn>
-  <MissingRequirementToLearnWeapon>{0_nameDef}没有有关{1}的知识或书籍。</MissingRequirementToLearnWeapon>
-  <ThoseWeapons>those weapons</ThoseWeapons>
-  <NoWeaponToLearn>{0_nameDef}已经知道如何使用这些武器。</NoWeaponToLearn>
-  <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
-  <DoesntKnowHowToRepair>{0_nameDef}不知道如何修复{1}（需要{2}）。</DoesntKnowHowToRepair>
-  <DoesntKnowHowToCraft>{0_nameDef}不知道如何制作{1}（需要{2}）。</DoesntKnowHowToCraft>
-  <DoesntKnowThisPlant>{0_nameDef}不知道如何栽种{1}（需要{2}）。</DoesntKnowThisPlant>
-  <UnknownWeapon>{0_nameDef}尚未接受使用此武器的训练。</UnknownWeapon>
-  <EvilWeapon>{0_nameDef}认为这种奇怪的武器是邪恶的，{0_pronoun}不会碰它。</EvilWeapon>
-  <TechAlreadyKnown>{0}是已知的技术。</TechAlreadyKnown>
+  <!--EN: {0_nameDef} has no corresponding knowledge or books to learn about {1}.-->
+  <MissingRequirementToLearnWeapon>{0_nameDef} 缺乏相关的知识或书籍，无法学习 {1}。</MissingRequirementToLearnWeapon>
+  <!--EN: those weapons-->
+  <ThoseWeapons>这些武器</ThoseWeapons>
+  <!--EN: {0_nameDef} already knows how to use those weapons.-->
+  <NoWeaponToLearn>{0_nameDef} 已经知道如何使用这些武器。</NoWeaponToLearn>
+  <!--EN: {0_nameDef} doesn't know how to build a {1} (requires {2}).-->
+  <DoesntKnowHowToBuild>{0_nameDef} 不知如何建造 {1}（需要 {2}）。</DoesntKnowHowToBuild>
+  <!--EN: {0_nameDef} doesn't know how to repair a {1} (requires {2}).-->
+  <DoesntKnowHowToRepair>{0_nameDef} 不知如何修复 {1}（需要 {2}）。</DoesntKnowHowToRepair>
+  <!--EN: {0_nameDef} doesn't know how to {1} (requires {2}).-->
+  <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成“{1}”（需要 {2}）。</DoesntKnowHowToCraft>
+  <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
+  <DoesntKnowThisPlant>{0_nameDef} 不知如何栽种 {1}（需要 {2}）。</DoesntKnowThisPlant>
+  <!--EN: {0_nameDef} has not been trained to use this weapon.-->
+  <UnknownWeapon>{0_nameDef} 尚未接受使用此武器的训练。</UnknownWeapon>
+  <!--EN: {0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.-->
+  <EvilWeapon>{0_nameDef} 认为这种奇怪的武器是邪恶的，因而不会碰它。</EvilWeapon>
+  <!--EN: {0} is already known.-->
+  <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
 
   <!--Go Explore-->
-  <LetterResearchRequest_SuccessHR>这项研究是成功的。通过合作，您对{2}的理解有所提高。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_SuccessHR>
-  <LetterResearchRequest_TriumphHR>研究取得了巨大的成功！通过一同通力合作，您取得了突破，并发现了{2}的秘密。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_TriumphHR>
-  <ResearchRequestXPGainHR>{0}，您的研究人员，在{1}获得了宝贵的专业知识，并获得了{2}的智识。</ResearchRequestXPGainHR>
+  
+  <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_SuccessHR>研究成功！通过合作，您对 {2} 的理解有所提高。\n\n与 {0} 的关系已提升了{1}。</LetterResearchRequest_SuccessHR>
+  <!--EN: The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_TriumphHR>研究取得了巨大成功！通过合作，您取得了突破，发现了 {2} 的秘密。\n\n与 {0} 的关系已提升了{1}。</LetterResearchRequest_TriumphHR>
+  <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
+  <ResearchRequestXPGainHR>您的研究人员 {0} 在 {1} 上获得了宝贵的专业知识，并获得了{2}点智识经验值。</ResearchRequestXPGainHR>
 
   <!--MISSING:-->
 

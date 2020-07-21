@@ -1,34 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <StudyDesk.label>写字台</StudyDesk.label>
-  <StudyDesk.description>一个用于研究新技术的工作台，适用于基础的入门级研究工作。</StudyDesk.description>
+  <!--EN: Study Desk-->
+  <StudyDesk.label>书桌</StudyDesk.label>
+  <!--EN: A desk to study and research technologies. Comes with all your faction's starting research.-->
+  <StudyDesk.description>一张可用于学习和研究的桌子。自带所有开局科技（殖民者可以直接在书桌上学习它们而不需要额外写书）。</StudyDesk.description>
 
 
   <!-- Borrowed from Jecrell's RimWriter -->
 
+  <!--EN: Book Shelf-->
   <BookShelf.label>书架</BookShelf.label>
-  <BookShelf.description>一个坚固的架子，知识以书本为载体放置其间。</BookShelf.description>
+  <!--EN: A sturdy shelf for storing knowledge in form of books.-->
+  <BookShelf.description>一个坚固的架子，用于存放记载知识的书本。</BookShelf.description>
 
 
   <!-- Technical Book -->
 
-  <UnfinishedTechBook.label>未完成的技能书</UnfinishedTechBook.label>
+  <!--EN: Unfinished technical book-->
+  <UnfinishedTechBook.label>未完成的技术书</UnfinishedTechBook.label>
 
+  <!--EN: Technical Book-->
   <TechBook.label>技术书</TechBook.label>
+  <!--EN: A book filled with knowledge.-->
   <TechBook.description>一本充满知识的书。</TechBook.description>
 
 
   <!-- Borrewed from ItchyFlea's Practise Target -->
 
+  <!--EN: Target Stand-->
   <Target.label>靶子</Target.label>
-  <Target.description>您的神枪手可以用此练习射击。</Target.description>
+  <!--EN: A target for your sharpshooters to hone their skills with.-->
+  <Target.description>您的神枪手可以在此磨炼技巧。</Target.description>
 
-  <MrDummy.label>训练假人</MrDummy.label>
-  <MrDummy.description>用于训练格斗技能的假人。</MrDummy.description>
+  <!--EN: Training Dummy-->
+  <MrDummy.label>训练用假人</MrDummy.label>
+  <!--EN: A straw dummy for training melee skill.-->
+  <MrDummy.description>用于训练格斗技能的稻草假人。</MrDummy.description>
 
-
-  <!-- This is just to sort out WeaponTags that indicate weapons to be excluded from universal use -->
-  <!--<ForbiddenWeaponTags.label>禁止武器</ForbiddenWeaponTags.label>-->
 
 </LanguageData>
