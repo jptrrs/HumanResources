@@ -15,6 +15,8 @@ namespace HumanResources
     {
         private static string ModName = "";
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
+
+        public static Type TestType;
         public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");

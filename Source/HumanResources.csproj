@@ -366,7 +366,6 @@
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
-    <Compile Include="Graphic\Node.cs" />
     <Compile Include="Books\RoomRoleWorker_Library.cs" />
     <Compile Include="Books\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />

@@ -46,6 +46,7 @@ namespace HumanResources
 
         private static bool expandTab => fullTechs | fullWeapons;
         private Vector2 nodeSize => Constants.NodeSize;
+        private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private Pawn PawnToShowInfoAbout
         {
             get
@@ -87,7 +88,7 @@ namespace HumanResources
                 float titlebarWidth = firstColumnWidth;
                 if (!fullTechs)
                 {
-                    firstColumnWidth = nodeSize.x + scrollBarWidth + margin;
+                    firstColumnWidth = /*nodeSize.x*/extendedNodeLength + scrollBarWidth + margin;
                     titlebarWidth = firstColumnWidth - margin;
                 }
                 Rect leftColumn = new Rect(canvas.x, canvas.y, firstColumnWidth, canvas.height);
@@ -109,23 +110,25 @@ namespace HumanResources
                         var orderedList = fullTechs ? selectedList.OrderBy(x => x.techLevel) : selectedList.OrderByDescending(x => x.techLevel);
                         var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
                         float viewHeight = (nodeSize.y + margin) * expertiseList.Count();
-                        Rect viewRect = new Rect(0f, 0f, nodeSize.x, viewHeight);
+                        Rect viewRect = new Rect(0f, 0f, /*nodeSize.x*/extendedNodeLength, viewHeight);
                         Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
                         var pos = new Vector2(0f, 0f);
                         if (!showAvailable | unknownEnabled)
                         {
                             int columnBreak = (int)expertiseList.First().Research.techLevel;
-                            for (int i = 0; i < expertiseList.Count && pos.x + nodeSize.x < leftColumn.xMax; i++)
+                            for (int i = 0; i < expertiseList.Count && pos.x + /*nodeSize.x*/extendedNodeLength < leftColumn.xMax; i++)
                             {
                                 var node = expertiseList[i];
                                 if (fullTechs && (int)node.Research.techLevel != columnBreak)
                                 {
-                                    pos.x += nodeSize.x + margin;
+                                    pos.x += /*nodeSize.x*/extendedNodeLength + margin;
                                     pos.y = 0f;
                                     columnBreak = (int)node.Research.techLevel;
                                 }
-                                var rect = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
-                                node.DrawAt(pos, rect, Constants.showCompact);
+                                var nodeBox = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
+                                var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
+                                var indicatorBox = new Rect(indicatorPos, buttonSize);
+                                node.DrawAt(pos, nodeBox, indicatorBox, Constants.showCompact);
                                 pos.y += nodeSize.y + margin;
                             }
                         }
@@ -232,7 +235,7 @@ namespace HumanResources
             base.UpdateSize();
             Vector2 margins = new Vector2(17f, 17f) * 2f;
             Vector2 defaultSize = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) - new Vector2(tabSizeAdjust, 0f);
-            Vector2 expandedSize = new Vector2(ResearchTree_Tree.RelevantTechLevels.Count() * (nodeSize.x + margin) - margin, defaultSize.y) ;
+            Vector2 expandedSize = new Vector2(ResearchTree_Tree.RelevantTechLevels.Count() * (/*nodeSize.x*/extendedNodeLength + margin) - margin, defaultSize.y) ;
             size = expandTab ? expandedSize+ margins : defaultSize+ margins;
         }
 

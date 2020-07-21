@@ -9,31 +9,192 @@ using System.Text;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Verse;
 
 namespace HumanResources
 {
-    public class ExpertiseNode : Node
+    public class ExpertiseNode
     {
+        //pulled from Node
+        protected const float Offset = 2f;
+        protected bool _largeLabel;
+        protected Vector2 _pos = Vector2.zero;
+        protected Rect
+            _queueRect,
+            _rect,
+            _labelRect,
+            _costLabelRect,
+            _costIconRect,
+            _iconsRect,
+            _lockRect;
+
+        protected bool _rectsSet;
+        protected Vector2 _topLeft = Vector2.zero,
+                          _right = Vector2.zero,
+                          _left = Vector2.zero;
+        public Rect CostIconRect
+        {
+            get
+            {
+                if (!_rectsSet)
+                    SetRects();
+
+                return _costIconRect;
+            }
+        }
+        public Rect CostLabelRect
+        {
+            get
+            {
+                if (!_rectsSet)
+                    SetRects();
+
+                return _costLabelRect;
+            }
+        }
+        public Rect IconsRect
+        {
+            get
+            {
+                if (!_rectsSet)
+                    SetRects();
+
+                return _iconsRect;
+            }
+        }
+        public Rect LabelRect
+        {
+            get
+            {
+                if (!_rectsSet)
+                    SetRects();
+
+                return _labelRect;
+            }
+        }
+        public Rect Rect
+        {
+            get
+            {
+                if (!_rectsSet)
+                    SetRects();
+
+                return _rect;
+            }
+        }
+        public virtual int X
+        {
+            get => (int)_pos.x;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                if (Math.Abs(_pos.x - value) < Constants.Epsilon)
+                    return;
+                _pos.x = value;
+            }
+        }
+        public virtual float Yf
+        {
+            get => _pos.y;
+            set
+            {
+                if (Math.Abs(_pos.y - value) < Constants.Epsilon)
+                    return;
+                _pos.y = value;
+            }
+        }
+        public virtual string Label { get; }
+        public virtual bool Highlighted { get; set; }
+        public void SetRects()
+        {
+            // origin
+            _topLeft = new Vector2(
+                (X - 1) * (Constants.NodeSize.x + Constants.NodeMargins.x),
+                (Yf - 1) * (Constants.NodeSize.y + Constants.NodeMargins.y));
+
+            SetRects(_topLeft);
+        }
+        public void SetRects(Vector2 topLeft)
+        {
+            // main rect
+            _rect = new Rect(topLeft.x,
+                              topLeft.y,
+                              Constants.NodeSize.x,
+                              Constants.NodeSize.y);
+
+            // queue rect
+            _queueRect = new Rect(_rect.xMax - Constants.QueueLabelSize / 2f,
+                                   _rect.yMin + (_rect.height - Constants.QueueLabelSize) / 2f, Constants.QueueLabelSize,
+                                   Constants.QueueLabelSize);
+
+            // label rect
+            _labelRect = new Rect(_rect.xMin + 6f,
+                                   _rect.yMin + 3f,
+                                   _rect.width * 2f / 3f - 6f,
+                                   _rect.height * .5f - 3f);
+
+            // research cost rect
+            _costLabelRect = new Rect(_rect.xMin + _rect.width * 2f / 3f,
+                                       _rect.yMin + 3f,
+                                       _rect.width * 1f / 3f - 16f - 3f,
+                                       _rect.height * .5f - 3f);
+
+            // research icon rect
+            _costIconRect = new Rect(_costLabelRect.xMax,
+                                      _rect.yMin + (_costLabelRect.height - 16f) / 2,
+                                      16f,
+                                      16f);
+
+            // icon container rect
+            _iconsRect = new Rect(_rect.xMin,
+                                   _rect.yMin + _rect.height * .5f,
+                                   _rect.width,
+                                   _rect.height * .5f);
+
+            // lock icon rect
+            _lockRect = new Rect(0f, 0f, 32f, 32f);
+            _lockRect = _lockRect.CenteredOnXIn(_rect);
+            _lockRect = _lockRect.CenteredOnYIn(_rect);
+
+            // see if the label is too big
+            _largeLabel = Text.CalcHeight(Label, _labelRect.width) > _labelRect.height;
+
+            // done
+            _rectsSet = true;
+        }
+        public virtual bool IsVisible(Rect visibleRect)
+        {
+            return !(
+                Rect.xMin > visibleRect.xMax ||
+                Rect.xMax < visibleRect.xMin ||
+                Rect.yMin > visibleRect.yMax ||
+                Rect.yMax < visibleRect.yMin);
+        }
+        //
+
         public ResearchProjectDef Research;
 
         private Pawn Pawn;
 
-        private object pseudoParent;
+        //private object pseudoParent;
 
         private static Type pseudoParentType = ResearchTree_Patches.ResearchNodeType();
 
         private MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(pseudoParentType, "GetResearchTooltipString");
+
+        public virtual Texture2D indicator => Completed ? ContentFinder<Texture2D>.Get("UI/write", true) : ContentFinder<Texture2D>.Get("UI/read");
 
         public ExpertiseNode(ResearchProjectDef research, Pawn pawn)
         {
             Pawn = pawn;
             Research = research;
             _pos = new Vector2(0, research.researchViewY + 1);
-            pseudoParent = Activator.CreateInstance(pseudoParentType, research);
+            //pseudoParent = Activator.CreateInstance(pseudoParentType, research);
         }
 
-        public override Color Color
+        public Color Color
         {
             get
             {
@@ -47,10 +208,10 @@ namespace HumanResources
             }
         }
 
-        public override bool Completed => Research.IsFinished;
-        public override bool Available => !Research.IsFinished && (DebugSettings.godMode || BuildingPresent());
+        public bool Completed => Research.IsFinished;
+        public bool Available => !Research.IsFinished && (DebugSettings.godMode || BuildingPresent());
 
-        public override Color EdgeColor
+        public Color EdgeColor
         {
             get
             {
@@ -71,7 +232,7 @@ namespace HumanResources
             return ResearchTree_Patches.BuildingPresent(Research);
         }
 
-        public override void Draw(Rect visibleRect, bool forceDetailedMode = false)
+        public void Draw(Rect visibleRect, bool forceDetailedMode = false)
         {
             if (!IsVisible(visibleRect))
             {
@@ -186,23 +347,25 @@ namespace HumanResources
 
             if (Widgets.ButtonInvisible(Rect, true))
             {
-                MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                ResearchTree_Patches.subjectToShow = Research;
-                //SelectMenu();
+                UpdateAssignment();
+                if (Completed && techComp.expertise.ContainsKey(Research) && techComp.expertise[Research] >= 1f)
+                {
+                    MainButtonDefOf.Research.Worker.InterfaceTryActivate();
+                    ResearchTree_Patches.subjectToShow = Research;
+                }
             }
 
         }
-
-
 
         public List<ThingDef> MissingFacilities()
         {
             return ResearchTree_Patches.MissingFacilities(Research);
         }
 
-        public void DrawAt(Vector2 pos, Rect visibleRect, bool forceDetailedMode = false)
+        public void DrawAt(Vector2 pos, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
         {
             SetRects(pos);
+            SetMarked(indicatorRect);
             Draw(visibleRect, !forceDetailedMode);
             SetRects();
         }
@@ -212,6 +375,42 @@ namespace HumanResources
             var text = new StringBuilder();
             text.AppendLine(Research.description );
             return text.ToString();
+        }
+
+        private void SetMarked(Rect rect)
+        {
+            if (Assigned)
+            {
+                Texture2D face = Known ? ContentFinder<Texture2D>.Get("UI/write", true) : ContentFinder<Texture2D>.Get("UI/read");
+                if (Widgets.ButtonImage(rect, face, false)) UpdateAssignment();
+            }
+        }
+
+        public virtual bool Assigned 
+        {
+            get
+            {
+                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().HomeWork.Contains(Research);
+                else return false;
+            }
+        }
+
+        public virtual bool Known 
+        {
+            get
+            {
+                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().expertise.ContainsKey(Research) && techComp.expertise[Research] >= 1f;
+                else return false;
+            }
+        }
+
+        private void UpdateAssignment()
+        {
+            if (techComp != null)
+            {
+                if (Pawn.IsColonist && techComp != null && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.HomeWork.Add(Research);
+                else techComp.HomeWork.Remove(Research);
+            }
         }
     }
 }
