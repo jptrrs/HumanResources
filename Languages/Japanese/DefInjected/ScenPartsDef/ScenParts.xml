@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: know all starting weapons-->
+  <Rule_knowAllStartingWeapons.label>全ての初期武器の使い方を覚える</Rule_knowAllStartingWeapons.label>
+  <!--EN: The colonists will be able to use all weapons included on this scenario.-->
+  <Rule_knowAllStartingWeapons.description>入植者は、本シナリオに含まれる全ての初期武器を最初から使える。</Rule_knowAllStartingWeapons.description>
+
+
+</LanguageData>

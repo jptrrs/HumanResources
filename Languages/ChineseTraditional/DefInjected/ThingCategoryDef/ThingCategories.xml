@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <!--EN: knowledge-->
   <Knowledge.label>知識</Knowledge.label>
+  <!--EN: neolithic-->
   <Neolithic.label>石器時代</Neolithic.label>
+  <!--EN: medieval-->
   <Medieval.label>中世紀</Medieval.label>
+  <!--EN: industrial-->
   <Industrial.label>工業時代</Industrial.label>
+  <!--EN: spacer-->
   <Spacer.label>太空時代</Spacer.label>
+  <!--EN: ultra-->
   <Ultra.label>極致時代</Ultra.label>
+  <!--EN: archotech-->
   <Archotech.label>遠古科技</Archotech.label>
 
 

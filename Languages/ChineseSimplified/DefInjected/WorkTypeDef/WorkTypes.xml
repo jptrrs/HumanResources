@@ -1,13 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <HR_Learn.label>学习</HR_Learn.label>
-  <HR_Learn.description>获得新知识。</HR_Learn.description>
+  <!--EN: Study-->
   <HR_Learn.labelShort>学习</HR_Learn.labelShort>
+  <!--EN: Student-->
   <HR_Learn.pawnLabel>学生</HR_Learn.pawnLabel>
-  <HR_Learn.gerundLabel>学习中</HR_Learn.gerundLabel>
+  <!--EN: studying-->
+  <HR_Learn.gerundLabel>学习</HR_Learn.gerundLabel>
+  <!--EN: Acquire new knowledge.-->
+  <HR_Learn.description>获取新知识。</HR_Learn.description>
+  <!--EN: Study at-->
   <HR_Learn.verb>学习</HR_Learn.verb>
-
 
   <!--I changed from "learn" to "study", please review-->
 

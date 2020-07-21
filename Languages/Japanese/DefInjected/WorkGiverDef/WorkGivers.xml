@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: Document technologies-->
+  <DocumentTech.label>テクノロジーを文書化</DocumentTech.label>
+  <!--EN: write-->
+  <DocumentTech.verb>著述</DocumentTech.verb>
+  <!--EN: writing at-->
+  <DocumentTech.gerund>著述</DocumentTech.gerund>
+
+  <!--EN: Study Technologies-->
+  <LearnTech.label>テクノロジーを学習</LearnTech.label>
+  <!--EN: study-->
+  <LearnTech.verb>学習</LearnTech.verb>
+  <!--EN: studying at-->
+  <LearnTech.gerund>学習</LearnTech.gerund>
+
+  <!--EN: Learn weapon use-->
+  <TrainWeapon.label>武器の使い方を練習</TrainWeapon.label>
+  <!--EN: train-->
+  <TrainWeapon.verb>練習</TrainWeapon.verb>
+  <!--EN: training-->
+  <TrainWeapon.gerund>練習</TrainWeapon.gerund>
+
+  <!--EN: shooting practice-->
+  <PracticeShooting.label>射撃を練習</PracticeShooting.label>
+  <!--EN: train-->
+  <PracticeShooting.verb>練習</PracticeShooting.verb>
+  <!--EN: training-->
+  <PracticeShooting.gerund>練習</PracticeShooting.gerund>
+
+  <!--EN: melee practice-->
+  <PracticeMelee.label>近接戦闘を練習</PracticeMelee.label>
+  <!--EN: train-->
+  <PracticeMelee.verb>練習</PracticeMelee.verb>
+  <!--EN: training-->
+  <PracticeMelee.gerund>練習</PracticeMelee.gerund>
+
+
+</LanguageData>

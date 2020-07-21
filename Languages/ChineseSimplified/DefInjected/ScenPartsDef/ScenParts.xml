@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: know all starting weapons-->
+  <Rule_knowAllStartingWeapons.label>掌握所有开局武器的使用方法</Rule_knowAllStartingWeapons.label>
+  <!--EN: The colonists will be able to use all weapons included on this scenario.-->
+  <Rule_knowAllStartingWeapons.description>殖民者将能够使用所有剧本自带的开局武器。</Rule_knowAllStartingWeapons.description>
+
+
+</LanguageData>

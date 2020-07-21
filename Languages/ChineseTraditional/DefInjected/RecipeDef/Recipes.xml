@@ -1,35 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <LearnTech.label>學習技術</LearnTech.label>
-  <LearnTech.description>學習以獲取有關新技術的知識。</LearnTech.description>
-  <LearnTech.jobString>正在學習一項新技術。</LearnTech.jobString>
+  
+  <!--EN: Study technology-->
+  <LearnTech.label>學習科技</LearnTech.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTech.description>學習以獲取有關新科技的知識。</LearnTech.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTech.jobString>正在學習一項新科技。</LearnTech.jobString>
 
-  <DocumentTech.label>記錄技術</DocumentTech.label>
-  <DocumentTech.description>將技術知識記錄到書籍中。</DocumentTech.description>
-  <DocumentTech.jobString>正在記錄技術。</DocumentTech.jobString>
+  <!--EN: Document technology-->
+  <DocumentTech.label>記錄科技</DocumentTech.label>
+  <!--EN: Consolidate knowledge into a technical book.-->
+  <DocumentTech.description>將腦中知識化作技術書。</DocumentTech.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTech.jobString>正在記錄一項科技。</DocumentTech.jobString>
 
-  <ResearchTech.label>研究技術</ResearchTech.label>
-  <ResearchTech.description>通過研究新技術來擴展知識。</ResearchTech.description>
+  <!--EN: Research technologie-->
+  <ResearchTech.label>研究科技</ResearchTech.label>
+  <!--EN: Expand the frontier of knowledge by researching new technologies.-->
+  <ResearchTech.description>通過研究新科技來拓展知識面。</ResearchTech.description>
+  <!--EN: Researching.-->
   <ResearchTech.jobString>研究中。</ResearchTech.jobString>
 
+  <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>學習使用遠程武器</TrainWeaponShooting.label>
-  <TrainWeaponShooting.description>練習遠程武器以熟悉其操作。</TrainWeaponShooting.description>
-  <TrainWeaponShooting.jobString>正在練習遠程武器。</TrainWeaponShooting.jobString>
+  <!--EN: Train with a ranged weapon to acquire proficiency.-->
+  <TrainWeaponShooting.description>練習使用遠程武器以熟悉其操作。</TrainWeaponShooting.description>
+  <!--EN: Training to use a ranged weapon.-->
+  <TrainWeaponShooting.jobString>正在練習使用遠程武器。</TrainWeaponShooting.jobString>
 
+  <!--EN: Learn to wield a weapon-->
   <TrainWeaponMelee.label>學習使用近戰武器</TrainWeaponMelee.label>
-  <TrainWeaponMelee.description>練習近戰武器以熟悉其操作。</TrainWeaponMelee.description>
-  <TrainWeaponMelee.jobString>正在練習近戰武器</TrainWeaponMelee.jobString>
+  <!--EN: Train with a melee weapon to acquire proficiency.-->
+  <TrainWeaponMelee.description>練習使用近戰武器以熟悉其操作。</TrainWeaponMelee.description>
+  <!--EN: Training to use a melee weapon.-->
+  <TrainWeaponMelee.jobString>正在練習使用近戰武器。</TrainWeaponMelee.jobString>
 
 
   <!-- From ItchyFlea's Practise Target -->
 
+  <!--EN: Practice shooting-->
   <PracticeShooting.label>練習射擊</PracticeShooting.label>
+  <!--EN: Shoots at a target to practice shooting accuracy.-->
   <PracticeShooting.description>向目標射擊以練習射擊精度。</PracticeShooting.description>
+  <!--EN: Practicing shooting.-->
   <PracticeShooting.jobString>正在練習射擊。</PracticeShooting.jobString>
 
+  <!--EN: Practice melee-->
   <PracticeMelee.label>練習格鬥</PracticeMelee.label>
-  <PracticeMelee.description>練習近距離對抗假人。</PracticeMelee.description>
+  <!--EN: Practices close quarters combat against a straw dummy.-->
+  <PracticeMelee.description>利用稻草假人練習近距離對抗。</PracticeMelee.description>
+  <!--EN: Practicing melee.-->
   <PracticeMelee.jobString>正在練習格鬥。</PracticeMelee.jobString>
 
 
