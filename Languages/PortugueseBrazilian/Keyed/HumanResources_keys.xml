@@ -73,5 +73,5 @@
   <LetterResearchRequest_SuccessHR>A investigação foi um sucesso. Trabalhando juntos vocês avançaram no entendimento de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_SuccessHR>
   <LetterResearchRequest_TriumphHR>A investigação foi um triunfo! Trabalhando juntos você conseguiram desvendar todos os segredos de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_TriumphHR>
   <ResearchRequestXPGainHR>{0}, seu investigador, adquiriu uma conhecimentos valiosos acerca de {1} e ganhou {2} em experiência intelectual.</ResearchRequestXPGainHR>
-
+  
 </LanguageData> 
