@@ -16,7 +16,6 @@ namespace HumanResources
         private static string ModName = "";
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
 
-        public static Type TestType;
         public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
@@ -40,6 +39,16 @@ namespace HumanResources
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:Ancestors"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Ancestors)))).Patch();
 
+            //Node
+            IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
+            HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted");
+            RectInfo = AccessTools.Property(NodeType(), "Rect");
+            largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
+            LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
+            CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
+            CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
+            IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
+
             //ResearchNode
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
@@ -51,15 +60,19 @@ namespace HumanResources
                 null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(MissingFacilities_Postfix)));
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
-
-            //TEST
             instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
-            instance.Patch(AccessTools.Constructor(MainTabType(), new Type[] { }),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MainTabWindow_Prefix))));
 
             _buildingPresentCache = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, bool>;
             _missingFacilitiesCache = AccessTools.Field(ResearchNodeType(), "_missingFacilitiesCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, List<ThingDef>>;
+            GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
+            ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
+            ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
+            AvailableInfo = AccessTools.Property(ResearchNodeType(), "Available");
+            CompletedInfo = AccessTools.Property(ResearchNodeType(), "Completed");
+            ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
+            GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
+            BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent");
 
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
@@ -74,6 +87,9 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
 
+            InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
+            ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
+
             //Tree
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
@@ -83,6 +99,8 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
+
+            RectInfo = AccessTools.Property(NodeType(), "Rect");
         }
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
@@ -204,38 +222,32 @@ namespace HumanResources
             }
         }
 
-        //TEST
-        public static void MainTabWindow_Prefix(object __instance)
-        {
-            MainWindow = __instance;
-        }
-        public static object MainWindow;
+        //Node
+        private static MethodInfo IsVisibleInfo;
+        private static PropertyInfo HighlightedInfo;
+        private static PropertyInfo RectInfo;
+        private static FieldInfo largeLabelInfo;
+        private static PropertyInfo LabelRectInfo;
+        private static PropertyInfo CostLabelRectInfo;
+        private static PropertyInfo CostIconRectInfo;
+        private static PropertyInfo IconsRectInfo;
+
+        //Reserarch Node
+        private static MethodInfo GetMissingRequiredRecursiveInfo;
+        private static PropertyInfo ChildrenInfo;
+        private static PropertyInfo ColorInfo;
+        private static PropertyInfo AvailableInfo;
+        private static PropertyInfo CompletedInfo;
+        private static FieldInfo ResearchInfo;
+        private static MethodInfo GetResearchTooltipStringInfo;
+        private static MethodInfo BuildingPresentInfo;
+
+        //MainWindow
+        private static PropertyInfo InstanceInfo;
+        private static PropertyInfo ZoomLevelInfo;
 
         public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
         {
-            //Reflection info. Why can't I cache it?
-            //Node
-            MethodInfo IsVisibleInfo = AccessTools.Method(__instance.GetType().BaseType, "IsVisible");
-            PropertyInfo HighlightedInfo = AccessTools.Property(__instance.GetType().BaseType, "Highlighted");
-            PropertyInfo RectInfo = AccessTools.Property(__instance.GetType().BaseType, "Rect");
-            FieldInfo largeLabelInfo = AccessTools.Field(__instance.GetType().BaseType, "_largeLabel");
-            PropertyInfo LabelRectInfo = AccessTools.Property(__instance.GetType().BaseType, "LabelRect");
-            PropertyInfo CostLabelRectInfo = AccessTools.Property(__instance.GetType().BaseType, "CostLabelRect");
-            PropertyInfo CostIconRectInfo = AccessTools.Property(__instance.GetType().BaseType, "CostIconRect");
-            PropertyInfo IconsRectInfo = AccessTools.Property(__instance.GetType().BaseType, "IconsRect");
-            //Reserarch Node
-            MethodInfo GetMissingRequiredRecursiveInfo = AccessTools.Method(__instance.GetType(), "GetMissingRequiredRecursive");
-            PropertyInfo ChildrenInfo = AccessTools.Property(__instance.GetType(), "Children");
-            PropertyInfo ColorInfo = AccessTools.Property(__instance.GetType(), "Color");
-            PropertyInfo AvailableInfo = AccessTools.Property(__instance.GetType(), "Available");
-            PropertyInfo CompletedInfo = AccessTools.Property(__instance.GetType(), "Completed");
-            FieldInfo ResearchInfo = AccessTools.Field(__instance.GetType(), "Research");
-            MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(__instance.GetType(), "GetResearchTooltipString");
-            MethodInfo BuildingPresentInfo = AccessTools.Method(__instance.GetType(), "BuildingPresent");
-            //MainTabType
-            PropertyInfo InstanceInfo = AccessTools.Property(MainWindow.GetType(), "Instance");
-            PropertyInfo ZoomLevelInfo = AccessTools.Property(MainWindow.GetType(), "ZoomLevel");
-
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
@@ -434,7 +446,6 @@ namespace HumanResources
                     }
                 }
             }
-            //IEnumerator<Pawn> enumerator = null;
             yield break;
         }
 
