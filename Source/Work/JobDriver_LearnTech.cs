@@ -11,8 +11,9 @@ namespace HumanResources
 	{
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			var selected = job.bill.SelectedTech();
-			var valid = techComp.HomeWork.Intersect(selected).Where(x => job.bill.IsResearch() ? !x.IsFinished : x.IsFinished);
+			//var selected = job.bill.SelectedTech();
+			var valid = techComp.homework/*.Intersect(selected)*/.Where(x => job.bill == null ? !x.IsFinished : x.IsFinished);
+			Log.Warning("DEBUG valid project count is " + valid.Count());
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			else if (valid.Any()) project = valid.RandomElement();
@@ -71,7 +72,7 @@ namespace HumanResources
 					if (expertise[project] > 1f)
 					{
 						expertise[project] = 1f;
-						techComp.HomeWork.Clear();
+						techComp.homework.Clear();
 						techComp.LearnCrops(project);
 						Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
 						Notify_IterationCompleted(actor, bill as Bill_Production);
@@ -85,14 +86,14 @@ namespace HumanResources
 				Pawn actor = acquireKnowledge.actor;
 				float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
 				num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
-				project.Learned(num, job.bill.recipe.workAmount, actor, job.bill.IsResearch());
+				project.Learned(num, job.bill.recipe.workAmount, actor, job.bill == null); //WHERE DID THE WORKAMOUnt came from in research??
 				actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
 				actor.GainComfortFromCellIfPossible(true);
 			};
 			acquireKnowledge.AddFinishAction(delegate
 			{
 				Pawn actor = acquireKnowledge.actor;
-				if (!job.bill.IsResearch() && job.RecipeDef.workSkill != null)
+				if (job.bill != null && job.RecipeDef.workSkill != null)
 				{
 					float xp = ticksSpentDoingRecipeWork * 0.1f * job.RecipeDef.workSkillLearnFactor;
 					actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);

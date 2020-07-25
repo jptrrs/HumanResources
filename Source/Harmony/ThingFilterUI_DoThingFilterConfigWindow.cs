@@ -5,7 +5,7 @@ using Verse;
 namespace HumanResources
 {
     //Tweaks to ingredients visibility on knowledge recipes, 2/3
-    [HarmonyPatch(typeof(ThingFilterUI), nameof(ThingFilterUI.DoThingFilterConfigWindow))]
+    //[HarmonyPatch(typeof(ThingFilterUI), nameof(ThingFilterUI.DoThingFilterConfigWindow))]
     public static class ThingFilterUI_DoThingFilterConfigWindow
     {
         public static void Prefix(ThingFilter parentFilter, int openMask)

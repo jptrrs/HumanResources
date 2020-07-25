@@ -7,7 +7,7 @@ using Verse;
 namespace HumanResources
 {
     //Adapts appropriate research bench check to our modified benches
-    [HarmonyPatch(typeof(ResearchProjectDef), "PlayerHasAnyAppropriateResearchBench", MethodType.Getter)]
+    //[HarmonyPatch(typeof(ResearchProjectDef), "PlayerHasAnyAppropriateResearchBench", MethodType.Getter)]
     public static class ResearchProjectDef_PlayerHasAnyAppropriateResearchBench
     {
         public static void Postfix(ResearchProjectDef __instance, ref bool __result)

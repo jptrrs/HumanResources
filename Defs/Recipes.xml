@@ -13,7 +13,7 @@
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
-    <ingredients>
+    <!--<ingredients>
       <li>
         <filter>
           <categories>
@@ -27,7 +27,7 @@
       <categories>
         <li>Knowledge</li>
       </categories>
-    </fixedIngredientFilter>
+    </fixedIngredientFilter>-->
   </RecipeDef>
 
   <RecipeDef>

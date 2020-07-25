@@ -13,7 +13,7 @@ namespace HumanResources
     public class CompKnowledge : ThingComp
     {
         public Dictionary<ResearchProjectDef,float> expertise;
-        public List<ResearchProjectDef> HomeWork = new List<ResearchProjectDef>();
+        public List<ResearchProjectDef> homework = new List<ResearchProjectDef>();
         public List<ThingDef> proficientPlants;
         public List<ThingDef> proficientWeapons;
         protected static bool isFighter = false;
@@ -308,13 +308,13 @@ namespace HumanResources
 
         public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
         {
-            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + HomeWork.Count());
+            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + homework.Count());
             if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
             {
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f
                                     select x.Key;
-                var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
+                var available = studyMaterial.Except(expertiseKeys).Except(homework);
                 if (!available.Any())
                 {
                     JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
@@ -329,22 +329,22 @@ namespace HumanResources
                     JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
                     return;
                 }
-                HomeWork.AddRange(starters.Concat(derived).Concat(preceding));
+                homework.AddRange(starters.Concat(derived).Concat(preceding));
             }
         }
 
-        public override void CompTickRare()
-        {
-            if (!HomeWork.NullOrEmpty())
-            {
-                var excess = HomeWork.Except(SelectedAnywhere);
-                if (excess.Any())
-                {
-                    HomeWork.RemoveAll(x => excess.Contains(x));
-                    if (Prefs.LogVerbose) Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
-                }
-            }
-        }
+        //public override void CompTickRare()
+        //{
+        //    if (!homework.NullOrEmpty())
+        //    {
+        //        var excess = homework.Except(SelectedAnywhere);
+        //        if (excess.Any())
+        //        {
+        //            homework.RemoveAll(x => excess.Contains(x));
+        //            if (Prefs.LogVerbose) Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
+        //        }
+        //    }
+        //}
 
         private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
 
@@ -420,6 +420,37 @@ namespace HumanResources
                 else if (skills.All(s => unskilled.Contains(s))) return (100f - chance) / 10;
             }
             return 100f - chance;
+        }
+
+        //new functions
+        public void AssignBranch(ResearchProjectDef tech)
+        {
+            homework.Add(tech);
+            homework.AddRange(GetRequiredRecursive(tech));
+        }
+
+        public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
+        {
+            var parents = tech.prerequisites?.Where(x => !expertise.ContainsKey(x));
+            if (parents == null) return new List<ResearchProjectDef>();
+            var allParents = new List<ResearchProjectDef>(parents);
+            foreach (var parent in parents) allParents.AddRange(GetRequiredRecursive(parent));
+            return allParents.Distinct().ToList();
+        }
+
+        public void CancelBranch(ResearchProjectDef tech)
+        {
+            foreach (var child in GetDescendentsRecursive(tech)) homework.Remove(child);
+            homework.Remove(tech);
+        }
+
+        public List<ResearchProjectDef> GetDescendentsRecursive(ResearchProjectDef tech)
+        {
+            var children = homework.Where(x => !x.prerequisites.NullOrEmpty() && x.prerequisites.Contains(tech));
+            if (children.EnumerableNullOrEmpty()) return new List<ResearchProjectDef>();
+            var allChildren = new List<ResearchProjectDef>(children);
+            foreach (var child in children) allChildren.AddRange(GetDescendentsRecursive(child));
+            return allChildren.Distinct().ToList();
         }
     }
 }

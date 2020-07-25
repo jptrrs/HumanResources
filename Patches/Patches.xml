@@ -35,7 +35,7 @@
   <Operation Class="PatchOperationSequence">
     <success>Always</success>
     <operations>
-      <li Class="PatchOperationReplace">
+      <!--<li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName = "SimpleResearchBench" or defName = "HiTechResearchBench"]/thingClass</xpath>
         <value>
           <thingClass>Building_WorkTable</thingClass>
@@ -48,7 +48,7 @@
             <li>ITab_Bills</li>
           </inspectorTabs>
         </value>
-      </li>
+      </li>-->
       <li Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName = "SimpleResearchBench"]/comps</xpath>
         <match Class="PatchOperationConditional">

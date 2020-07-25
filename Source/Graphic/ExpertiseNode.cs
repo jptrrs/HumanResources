@@ -348,7 +348,7 @@ namespace HumanResources
             if (Widgets.ButtonInvisible(Rect, true))
             {
                 UpdateAssignment();
-                if (Completed && techComp.expertise.ContainsKey(Research) && techComp.expertise[Research] >= 1f)
+                if (Completed && Research.IsKnownBy(Pawn))
                 {
                     MainButtonDefOf.Research.Worker.InterfaceTryActivate();
                     ResearchTree_Patches.subjectToShow = Research;
@@ -390,7 +390,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().HomeWork.Contains(Research);
+                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().homework.Contains(Research);
                 else return false;
             }
         }
@@ -399,7 +399,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().expertise.ContainsKey(Research) && techComp.expertise[Research] >= 1f;
+                if (Pawn.IsColonist && techComp != null) return Research.IsKnownBy(Pawn);
                 else return false;
             }
         }
@@ -408,8 +408,8 @@ namespace HumanResources
         {
             if (techComp != null)
             {
-                if (Pawn.IsColonist && techComp != null && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.HomeWork.Add(Research);
-                else techComp.HomeWork.Remove(Research);
+                if (Pawn.IsColonist && techComp != null && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.homework.Add(Research);
+                else techComp.homework.Remove(Research);
             }
         }
     }

@@ -180,7 +180,7 @@ namespace HumanResources
         private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
         private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
 
-        private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+        //private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
 
         public static void DoWindowContents_Prefix(object __instance)
         { 
@@ -387,7 +387,7 @@ namespace HumanResources
                     }
             }
 
-            DrawAssignments(rect, Research);
+            Research.DrawAssignments(rect);
 
             //if clicked and not yet finished, queue up this research and all prereqs.
             if (Widgets.ButtonInvisible(rect) /*&& available*/)
@@ -407,7 +407,7 @@ namespace HumanResources
                 //    {
                 //        Queue.Dequeue(this);
                 //    }
-                SelectMenu(Research, completed);
+                Research.SelectMenu(completed);
             }
 
             //if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
@@ -418,82 +418,94 @@ namespace HumanResources
             return false;
         }
 
-        private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(ResearchProjectDef tech, bool completed)
-        {
-            WorkTypeDef workGiver = completed? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
-            SkillDef skill = SkillDefOf.Intellectual;
-            IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
-            using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Pawn pawn = enumerator.Current;
-                    List<ResearchProjectDef> homework = pawn.TryGetComp<CompKnowledge>().HomeWork;
-                    if (pawn.WorkTypeIsDisabled(workGiver))
-                    {
-                        yield return new Widgets.DropdownMenuElement<Pawn>
-                        {
-                            option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.Default, null, null, 0f, null, null),
-                            payload = pawn
-                        };
-                    }
-                    else if (!pawn.workSettings.WorkIsActive(workGiver))
-                    {
-                        yield return new Widgets.DropdownMenuElement<Pawn>
-                        {
-                            option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
-                            {
-                                Log.Message("do something");
-                            }, MenuOptionPriority.Default, null, null, 0f, null, null),
-                            payload = pawn
-                        };
-                    }
-                    else
-                    {
-                        yield return new Widgets.DropdownMenuElement<Pawn>
-                        {
-                            option = new FloatMenuOption(string.Format("{0}", pawn.LabelShortCap), delegate ()
-                            {
-                                if (!homework.Contains(tech)) homework.Add(tech);
-                                else homework.Remove(tech);
-                            }, MenuOptionPriority.Default, null, null, 0f, null, null),
-                            payload = pawn
-                        };
-                    }
-                }
-            }
-            yield break;
-        }
+        //private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(ResearchProjectDef tech, bool completed)
+        //{
+        //    WorkTypeDef workGiver = completed? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
+        //    SkillDef skill = SkillDefOf.Intellectual;
+        //    IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
+        //    using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
+        //    {
+        //        while (enumerator.MoveNext())
+        //        {
+        //            Pawn pawn = enumerator.Current;
+        //            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+        //            if (techComp != null && !techComp.homework.Contains(tech))
+        //            {
+        //                if (pawn.WorkTypeIsDisabled(workGiver))
+        //                {
+        //                    yield return new Widgets.DropdownMenuElement<Pawn>
+        //                    {
+        //                        option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
+        //                        payload = pawn
+        //                    };
+        //                }
+        //                else if (!pawn.workSettings.WorkIsActive(workGiver))
+        //                {
+        //                    yield return new Widgets.DropdownMenuElement<Pawn>
+        //                    {
+        //                        option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
+        //                        {
+        //                            Log.Message("do something");
+        //                        }, MenuOptionPriority.VeryLow, null, null, 0f, null, null),
+        //                        payload = pawn
+        //                    };
+        //                }
+        //                else
+        //                {
+        //                    List<ResearchProjectDef> homework = techComp.homework;
+        //                    yield return new Widgets.DropdownMenuElement<Pawn>
+        //                    {
+        //                        option = new FloatMenuOption(string.Format("{0} ({1} {2})", new object[]
+        //                        {
+        //                            pawn.LabelShortCap,
+        //                            pawn.skills.GetSkill(skill).Level,
+        //                            skill.label
+        //                        }), 
+        //                        delegate ()
+        //                        {
+        //                            techComp.AssignBranch(tech);
+        //                            //if (!homework.Contains(tech)) 
+        //                            //else techComp.CancelBranch(tech);
+        //                        }, 
+        //                        MenuOptionPriority.Default, null, null, 0f, null, null),
+        //                        payload = pawn
+        //                    };
+        //                }
+        //            }
+        //        }
+        //    }
+        //    yield break;
+        //}
 
-        public static void SelectMenu(ResearchProjectDef tech, bool completed)
-        {
-            Find.WindowStack.FloatMenu?.Close(false);
-            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
-                                             select opt.option).ToList<FloatMenuOption>();
-            if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
-            Find.WindowStack.Add(new FloatMenu(options));
-        }
+        //public static void SelectMenu(ResearchProjectDef tech, bool completed)
+        //{
+        //    Find.WindowStack.FloatMenu?.Close(false);
+        //    List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
+        //                                     select opt.option).ToList<FloatMenuOption>();
+        //    if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
+        //    Find.WindowStack.Add(new FloatMenu(options));
+        //}
 
-        public static void DrawAssignments(Rect rect, ResearchProjectDef tech)
-        {
-            float height = rect.height;
-            float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
-            Vector2 size = new Vector2(height, height);
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().HomeWork.Contains(tech)).GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
-                    Rect box = new Rect(position, size);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
-                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().HomeWork.Remove(tech);
-                    startPos += height / 2;
-                }
-            }
-        }
+        //public static void DrawAssignments(Rect rect, ResearchProjectDef tech)
+        //{
+        //    float height = rect.height;
+        //    float frameOffset = height / 4;
+        //    float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+        //    Vector2 size = new Vector2(height, height);
+        //    using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().homework.Contains(tech)).GetEnumerator())
+        //    {
+        //        while (enumerator.MoveNext())
+        //        {
+        //            Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+        //            Rect box = new Rect(position, size);
+        //            Pawn pawn = enumerator.Current;
+        //            GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+        //            Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
+        //            if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+        //            startPos += height / 2;
+        //        }
+        //    }
+        //}
     }
 }
 

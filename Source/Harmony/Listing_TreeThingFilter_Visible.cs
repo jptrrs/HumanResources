@@ -5,7 +5,7 @@ using Verse;
 namespace HumanResources
 {
     //Tweaks to ingredients visibility on knowledge recipes, 3/3
-    [HarmonyPatch(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) })]
+    //[HarmonyPatch(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) })]
     public static class Listing_TreeThingFilter_Visible
     {
         public static void Postfix(ThingDef td, ref bool __result)

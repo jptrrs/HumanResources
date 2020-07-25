@@ -6,6 +6,7 @@ using Verse;
 using HarmonyLib;
 using System.Reflection;
 using System.Globalization;
+using UnityEngine;
 
 namespace HumanResources
 {
@@ -396,5 +397,119 @@ namespace HumanResources
 		{
 			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
 		}
-	}
+
+        //TEST
+        private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+
+        public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            var expertise = techComp.expertise;
+            if (expertise != null) return expertise.ContainsKey(tech) && techComp.expertise[tech] >= 1f;
+            return false;
+        }
+
+        public static bool RequisitesKnownBy(this ResearchProjectDef tech, Pawn pawn)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            var expertise = techComp.expertise;
+            if (expertise != null && !tech.prerequisites.NullOrEmpty())
+            {
+                return tech.prerequisites.All(x => x.IsKnownBy(pawn));
+            }
+            return tech.prerequisites.NullOrEmpty();
+        }
+
+        private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
+        {
+            WorkTypeDef workGiver = completed ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
+            SkillDef skill = SkillDefOf.Intellectual;
+            IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
+            using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Pawn pawn = enumerator.Current;
+                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+                    if (techComp != null && !techComp.homework.Contains(tech) && (!techComp.expertise.ContainsKey(tech) || techComp.expertise[tech] < 1f))
+                    {
+                        if (pawn.WorkTypeIsDisabled(workGiver))
+                        {
+                            yield return new Widgets.DropdownMenuElement<Pawn>
+                            {
+                                option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
+                                payload = pawn
+                            };
+                        }
+                        else if (!pawn.workSettings.WorkIsActive(workGiver))
+                        {
+                            yield return new Widgets.DropdownMenuElement<Pawn>
+                            {
+                                option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
+                                {
+                                    Log.Message("do something");
+                                }, MenuOptionPriority.VeryLow, null, null, 0f, null, null),
+                                payload = pawn
+                            };
+                        }
+                        else
+                        {
+                            List<ResearchProjectDef> homework = techComp.homework;
+                            yield return new Widgets.DropdownMenuElement<Pawn>
+                            {
+                                option = new FloatMenuOption(string.Format("{0} ({1} {2})", new object[]
+                                {
+                                    pawn.LabelShortCap,
+                                    pawn.skills.GetSkill(skill).Level,
+                                    skill.label
+                                }),
+                                delegate ()
+                                {
+                                    techComp.AssignBranch(tech);
+                                    //if (!homework.Contains(tech)) 
+                                    //else techComp.CancelBranch(tech);
+                                },
+                                MenuOptionPriority.Default, null, null, 0f, null, null),
+                                payload = pawn
+                            };
+                        }
+                    }
+                }
+            }
+            yield break;
+        }
+
+        public static void SelectMenu(this ResearchProjectDef tech, bool completed)
+        {
+            Find.WindowStack.FloatMenu?.Close(false);
+            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
+                                             select opt.option).ToList<FloatMenuOption>();
+            if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        public static void DrawAssignments(this ResearchProjectDef tech, Rect rect)
+        {
+            float height = rect.height;
+            float frameOffset = height / 4;
+            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+            Vector2 size = new Vector2(height, height);
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().homework.Contains(tech)).GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+                    Rect box = new Rect(position, size);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
+                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+                    startPos += height / 2;
+                }
+            }
+        }
+
+
+
+    }
 }

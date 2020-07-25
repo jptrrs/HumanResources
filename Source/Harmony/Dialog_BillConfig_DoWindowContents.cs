@@ -7,7 +7,7 @@ using UnityEngine;
 namespace HumanResources
 {
     //Tweaks to ingredients visibility on knowledge recipes, 1/3
-    [HarmonyPatch(typeof(Dialog_BillConfig), nameof(Dialog_BillConfig.DoWindowContents), new Type[] { typeof(Rect) })]
+    //[HarmonyPatch(typeof(Dialog_BillConfig), nameof(Dialog_BillConfig.DoWindowContents), new Type[] { typeof(Rect) })]
     public static class Dialog_BillConfig_DoWindowContents
     {
         private static FieldInfo billInfo = AccessTools.Field(typeof(Dialog_BillConfig), "bill");
