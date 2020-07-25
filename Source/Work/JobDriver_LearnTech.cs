@@ -13,7 +13,6 @@ namespace HumanResources
 		{
 			//var selected = job.bill.SelectedTech();
 			var valid = techComp.homework/*.Intersect(selected)*/.Where(x => job.bill == null ? !x.IsFinished : x.IsFinished);
-			Log.Warning("DEBUG valid project count is " + valid.Count());
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			else if (valid.Any()) project = valid.RandomElement();
@@ -22,7 +21,6 @@ namespace HumanResources
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			Bill bill = job.bill;
             //Log.Message("Toil start:" + pawn + " is trying to learn " + project + ", globalFailConditions count:" + globalFailConditions.Count);
             Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
 			AddEndCondition(delegate
@@ -75,7 +73,7 @@ namespace HumanResources
 						techComp.homework.Clear();
 						techComp.LearnCrops(project);
 						Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
-						Notify_IterationCompleted(actor, bill as Bill_Production);
+						if (job.bill != null) Notify_IterationCompleted(actor, job.bill as Bill_Production);
 						return JobCondition.Succeeded;
 					}
 					return JobCondition.Ongoing;
@@ -86,7 +84,8 @@ namespace HumanResources
 				Pawn actor = acquireKnowledge.actor;
 				float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
 				num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
-				project.Learned(num, job.bill.recipe.workAmount, actor, job.bill == null); //WHERE DID THE WORKAMOUnt came from in research??
+				float workAmount = job.bill == null ? 1f : job.bill.recipe.workAmount;
+				project.Learned(num, workAmount, actor, job.bill == null);
 				actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
 				actor.GainComfortFromCellIfPossible(true);
 			};
