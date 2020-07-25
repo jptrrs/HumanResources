@@ -80,7 +80,7 @@ namespace HumanResources
 
             //MainTabWindow_ResearchTree
             instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Prefix))), new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             if (modName != "ResearchPal")
             {
                 instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
@@ -180,6 +180,13 @@ namespace HumanResources
         private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
         private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
 
+        private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+
+        public static void DoWindowContents_Prefix(object __instance)
+        { 
+            
+        }
+
         public static void DoWindowContents_Postfix(object __instance)
         {
             if (subjectToShow != null && treeReady)
@@ -224,30 +231,35 @@ namespace HumanResources
 
         //Node
         private static MethodInfo IsVisibleInfo;
-        private static PropertyInfo HighlightedInfo;
-        private static PropertyInfo RectInfo;
+        private static PropertyInfo
+            HighlightedInfo,
+            RectInfo,
+            LabelRectInfo,
+            CostLabelRectInfo,
+            CostIconRectInfo,
+            IconsRectInfo;
         private static FieldInfo largeLabelInfo;
-        private static PropertyInfo LabelRectInfo;
-        private static PropertyInfo CostLabelRectInfo;
-        private static PropertyInfo CostIconRectInfo;
-        private static PropertyInfo IconsRectInfo;
 
         //Reserarch Node
-        private static MethodInfo GetMissingRequiredRecursiveInfo;
-        private static PropertyInfo ChildrenInfo;
-        private static PropertyInfo ColorInfo;
-        private static PropertyInfo AvailableInfo;
-        private static PropertyInfo CompletedInfo;
+        private static MethodInfo 
+            GetMissingRequiredRecursiveInfo,
+            GetResearchTooltipStringInfo,
+            BuildingPresentInfo;
+        private static PropertyInfo 
+            ChildrenInfo,
+            ColorInfo,
+            AvailableInfo,
+            CompletedInfo;
         private static FieldInfo ResearchInfo;
-        private static MethodInfo GetResearchTooltipStringInfo;
-        private static MethodInfo BuildingPresentInfo;
 
         //MainWindow
-        private static PropertyInfo InstanceInfo;
-        private static PropertyInfo ZoomLevelInfo;
+        private static PropertyInfo 
+            InstanceInfo,
+            ZoomLevelInfo;
 
         public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
         {
+            //Reflected objects
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
@@ -375,6 +387,8 @@ namespace HumanResources
                     }
             }
 
+            DrawAssignments(rect, Research);
+
             //if clicked and not yet finished, queue up this research and all prereqs.
             if (Widgets.ButtonInvisible(rect) /*&& available*/)
             {
@@ -393,7 +407,7 @@ namespace HumanResources
                 //    {
                 //        Queue.Dequeue(this);
                 //    }
-                SelectMenu();
+                SelectMenu(Research, completed);
             }
 
             //if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
@@ -404,17 +418,18 @@ namespace HumanResources
             return false;
         }
 
-        private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions()
+        private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(ResearchProjectDef tech, bool completed)
         {
-            WorkTypeDef workGiver = TechDefOf.HR_Learn;
+            WorkTypeDef workGiver = completed? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
             SkillDef skill = SkillDefOf.Intellectual;
-            IEnumerable<Pawn> enumerable = PawnsFinder.AllMaps_FreeColonists.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
+            IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
             using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     Pawn pawn = enumerator.Current;
-                    if (pawn.WorkTypeIsDisabled(TechDefOf.HR_Learn))
+                    List<ResearchProjectDef> homework = pawn.TryGetComp<CompKnowledge>().HomeWork;
+                    if (pawn.WorkTypeIsDisabled(workGiver))
                     {
                         yield return new Widgets.DropdownMenuElement<Pawn>
                         {
@@ -439,7 +454,8 @@ namespace HumanResources
                         {
                             option = new FloatMenuOption(string.Format("{0}", pawn.LabelShortCap), delegate ()
                             {
-                                Log.Message("do something");
+                                if (!homework.Contains(tech)) homework.Add(tech);
+                                else homework.Remove(tech);
                             }, MenuOptionPriority.Default, null, null, 0f, null, null),
                             payload = pawn
                         };
@@ -449,15 +465,34 @@ namespace HumanResources
             yield break;
         }
 
-        public static void SelectMenu()
+        public static void SelectMenu(ResearchProjectDef tech, bool completed)
         {
-            Log.Warning("clicked");
             Find.WindowStack.FloatMenu?.Close(false);
-            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions()
+            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
                                              select opt.option).ToList<FloatMenuOption>();
-            if (!options.Any())
-                options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
+            if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
             Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        public static void DrawAssignments(Rect rect, ResearchProjectDef tech)
+        {
+            float height = rect.height;
+            float frameOffset = height / 4;
+            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+            Vector2 size = new Vector2(height, height);
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().HomeWork.Contains(tech)).GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+                    Rect box = new Rect(position, size);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
+                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().HomeWork.Remove(tech);
+                    startPos += height / 2;
+                }
+            }
         }
     }
 }
