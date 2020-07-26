@@ -14,9 +14,8 @@ namespace HumanResources
 		{
 			if (!base.ShouldSkip(pawn, forced))
 			{
-				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Keys.Where(x => !x.IsFinished);
-				bool flag = advantage.ToList().Count > 0;
-				return !flag;
+				IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().knownTechs.Where(x => !x.IsFinished);
+				return !advantage.Any();
 			}
 			return true;
 		}
@@ -27,20 +26,23 @@ namespace HumanResources
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
-				if (!CheckJobOnThing(pawn, t, forced)/* && RelevantBills(t).Any()*/)
+				var relevantBills = RelevantBills(Desk, pawn);
+				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
 					//Log.Message("...no job on desk.");
 					return false;
 				}
 				//IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
-				availableTechs = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
+				//availableTechs = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
 				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
-				foreach (Bill bill in RelevantBills(Desk, pawn))
-				{
-					if (availableTechs.Intersect(bill.SelectedTech()).Any()) return true;
-				}
-				JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
-				return false;
+				//foreach (Bill bill in RelevantBills(Desk, pawn))
+				//{
+				//	if (availableTechs.Intersect(bill.SelectedTech()).Any()) return true;
+				//}
+				//JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
+				//return false;
+				return pawn.TryGetComp<CompKnowledge>().knownTechs.Where(x => !x.IsFinished).Any();
+
 			}
 			//Log.Message("case 4");
 			return false;
@@ -69,7 +71,7 @@ namespace HumanResources
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
-				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) && bill.SelectedTech().Intersect(availableTechs).Any())
+				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) /*&& bill.SelectedTech().Intersect(availableTechs).Any()*/)
 				{
 					SkillRequirement skillRequirement = bill.recipe.FirstSkillRequirementPawnDoesntSatisfy(pawn);
 					if (skillRequirement != null)

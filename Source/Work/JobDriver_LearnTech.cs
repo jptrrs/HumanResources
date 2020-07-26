@@ -12,10 +12,10 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			//var selected = job.bill.SelectedTech();
-			var valid = techComp.homework/*.Intersect(selected)*/.Where(x => job.bill == null ? !x.IsFinished : x.IsFinished);
+			var valid = techComp.homework.Where(x => job.bill == null ? !x.IsFinished : x.IsFinished).Reverse();
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
-			else if (valid.Any()) project = valid.RandomElement();
+			else if (valid.Any()) project = valid.FirstOrDefault();
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 

@@ -20,18 +20,17 @@ namespace HumanResources
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
-			Log.Message(pawn + " is looking for a study job...");
+			//Log.Message(pawn + " is looking for a study job...");
 			Building_WorkTable Desk = t as Building_WorkTable;
 			if (Desk != null)
 			{
 				var relevantBills = RelevantBills(Desk, pawn);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
-					Log.Message("...no job on desk.");
+					//Log.Message("...no job on desk.");
 					return false;
 				}
-                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-				return techComp.homework.Where(x => x.IsFinished).Any();
+				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished).Any();
 			}
             Log.Message("case 4");
             return false;

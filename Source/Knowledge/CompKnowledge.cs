@@ -427,6 +427,7 @@ namespace HumanResources
         {
             homework.Add(tech);
             homework.AddRange(GetRequiredRecursive(tech));
+            Log.Message("DEBUG assigned homework: " + homework.ToStringSafeEnumerable());
         }
 
         public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
