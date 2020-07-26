@@ -10,7 +10,7 @@ namespace HumanResources
     public class ITab_PawnKnowledge : ITab
     {
         private const int iconSize = 29;
-        private const int margin = (int)Constants.Margin;
+        private static int margin = (int)Constants.Margin;
         private const int rowHeight = 32;
         private const float scrollBarWidth = 17f;
         private const float tabSizeAdjust = 12f;
@@ -22,6 +22,7 @@ namespace HumanResources
         private static Vector2 scrollPosition = Vector2.zero;
         private static Vector2 scrollPosition2 = Vector2.zero;
         private static bool showAvailable = false;
+        private static bool showCompact = false;
         private Vector2 buttonSize = new Vector2(24f, 24f);
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
         private bool test => TechLevelVisibility[0];
@@ -45,20 +46,20 @@ namespace HumanResources
         }
 
         private static bool expandTab => fullTechs | fullWeapons;
-        private Vector2 nodeSize => Constants.NodeSize;
+        private Vector2 nodeSize => new Vector2(Constants.NodeSize.x, showCompact ? Constants.NodeSize.y / 2 : Constants.NodeSize.y);
         private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private Pawn PawnToShowInfoAbout
         {
             get
             {
                 Pawn pawn = null;
-                if (base.SelPawn != null)
+                if (SelPawn != null)
                 {
-                    pawn = base.SelPawn;
+                    pawn = SelPawn;
                 }
                 else
                 {
-                    Corpse corpse = base.SelThing as Corpse;
+                    Corpse corpse = SelThing as Corpse;
                     if (corpse != null)
                     {
                         pawn = corpse.InnerPawn;
@@ -125,10 +126,11 @@ namespace HumanResources
                                     pos.y = 0f;
                                     columnBreak = (int)node.Research.techLevel;
                                 }
-                                var nodeBox = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
+                                //var nodeBox = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
+                                var nodeBox = new Rect(pos, nodeSize);
                                 var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
                                 var indicatorBox = new Rect(indicatorPos, buttonSize);
-                                node.DrawAt(pos, nodeBox, indicatorBox, Constants.showCompact);
+                                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
                                 pos.y += nodeSize.y + margin;
                             }
                         }
@@ -141,7 +143,7 @@ namespace HumanResources
                     float baselineX = leftColumn.x;
                     float baselineY = scrollrect.max.y + padding;
                     float next = baselineX;
-                    next = DrawToggle(next, baselineY, "ShowCompact", ref Constants.showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
+                    next = DrawToggle(next, baselineY, "ShowCompact", ref showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
                     next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
                     if (!fullTechs)
                     {

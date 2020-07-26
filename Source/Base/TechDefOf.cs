@@ -12,7 +12,7 @@ namespace HumanResources
         }
         public static RecipeDef LearnTech;
         public static RecipeDef DocumentTech;
-        public static RecipeDef ResearchTech;
+        //public static RecipeDef ResearchTech;
         public static RecipeDef TrainWeaponShooting;
         public static RecipeDef TrainWeaponMelee;
         public static RecipeDef PracticeShooting;

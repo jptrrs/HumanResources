@@ -43,7 +43,7 @@
       <li>StudyDesk</li>
     </recipeUsers>
     <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
-    <ingredients>
+    <!--<ingredients>
       <li>
         <filter>
           <categories>
@@ -57,13 +57,13 @@
       <categories>
         <li>Knowledge</li>
       </categories>
-    </fixedIngredientFilter>
+    </fixedIngredientFilter>-->
     <products>
       <TechBook>1</TechBook>
     </products>
   </RecipeDef>
 
-  <RecipeDef>
+  <!--<RecipeDef>
     <defName>ResearchTech</defName>
     <label>Research technologies</label>
     <description>Expand the frontier of knowledge by researching new technologies.</description>
@@ -94,7 +94,7 @@
     <products>
       <TechBook>1</TechBook>
     </products>
-  </RecipeDef>
+  </RecipeDef>-->
 
   <RecipeDef>
     <defName>TrainWeaponShooting</defName>

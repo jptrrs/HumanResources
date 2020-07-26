@@ -22,6 +22,7 @@ namespace HumanResources
         public static Type NodeType() => AccessTools.TypeByName(ModName + ".Node");
         public static Type DummyNodeType() => AccessTools.TypeByName(ModName + ".DummyNode");
         public static Type MainTabType() => AccessTools.TypeByName(ModName + ".MainTabWindow_ResearchTree");
+        public static Type ConstantsType() => AccessTools.TypeByName(ModName + ".Constants");
 
         public static void Execute(Harmony instance, string modName)
         {
@@ -52,19 +53,13 @@ namespace HumanResources
             //ResearchNode
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
-            instance.Patch(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
-                null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(BuildingPresent_Postfix)));
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            instance.Patch(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
-                null, new HarmonyMethod(typeof(ResearchTree_Patches), nameof(MissingFacilities_Postfix)));
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
             instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
 
-            _buildingPresentCache = AccessTools.Field(ResearchNodeType(), "_buildingPresentCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, bool>;
-            _missingFacilitiesCache = AccessTools.Field(ResearchNodeType(), "_missingFacilitiesCache").GetValue(ResearchNodeType()) as Dictionary<ResearchProjectDef, List<ThingDef>>;
             GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
             ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
@@ -72,7 +67,6 @@ namespace HumanResources
             CompletedInfo = AccessTools.Property(ResearchNodeType(), "Completed");
             ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
             GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
-            BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent");
 
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
@@ -80,12 +74,15 @@ namespace HumanResources
 
             //MainTabWindow_ResearchTree
             instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Prefix))), new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             if (modName != "ResearchPal")
             {
                 instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
+            //fix for tree overlapping search bar on higher UI scales
+            instance.Patch(AccessTools.Method(MainTabType(), "SetRects"), 
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
 
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
             ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
@@ -100,8 +97,27 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
 
-            RectInfo = AccessTools.Property(NodeType(), "Rect");
+            //Constants
+            EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
+            DetailedModeZoomLevelCutoffInfo = AccessTools.Field(ConstantsType(), "DetailedModeZoomLevelCutoff");
+            MarginInfo = AccessTools.Field(ConstantsType(), "Margin");
+            QueueLabelSizeInfo = AccessTools.Field(ConstantsType(), "QueueLabelSize");
+            IconSizeInfo = AccessTools.Field(ConstantsType(), "IconSize");
+            NodeMarginsInfo = AccessTools.Field(ConstantsType(), "NodeMargins");
+            NodeSizeInfo = AccessTools.Field(ConstantsType(), "NodeSize");
+            TopBarHeightInfo = AccessTools.Field(ConstantsType(), "TopBarHeight");
         }
+
+        //Constants
+        public static FieldInfo
+            EpsilonInfo,
+            DetailedModeZoomLevelCutoffInfo,
+            MarginInfo,
+            QueueLabelSizeInfo,
+            IconSizeInfo,
+            NodeMarginsInfo,
+            NodeSizeInfo,
+            TopBarHeightInfo;
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
         public static bool BuildingPresent(ResearchProjectDef research) { throw stubMsg; }
@@ -112,80 +128,9 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
-        private static Dictionary<ResearchProjectDef, bool> _buildingPresentCache;
-        private static Dictionary<ResearchProjectDef, List<ThingDef>> _missingFacilitiesCache;
-
-        public static void BuildingPresent_Postfix(ResearchProjectDef research, ref bool __result)
-        {
-            if (__result == true)
-                return;
-
-            bool flag = false;
-            if (research.requiredResearchBuilding != null)
-            {
-                flag = Find.Maps.SelectMany((Map map) => map.listerBuildings.allBuildingsColonist).OfType<Building_WorkTable>().Any((Building_WorkTable b) => research.Alt_CanBeResearchedAt(b));
-            }
-            if (flag)
-            {
-                flag = research.Ancestors().All(new Func<ResearchProjectDef, bool>(BuildingPresent));
-            }
-
-            if (flag)
-            {
-                _buildingPresentCache.Remove(research);
-                _buildingPresentCache.Add(research, flag);
-            }
-
-            __result = flag;
-        }
-
-        public static void MissingFacilities_Postfix(ref ResearchProjectDef research, ref List<ThingDef> __result)
-        {
-            if (__result.NullOrEmpty()) return;
-            List<ThingDef> missing;
-
-            // get list of all researches required before this
-            var thisAndPrerequisites = research.Ancestors().Where(rpd => !rpd.IsFinished).ToList();
-            thisAndPrerequisites.Add(research);
-
-            // get list of all available research benches
-            var availableBenches = Find.Maps.SelectMany(map => map.listerBuildings.allBuildingsColonist).OfType<Building_WorkTable>();
-            var availableBenchDefs = availableBenches.Select(b => b.def).Distinct();
-            missing = new List<ThingDef>();
-
-            // check each for prerequisites
-            foreach (var rpd in thisAndPrerequisites)
-            {
-                if (rpd.requiredResearchBuilding == null) continue;
-                if (!availableBenchDefs.Contains(rpd.requiredResearchBuilding)) missing.Add(rpd.requiredResearchBuilding);
-                if (rpd.requiredResearchFacilities.NullOrEmpty()) continue;
-                foreach (var facility in rpd.requiredResearchFacilities)
-                {
-                    if (!availableBenches.Any(b => b.HasFacility(facility))) missing.Add(facility);
-                }
-            }
-
-            // add to cache
-            missing = missing.Distinct().ToList();
-            if (missing != _missingFacilitiesCache[research])
-            {
-                _missingFacilitiesCache.Remove(research);
-                _missingFacilitiesCache.Add(research, missing);
-            }
-
-            __result = missing;
-        }
-
         public static ResearchProjectDef subjectToShow;
         private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
         private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
-
-        //private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
-
-        public static void DoWindowContents_Prefix(object __instance)
-        { 
-            
-        }
 
         public static void DoWindowContents_Postfix(object __instance)
         {
@@ -229,6 +174,17 @@ namespace HumanResources
             }
         }
 
+        private static void Set_Rects_Postfix(object __instance)
+        {
+            FieldInfo baseViewRectInfo = AccessTools.Field(MainTabType(), "_baseViewRect");
+            baseViewRectInfo.SetValue(__instance, new Rect(
+                Window.StandardMargin / Prefs.UIScale,
+                (Constants.TopBarHeight + Constants.Margin + Window.StandardMargin),
+                (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
+                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - Constants.TopBarHeight - Constants.Margin)
+                );
+        }
+
         //Node
         private static MethodInfo IsVisibleInfo;
         private static PropertyInfo
@@ -241,10 +197,9 @@ namespace HumanResources
         private static FieldInfo largeLabelInfo;
 
         //Reserarch Node
-        private static MethodInfo 
+        private static MethodInfo
             GetMissingRequiredRecursiveInfo,
-            GetResearchTooltipStringInfo,
-            BuildingPresentInfo;
+            GetResearchTooltipStringInfo;
         private static PropertyInfo 
             ChildrenInfo,
             ColorInfo,
@@ -330,7 +285,7 @@ namespace HumanResources
                 //attach description and further info to a tooltip
                 string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
                 TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
-                if (!(bool)BuildingPresentInfo.Invoke(__instance, new object[] { }))
+                if (!BuildingPresent(Research))
                 {
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
@@ -390,122 +345,18 @@ namespace HumanResources
             Research.DrawAssignments(rect);
 
             //if clicked and not yet finished, queue up this research and all prereqs.
-            if (Widgets.ButtonInvisible(rect) /*&& available*/)
+            if (Widgets.ButtonInvisible(rect))
             {
-                ////LMB is queue operations, RMB is info
-                //            if (Event.current.button == 0 && !Research.IsFinished)
-                //{
-                //    if (!Queue.IsQueued(this))
-                //    {
-                //        // if shift is held, add to queue, otherwise replace queue
-                //        var queue = GetMissingRequiredRecursive()
-                //                   .Concat(new List<ResearchNode>(new[] { this }))
-                //                   .Distinct();
-                //        Queue.EnqueueRange(queue, Event.current.shift);
-                //    }
-                //    else
-                //    {
-                //        Queue.Dequeue(this);
-                //    }
-                Research.SelectMenu(completed);
+                //LMB is queue operations, RMB is info
+                if (Event.current.button == 0) Research.SelectMenu(completed);
+                if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
+                {
+                    Find.ResearchManager.FinishProject(Research);
+                }
             }
-
-            //if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
-            //{
-            //    Find.ResearchManager.FinishProject(Research);
-            //    Queue.Notify_InstantFinished();
-            //}
             return false;
         }
 
-        //private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(ResearchProjectDef tech, bool completed)
-        //{
-        //    WorkTypeDef workGiver = completed? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
-        //    SkillDef skill = SkillDefOf.Intellectual;
-        //    IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
-        //    using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
-        //    {
-        //        while (enumerator.MoveNext())
-        //        {
-        //            Pawn pawn = enumerator.Current;
-        //            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-        //            if (techComp != null && !techComp.homework.Contains(tech))
-        //            {
-        //                if (pawn.WorkTypeIsDisabled(workGiver))
-        //                {
-        //                    yield return new Widgets.DropdownMenuElement<Pawn>
-        //                    {
-        //                        option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
-        //                        payload = pawn
-        //                    };
-        //                }
-        //                else if (!pawn.workSettings.WorkIsActive(workGiver))
-        //                {
-        //                    yield return new Widgets.DropdownMenuElement<Pawn>
-        //                    {
-        //                        option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
-        //                        {
-        //                            Log.Message("do something");
-        //                        }, MenuOptionPriority.VeryLow, null, null, 0f, null, null),
-        //                        payload = pawn
-        //                    };
-        //                }
-        //                else
-        //                {
-        //                    List<ResearchProjectDef> homework = techComp.homework;
-        //                    yield return new Widgets.DropdownMenuElement<Pawn>
-        //                    {
-        //                        option = new FloatMenuOption(string.Format("{0} ({1} {2})", new object[]
-        //                        {
-        //                            pawn.LabelShortCap,
-        //                            pawn.skills.GetSkill(skill).Level,
-        //                            skill.label
-        //                        }), 
-        //                        delegate ()
-        //                        {
-        //                            techComp.AssignBranch(tech);
-        //                            //if (!homework.Contains(tech)) 
-        //                            //else techComp.CancelBranch(tech);
-        //                        }, 
-        //                        MenuOptionPriority.Default, null, null, 0f, null, null),
-        //                        payload = pawn
-        //                    };
-        //                }
-        //            }
-        //        }
-        //    }
-        //    yield break;
-        //}
-
-        //public static void SelectMenu(ResearchProjectDef tech, bool completed)
-        //{
-        //    Find.WindowStack.FloatMenu?.Close(false);
-        //    List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
-        //                                     select opt.option).ToList<FloatMenuOption>();
-        //    if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
-        //    Find.WindowStack.Add(new FloatMenu(options));
-        //}
-
-        //public static void DrawAssignments(Rect rect, ResearchProjectDef tech)
-        //{
-        //    float height = rect.height;
-        //    float frameOffset = height / 4;
-        //    float startPos = rect.x - frameOffset; //rect.xMax - height/2;
-        //    Vector2 size = new Vector2(height, height);
-        //    using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().homework.Contains(tech)).GetEnumerator())
-        //    {
-        //        while (enumerator.MoveNext())
-        //        {
-        //            Vector2 position = new Vector2(startPos, rect.y + (height / 3));
-        //            Rect box = new Rect(position, size);
-        //            Pawn pawn = enumerator.Current;
-        //            GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-        //            Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
-        //            if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
-        //            startPos += height / 2;
-        //        }
-        //    }
-        //}
     }
 }
 

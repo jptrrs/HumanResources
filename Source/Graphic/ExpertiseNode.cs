@@ -9,7 +9,6 @@ using System.Text;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Verse;
 
 namespace HumanResources
@@ -19,7 +18,6 @@ namespace HumanResources
         //pulled from Node
         protected const float Offset = 2f;
         protected bool _largeLabel;
-        protected Vector2 _pos = Vector2.zero;
         protected Rect
             _queueRect,
             _rect,
@@ -30,9 +28,12 @@ namespace HumanResources
             _lockRect;
 
         protected bool _rectsSet;
-        protected Vector2 _topLeft = Vector2.zero,
-                          _right = Vector2.zero,
-                          _left = Vector2.zero;
+        protected Vector2
+            _size = Vector2.zero,
+            _pos = Vector2.zero,
+            _topLeft = Vector2.zero,
+            _right = Vector2.zero,
+            _left = Vector2.zero;
         public Rect CostIconRect
         {
             get
@@ -114,15 +115,14 @@ namespace HumanResources
                 (X - 1) * (Constants.NodeSize.x + Constants.NodeMargins.x),
                 (Yf - 1) * (Constants.NodeSize.y + Constants.NodeMargins.y));
 
-            SetRects(_topLeft);
+            SetRects(_topLeft, _size);
         }
-        public void SetRects(Vector2 topLeft)
+        public void SetRects(Vector2 topLeft, Vector2 size)
         {
+            _size = size;
+
             // main rect
-            _rect = new Rect(topLeft.x,
-                              topLeft.y,
-                              Constants.NodeSize.x,
-                              Constants.NodeSize.y);
+            _rect = new Rect(topLeft, size);
 
             // queue rect
             _queueRect = new Rect(_rect.xMax - Constants.QueueLabelSize / 2f,
@@ -362,9 +362,9 @@ namespace HumanResources
             return ResearchTree_Patches.MissingFacilities(Research);
         }
 
-        public void DrawAt(Vector2 pos, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
+        public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
         {
-            SetRects(pos);
+            SetRects(pos, size);
             SetMarked(indicatorRect);
             Draw(visibleRect, !forceDetailedMode);
             SetRects();

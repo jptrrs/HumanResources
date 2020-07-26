@@ -1,21 +1,18 @@
-﻿// Constants.cs
-// Copyright Karel Kroeze, 2018-2020
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HumanResources
 {
     public static class Constants
     {
-        public const double Epsilon = 1e-4;
-        public const float DetailedModeZoomLevelCutoff = 1.5f;
-        public const float Margin = 6f;
-        public const float QueueLabelSize = 30f;
-        public static readonly Vector2 IconSize = new Vector2(18f, 18f);
-        public static readonly Vector2 NodeMargins = new Vector2(50f, 10f);
-        public static bool showCompact = false;
-        private static float defaultNodeSizeY = 50f;
-        public static Vector2 NodeSize => new Vector2(200f, compactSizeY);
-        private static float compactSizeY => showCompact ? defaultNodeSizeY / 2 : defaultNodeSizeY;
+        private static object instance;
+
+        public static double Epsilon => (double)ResearchTree_Patches.EpsilonInfo.GetValue(instance);
+        public static float DetailedModeZoomLevelCutoff => (float)ResearchTree_Patches.DetailedModeZoomLevelCutoffInfo.GetValue(instance);
+        public static float Margin => (float)ResearchTree_Patches.MarginInfo.GetValue(instance);
+        public static float QueueLabelSize => (float)ResearchTree_Patches.QueueLabelSizeInfo.GetValue(instance);
+        public static Vector2 IconSize => (Vector2)ResearchTree_Patches.IconSizeInfo.GetValue(instance);
+        public static Vector2 NodeMargins => (Vector2)ResearchTree_Patches.NodeMarginsInfo.GetValue(instance);
+        public static Vector2 NodeSize => (Vector2)ResearchTree_Patches.NodeSizeInfo.GetValue(instance);
+        public static float TopBarHeight => (float)ResearchTree_Patches.TopBarHeightInfo.GetValue(instance);
     }
 }
