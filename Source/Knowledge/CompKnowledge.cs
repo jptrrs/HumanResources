@@ -20,7 +20,6 @@ namespace HumanResources
         protected static bool isShooter = false;
         protected static TechLevel startingTechLevel;
         public IEnumerable<ResearchProjectDef> knownTechs => expertise.Where(x => x.Value >= 1f).Select(x => x.Key);
-        public IEnumerable<ResearchProjectDef> partiallyKnownTechs => expertise.Where(x => x.Value < 1f).Select(x => x.Key);
 
         public List<ThingDef> knownWeapons
         {
@@ -432,7 +431,7 @@ namespace HumanResources
 
         public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
         {
-            var parents = tech.prerequisites?.Where(x => !expertise.ContainsKey(x));
+            var parents = tech.prerequisites?.Where(x => !expertise.ContainsKey(x) || expertise[x] < 1);
             if (parents == null) return new List<ResearchProjectDef>();
             var allParents = new List<ResearchProjectDef>(parents);
             foreach (var parent in parents) allParents.AddRange(GetRequiredRecursive(parent));

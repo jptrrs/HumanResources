@@ -12,7 +12,7 @@ namespace HumanResources
         {
 			if (!base.ShouldSkip(pawn, forced))
 			{
-				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs);
+				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished)/*.Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs)*/;
 				return !available.Any();
 			}
 			return true;
@@ -30,7 +30,7 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished).Any();
+				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished /*&& x.RequisitesKnownBy(pawn)*/).Any();
 			}
             Log.Message("case 4");
             return false;
