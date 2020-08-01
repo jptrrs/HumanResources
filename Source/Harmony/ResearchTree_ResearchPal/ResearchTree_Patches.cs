@@ -15,7 +15,6 @@ namespace HumanResources
     {
         private static string ModName = "";
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
-
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
         public static Type NodeType() => AccessTools.TypeByName(ModName + ".Node");
@@ -61,6 +60,8 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
+            instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
 
             GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
@@ -73,7 +74,6 @@ namespace HumanResources
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
-
             //fix for tree overlapping search bar on higher UI scales
             instance.Patch(AccessTools.Method(MainTabType(), "SetRects"), 
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
@@ -81,9 +81,24 @@ namespace HumanResources
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
             ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
 
+            //MainTabWindow_ResearchTree
+            instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+            if (modName != "ResearchPal")
+            {
+                instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
+            }
+
             //Tree
-            instance.Patch(AccessTools.Method(TreeType(), "NormalizeEdges"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(NormalizeEdges_Postfix))));
+            instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
+            if (modName == "ResearchPal")
+            {
+                instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
+            }
             NodesInfo = AccessTools.Property(TreeType(), "Nodes");
 
             //Queue
@@ -103,20 +118,7 @@ namespace HumanResources
 
         public static PropertyInfo NodesInfo;
         private static IEnumerable NodesList;
-        private static Dictionary<ResearchProjectDef, object> ResearchNodes = new Dictionary<ResearchProjectDef, object>();
-
-        private static void NormalizeEdges_Postfix(object __instance)
-        {
-            NodesList = (IEnumerable)NodesInfo.GetValue(__instance);
-            foreach (var item in NodesList)
-            {
-                if (item.GetType() == ResearchNodeType())
-                {
-                    ResearchProjectDef tech = (ResearchProjectDef)ResearchInfo.GetValue(item);
-                    ResearchNodes.Add(tech,item);
-                }
-            }
-        }
+        private static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
 
         //Constants
         public static FieldInfo
@@ -138,19 +140,42 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
-        //public static ResearchProjectDef subjectToShow;
-        //private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
-        //private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
+        public static ResearchProjectDef subjectToShow;
+        private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
+        private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
 
-        //public static void DoWindowContents_Postfix(object __instance)
-        //{
-        //    if (subjectToShow != null && treeReady)
-        //    {
-        //        int idx = treeNodesResearchCache.IndexOf(subjectToShow);
-        //        MainTabCenterOnInfo.Invoke(__instance, new object[] { treeNodesList[idx] });
-        //        subjectToShow = null;
-        //    }
-        //}
+        private static bool treeReady = false;
+
+        public static void TreeInitialized_Postfix(object __instance)
+        {
+            treeReady = !ResearchNodesCache.EnumerableNullOrEmpty();
+        }
+
+        private static bool populating = false;
+
+        private static void PopulateNodes_Prefix()
+        {
+            populating = true;
+        }
+
+        private static void PopulateNodes_Postfix()
+        {
+            populating = false;
+        }
+
+        private static void ResearchNode_Postfix(object __instance, ResearchProjectDef research)
+        {
+            if (populating) ResearchNodesCache.Add(research, __instance);
+        }
+
+        public static void DoWindowContents_Postfix(object __instance)
+        {
+            if (subjectToShow != null && treeReady)
+            {
+                MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[subjectToShow] });
+                subjectToShow = null;
+            }
+        }
 
         private static bool DrawQueue_Prefix(Rect canvas)
         {
@@ -158,7 +183,7 @@ namespace HumanResources
             float frameOffset = height / 4;
             float startPos = canvas.xMax - height - 12f;
             Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
-            using (IEnumerator<Pawn> enumerator = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).Reverse().GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().AsEnumerable().Reverse().GetEnumerator())// PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).Reverse().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
@@ -172,7 +197,7 @@ namespace HumanResources
                         {
                             foreach (ResearchProjectDef tech in pawn.TryGetComp<CompKnowledge>().expertise.Keys)
                             {
-                                HighlightedInfo.SetValue(ResearchNodes[tech], true);
+                                HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
                             }
                         }
                     }

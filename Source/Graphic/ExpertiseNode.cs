@@ -9,6 +9,7 @@ using System.Text;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Verse;
 
 namespace HumanResources
@@ -347,14 +348,21 @@ namespace HumanResources
 
             if (Widgets.ButtonInvisible(Rect, true))
             {
-                UpdateAssignment();
-                //if (Completed && Research.IsKnownBy(Pawn))
-                //{
-                //    MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                //    ResearchTree_Patches.subjectToShow = Research;
-                //}
-            }
+                if (Event.current.button == 0)
+                {
+                    UpdateAssignment();
+                    if (Completed && Research.IsKnownBy(Pawn))
+                    {
 
+                        Messages.Message("TechAlreadyKnown".Translate(Research), Pawn, MessageTypeDefOf.RejectInput, false);
+                    }
+                }
+                if (Event.current.button == 1)
+                {
+                    MainButtonDefOf.Research.Worker.InterfaceTryActivate();
+                    ResearchTree_Patches.subjectToShow = Research;
+                }
+            }
         }
 
         public List<ThingDef> MissingFacilities()
@@ -408,8 +416,8 @@ namespace HumanResources
         {
             if (techComp != null)
             {
-                if (Pawn.IsColonist && techComp != null && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.homework.Add(Research);
-                else techComp.homework.Remove(Research);
+                if (Pawn.IsColonist && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.AssignBranch(Research);
+                else if (Assigned) techComp.CancelBranch(Research);
             }
         }
     }
