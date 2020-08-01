@@ -6,7 +6,7 @@
     <label>Document technologies</label>
     <giverClass>HumanResources.WorkGiver_DocumentTech</giverClass>
     <workType>HR_Learn</workType>
-    <verb>write</verb>
+    <verb>document</verb>
     <gerund>writing at</gerund>
     <priorityInType>10</priorityInType>
     <fixedBillGiverDefs>

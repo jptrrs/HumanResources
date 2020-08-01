@@ -353,7 +353,6 @@ namespace HumanResources
                     UpdateAssignment();
                     if (Completed && Research.IsKnownBy(Pawn))
                     {
-
                         Messages.Message("TechAlreadyKnown".Translate(Research), Pawn, MessageTypeDefOf.RejectInput, false);
                     }
                 }
@@ -391,8 +390,25 @@ namespace HumanResources
         {
             if (Assigned)
             {
-                Texture2D face = Known ? ContentFinder<Texture2D>.Get("UI/write", true) : ContentFinder<Texture2D>.Get("UI/read");
-                if (Widgets.ButtonImage(rect, face, false)) UpdateAssignment();
+                Texture2D face;
+                string assignment = null;
+                if (Known)
+                {
+                    face = ContentFinder<Texture2D>.Get("UI/write", true);
+                    assignment = TechWorkDefOf.DocumentTech.verb;
+                }
+                else if (Research.IsFinished)
+                {
+                    face = ContentFinder<Texture2D>.Get("UI/read");
+                    assignment = TechWorkDefOf.LearnTech.verb;
+                }
+                else
+                {
+                    face = ContentFinder<Texture2D>.Get("UI/research");
+                    assignment = DefDatabase<WorkGiverDef>.GetNamed("Research").verb;
+                }
+                TooltipHandler.TipRegionByKey(rect, assignment);
+                if (Widgets.ButtonImage(rect, face)) UpdateAssignment();
             }
         }
 

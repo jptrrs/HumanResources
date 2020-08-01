@@ -40,14 +40,15 @@ namespace HumanResources
 				IBillGiver billGiver = job.GetTarget(TargetIndex.A).Thing as IBillGiver;
 				if (billGiver != null)
 				{
-					if (job.bill.DeletedOrDereferenced)
+					if (job.bill.DeletedOrDereferenced) return true;
+					if (!billGiver.CurrentlyUsableForBills()) return true;
+					if (project == null)
 					{
+						Log.Warning("[HumanResources] " + pawn + " tried to document a null project.");
+						TryMakePreToilReservations(true);
 						return true;
 					}
-					if (!billGiver.CurrentlyUsableForBills())
-					{
-						return true;
-					}
+					if (!techComp.homework.Contains(project)) return true;
 				}
 				return false;
 			});

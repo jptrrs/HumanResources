@@ -175,7 +175,7 @@ namespace HumanResources
         {
             var text = new StringBuilder();
             text.AppendLine(___Research.description);
-            if (DebugSettings.godMode && !HarmonyPatches.ResearchPal) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway.
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchPal) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
             __result = text.ToString();
             return false;
         }

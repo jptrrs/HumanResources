@@ -6,21 +6,18 @@ namespace HumanResources
     [DefOf]
     public static class TechDefOf
     {
-        static TechDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(RecipeDefOf));
-        }
-        public static RecipeDef LearnTech;
-        public static RecipeDef DocumentTech;
-        //public static RecipeDef ResearchTech;
-        public static RecipeDef TrainWeaponShooting;
-        public static RecipeDef TrainWeaponMelee;
-        public static RecipeDef PracticeShooting;
-        public static RecipeDef PracticeMelee;
+        public static RecipeDef 
+            LearnTech,
+            DocumentTech,
+            TrainWeaponShooting,
+            TrainWeaponMelee,
+            PracticeShooting,
+            PracticeMelee;
         public static ThingCategoryDef Knowledge;
         public static StuffCategoryDef Technic;
-        public static ThingDef TechBook;
-        public static ThingDef UnfinishedTechBook;
+        public static ThingDef 
+            TechBook,
+            UnfinishedTechBook;
         public static WorkTypeDef HR_Learn;
     }
 }

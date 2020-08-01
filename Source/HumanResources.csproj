@@ -321,7 +321,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\TechJobDefOf.cs" />
+    <Compile Include="Base\TechJobDefOf .cs" />
+    <Compile Include="Base\TechWorkDefOf.cs" />
     <Compile Include="Base\TechDefOf.cs" />
     <Compile Include="Books\Building_BookStore.cs" />
     <Compile Include="Books\StockGenerator_TechBooks.cs" />

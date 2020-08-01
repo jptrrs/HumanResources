@@ -4,7 +4,7 @@
   <JobDef>
     <defName>LearnTech</defName>
     <driverClass>HumanResources.JobDriver_LearnTech</driverClass>
-    <reportString>learning TargetB.</reportString>
+    <reportString>studying</reportString>
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
@@ -12,7 +12,7 @@
   <JobDef>
     <defName>DocumentTech</defName>
     <driverClass>HumanResources.JobDriver_DocumentTech</driverClass>
-    <reportString>documenting TargetB.</reportString>
+    <reportString>documenting</reportString>
     <casualInterruptible>true</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
@@ -20,7 +20,7 @@
   <JobDef>
     <defName>ResearchTech</defName>
     <driverClass>HumanResources.JobDriver_LearnTech</driverClass>
-    <reportString>researching TargetB.</reportString>
+    <reportString>researching</reportString>
     <casualInterruptible>true</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>

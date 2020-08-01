@@ -22,6 +22,7 @@ namespace HumanResources
         private static Vector2 scrollPosition = Vector2.zero;
         private static Vector2 scrollPosition2 = Vector2.zero;
         private static bool showAvailable = false;
+        private static bool showAssignment = false;
         private static bool showCompact = false;
         private Vector2 buttonSize = new Vector2(24f, 24f);
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
@@ -98,13 +99,10 @@ namespace HumanResources
                 Widgets.Label(titleRect, "TabKnowledgeTitle".Translate());
                 DrawToggle(titleRect.max.x, leftColumn.y, expandTT, ref fullTechs, ContentFinder<Texture2D>.Get("UI/expand_left", true), ContentFinder<Texture2D>.Get("UI/expand_right", true), true);
                 Text.Font = GameFont.Small;
-                var expertise = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.expertise;
-                if (!expertise.EnumerableNullOrEmpty())
+                Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - rowHeight - margin - padding * 2 - 2f);
+                var currentList = FilteredTechs();
+                if (!currentList.EnumerableNullOrEmpty())
                 {
-                    Rect scrollrect = new Rect(leftColumn.x, titleRect.yMax + margin, leftColumn.width - margin, leftColumn.height - titleRect.height - rowHeight - margin - padding * 2 - 2f);
-                    var unknownList = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(expertise.Keys);
-                    bool unknownEnabled = !unknownList.EnumerableNullOrEmpty();
-                    var currentList = (unknownEnabled && showAvailable) ? unknownList : expertise.Keys;
                     var selectedList = fullTechs ? currentList : currentList.Where(x => TechLevelVisibility[x.techLevel]);
                     if (!selectedList.EnumerableNullOrEmpty())
                     {
@@ -114,25 +112,25 @@ namespace HumanResources
                         Rect viewRect = new Rect(0f, 0f, /*nodeSize.x*/extendedNodeLength, viewHeight);
                         Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
                         var pos = new Vector2(0f, 0f);
-                        if (!showAvailable | unknownEnabled)
+                        int columnBreak = (int)expertiseList.First().Research.techLevel;
+                        for (int i = 0; i < expertiseList.Count && pos.x + /*nodeSize.x*/extendedNodeLength < leftColumn.xMax; i++)
                         {
-                            int columnBreak = (int)expertiseList.First().Research.techLevel;
-                            for (int i = 0; i < expertiseList.Count && pos.x + /*nodeSize.x*/extendedNodeLength < leftColumn.xMax; i++)
+                            var node = expertiseList[i];
+                            if (fullTechs && (int)node.Research.techLevel != columnBreak)
                             {
-                                var node = expertiseList[i];
-                                if (fullTechs && (int)node.Research.techLevel != columnBreak)
-                                {
-                                    pos.x += /*nodeSize.x*/extendedNodeLength + margin;
-                                    pos.y = 0f;
-                                    columnBreak = (int)node.Research.techLevel;
-                                }
-                                //var nodeBox = new Rect(pos.x, pos.y, nodeSize.x, nodeSize.y);
-                                var nodeBox = new Rect(pos, nodeSize);
-                                var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
-                                var indicatorBox = new Rect(indicatorPos, buttonSize);
-                                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
-                                pos.y += nodeSize.y + margin;
+                                pos.x += /*nodeSize.x*/extendedNodeLength + margin;
+                                pos.y = 0f;
+                                columnBreak = (int)node.Research.techLevel;
                             }
+                            //var nodePos = new Vector2(pos.x + buttonSize.x, pos.y);
+                            //var nodeBox = new Rect(nodePos, nodeSize);
+                            var nodeBox = new Rect(pos, nodeSize);
+                            var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
+                            //var indicatorPos = new Vector2(pos.x, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
+                            var indicatorBox = new Rect(indicatorPos, buttonSize);
+                            node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
+                            //node.DrawAt(nodePos, nodeSize, nodeBox, indicatorBox, showCompact);
+                            pos.y += nodeSize.y + margin;
                         }
                         if (Event.current.type == EventType.Layout)
                         {
@@ -140,17 +138,18 @@ namespace HumanResources
                         }
                         Widgets.EndScrollView();
                     }
-                    float baselineX = leftColumn.x;
-                    float baselineY = scrollrect.max.y + padding;
-                    float next = baselineX;
-                    next = DrawToggle(next, baselineY, "ShowCompact", ref showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
-                    next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
-                    if (!fullTechs)
+                }
+                float baselineX = leftColumn.x;
+                float baselineY = scrollrect.max.y + padding;
+                float next = baselineX;
+                next = DrawToggle(next, baselineY, "ShowCompact", ref showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
+                next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
+                next = DrawToggle(next, baselineY, "ShowAssignment", ref showAssignment, ContentFinder<Texture2D>.Get("UI/assignment", true));
+                if (!fullTechs)
+                {
+                    foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
                     {
-                        foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
-                        {
-                            next = DrawToggle(next, baselineY, level);
-                        }
+                        next = DrawToggle(next, baselineY, level);
                     }
                 }
             }
@@ -221,6 +220,20 @@ namespace HumanResources
             }
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
+        }
+
+        private IEnumerable<ResearchProjectDef> FilteredTechs()
+        {
+            var techComp = PawnToShowInfoAbout.TryGetComp<CompKnowledge>();
+            if (techComp != null)
+            {
+                var expertise = techComp.expertise;
+                if (showAvailable) return DefDatabase<ResearchProjectDef>.AllDefsListForReading.Except(expertise.Keys).Where(x => x.IsFinished);
+                var homework = techComp.homework;
+                if (showAssignment) return homework != null ? homework.AsEnumerable() : null;
+                else return expertise.Keys;
+            }
+            return null;
         }
 
         private static Func<ThingDef, bool> weaponsFilter = (x) =>

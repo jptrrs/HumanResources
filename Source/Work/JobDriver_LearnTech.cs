@@ -37,20 +37,15 @@ namespace HumanResources
 				IBillGiver billGiver = desk as IBillGiver;
 				if (billGiver != null)
 				{
-					if (job.bill.DeletedOrDereferenced)
-					{
-						return true;
-					}
-					if (!billGiver.CurrentlyUsableForBills())
-					{
-						return true;
-					}
+					if (job.bill.DeletedOrDereferenced) return true;
+					if (!billGiver.CurrentlyUsableForBills()) return true;
 					if (project == null)
                     {
 						Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
 						TryMakePreToilReservations(true);
 						return true;
                     }
+					if (!techComp.homework.Contains(project)) return true;
 				}
 				return false;
 			});
@@ -70,7 +65,7 @@ namespace HumanResources
 					if (expertise[project] > 1f)
 					{
 						expertise[project] = 1f;
-						techComp.homework.Clear();
+						techComp.homework.Remove(project);
 						techComp.LearnCrops(project);
 						Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
 						if (job.bill != null) Notify_IterationCompleted(actor, job.bill as Bill_Production);
