@@ -14,6 +14,7 @@
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
+  <!--NEW--> <RightClickToTree>Right-click to show on Research Tree.</RightClickToTree>
 
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>

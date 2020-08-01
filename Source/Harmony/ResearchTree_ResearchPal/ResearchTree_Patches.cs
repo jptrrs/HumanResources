@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.AccessControl;
+using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -62,6 +63,8 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
+            instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
 
             GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
@@ -168,12 +171,22 @@ namespace HumanResources
             if (populating) ResearchNodesCache.Add(research, __instance);
         }
 
+        private static bool GetResearchTooltipString_Prefix(ResearchProjectDef ___Research, ref string __result)
+        {
+            var text = new StringBuilder();
+            text.AppendLine(___Research.description);
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchPal) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway.
+            __result = text.ToString();
+            return false;
+        }
+
         public static void DoWindowContents_Postfix(object __instance)
         {
             if (subjectToShow != null && treeReady)
             {
                 MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[subjectToShow] });
-                subjectToShow = null;
+                HighlightedInfo.SetValue(ResearchNodesCache[subjectToShow], true);
+                //subjectToShow = null;
             }
         }
 
@@ -193,6 +206,7 @@ namespace HumanResources
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
                     if (Mouse.IsOver(box.ContractedBy(12f)))
                     {
+                        if (subjectToShow != null) subjectToShow = null;
                         if (!pawn.TryGetComp<CompKnowledge>().expertise.EnumerableNullOrEmpty())
                         {
                             foreach (ResearchProjectDef tech in pawn.TryGetComp<CompKnowledge>().expertise.Keys)
@@ -282,7 +296,7 @@ namespace HumanResources
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
 
-                HighlightedInfo.SetValue(__instance, false);
+                HighlightedInfo.SetValue(__instance, /*false*/subjectToShow == Research);
 
                 //draw the research label
                 if (!completed && !available)
@@ -362,6 +376,9 @@ namespace HumanResources
                 }
 
                 if (mouseOver)
+                {
+                    if (subjectToShow != null && subjectToShow != Research) subjectToShow = null;
+
                     //highlight prerequisites if research available
                     if (available)
                     {
@@ -375,6 +392,7 @@ namespace HumanResources
                         foreach (var child in (IEnumerable<object>)ChildrenInfo.GetValue(__instance))
                             HighlightedInfo.SetValue(Convert.ChangeType(child, ResearchNodeType()), true);
                     }
+                }
             }
 
             Research.DrawAssignments(rect);

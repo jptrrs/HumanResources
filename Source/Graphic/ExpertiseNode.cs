@@ -381,7 +381,9 @@ namespace HumanResources
         private string GetResearchTooltipString()
         {
             var text = new StringBuilder();
-            text.AppendLine(Research.description );
+            text.AppendLine(Research.description);
+            text.AppendLine();
+            text.AppendLine("RightClickToTree");
             return text.ToString();
         }
 
