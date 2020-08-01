@@ -12,8 +12,8 @@ namespace HumanResources
 {
     public class CompKnowledge : ThingComp
     {
-        public Dictionary<ResearchProjectDef,float> expertise;
-        public List<ResearchProjectDef> homework = new List<ResearchProjectDef>();
+        public Dictionary<ResearchProjectDef, float> expertise;
+        public List<ResearchProjectDef> homework;
         public List<ThingDef> proficientPlants;
         public List<ThingDef> proficientWeapons;
         protected static bool isFighter = false;
@@ -215,25 +215,24 @@ namespace HumanResources
 
         public void AcquireExpertise()
         {
-            if (expertise == null)
+            if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
+            expertise = new Dictionary<ResearchProjectDef, float>();
+            FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+            var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
+            if (!acquiredExpertise.EnumerableNullOrEmpty())
             {
-                if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
-                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
-                var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
-                if (!acquiredExpertise.EnumerableNullOrEmpty())
-                {
-                    expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
-                    if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
-                }
-                else
-                {
-                    Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
-                }
-                AcquireWeaponKnowledge(faction);
-                if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
-                AcquirePlantKnowledge();
-                if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+                expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
+                if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
             }
+            else
+            {
+                Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
+            }
+            AcquireWeaponKnowledge(faction);
+            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
+            AcquirePlantKnowledge();
+            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+            string test2 = expertise != null ? "ok" : "bad";
         }
 
         public void AcquirePlantKnowledge()
@@ -332,19 +331,6 @@ namespace HumanResources
             }
         }
 
-        //public override void CompTickRare()
-        //{
-        //    if (!homework.NullOrEmpty())
-        //    {
-        //        var excess = homework.Except(SelectedAnywhere);
-        //        if (excess.Any())
-        //        {
-        //            homework.RemoveAll(x => excess.Contains(x));
-        //            if (Prefs.LogVerbose) Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
-        //        }
-        //    }
-        //}
-
         private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
 
         public void ExposeData()
@@ -374,13 +360,15 @@ namespace HumanResources
                 }
             }
             Scribe_Collections.Look(ref expertise, "Expertise");
+            Scribe_Collections.Look(ref homework, "homework");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && homework == null) homework = new List<ResearchProjectDef>();
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            AcquireExpertise();
+            if (expertise == null) AcquireExpertise();
         }
 
         private static int FactionExpertiseRange(TechLevel level)
@@ -424,9 +412,9 @@ namespace HumanResources
         //new functions
         public void AssignBranch(ResearchProjectDef tech)
         {
+            if (homework == null) homework = new List<ResearchProjectDef>();
             homework.Add(tech);
             homework.AddRange(GetRequiredRecursive(tech));
-            Log.Message("DEBUG assigned homework: " + homework.ToStringSafeEnumerable());
         }
 
         public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)

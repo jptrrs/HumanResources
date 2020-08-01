@@ -91,7 +91,7 @@ namespace HumanResources
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException(nameof(value));
-                if (Math.Abs(_pos.x - value) < Constants.Epsilon)
+                if (Math.Abs(_pos.x - value) < ResearchTree_Constants.Epsilon)
                     return;
                 _pos.x = value;
             }
@@ -101,7 +101,7 @@ namespace HumanResources
             get => _pos.y;
             set
             {
-                if (Math.Abs(_pos.y - value) < Constants.Epsilon)
+                if (Math.Abs(_pos.y - value) < ResearchTree_Constants.Epsilon)
                     return;
                 _pos.y = value;
             }
@@ -112,8 +112,8 @@ namespace HumanResources
         {
             // origin
             _topLeft = new Vector2(
-                (X - 1) * (Constants.NodeSize.x + Constants.NodeMargins.x),
-                (Yf - 1) * (Constants.NodeSize.y + Constants.NodeMargins.y));
+                (X - 1) * (ResearchTree_Constants.NodeSize.x + ResearchTree_Constants.NodeMargins.x),
+                (Yf - 1) * (ResearchTree_Constants.NodeSize.y + ResearchTree_Constants.NodeMargins.y));
 
             SetRects(_topLeft, _size);
         }
@@ -125,9 +125,9 @@ namespace HumanResources
             _rect = new Rect(topLeft, size);
 
             // queue rect
-            _queueRect = new Rect(_rect.xMax - Constants.QueueLabelSize / 2f,
-                                   _rect.yMin + (_rect.height - Constants.QueueLabelSize) / 2f, Constants.QueueLabelSize,
-                                   Constants.QueueLabelSize);
+            _queueRect = new Rect(_rect.xMax - ResearchTree_Constants.QueueLabelSize / 2f,
+                                   _rect.yMin + (_rect.height - ResearchTree_Constants.QueueLabelSize) / 2f, ResearchTree_Constants.QueueLabelSize,
+                                   ResearchTree_Constants.QueueLabelSize);
 
             // label rect
             _labelRect = new Rect(_rect.xMin + 6f,
@@ -319,12 +319,12 @@ namespace HumanResources
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(
-                            IconsRect.xMax - (i + 1) * (Constants.IconSize.x + 4f),
-                            IconsRect.yMin + (IconsRect.height - Constants.IconSize.y) / 2f,
-                            Constants.IconSize.x,
-                            Constants.IconSize.y);
+                            IconsRect.xMax - (i + 1) * (ResearchTree_Constants.IconSize.x + 4f),
+                            IconsRect.yMin + (IconsRect.height - ResearchTree_Constants.IconSize.y) / 2f,
+                            ResearchTree_Constants.IconSize.x,
+                            ResearchTree_Constants.IconSize.y);
 
-                        if (iconRect.xMin - Constants.IconSize.x < IconsRect.xMin &&
+                        if (iconRect.xMin - ResearchTree_Constants.IconSize.x < IconsRect.xMin &&
                              i + 1 < unlocks.Count)
                         {
                             // stop the loop if we're about to overflow and have 2 or more unlocks yet to print.
@@ -348,11 +348,11 @@ namespace HumanResources
             if (Widgets.ButtonInvisible(Rect, true))
             {
                 UpdateAssignment();
-                if (Completed && Research.IsKnownBy(Pawn))
-                {
-                    MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                    ResearchTree_Patches.subjectToShow = Research;
-                }
+                //if (Completed && Research.IsKnownBy(Pawn))
+                //{
+                //    MainButtonDefOf.Research.Worker.InterfaceTryActivate();
+                //    ResearchTree_Patches.subjectToShow = Research;
+                //}
             }
 
         }
@@ -390,7 +390,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null) return Pawn.TryGetComp<CompKnowledge>().homework.Contains(Research);
+                if (Pawn.IsColonist && techComp != null && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Research);
                 else return false;
             }
         }

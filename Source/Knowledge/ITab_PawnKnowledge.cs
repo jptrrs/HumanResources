@@ -10,7 +10,7 @@ namespace HumanResources
     public class ITab_PawnKnowledge : ITab
     {
         private const int iconSize = 29;
-        private static int margin = (int)Constants.Margin;
+        private static int margin = (int)ResearchTree_Constants.Margin;
         private const int rowHeight = 32;
         private const float scrollBarWidth = 17f;
         private const float tabSizeAdjust = 12f;
@@ -46,7 +46,7 @@ namespace HumanResources
         }
 
         private static bool expandTab => fullTechs | fullWeapons;
-        private Vector2 nodeSize => new Vector2(Constants.NodeSize.x, showCompact ? Constants.NodeSize.y / 2 : Constants.NodeSize.y);
+        private Vector2 nodeSize => new Vector2(ResearchTree_Constants.NodeSize.x, showCompact ? ResearchTree_Constants.NodeSize.y / 2 : ResearchTree_Constants.NodeSize.y);
         private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private Pawn PawnToShowInfoAbout
         {

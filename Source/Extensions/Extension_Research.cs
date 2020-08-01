@@ -431,7 +431,7 @@ namespace HumanResources
                 {
                     Pawn pawn = enumerator.Current;
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (techComp != null && !techComp.homework.Contains(tech) && (!techComp.expertise.ContainsKey(tech) || techComp.expertise[tech] < 1f))
+                    if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech)) && (!techComp.expertise.ContainsKey(tech) || techComp.expertise[tech] < 1f))
                     {
                         if (pawn.WorkTypeIsDisabled(workGiver))
                         {
@@ -447,7 +447,7 @@ namespace HumanResources
                             {
                                 option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
                                 {
-                                    Log.Message("do something");
+                                    techComp.AssignBranch(tech);
                                 }, MenuOptionPriority.VeryLow, null, null, 0f, null, null),
                                 payload = pawn
                             };
@@ -466,8 +466,6 @@ namespace HumanResources
                                 delegate ()
                                 {
                                     techComp.AssignBranch(tech);
-                                    //if (!homework.Contains(tech)) 
-                                    //else techComp.CancelBranch(tech);
                                 },
                                 MenuOptionPriority.Default, null, null, 0f, null, null),
                                 payload = pawn
@@ -494,7 +492,7 @@ namespace HumanResources
             float frameOffset = height / 4;
             float startPos = rect.x - frameOffset; //rect.xMax - height/2;
             Vector2 size = new Vector2(height, height);
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(x => x.TryGetComp<CompKnowledge>().homework.Contains(tech)).GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p,tech)).GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
@@ -509,7 +507,14 @@ namespace HumanResources
             }
         }
 
-
-
+        private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (techComp != null && !techComp.homework.NullOrEmpty())
+            {
+                return techComp.homework.Contains(tech);
+            }
+            return false;
+        };
     }
 }

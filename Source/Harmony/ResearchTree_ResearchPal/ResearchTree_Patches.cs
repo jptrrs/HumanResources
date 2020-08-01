@@ -16,13 +16,13 @@ namespace HumanResources
         private static string ModName = "";
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
 
-        public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
         public static Type NodeType() => AccessTools.TypeByName(ModName + ".Node");
-        public static Type DummyNodeType() => AccessTools.TypeByName(ModName + ".DummyNode");
+        public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type MainTabType() => AccessTools.TypeByName(ModName + ".MainTabWindow_ResearchTree");
         public static Type ConstantsType() => AccessTools.TypeByName(ModName + ".Constants");
+        public static Type QueueType() => AccessTools.TypeByName(ModName + ".Queue");
 
         public static void Execute(Harmony instance, string modName)
         {
@@ -55,10 +55,12 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
-                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
             instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
+            instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
+            instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
 
             GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
@@ -72,14 +74,6 @@ namespace HumanResources
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
 
-            //MainTabWindow_ResearchTree
-            instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
-            if (modName != "ResearchPal")
-            {
-                instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
-                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
-            }
             //fix for tree overlapping search bar on higher UI scales
             instance.Patch(AccessTools.Method(MainTabType(), "SetRects"), 
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
@@ -88,14 +82,13 @@ namespace HumanResources
             ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
 
             //Tree
-            instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
-            if (modName == "ResearchPal")
-            {
-                instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
-                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
-            }
+            instance.Patch(AccessTools.Method(TreeType(), "NormalizeEdges"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(NormalizeEdges_Postfix))));
+            NodesInfo = AccessTools.Property(TreeType(), "Nodes");
+
+            //Queue
+            instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
 
             //Constants
             EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
@@ -106,6 +99,23 @@ namespace HumanResources
             NodeMarginsInfo = AccessTools.Field(ConstantsType(), "NodeMargins");
             NodeSizeInfo = AccessTools.Field(ConstantsType(), "NodeSize");
             TopBarHeightInfo = AccessTools.Field(ConstantsType(), "TopBarHeight");
+        }
+
+        public static PropertyInfo NodesInfo;
+        private static IEnumerable NodesList;
+        private static Dictionary<ResearchProjectDef, object> ResearchNodes = new Dictionary<ResearchProjectDef, object>();
+
+        private static void NormalizeEdges_Postfix(object __instance)
+        {
+            NodesList = (IEnumerable)NodesInfo.GetValue(__instance);
+            foreach (var item in NodesList)
+            {
+                if (item.GetType() == ResearchNodeType())
+                {
+                    ResearchProjectDef tech = (ResearchProjectDef)ResearchInfo.GetValue(item);
+                    ResearchNodes.Add(tech,item);
+                }
+            }
         }
 
         //Constants
@@ -128,50 +138,50 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
-        public static ResearchProjectDef subjectToShow;
-        private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
-        private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
+        //public static ResearchProjectDef subjectToShow;
+        //private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
+        //private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
 
-        public static void DoWindowContents_Postfix(object __instance)
+        //public static void DoWindowContents_Postfix(object __instance)
+        //{
+        //    if (subjectToShow != null && treeReady)
+        //    {
+        //        int idx = treeNodesResearchCache.IndexOf(subjectToShow);
+        //        MainTabCenterOnInfo.Invoke(__instance, new object[] { treeNodesList[idx] });
+        //        subjectToShow = null;
+        //    }
+        //}
+
+        private static bool DrawQueue_Prefix(Rect canvas)
         {
-            if (subjectToShow != null && treeReady)
+            float height = canvas.height;
+            float frameOffset = height / 4;
+            float startPos = canvas.xMax - height - 12f;
+            Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
+            using (IEnumerator<Pawn> enumerator = PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).Reverse().GetEnumerator())
             {
-                int idx = treeNodesResearchCache.IndexOf(subjectToShow);
-                MainTabCenterOnInfo.Invoke(__instance, new object[] { treeNodesList[idx] });
-                subjectToShow = null;
+                while (enumerator.MoveNext())
+                {
+                    Vector2 position = new Vector2(startPos, canvas.y);
+                    Rect box = new Rect(position, size);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    if (Mouse.IsOver(box.ContractedBy(12f)))
+                    {
+                        if (!pawn.TryGetComp<CompKnowledge>().expertise.EnumerableNullOrEmpty())
+                        {
+                            foreach (ResearchProjectDef tech in pawn.TryGetComp<CompKnowledge>().expertise.Keys)
+                            {
+                                HighlightedInfo.SetValue(ResearchNodes[tech], true);
+                            }
+                        }
+                    }
+                    Vector2 pos = new Vector2(box.center.x, box.yMax);
+                    GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
+                    startPos -= height;
+                }
             }
-        }
-
-        private static IList treeNodesList;
-
-        private static bool treeReady = false;
-
-        private static List<ResearchProjectDef> treeNodesResearchCache = new List<ResearchProjectDef>();
-
-        public static void TreeInitialized_Postfix(object __instance)
-        {
-            treeNodesList = (IList)TreeNodesListInfo.GetValue(__instance);
-            treeReady = !treeNodesResearchCache.NullOrEmpty();
-        }
-
-        private static bool populating = false;
-
-        private static void PopulateNodes_Prefix()
-        {
-            populating = true;
-        }
-
-        private static void PopulateNodes_Postfix()
-        {
-            populating = false;
-        }
-
-        private static void ResearchNode_Postfix(ResearchProjectDef research)
-        {
-            if (populating)
-            {
-                treeNodesResearchCache.Add(research);
-            }
+            return false;
         }
 
         private static void Set_Rects_Postfix(object __instance)
@@ -179,9 +189,9 @@ namespace HumanResources
             FieldInfo baseViewRectInfo = AccessTools.Field(MainTabType(), "_baseViewRect");
             baseViewRectInfo.SetValue(__instance, new Rect(
                 Window.StandardMargin / Prefs.UIScale,
-                (Constants.TopBarHeight + Constants.Margin + Window.StandardMargin),
+                (ResearchTree_Constants.TopBarHeight + ResearchTree_Constants.Margin + Window.StandardMargin),
                 (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
-                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - Constants.TopBarHeight - Constants.Margin)
+                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - ResearchTree_Constants.TopBarHeight - ResearchTree_Constants.Margin)
                 );
         }
 
@@ -196,7 +206,7 @@ namespace HumanResources
             IconsRectInfo;
         private static FieldInfo largeLabelInfo;
 
-        //Reserarch Node
+        //Research Node
         private static MethodInfo
             GetMissingRequiredRecursiveInfo,
             GetResearchTooltipStringInfo;
@@ -226,13 +236,13 @@ namespace HumanResources
                 HighlightedInfo.SetValue(__instance, false);
                 return false;
             }
-            var detailedMode = forceDetailedMode || (float)ZoomLevelInfo.GetValue(InstanceInfo.GetValue(__instance)) < Constants.DetailedModeZoomLevelCutoff;
+            var detailedMode = forceDetailedMode || (float)ZoomLevelInfo.GetValue(InstanceInfo.GetValue(__instance)) < ResearchTree_Constants.DetailedModeZoomLevelCutoff;
             var mouseOver = Mouse.IsOver(rect);
 
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
-                GUI.color = mouseOver ? GenUI.MouseoverColor : (Color)ColorInfo.GetValue(__instance);
+                GUI.color = mouseOver ? HighlightColor/*GenUI.MouseoverColor*/ : (Color)ColorInfo.GetValue(__instance);
                 if (mouseOver || (bool)HighlightedInfo.GetValue(__instance))
                     GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
                 else
@@ -301,12 +311,12 @@ namespace HumanResources
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(
-                            IconsRect.xMax - (i + 1) * (Constants.IconSize.x + 4f),
-                            IconsRect.yMin + (IconsRect.height - Constants.IconSize.y) / 2f,
-                            Constants.IconSize.x,
-                            Constants.IconSize.y);
+                            IconsRect.xMax - (i + 1) * (ResearchTree_Constants.IconSize.x + 4f),
+                            IconsRect.yMin + (IconsRect.height - ResearchTree_Constants.IconSize.y) / 2f,
+                            ResearchTree_Constants.IconSize.x,
+                            ResearchTree_Constants.IconSize.y);
 
-                        if (iconRect.xMin - Constants.IconSize.x < IconsRect.xMin &&
+                        if (iconRect.xMin - ResearchTree_Constants.IconSize.x < IconsRect.xMin &&
                                 i + 1 < unlocks.Count)
                         {
                             //stop the loop if we're about to overflow and have 2 or more unlocks yet to print.
@@ -357,6 +367,27 @@ namespace HumanResources
             return false;
         }
 
+        private static Color HighlightColor = new Color(1f, 0.85f, 0.2f);
+        public static bool EdgeColor_Prefix(object __instance, ref Color __result)
+        {
+            bool flag = (bool)HighlightedInfo.GetValue(__instance);
+            if (flag)
+            {
+                __result = HighlightColor;
+                return false;
+            }
+            return true;
+        }
+        public static bool Color_Prefix(object __instance, ref Color __result)
+        {
+            bool flag = (bool)HighlightedInfo.GetValue(__instance);
+            if (flag)
+            {
+                __result = HighlightColor;
+                return false;
+            }
+            return true;
+        }
     }
 }
 

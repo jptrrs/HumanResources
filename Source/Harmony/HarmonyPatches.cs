@@ -98,6 +98,12 @@ namespace HumanResources
             return CheckKnownWeapons(pawn, thing.def);
         }
 
+        public static bool CheckKnownWeapons(Pawn pawn, ThingWithComps thing)
+        {
+            Log.Warning("DEBUG CheckKnownWeapons: pawn=" + pawn + ", thing=" + thing.Label);
+            return CheckKnownWeapons(pawn, thing.def);
+        }
+
         public static bool CheckKnownWeapons(Pawn pawn, ThingDef def)
         {
             var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;

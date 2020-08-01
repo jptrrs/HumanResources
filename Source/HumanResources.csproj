@@ -332,7 +332,7 @@
     <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
     <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
-    <Compile Include="Harmony\Compatibility\Royalty_Patches.cs" />
+    <Compile Include="Harmony\Compatibility\Royalty\Royalty_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\ThingListGroupHelper_Includes.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\CompTechprint_CompFloatMenuOptions.cs" />
@@ -347,7 +347,7 @@
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
     <Compile Include="Harmony\ResearchProjectDef_PlayerHasAnyAppropriateResearchBench.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\Constants.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />

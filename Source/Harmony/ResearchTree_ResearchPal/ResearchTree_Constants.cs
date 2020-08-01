@@ -2,7 +2,7 @@
 
 namespace HumanResources
 {
-    public static class Constants
+    public static class ResearchTree_Constants
     {
         private static object instance;
 
