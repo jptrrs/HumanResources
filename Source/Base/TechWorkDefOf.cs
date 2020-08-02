@@ -11,6 +11,6 @@ namespace HumanResources
             DocumentTech,
             TrainWeapon,
             PracticeShooting,
-            PratcticeMelee;
+            PracticeMelee;
     }
 }

@@ -18,7 +18,7 @@ namespace HumanResources
             MethodBase canCarrySidearmBase = AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() });
             instance.Patch(AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() }),
                 new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(canCarrySidearmÌnstance_Prefix)), null, null);
-            
+
             Type WeaponAssingmentType = AccessTools.TypeByName("SimpleSidearms.utilities.WeaponAssingment");
             instance.Patch(AccessTools.Method(WeaponAssingmentType, "equipSpecificWeapon"),
                 new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(equipSpecificWeapon_Prefix)), null, null);
@@ -33,6 +33,7 @@ namespace HumanResources
 
         public static bool equipSpecificWeapon_Prefix(Pawn pawn, ThingWithComps weapon)
         {
+            //Log.Warning("DEBUG " + pawn + " is trying to equip " + weapon.Label);
             if (pawn.RaceProps.Humanlike && pawn.Faction != null && pawn.Faction.IsPlayer && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, weapon);
             else return true;
         }

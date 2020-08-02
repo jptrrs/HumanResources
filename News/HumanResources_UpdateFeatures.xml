@@ -49,5 +49,22 @@ Many, many thanks for your support!
       |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
     </content>
   </HugsLib.UpdateFeatureDef>
-
+  
+  <!--<HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_0_16</defName>
+    <assemblyVersion>0.16</assemblyVersion>
+    <content>
+      &lt;b&gt;Refactoring Update (IMPORTANT!)&lt;/b&gt;
+      |The feedback you gave us on this first testing round has provided very valuable insights on how to improve &lt;i&gt;Human Resources&lt;/i&gt;. Beyond the usual fixes and compatibility patches, this update adresses some issues to try and make it more intuitive and give you the player better information. These are the main changes. If you're in the middle of a game you started before the update, there are some changes you should be aware of. (Also, in that case, if you get any errors, please try deleting any current bills on research and study benches.)
+      |1. The &lt;i&gt;Learn&lt;/i&gt; work type has been renamed to &lt;b&gt;Study&lt;/b&gt;.
+      |2. The &lt;i&gt;document technology&lt;/i&gt; task you assign your colonists to write books down now also belongs to the &lt;b&gt;study&lt;/b&gt; work type, since that's made at the &lt;i&gt;study desk&lt;/i&gt;. ;-)
+      |3. It used to be possible for a pawn to learn a new weapon only if the corresponding technology book was already stored in one of your bookshelves. &lt;b&gt;Now, if the pawn already knows that technolgy personally, he or she will also be able to train with that weapon&lt;/b&gt;. To allow for this, the weapons list on the recipe window no longer hides the weapons your colony can't access. Therefore, keep in mind there will be weapons you can check but your pawns won't necessarily be able to learn.
+      |4. The &lt;i&gt;Tech tab&lt;/i&gt; has gained some new capabilities. Check the new controls!|img:newButtons
+      |5. The speed for the research and study tasks now scales with the difficulty level selected for your game, slowing down on higher levels (on top of the difficulty scaling the base game already applies to the research task). This means researching with &lt;i&gt;Human Resources&lt;/i&gt; will be even more difficult on higher difficulty levels. You can turn that off, if you wish, on the mod options menu.
+      |Check the full change notes on our Steam page.
+      |
+      |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>-->
+  
 </Defs>

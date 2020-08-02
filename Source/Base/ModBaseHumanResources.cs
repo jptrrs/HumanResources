@@ -152,9 +152,27 @@ namespace HumanResources
             }
         }
 
-        //public override void WorldLoaded()
-        //{
-        //}
+        //Dealing with older versions
+        public override void MapLoaded(Map map)
+        {
+            var obsolete = new List<Building_WorkTable>();
+            ThingDef simpleBench = DefDatabase<ThingDef>.GetNamed("SimpleResearchBench");
+            ThingDef hiTechBench = DefDatabase<ThingDef>.GetNamed("HiTechResearchBench");
+            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(simpleBench)) obsolete.Add(oldBench);
+            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(hiTechBench)) obsolete.Add(oldBench);
+            if (obsolete.Any())
+            {
+                Log.Warning("[HumanResources] Replacing " + obsolete.Count() + " outdated research benches.");
+                foreach (Building_WorkTable oldBench in obsolete)
+                {
+                    Building_ResearchBench newBench;
+                    newBench = (Building_ResearchBench)ThingMaker.MakeThing(oldBench.def, oldBench.Stuff);
+                    newBench.SetFactionDirect(oldBench.Faction);
+                    var spawnedBench = (Building_ResearchBench)GenSpawn.Spawn(newBench, oldBench.Position, oldBench.Map, oldBench.Rotation);
+                    spawnedBench.HitPoints = oldBench.HitPoints;
+                }
+            }
+        }
 
         public override void SettingsChanged()
         {

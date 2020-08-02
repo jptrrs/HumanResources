@@ -167,12 +167,16 @@ namespace HumanResources
             //2. look for skills based on unlocked stuff
 
             //a. checking by query on the research tree
-            int matches = 0;
-            if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; matches++; };
+            //int matches = 0;
+            if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; /*matches++;*/ };
 
-            if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; matches++; };
+            if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; /*matches++;*/ };
 
-            if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; matches++; };
+            if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; /*matches++;*/ };
+
+            if (tech.Matches("tool") > 0) { craftingTag = true; }
+
+            if (tech.Matches("manage") > 0) { intellectualTag = true; }
 
             //b. checking by unlocked things
             if (thingDefs.Count() > 0)
@@ -210,10 +214,21 @@ namespace HumanResources
                 }
             }
 
+            //e. special cases
+            if (HarmonyPatches.RunSpecialCases)
+            {
+                if (tech.defName.StartsWith("ResearchProject_RotR"))
+                {
+                    miningTag = true;
+                    constructionTag = true;
+                }
+                if (tech.defName.StartsWith("BackupPower") || tech.defName.StartsWith("FluffyBreakdowns")) constructionTag = true;
+            }
+
             //3. Figure out Bias.
-            int ThingDefCount = thingDefs.Count();
-            int RecipeDefCount = recipeDefs.Count();
-            int TerrainDefCount = terrainDefs.Count();
+            //int ThingDefCount = thingDefs.Count();
+            //int RecipeDefCount = recipeDefs.Count();
+            //int TerrainDefCount = terrainDefs.Count();
 
             List<SkillDef> relevantSkills = new List<SkillDef>();
             if (shootingTag)
@@ -280,6 +295,7 @@ namespace HumanResources
             if (!relevantSkills.NullOrEmpty())
             {
                 SkillsByTech.Add(tech, relevantSkills);
+                //if (Prefs.LogVerbose) Log.Message("[HumanResources] " + tech + " associated to "+relevantSkills.ToStringSafeEnumerable()+".");
             }
             else
             {
