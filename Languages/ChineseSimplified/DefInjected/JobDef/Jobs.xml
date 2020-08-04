@@ -1,10 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <LearnTech.reportString>学习TargetB。</LearnTech.reportString>
-  <DocumentTech.reportString>记录TargetB。</DocumentTech.reportString>
-  <ResearchTech.reportString>正在研究TargetB。</ResearchTech.reportString>
-  <TrainWeapon.reportString>练习TargetB。</TrainWeapon.reportString>
-
-
-</LanguageData>
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<LearnTech.reportString>学习中</LearnTech.reportString>
+		<DocumentTech.reportString>记录中</DocumentTech.reportString>
+		<ResearchTech.reportString>研究中</ResearchTech.reportString>
+		<TrainWeapon.reportString>练习TargetB中。</TrainWeapon.reportString>
+	</LanguageData>

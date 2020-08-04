@@ -1,36 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <LearnTech.label>学习技术</LearnTech.label>
-  <LearnTech.description>学习以获取有关新技术的知识。</LearnTech.description>
-  <LearnTech.jobString>正在学习一项新技术。</LearnTech.jobString>
-
-  <DocumentTech.label>记录技术</DocumentTech.label>
-  <DocumentTech.description>将技术知识记录到书籍中。</DocumentTech.description>
-  <DocumentTech.jobString>正在记录技术。</DocumentTech.jobString>
-
-  <ResearchTech.label>研究技术</ResearchTech.label>
-  <ResearchTech.description>通过研究新技术来扩展知识。</ResearchTech.description>
-  <ResearchTech.jobString>研究中。</ResearchTech.jobString>
-
-  <TrainWeaponShooting.label>学习使用远程武器</TrainWeaponShooting.label>
-  <TrainWeaponShooting.description>练习远程武器以熟悉其操作。</TrainWeaponShooting.description>
-  <TrainWeaponShooting.jobString>正在练习远程武器。</TrainWeaponShooting.jobString>
-
-  <TrainWeaponMelee.label>学习使用近战武器</TrainWeaponMelee.label>
-  <TrainWeaponMelee.description>练习近战武器以熟悉其操作。</TrainWeaponMelee.description>
-  <TrainWeaponMelee.jobString>正在练习近战武器</TrainWeaponMelee.jobString>
-
-
-  <!-- From ItchyFlea's Practise Target -->
-
-  <PracticeShooting.label>练习射击</PracticeShooting.label>
-  <PracticeShooting.description>向目标射击以练习射击精度。</PracticeShooting.description>
-  <PracticeShooting.jobString>正在练习射击。</PracticeShooting.jobString>
-
-  <PracticeMelee.label>练习格斗</PracticeMelee.label>
-  <PracticeMelee.description>练习近距离对抗假人。</PracticeMelee.description>
-  <PracticeMelee.jobString>正在练习格斗。</PracticeMelee.jobString>
-
-
-</LanguageData>
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<LearnTech.label>学习技术</LearnTech.label>
+		<LearnTech.description>学习以获取有关新技术的知识。</LearnTech.description>
+		<LearnTech.jobString>正在学习一项新技术。</LearnTech.jobString>
+		<DocumentTech.label>记录技术</DocumentTech.label>
+		<DocumentTech.description>将技术知识记录到书籍中。</DocumentTech.description>
+		<DocumentTech.jobString>正在记录技术。</DocumentTech.jobString>
+		<TrainWeaponShooting.label>学习使用远程武器</TrainWeaponShooting.label>
+		<TrainWeaponShooting.description>练习远程武器以熟悉其操作。</TrainWeaponShooting.description>
+		<TrainWeaponShooting.jobString>正在练习远程武器。</TrainWeaponShooting.jobString>
+		<TrainWeaponMelee.label>学习使用近战武器</TrainWeaponMelee.label>
+		<TrainWeaponMelee.description>练习近战武器以熟悉其操作。</TrainWeaponMelee.description>
+		<TrainWeaponMelee.jobString>正在练习近战武器</TrainWeaponMelee.jobString>
+		<PracticeShooting.label>练习射击</PracticeShooting.label>
+		<PracticeShooting.description>向目标射击以练习射击精度。</PracticeShooting.description>
+		<PracticeShooting.jobString>正在练习射击。</PracticeShooting.jobString>
+		<PracticeMelee.label>练习格斗</PracticeMelee.label>
+		<PracticeMelee.description>练习近距离对抗假人。</PracticeMelee.description>
+		<PracticeMelee.jobString>正在练习格斗。</PracticeMelee.jobString>
+	</LanguageData>

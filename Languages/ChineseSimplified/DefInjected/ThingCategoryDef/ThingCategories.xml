@@ -1,13 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <Knowledge.label>知识</Knowledge.label>
-  <Neolithic.label>石器时代</Neolithic.label>
-  <Medieval.label>中世纪</Medieval.label>
-  <Industrial.label>工业时代</Industrial.label>
-  <Spacer.label>太空时代</Spacer.label>
-  <Ultra.label>极致时代</Ultra.label>
-  <Archotech.label>远古科技</Archotech.label>
-
-
-</LanguageData>
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<Knowledge.label>知识</Knowledge.label>
+		<Neolithic.label>石器时代</Neolithic.label>
+		<Medieval.label>中世纪</Medieval.label>
+		<Industrial.label>工业时代</Industrial.label>
+		<Spacer.label>太空时代</Spacer.label>
+		<Ultra.label>极致时代</Ultra.label>
+		<Archotech.label>远古科技</Archotech.label>
+	</LanguageData>

@@ -1,77 +1,67 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <!--UI-->
-  <TabKnowledge>科技</TabKnowledge>
-  <TabKnowledgeTitle>知识</TabKnowledgeTitle>
-  <TabKnowledgeWeapons>武器熟练度</TabKnowledgeWeapons>
-  <ShowCommon>显示原版</ShowCommon>
-  <ShowMelee>显示近战武器。</ShowMelee>
-  <ShowRanged>显示远程武器。</ShowRanged>
-  <ShowAvailable>显示可供学习的技术。</ShowAvailable>
-  <ShowCompact>小窗口</ShowCompact>
-  <Expand>扩展</Expand>
-  <Collapse>失败</Collapse>
-  <TabCatalogue>目录</TabCatalogue>
-  <AvailableBooksReport>{1}号书架中有{0}本书</AvailableBooksReport>
-
-  <!--Settings-->
-  <TechPoolModeTitle>知识泉源...</TechPoolModeTitle>
-  <TechPoolModeDesc>定义生成的玩家派系殖民者的技术池。</TechPoolModeDesc>
-  <TechPoolMode_Both>阵营相互关系设置</TechPoolMode_Both>
-  <TechPoolMode_TechLevel>仅该派系的技术水平</TechPoolMode_TechLevel>
-  <TechPoolMode_Starting>仅该派系的起始技术</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>包括剧本设定的开局科技</TechPoolIncludesScenarioTitle>
-  <TechPoolIncludesScenarioDesc>如果选中，还将包括您在剧本编辑器中添加的开局科技。</TechPoolIncludesScenarioDesc>
-  <WeaponPoolModeTitle>初始携带武器的战斗专家</WeaponPoolModeTitle>
-  <WeaponPoolModeDesc>定义当玩家的殖民者（仅限于射击或格斗专精）被生成时可携带的武器池。</WeaponPoolModeDesc>
-  <WeaponPoolMode_Both>两种武器清单</WeaponPoolMode_Both>
-  <WeaponPoolMode_TechLevel>该阵营的技术等级</WeaponPoolMode_TechLevel>
-  <WeaponPoolMode_Scenario>仅剧本</WeaponPoolMode_Scenario>
-  <ResearchSpeedTiedToDifficultyTitle>高难度会减缓研究速度。</ResearchSpeedTiedToDifficultyTitle>
-  <ResearchSpeedTiedToDifficultyDesc>开启此项研究速度将随难度增加而减缓，最多降低70%。不开启此项时，默认为原版的90%。</ResearchSpeedTiedToDifficultyDesc>
-  <StudySpeedTiedToDifficultyTitle>高难度会减缓学习速度。</StudySpeedTiedToDifficultyTitle>
-  <StudySpeedTiedToDifficultyDesc>开启此项学习新技术的基本速度将与难度设置相关联，其中中等难度降至90％，最高降至80％。</StudySpeedTiedToDifficultyDesc>
-
-  <!--Things-->
-  <BookStoreEmpty>空的</BookStoreEmpty>
-  <BookStoreCapacity>存档技术：{0} / {1}</BookStoreCapacity>
-  <BookStoreRetrieveBook>书籍检索</BookStoreRetrieveBook>
-  <BookStoreRetrieveBookDesc>在暑假中查找并取出指定的书籍</BookStoreRetrieveBookDesc>
-  <BookStoreNoInternalStorage>{0}没有匹配到任何书架。</BookStoreNoInternalStorage>
-  <KnowledgeLabel>{0}知识</KnowledgeLabel>
-  <Book>{0}之书</Book>
-  <BookCompendium>{0}纲要</BookCompendium>
-  <BookManual>{0}手册</BookManual>
-  <BookTheory>{0}论著</BookTheory>
-  <BookDatabase>{0}数据库</BookDatabase>
-
-  <!--Feedback-->
-  <MessageStudyComplete>{0_nameDef}已经了解了{1}的秘密。</MessageStudyComplete>
-  <MessageDocumentComplete>{0_nameDef}在{1}上写了一本书。</MessageDocumentComplete>
-  <MessageFiledTech>{0}的知识已添加到我们的库中。</MessageFiledTech>
-  <MessageEjectedTech>{0}的知识已从我们的库中删除。</MessageEjectedTech>
-  <MessageTrainingComplete>{0_nameDef}已掌握{1}。</MessageTrainingComplete>
-  <NothingToAddToLibrary>你什么都不懂，{0_nameFull}！</NothingToAddToLibrary>
-  <AlreadyKnowsTheWholeLibrary>{0_nameDef}已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
-  <LacksFundamentalKnowledge>{0_nameDef}缺少有关这些课题的基本知识。</LacksFundamentalKnowledge>
-  <NoWeaponsFoundToLearn>没有可训练的武器。</NoWeaponsFoundToLearn>
-  <MissingRequirementToLearnWeapon>{0_nameDef}没有有关{1}的知识或书籍。</MissingRequirementToLearnWeapon>
-  <ThoseWeapons>those weapons</ThoseWeapons>
-  <NoWeaponToLearn>{0_nameDef}已经知道如何使用这些武器。</NoWeaponToLearn>
-  <DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
-  <DoesntKnowHowToRepair>{0_nameDef}不知道如何修复{1}（需要{2}）。</DoesntKnowHowToRepair>
-  <DoesntKnowHowToCraft>{0_nameDef}不知道如何制作{1}（需要{2}）。</DoesntKnowHowToCraft>
-  <DoesntKnowThisPlant>{0_nameDef}不知道如何栽种{1}（需要{2}）。</DoesntKnowThisPlant>
-  <UnknownWeapon>{0_nameDef}尚未接受使用此武器的训练。</UnknownWeapon>
-  <EvilWeapon>{0_nameDef}认为这种奇怪的武器是邪恶的，{0_pronoun}不会碰它。</EvilWeapon>
-  <TechAlreadyKnown>{0}是已知的技术。</TechAlreadyKnown>
-
-  <!--Go Explore-->
-  <LetterResearchRequest_SuccessHR>这项研究是成功的。通过合作，您对{2}的理解有所提高。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_SuccessHR>
-  <LetterResearchRequest_TriumphHR>研究取得了巨大的成功！通过一同通力合作，您取得了突破，并发现了{2}的秘密。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_TriumphHR>
-  <ResearchRequestXPGainHR>{0}，您的研究人员，在{1}获得了宝贵的专业知识，并获得了{2}的智识。</ResearchRequestXPGainHR>
-
-  <!--MISSING:-->
-
-</LanguageData> 
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<TabKnowledge>科技</TabKnowledge>
+		<TabKnowledgeTitle>知识</TabKnowledgeTitle>
+		<TabKnowledgeWeapons>武器熟练度</TabKnowledgeWeapons>
+		<ShowCommon>显示原版武器。</ShowCommon>
+		<ShowMelee>显示近战武器。</ShowMelee>
+		<ShowRanged>显示远程武器。</ShowRanged>
+		<ShowAvailable>显示可供学习的技术。</ShowAvailable>
+		<ShowCompact>小窗口</ShowCompact>
+		<Expand>扩展</Expand>
+		<Collapse>失败</Collapse>
+		<TabCatalogue>目录</TabCatalogue>
+		<AvailableBooksReport>{1}号书架中有{0}本书</AvailableBooksReport>
+		<RightClickToTree>右键点击显示研究树。</RightClickToTree>
+		<TechPoolModeTitle>知识泉源...</TechPoolModeTitle>
+		<TechPoolModeDesc>定义生成的玩家派系殖民者的技术池。</TechPoolModeDesc>
+		<TechPoolMode_Both>阵营相互关系设置</TechPoolMode_Both>
+		<TechPoolMode_TechLevel>仅该派系的技术水平</TechPoolMode_TechLevel>
+		<TechPoolMode_Starting>仅该派系的起始技术</TechPoolMode_Starting>
+		<TechPoolIncludesScenarioTitle>包括剧本设定的开局科技</TechPoolIncludesScenarioTitle>
+		<TechPoolIncludesScenarioDesc>如果选中，还将包括您在剧本编辑器中添加的开局科技。</TechPoolIncludesScenarioDesc>
+		<WeaponPoolModeTitle>初始携带武器的战斗专家</WeaponPoolModeTitle>
+		<WeaponPoolModeDesc>定义当玩家的殖民者（仅限于射击或格斗专精）被生成时可携带的武器池。</WeaponPoolModeDesc>
+		<WeaponPoolMode_Both>两种武器清单</WeaponPoolMode_Both>
+		<WeaponPoolMode_TechLevel>该阵营的技术等级</WeaponPoolMode_TechLevel>
+		<WeaponPoolMode_Scenario>仅剧本</WeaponPoolMode_Scenario>
+		<FreeScenarioWeaponsTitle>所有殖民者掌握初始武器。</FreeScenarioWeaponsTitle>
+		<FreeScenarioWeaponsDesc>选中后殖民者自动掌握所有添加到剧本中的初始武器。</FreeScenarioWeaponsDesc>
+		<ResearchSpeedTiedToDifficultyTitle>高难度会减缓研究速度。</ResearchSpeedTiedToDifficultyTitle>
+		<ResearchSpeedTiedToDifficultyDesc>开启此项研究速度将随难度增加而减缓，最多降低70%。不开启此项时，默认为原版的90%。</ResearchSpeedTiedToDifficultyDesc>
+		<StudySpeedTiedToDifficultyTitle>高难度会减缓学习速度。</StudySpeedTiedToDifficultyTitle>
+		<StudySpeedTiedToDifficultyDesc>开启此项学习新技术的基本速度将与难度设置相关联，其中中等难度降至90％，最高降至80％。</StudySpeedTiedToDifficultyDesc>
+		<BookStoreEmpty>空的</BookStoreEmpty>
+		<BookStoreCapacity>存档技术：{0} / {1}</BookStoreCapacity>
+		<BookStoreRetrieveBook>书籍检索</BookStoreRetrieveBook>
+		<BookStoreRetrieveBookDesc>在暑假中查找并取出指定的书籍</BookStoreRetrieveBookDesc>
+		<BookStoreNoInternalStorage>{0}没有匹配到任何书架。</BookStoreNoInternalStorage>
+		<KnowledgeLabel>{0}知识</KnowledgeLabel>
+		<Book>{0}之书</Book>
+		<BookCompendium>{0}纲要</BookCompendium>
+		<BookManual>{0}手册</BookManual>
+		<BookTheory>{0}论著</BookTheory>
+		<BookDatabase>{0}数据库</BookDatabase>
+		<MessageStudyComplete>{0_nameDef}已经了解了{1}的秘密。</MessageStudyComplete>
+		<MessageDocumentComplete>{0_nameDef}在{1}上写了一本书。</MessageDocumentComplete>
+		<MessageFiledTech>{0}的知识已添加到我们的库中。</MessageFiledTech>
+		<MessageEjectedTech>{0}的知识已从我们的库中删除。</MessageEjectedTech>
+		<MessageTrainingComplete>{0_nameDef}已掌握{1}。</MessageTrainingComplete>
+		<NothingToAddToLibrary>你什么都不懂，{0_nameFull}！</NothingToAddToLibrary>
+		<AlreadyKnowsTheWholeLibrary>{0_nameDef}已阅读所有书籍。</AlreadyKnowsTheWholeLibrary>
+		<LacksFundamentalKnowledge>{0_nameDef}缺少有关这些课题的基本知识。</LacksFundamentalKnowledge>
+		<NoWeaponsFoundToLearn>没有可训练的武器。</NoWeaponsFoundToLearn>
+		<MissingRequirementToLearnWeapon>{0_nameDef}没有有关{1}的知识或书籍。</MissingRequirementToLearnWeapon>
+		<ThoseWeapons>those weapons</ThoseWeapons>
+		<NoWeaponToLearn>{0_nameDef}已经知道如何使用这些武器。</NoWeaponToLearn>
+		<DoesntKnowHowToBuild>{0_nameDef}不知道如何建造{1}（需要{2}）。</DoesntKnowHowToBuild>
+		<DoesntKnowHowToRepair>{0_nameDef}不知道如何修复{1}（需要{2}）。</DoesntKnowHowToRepair>
+		<DoesntKnowHowToCraft>{0_nameDef}不知道如何制作{1}（需要{2}）。</DoesntKnowHowToCraft>
+		<DoesntKnowThisPlant>{0_nameDef}不知道如何栽种{1}（需要{2}）。</DoesntKnowThisPlant>
+		<UnknownWeapon>{0_nameDef}尚未接受使用此武器的训练。</UnknownWeapon>
+		<EvilWeapon>{0_nameDef}认为这种奇怪的武器是邪恶的，{0_pronoun}不会碰它。</EvilWeapon>
+		<TechAlreadyKnown>{0}是已知的技术。</TechAlreadyKnown>
+		<LetterResearchRequest_SuccessHR>这项研究是成功的。通过合作，您对{2}的理解有所提高。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_SuccessHR>
+		<LetterResearchRequest_TriumphHR>研究取得了巨大的成功！通过一同通力合作，您取得了突破，并发现了{2}的秘密。\n\n与{0}的关系已改善了{1}。</LetterResearchRequest_TriumphHR>
+		<ResearchRequestXPGainHR>{0}，您的研究人员，在{1}获得了宝贵的专业知识，并获得了{2}的智识。</ResearchRequestXPGainHR>
+	</LanguageData>

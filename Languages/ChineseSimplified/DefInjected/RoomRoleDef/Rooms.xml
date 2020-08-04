@@ -1,7 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <Library.label>图书馆</Library.label>
-
-
-</LanguageData>
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<Library.label>图书馆</Library.label>
+	</LanguageData>

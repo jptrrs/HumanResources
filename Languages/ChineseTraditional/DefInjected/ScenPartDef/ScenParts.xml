@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<Rule_knowAllStartingWeapons.label>掌握所有初始武器</Rule_knowAllStartingWeapons.label>
+		<Rule_knowAllStartingWeapons.description>殖民者將能夠使用所有包含在劇本中的初始武器。</Rule_knowAllStartingWeapons.description>
+	</LanguageData>

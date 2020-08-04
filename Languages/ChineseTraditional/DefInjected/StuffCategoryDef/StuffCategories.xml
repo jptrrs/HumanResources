@@ -1,7 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-
-  <Technic.label>技術</Technic.label>
-
-
-</LanguageData>
+<?xml version="1.0" encoding="utf-8"?>
+	<LanguageData>
+		<Technic.label>技術</Technic.label>
+	</LanguageData>
