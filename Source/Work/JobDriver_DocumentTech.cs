@@ -16,7 +16,7 @@ namespace HumanResources
 		{
 			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
 			//project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.knownTechs).RandomElement();
-			project = techComp.homework.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
+			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}

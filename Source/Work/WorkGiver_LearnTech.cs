@@ -30,9 +30,9 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished /*&& x.RequisitesKnownBy(pawn)*/	).Any();
+				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any();
 			}
-            Log.Message("case 4");
+            //Log.Message("case 4");
             return false;
 
 		}

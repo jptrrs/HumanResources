@@ -50,21 +50,21 @@ Many, many thanks for your support!
     </content>
   </HugsLib.UpdateFeatureDef>
   
-  <!--<HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
     <defName>HumanResources_0_16</defName>
     <assemblyVersion>0.16</assemblyVersion>
     <content>
-      &lt;b&gt;Refactoring Update (IMPORTANT!)&lt;/b&gt;
-      |The feedback you gave us on this first testing round has provided very valuable insights on how to improve &lt;i&gt;Human Resources&lt;/i&gt;. Beyond the usual fixes and compatibility patches, this update adresses some issues to try and make it more intuitive and give you the player better information. These are the main changes. If you're in the middle of a game you started before the update, there are some changes you should be aware of. (Also, in that case, if you get any errors, please try deleting any current bills on research and study benches.)
-      |1. The &lt;i&gt;Learn&lt;/i&gt; work type has been renamed to &lt;b&gt;Study&lt;/b&gt;.
-      |2. The &lt;i&gt;document technology&lt;/i&gt; task you assign your colonists to write books down now also belongs to the &lt;b&gt;study&lt;/b&gt; work type, since that's made at the &lt;i&gt;study desk&lt;/i&gt;. ;-)
-      |3. It used to be possible for a pawn to learn a new weapon only if the corresponding technology book was already stored in one of your bookshelves. &lt;b&gt;Now, if the pawn already knows that technolgy personally, he or she will also be able to train with that weapon&lt;/b&gt;. To allow for this, the weapons list on the recipe window no longer hides the weapons your colony can't access. Therefore, keep in mind there will be weapons you can check but your pawns won't necessarily be able to learn.
-      |4. The &lt;i&gt;Tech tab&lt;/i&gt; has gained some new capabilities. Check the new controls!|img:newButtons
-      |5. The speed for the research and study tasks now scales with the difficulty level selected for your game, slowing down on higher levels (on top of the difficulty scaling the base game already applies to the research task). This means researching with &lt;i&gt;Human Resources&lt;/i&gt; will be even more difficult on higher difficulty levels. You can turn that off, if you wish, on the mod options menu.
+      &lt;b&gt;Easy Homework Update (IMPORTANT!)&lt;/b&gt;
+      |Following your feedback, we've made important changes to the way you select technologies for your colonists to study, document and research. The days of picking techs on the bills ingredient filter are over! Instead, now you do it...
+      |A) &lt;b&gt;On the Tech tab itself&lt;/b&gt;, simply by clicking on the desired technology. 
+      |img:HomeworkIndicator|caption:If the pawn knows it but its not on your library yet, it will be marked to be documented. If he doesn't know it but it's available, it will be marked for studying.
+      |B) &lt;b&gt;On the main Research Tab&lt;/b&gt;, by clicking on the the desired tech and selecting the pawn on a pop-up menu. 
+      |img:HomeworkOnTree|caption:This will set the techs to be researched or studied, depending on their availability. A picture of your colonist will be displayed on that tech, so it will be much easier to plan his path.
+      |The game will automatically assign any other pre-requisites that might be necessary, so no more hassle trying to figure this out! By the way: now a pawn can forego learning a pre-requisite tech if he already knows its descendants. (No need to go all the way back to &lt;i&gt;Smithing&lt;/i&gt; in order to research &lt;i&gt;Machining&lt;/i&gt; if you're already an expert &lt;i&gt;Gunsmith&lt;/i&gt;!)
+      |Those changes mean we don't need the bills on the Research Benches anymore. But they remain on the Study Desk, where you must still assign &lt;i&gt;study&lt;/i&gt; and &lt;i&gt;documenting&lt;/i&gt; jobs.  
       |Check the full change notes on our Steam page.
-      |
       |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
     </content>
-  </HugsLib.UpdateFeatureDef>-->
+  </HugsLib.UpdateFeatureDef>
   
 </Defs>

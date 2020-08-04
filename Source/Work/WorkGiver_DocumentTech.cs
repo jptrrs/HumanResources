@@ -41,7 +41,8 @@ namespace HumanResources
 				//}
 				//JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
 				//return false;
-				return pawn.TryGetComp<CompKnowledge>().knownTechs.Where(x => !x.IsFinished).Any();
+				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+				return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
 
 			}
 			//Log.Message("case 4");

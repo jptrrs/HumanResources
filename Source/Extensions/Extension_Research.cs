@@ -429,10 +429,14 @@ namespace HumanResources
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
             var expertise = techComp.expertise;
-            if (expertise != null && !tech.prerequisites.NullOrEmpty())
+            if (expertise != null)
             {
-                return tech.prerequisites.All(x => x.IsKnownBy(pawn));
+                //1. test if any descendent is known
+                if (expertise.Where(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)).Any()) return true;
+                //2. test if all ancestors are known
+                if (!tech.prerequisites.NullOrEmpty()) return tech.prerequisites.All(x => x.IsKnownBy(pawn));
             }
+            //3. test if there are any ancestors
             return tech.prerequisites.NullOrEmpty();
         }
 
