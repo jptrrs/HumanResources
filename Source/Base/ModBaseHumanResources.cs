@@ -91,7 +91,9 @@ namespace HumanResources
             //b. Also removing atipical weapons
             ThingDef WeaponsNotBasicDef = DefDatabase<ThingDef>.GetNamed("NotBasic");
             List<string> ForbiddenWeaponTags = WeaponsNotBasicDef.weaponTags;
+            Log.Warning("DEBUG weapons to be removed from universal: " + UniversalWeapons.Where(x => SplitSimpleWeapons(x, ForbiddenWeaponTags)).ToStringSafeEnumerable());
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
+            Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
             AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { WeaponsNotBasicDef });
 
             //c. Telling humans what's going on
@@ -208,11 +210,11 @@ namespace HumanResources
                 flag = true;
                 SimpleWeapons.Add(t);
             }
-            if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
-            {
-                flag = true;
-                SimpleWeapons.Add(t);
-            }
+            //if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
+            //{
+            //    flag = true;
+            //    SimpleWeapons.Add(t);
+            //}
             return flag;
         }
     }

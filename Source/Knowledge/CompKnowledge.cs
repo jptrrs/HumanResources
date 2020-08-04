@@ -419,7 +419,8 @@ namespace HumanResources
 
         public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
         {
-            var parents = tech.prerequisites?.Where(x => !expertise.ContainsKey(x) || expertise[x] < 1);
+            if (expertise.Where(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)).Any()) return new List<ResearchProjectDef>();
+            var parents = tech.prerequisites?.Where(x => !x.IsKnownBy(pawn));
             if (parents == null) return new List<ResearchProjectDef>();
             var allParents = new List<ResearchProjectDef>(parents);
             foreach (var parent in parents) allParents.AddRange(GetRequiredRecursive(parent));
