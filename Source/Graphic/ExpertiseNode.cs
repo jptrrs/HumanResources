@@ -395,17 +395,17 @@ namespace HumanResources
                 if (Known)
                 {
                     face = ContentFinder<Texture2D>.Get("UI/write", true);
-                    assignment = TechWorkDefOf.DocumentTech.verb;
+                    assignment = TechStrings.headerWrite;
                 }
                 else if (Research.IsFinished)
                 {
                     face = ContentFinder<Texture2D>.Get("UI/read");
-                    assignment = TechWorkDefOf.LearnTech.verb;
+                    assignment = TechStrings.headerRead;
                 }
                 else
                 {
                     face = ContentFinder<Texture2D>.Get("UI/research");
-                    assignment = DefDatabase<WorkGiverDef>.GetNamed("Research").verb;
+                    assignment = TechStrings.headerResearch;
                 }
                 TooltipHandler.TipRegionByKey(rect, assignment);
                 if (Widgets.ButtonImage(rect, face)) UpdateAssignment();

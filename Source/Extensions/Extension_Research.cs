@@ -22,6 +22,7 @@ namespace HumanResources
 
         private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
 
+
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
         {
             get
@@ -440,24 +441,31 @@ namespace HumanResources
             return tech.prerequisites.NullOrEmpty();
         }
 
+        private static IEnumerable<Pawn> SortedPawns(this ResearchProjectDef tech)
+        {
+            if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
+            else return currentPawns.OrderBy(x => tech.IsKnownBy(x)).ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
+        }
+
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
         {
-            WorkTypeDef workGiver = completed ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
             SkillDef skill = SkillDefOf.Intellectual;
-            IEnumerable<Pawn> enumerable = currentPawns.OrderBy(x => x.LabelCap).ThenBy(x => x.workSettings.WorkIsActive(workGiver)).ThenByDescending(x => x.skills.GetSkill(skill).Level);
-            using (IEnumerator<Pawn> enumerator = enumerable.GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = tech.SortedPawns().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     Pawn pawn = enumerator.Current;
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech)) && (!techComp.expertise.ContainsKey(tech) || techComp.expertise[tech] < 1f))
+                    bool known = tech.IsKnownBy(pawn);
+                    WorkTypeDef workGiver = (completed || known) ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
+                    string header = known ? TechStrings.headerWrite : completed ? TechStrings.headerRead : TechStrings.headerResearch;
+                    if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech))) 
                     {
                         if (pawn.WorkTypeIsDisabled(workGiver))
                         {
                             yield return new Widgets.DropdownMenuElement<Pawn>
                             {
-                                option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
+                                option = new FloatMenuOption(string.Format("{0}: {1} ({2})", header, pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
                                 payload = pawn
                             };
                         }
@@ -465,7 +473,7 @@ namespace HumanResources
                         {
                             yield return new Widgets.DropdownMenuElement<Pawn>
                             {
-                                option = new FloatMenuOption(string.Format("{0} ({1})", pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
+                                option = new FloatMenuOption(string.Format("{0}: {1} ({2})", header, pawn.LabelShortCap, "NotAssigned".Translate()), delegate ()
                                 {
                                     techComp.AssignBranch(tech);
                                 }, MenuOptionPriority.VeryLow, null, null, 0f, null, null),
@@ -474,19 +482,16 @@ namespace HumanResources
                         }
                         else
                         {
-                            List<ResearchProjectDef> homework = techComp.homework;
                             yield return new Widgets.DropdownMenuElement<Pawn>
                             {
-                                option = new FloatMenuOption(string.Format("{0} ({1} {2})", new object[]
+                                option = new FloatMenuOption(string.Format("{0}: {1} ({2} {3})", new object[]
                                 {
+                                    header,
                                     pawn.LabelShortCap,
                                     pawn.skills.GetSkill(skill).Level,
                                     skill.label
                                 }),
-                                delegate ()
-                                {
-                                    techComp.AssignBranch(tech);
-                                },
+                                delegate () { techComp.AssignBranch(tech); },
                                 MenuOptionPriority.Default, null, null, 0f, null, null),
                                 payload = pawn
                             };
@@ -502,7 +507,7 @@ namespace HumanResources
             Find.WindowStack.FloatMenu?.Close(false);
             List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
                                              select opt.option).ToList<FloatMenuOption>();
-            if (!options.Any()) options.Add(new FloatMenuOption("Fluffy.ResearchTree.NoResearchFound".Translate(), null));
+            if (!options.Any()) options.Add(new FloatMenuOption("NoOptionsFound".Translate(), null));
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
