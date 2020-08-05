@@ -65,6 +65,7 @@ Borrowed code from Fluffy's [Research Tree](https://steamcommunity.com/sharedfil
 *Training Dummy* and *Target Stand* originally designed by Shinzy for [Practise Target](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778).\
 Some textures based on [designs by Freepik](http://www.freepik.com).\
 Code contributions by MinerSebas.
-Translated into chinese by leafzxg.\
+Translated into Chinese by leafzxg and Miyuri.\
+Translated into Japanese by Miyuri.\
 Made possible thanks to the help of Brrains and erdelf on the Harmony Discord channel.\
 **Many thanks to all these awesome people!**

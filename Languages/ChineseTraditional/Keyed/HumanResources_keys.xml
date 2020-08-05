@@ -27,7 +27,9 @@
   <TabCatalogue>目錄</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{1}個書架上有{0}本書</AvailableBooksReport>
-
+  <!--EN: Right-click to show on Research Tree.-->
+  <RightClickToTree>右鍵點擊可顯示研究樹。</RightClickToTree>
+  
   <!--Settings-->
   
   <!--EN: Knowledge generation draws from...-->

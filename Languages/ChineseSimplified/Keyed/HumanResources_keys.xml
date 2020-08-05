@@ -27,6 +27,8 @@
   <TabCatalogue>目录</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{1}个书架上有{0}本书</AvailableBooksReport>
+  <!--EN: Right-click to show on Research Tree.-->
+  <RightClickToTree>右键点击可显示研究树。</RightClickToTree>
 
   <!--Settings-->
   
