@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  
+  <!--EN: Study technology-->
+  <LearnTech.label>Étudier la technologie</LearnTech.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTech.description>Étudier pour acquérir des connaissances à propos d'une technologie.</LearnTech.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTech.jobString>Étudie une technologie.</LearnTech.jobString>
+
+  <!--EN: Document technology-->
+  <DocumentTech.label>Documenter la technologie</DocumentTech.label>
+  <!--EN: Consolidate knowledge into a technical book.-->
+  <DocumentTech.description>Entériner la connaissance en rédigeant un texte technique.</DocumentTech.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTech.jobString>Documente une technologie</DocumentTech.jobString>
+
+  <!--EN: Research technologie-->
+  <ResearchTech.label>Rechercher la technologie</ResearchTech.label>
+  <!--EN: Expand the frontier of knowledge by researching new technologies.-->
+  <ResearchTech.description>Étendre les frontières de la connaissance en recherchant de nouvelles technologies.</ResearchTech.description>
+  <!--EN: Researching.-->
+  <ResearchTech.jobString>Recherche.</ResearchTech.jobString>
+
+  <!--EN: Learn to shoot a weapon-->
+  <TrainWeaponShooting.label>Apprendre à tirer avec une arme</TrainWeaponShooting.label>
+  <!--EN: Train with a ranged weapon to acquire proficiency.-->
+  <TrainWeaponShooting.description>S'entraîner avec une arme pour en améliorer le maniement.</TrainWeaponShooting.description>
+  <!--EN: Training to use a ranged weapon.-->
+  <TrainWeaponShooting.jobString>S'entraîne au tir avec une arme à distance.</TrainWeaponShooting.jobString>
+
+  <!--EN: Learn to wield a weapon-->
+  <TrainWeaponMelee.label>Apprendre à manier une arme</TrainWeaponMelee.label>
+  <!--EN: Train with a melee weapon to acquire proficiency.-->
+  <TrainWeaponMelee.description>S'entraîner avec une arme de corps-à-corps pour en améliorer le maniement.</TrainWeaponMelee.description>
+  <!--EN: Training to use a melee weapon.-->
+  <TrainWeaponMelee.jobString>S'entraîne au corps-à-corps.</TrainWeaponMelee.jobString>
+
+
+  <!-- From ItchyFlea's Practise Target -->
+
+  <!--EN: Practice shooting-->
+  <PracticeShooting.label>S'netraîner au tir</PracticeShooting.label>
+  <!--EN: Shoots at a target to practice shooting accuracy.-->
+  <PracticeShooting.description>Tire sur une cible pour améliorer sa précision à distance.</PracticeShooting.description>
+  <!--EN: Practicing shooting.-->
+  <PracticeShooting.jobString>S'entraîne au tir.</PracticeShooting.jobString>
+
+  <!--EN: Practice melee-->
+  <PracticeMelee.label>S'entraîner au corps-à-corps</PracticeMelee.label>
+  <!--EN: Practices close quarters combat against a straw dummy.-->
+  <PracticeMelee.description>S'entraîne au corps-à-corps avec un manequin d'entraînement.</PracticeMelee.description>
+  <!--EN: Practicing melee.-->
+  <PracticeMelee.jobString>S'entraîne au corps-à-corps.</PracticeMelee.jobString>
+
+
+</LanguageData>

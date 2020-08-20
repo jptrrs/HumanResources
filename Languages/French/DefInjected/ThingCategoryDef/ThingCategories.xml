@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: knowledge-->
+  <Knowledge.label>connaissance</Knowledge.label>
+  <!--EN: neolithic-->
+  <Neolithic.label>néolithique</Neolithic.label>
+  <!--EN: medieval-->
+  <Medieval.label>médiéval</Medieval.label>
+  <!--EN: industrial-->
+  <Industrial.label>industriel</Industrial.label>
+  <!--EN: spacer-->
+  <Spacer.label>spatial</Spacer.label>
+  <!--EN: ultra-->
+  <Ultra.label>ultra</Ultra.label>
+  <!--EN: archotech-->
+  <Archotech.label>arcotech</Archotech.label>
+
+
+</LanguageData>
