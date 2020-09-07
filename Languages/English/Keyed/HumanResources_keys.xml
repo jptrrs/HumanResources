@@ -66,7 +66,7 @@
   <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1} (requires {2}).</DoesntKnowHowToCraft>
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1} (requires {2}).</DoesntKnowThisPlant>
   <UnknownWeapon>pawn has not been trained to use this weapon</UnknownWeapon>
-  <EvilWeapon>pawn believes finds this strange weapon incomprehensible</EvilWeapon>
+  <EvilWeapon>pawn finds this strange weapon incomprehensible</EvilWeapon>
   <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
   
   <!--Go Explore-->
