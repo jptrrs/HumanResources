@@ -27,6 +27,15 @@
   <TabCatalogue>Catalogue</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{0} livre(s) dans {1} étagère(s)</AvailableBooksReport>
+  
+  <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
+  <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
+  <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <!--NEW--><RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
+  <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
+  <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
+  <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
+  <!--NEW--><ClickToRemove>click to remove</ClickToRemove>
 
   <!--Settings-->
   
@@ -126,10 +135,12 @@
   <DoesntKnowHowToCraft>{0_nameDef} ne sait pas “{1}”（nécessite {2}）。</DoesntKnowHowToCraft>
   <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
   <DoesntKnowThisPlant>{0_nameDef} ne sait pas cultiver des {1}（nécessite {2}）。</DoesntKnowThisPlant>
-  <!--EN: {0_nameDef} has not been trained to use this weapon.-->
+  
+  <!--CHANGED--><!--EN: Pawn has not been trained to use this weapon-->
   <UnknownWeapon>{0_nameDef} n'a pas été entraîné au maniement de cette arme.</UnknownWeapon>
-  <!--EN: {0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.-->
+  <!--CHANGED--><!--EN: Pawn cannot comprehend this weapon and is scared of it-->
   <EvilWeapon>{0_nameDef} croit que cette arme est diabolique, {0_pronoun} ne s'en approchera pas.</EvilWeapon>
+  
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} est déjà connu.e.</TechAlreadyKnown>
 
