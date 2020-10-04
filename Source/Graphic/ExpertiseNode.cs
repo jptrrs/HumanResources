@@ -382,7 +382,10 @@ namespace HumanResources
             var text = new StringBuilder();
             text.AppendLine(Research.description);
             text.AppendLine();
-            text.AppendLine("RightClickToTree");
+            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Research)) text.AppendLine("ClickToUnassign".Translate());
+            else if (Research.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForDocumentation".Translate());
+            else text.AppendLine("ClickToAssignForStudying".Translate());
+            text.AppendLine("RightClickToTree".Translate());
             return text.ToString();
         }
 

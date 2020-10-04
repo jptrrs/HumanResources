@@ -91,11 +91,19 @@ namespace HumanResources
                 PrisonLabor = true;
             }
 
+            //Children, School and Learning integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Dylan.CSL"))
+            {
+                Log.Message("[HumanResources] Children, School and Learning detected! Integrating...");
+                Type SchoolDefOfType = AccessTools.TypeByName("School.SchoolDefOf");
+                TechDefOf.HR_Learn = (WorkTypeDef)AccessTools.Field(SchoolDefOfType, "Study").GetValue(new object());
+            }
+
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x => 
-                x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 
-                x.PackageIdPlayerFacing == "fluffy.backuppower" || 
-                x.PackageIdPlayerFacing == "fluffy.fluffybreakdowns"))
+            x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 
+            x.PackageIdPlayerFacing == "fluffy.backuppower" || 
+            x.PackageIdPlayerFacing == "fluffy.fluffybreakdowns"))
             {
                 RunSpecialCases = true;
             }

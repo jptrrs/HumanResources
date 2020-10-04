@@ -444,7 +444,7 @@ namespace HumanResources
         private static IEnumerable<Pawn> SortedPawns(this ResearchProjectDef tech)
         {
             if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
-            else return currentPawns.OrderBy(x => tech.IsKnownBy(x)).ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
+            else return currentPawns.OrderBy(x => tech.IsKnownBy(x))/*.ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level)*/;
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
@@ -527,10 +527,23 @@ namespace HumanResources
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
                     Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
                     startPos += height / 2;
                 }
             }
         }
+
+        private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
+        {
+            string status = "error";
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (!tech.IsFinished) status = "AssignedToResearch".Translate(pawn);
+            else if (techComp != null && !techComp.homework.NullOrEmpty())
+            {
+                status = tech.IsKnownBy(pawn) ? "AssignedToDocument".Translate(pawn) : "AssignedToStudy".Translate(pawn);
+            }
+            return status + " (" + "ClickToRemove".Translate() + ")";
+        };
 
         private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
         {

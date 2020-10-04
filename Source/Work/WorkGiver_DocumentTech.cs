@@ -29,18 +29,8 @@ namespace HumanResources
 				var relevantBills = RelevantBills(Desk, pawn);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
-					//Log.Message("...no job on desk.");
 					return false;
 				}
-				//IEnumerable<ResearchProjectDef> advantage = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
-				//availableTechs = pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f).Select(x => x.Key);
-				//Log.Message("... advantage is " + advantage.ToStringSafeEnumerable());
-				//foreach (Bill bill in RelevantBills(Desk, pawn))
-				//{
-				//	if (availableTechs.Intersect(bill.SelectedTech()).Any()) return true;
-				//}
-				//JobFailReason.Is("NothingToAddToLibrary".Translate(pawn), null);
-				//return false;
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
 
@@ -115,7 +105,7 @@ namespace HumanResources
 			return null;
 		}
 
-		private static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
+		public new static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
 		{
 			if (pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f && x.Key.LabelCap == uft.Stuff.stuffProps.stuffAdjective).Any() == false)
 			{

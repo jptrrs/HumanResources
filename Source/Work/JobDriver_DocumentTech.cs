@@ -23,7 +23,7 @@ namespace HumanResources
 
 		protected ThingDef techStuff;
 
-		protected override IEnumerable<Toil> MakeNewToils()
+		public override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
 			{
@@ -206,6 +206,7 @@ namespace HumanResources
 				if (list.Any<Thing>())
 				{
 					Find.QuestManager.Notify_ThingsProduced(actor, list);
+					techComp.homework.Remove(project);
 				}
 				if (list.Count == 0)
 				{

@@ -17,7 +17,7 @@ namespace HumanResources
 			return base.GenerateThings(forTile, faction);
 		}
 
-		protected override Thing MakeThing(ThingDef def)
+		public override Thing MakeThing(ThingDef def)
 		{
 			if (!def.tradeability.TraderCanSell())
 			{
@@ -50,7 +50,7 @@ namespace HumanResources
 			return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef == TechDefOf.TechBook;
 		}
 
-		protected override float SelectionWeight(ThingDef thingDef)
+		public override float SelectionWeight(ThingDef thingDef)
 		{
 			return SelectionWeightMarketValueCurve.Evaluate(thingDef.BaseMarketValue);
 		}

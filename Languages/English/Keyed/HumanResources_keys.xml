@@ -14,8 +14,15 @@
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
-  <!--NEW--> <RightClickToTree>Right-click to show on Research Tree.</RightClickToTree>
-
+  <!--NEW--> <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
+  <!--NEW--> <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
+  <!--NEW--> <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <!--NEW--> <RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
+  <!--NEW--> <AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
+  <!--NEW--> <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
+  <!--NEW--> <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
+  <!--NEW--> <ClickToRemove>click to remove</ClickToRemove>
+                    
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>
   <TechPoolModeDesc>Defines the pool from which to draw technologies for the player's colonists when they are created.</TechPoolModeDesc>

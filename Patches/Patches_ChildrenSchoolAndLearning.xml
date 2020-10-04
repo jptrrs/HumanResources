@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Children, school and learning</li>
+		</mods>
+		<match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/WorkGiverDef/workType[.="HR_Learn"]</xpath>
+          <value>
+            <workType>Study</workType>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/RecipeDef/requiredGiverWorkType[.="HR_Learn"]</xpath>
+          <value>
+            <requiredGiverWorkType>Study</requiredGiverWorkType>
+          </value>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>/Defs/WorkTypeDef[defName="HR_Learn"]</xpath>
+        </li>
+      </operations>
+		</match>
+	</Operation>
+</Patch>
