@@ -112,15 +112,15 @@ namespace HumanResources
                         Rect viewRect = new Rect(0f, 0f, /*nodeSize.x*/extendedNodeLength, viewHeight);
                         Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect);
                         var pos = new Vector2(0f, 0f);
-                        int columnBreak = (int)expertiseList.First().Research.techLevel;
+                        int columnBreak = (int)expertiseList.First().Tech.techLevel;
                         for (int i = 0; i < expertiseList.Count && pos.x + /*nodeSize.x*/extendedNodeLength < leftColumn.xMax; i++)
                         {
                             var node = expertiseList[i];
-                            if (fullTechs && (int)node.Research.techLevel != columnBreak)
+                            if (fullTechs && (int)node.Tech.techLevel != columnBreak)
                             {
                                 pos.x += /*nodeSize.x*/extendedNodeLength + margin;
                                 pos.y = 0f;
-                                columnBreak = (int)node.Research.techLevel;
+                                columnBreak = (int)node.Tech.techLevel;
                             }
                             //var nodePos = new Vector2(pos.x + buttonSize.x, pos.y);
                             //var nodeBox = new Rect(nodePos, nodeSize);

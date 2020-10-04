@@ -14,6 +14,14 @@
   <Collapse>Recolher</Collapse>
   <TabCatalogue>Catálogo</TabCatalogue>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
+  <ClickToAssignForStudying>Botão esquerdo para marcar para estudo.</ClickToAssignForStudying>
+  <ClickToAssignForDocumentation>Botão esquerdo para marcar para documentação.</ClickToAssignForDocumentation>
+  <ClickToUnassign>Botão esquerdo para desmarcar.</ClickToUnassign>
+  <RightClickToTree>Botão direito para abrir na árvore de pesquisa.</RightClickToTree>
+  <AssignedToResearch>{0} foi encarregado de pesquisar isto.</AssignedToResearch>
+  <AssignedToStudy>{0} foi encarregado de estudar isto.</AssignedToStudy>
+  <AssignedToDocument>{0} foi encarregado de documentar isto.</AssignedToDocument>
+  <ClickToRemove>clique para remover</ClickToRemove>
   
   <!--Settings-->
   <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
@@ -65,8 +73,8 @@
   <DoesntKnowHowToRepair>{0_nameDef} não sabe como consertar isso (requer {2}).</DoesntKnowHowToRepair>
   <DoesntKnowHowToCraft>{0_nameDef} não sabe como {1} (requer {2}).</DoesntKnowHowToCraft>
   <DoesntKnowThisPlant>{0_nameDef} não sabe como cultivar isso (requer {2}).</DoesntKnowThisPlant>
-  <UnknownWeapon>{0_nameDef} não foi treinado para usar essa arma.</UnknownWeapon>
-  <EvilWeapon>{0_nameDef} acredita que essa arma estranha é amaldiçoada, {0_pronoun} não vai sequer tocá-la.</EvilWeapon>
+  <UnknownWeapon>O personagem não foi treinado para usar essa arma.</UnknownWeapon>
+  <EvilWeapon>O personagem não compreende esta arma e tem receio de tocá-la.</EvilWeapon>
   <TechAlreadyKnown>{0} já é algo conhecido.</TechAlreadyKnown>
   
   <!--Go Explore-->

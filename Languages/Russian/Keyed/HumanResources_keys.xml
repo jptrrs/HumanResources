@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+  <!--UI-->
+  <TabKnowledge>Технологии</TabKnowledge>
+  <TabKnowledgeTitle>Знания</TabKnowledgeTitle>
+  <TabKnowledgeWeapons>Владение оружием</TabKnowledgeWeapons>
+  <ShowCommon>Показать обычное оружие.</ShowCommon>
+  <ShowMelee>Показать холодное оружие.</ShowMelee>
+  <ShowRanged>Показать оружие дальнего боя.</ShowRanged>
+  <ShowAvailable>Показать доступные для обучения технологий.</ShowAvailable>
+  <ShowCompact>Компактный вид.</ShowCompact>
+  <Expand>Развернуть</Expand>
+  <Collapse>Свернуть</Collapse>
+  <TabCatalogue>Каталог</TabCatalogue>
+  <AvailableBooksReport>{0} книг на {1} полках</AvailableBooksReport>
+  <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
+  <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
+  <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <!--NEW--><RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
+  <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
+  <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
+  <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
+  <!--NEW--><ClickToRemove>click to remove</ClickToRemove>
+
+  <!--Settings-->
+  <TechPoolModeTitle>Знания формируются из ...</TechPoolModeTitle>
+  <TechPoolModeDesc>Определяет пул, из которого будут извлекать технологии для игрока, колонисты при их создании.</TechPoolModeDesc>
+  <TechPoolMode_Both>настройки обеих фракций</TechPoolMode_Both>
+  <TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>
+  <TechPoolMode_Starting>только стартовые технологии для этой фракции</TechPoolMode_Starting>
+  <TechPoolIncludesScenarioTitle>Также включает начальные части исследования из сценария.</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioDesc>Если этот флажок установлен, любые технологии, которые вы добавляете в редактор сценария, также будут включены в пул знаний для новых колонистов.</TechPoolIncludesScenarioDesc>
+  <WeaponPoolModeTitle>Боевые специалисты начинают с оружием из ...</WeaponPoolModeTitle>
+  <WeaponPoolModeDesc>Определяет пул, из которого можно получить навыки владения оружием для колонистов игрока, которые являются опытными стрелками или скандалистами при их создании.</WeaponPoolModeDesc>
+  <WeaponPoolMode_Both>оба списка оружия</WeaponPoolMode_Both>
+  <WeaponPoolMode_TechLevel>только технический уровень фракции</WeaponPoolMode_TechLevel>
+  <WeaponPoolMode_Scenario>только сценарий</WeaponPoolMode_Scenario>
+  <FreeScenarioWeaponsTitle>Все колонисты начинают с сценарным оружием.</FreeScenarioWeaponsTitle>
+  <FreeScenarioWeaponsDesc>Если этот флажок установлен, любое оружие, которое вы добавляете в редактор сценария, также будет включено в список оружия, которое колонисты игрока могут использовать. (Стандартный сценарий «Богатый исследователь» исправлен так, чтобы всегда делать это, независимо от того, что здесь выбрано)</FreeScenarioWeaponsDesc>
+  <ResearchSpeedTiedToDifficultyTitle>Настройки сложности замедляют исследования.</ResearchSpeedTiedToDifficultyTitle>
+  <ResearchSpeedTiedToDifficultyDesc>Если этот флажок установлен, базовая скорость исследования привязана к настройкам сложности, без изменений на Легком уровне и до 30% медленнее на Сложном. Если этот флажок не установлен, по умолчанию он на 10% медленнее, чем ванильный.</ResearchSpeedTiedToDifficultyDesc>
+  <StudySpeedTiedToDifficultyTitle>Настройки сложности замедляют изучение технологий.</StudySpeedTiedToDifficultyTitle>
+  <StudySpeedTiedToDifficultyDesc>Если этот флажок установлен, базовая скорость для изучения новых технологий привязана к настройкам сложности, снижаясь на 10% на Среднем уровне и до 20% на Сложном.</StudySpeedTiedToDifficultyDesc>
+
+  <!--Things-->
+  <BookStoreEmpty>Пусто</BookStoreEmpty>
+  <BookStoreCapacity>Архивные технологии: {0}/{1}</BookStoreCapacity>
+  <BookStoreRetrieveBook>Получить книгу</BookStoreRetrieveBook>
+  <BookStoreRetrieveBookDesc>Найти и удалить определенную книгу с книжной полки.</BookStoreRetrieveBookDesc>
+  <BookStoreNoInternalStorage>{0} не помещается ни на одной книжной полке.</BookStoreNoInternalStorage>
+  <KnowledgeLabel>{0} знания</KnowledgeLabel>
+  <Book>Книг из {0}</Book>
+  <BookCompendium>{0} Сборник</BookCompendium>
+  <BookManual>{0} Руководство</BookManual>
+  <BookTheory>{0} Теория</BookTheory>
+  <BookDatabase>{0} База данных</BookDatabase>
+
+  <!--Feedback-->
+  <MessageStudyComplete>{0_nameDef} узнал секреты {1}.</MessageStudyComplete>
+  <MessageDocumentComplete>{0_nameDef} написал книгу по {1}.</MessageDocumentComplete>
+  <MessageFiledTech>В нашу библиотеку были добавлены знания для {0}.</MessageFiledTech>
+  <MessageEjectedTech>Информация о {0} была удалена из нашей библиотеки.</MessageEjectedTech>
+  <MessageTrainingComplete>{0_nameDef} освоил {1}.</MessageTrainingComplete>
+  <NothingToAddToLibrary>Ты ничего не знаешь, {0_nameFull}.</NothingToAddToLibrary>
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} прочитал все книги.</AlreadyKnowsTheWholeLibrary>
+  <LacksFundamentalKnowledge>{0_nameDef} не хватает базовых знаний по этим предметам.</LacksFundamentalKnowledge>
+  <NoWeaponsFoundToLearn>Нет доступного оружия для обучения.</NoWeaponsFoundToLearn>
+  <MissingRequirementToLearnWeapon>{0_nameDef} не имеет соответствующих знаний или книг, о которых можно было бы узнать {1}.</MissingRequirementToLearnWeapon>
+  <ThoseWeapons>это оружие</ThoseWeapons>
+  <NoWeaponToLearn>{0_nameDef} уже знает, как использовать это оружие.</NoWeaponToLearn>
+  <DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется {2}).</DoesntKnowHowToBuild>
+  <DoesntKnowHowToRepair>{0_nameDef} не знает, как восстановить {1} (требуется {2}).</DoesntKnowHowToRepair>
+  <DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется {2}).</DoesntKnowHowToCraft>
+  <DoesntKnowThisPlant>{0_nameDef} не знает, как выращивать {1} (требуется {2}).</DoesntKnowThisPlant>
+  
+  <!--CHANGED--><!--EN: Pawn has not been trained to use this weapon-->
+  <UnknownWeapon>{0_nameDef} не обучался пользоваться этим оружием.</UnknownWeapon>
+  <!--CHANGED--><!--EN: Pawn cannot comprehend this weapon and is scared of it-->
+  <EvilWeapon>{0_nameDef} считает это странное оружие злом, {0_pronoun} не тронет его.</EvilWeapon>
+  
+  <TechAlreadyKnown>{0} уже известен.</TechAlreadyKnown>
+  
+  <!--Go Explore-->
+  <LetterResearchRequest_SuccessHR>Исследование прошло успешно. Работая вместе, вы продвинулись в понимании {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_TriumphHR>Исследование было большим триумфом! Работая вместе, вы достигли прорыва и раскрыли секреты {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>
+  <ResearchRequestXPGainHR>{0}, ваш исследователь, приобрел ценный опыт в {1} и приобрел {2} интеллектуальный опыт.</ResearchRequestXPGainHR>
+
+</LanguageData>

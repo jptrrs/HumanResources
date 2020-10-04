@@ -30,6 +30,14 @@
   <!--EN: Right-click to show on Research Tree.-->
   <RightClickToTree>右键点击可显示研究树。</RightClickToTree>
 
+  <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
+  <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
+  <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
+  <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
+  <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
+  <!--NEW--><ClickToRemove>click to remove</ClickToRemove>
+
   <!--Settings-->
   
   <!--EN: Knowledge generation draws from...-->
@@ -128,10 +136,12 @@
   <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成“{1}”（需要 {2}）。</DoesntKnowHowToCraft>
   <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
   <DoesntKnowThisPlant>{0_nameDef} 不知如何栽种 {1}（需要 {2}）。</DoesntKnowThisPlant>
-  <!--EN: {0_nameDef} has not been trained to use this weapon.-->
+  
+  <!--CHANGED--><!--EN: Pawn has not been trained to use this weapon-->
   <UnknownWeapon>{0_nameDef} 尚未接受使用此武器的训练。</UnknownWeapon>
-  <!--EN: {0_nameDef} believes this strange weapon is evil, {0_pronoun} won't touch it.-->
+  <!--CHANGED--><!--EN: Pawn cannot comprehend this weapon and is scared of it-->
   <EvilWeapon>{0_nameDef} 认为这种奇怪的武器是邪恶的，因而不会碰它。</EvilWeapon>
+
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
 

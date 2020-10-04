@@ -175,7 +175,7 @@ namespace HumanResources
         }
         //
 
-        public ResearchProjectDef Research;
+        public ResearchProjectDef Tech;
 
         private Pawn Pawn;
 
@@ -190,7 +190,7 @@ namespace HumanResources
         public ExpertiseNode(ResearchProjectDef research, Pawn pawn)
         {
             Pawn = pawn;
-            Research = research;
+            Tech = research;
             _pos = new Vector2(0, research.researchViewY + 1);
             //pseudoParent = Activator.CreateInstance(pseudoParentType, research);
         }
@@ -202,15 +202,15 @@ namespace HumanResources
                 if (Highlighted)
                     return GenUI.MouseoverColor;
                 if (Completed)
-                    return ResearchTree_Assets.ColorCompleted[Research.techLevel];
+                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
                 if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Research.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Research.techLevel];
+                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
             }
         }
 
-        public bool Completed => Research.IsFinished;
-        public bool Available => !Research.IsFinished && (DebugSettings.godMode || BuildingPresent());
+        public bool Completed => Tech.IsFinished;
+        public bool Available => !Tech.IsFinished && (DebugSettings.godMode || BuildingPresent());
 
         public Color EdgeColor
         {
@@ -219,10 +219,10 @@ namespace HumanResources
                 if (Highlighted)
                     return GenUI.MouseoverColor;
                 if (Completed)
-                    return ResearchTree_Assets.ColorCompleted[Research.techLevel];
+                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
                 if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Research.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Research.techLevel];
+                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
             }
         }
 
@@ -230,7 +230,7 @@ namespace HumanResources
 
         public bool BuildingPresent()
         {
-            return ResearchTree_Patches.BuildingPresent(Research);
+            return ResearchTree_Patches.BuildingPresent(Tech);
         }
 
         public void Draw(Rect visibleRect, bool forceDetailedMode = false)
@@ -259,9 +259,9 @@ namespace HumanResources
                 var progressBarRect = Rect.ContractedBy(3f);
                 //GUI.color = Assets.ColorAvailable[Research.techLevel];
                 GUI.color = Widgets.WindowBGFillColor;
-                if (techComp.expertise.ContainsKey(Research))
+                if (techComp.expertise.ContainsKey(Tech))
                 {
-                    progressBarRect.xMin += techComp.expertise[Research] * progressBarRect.width;
+                    progressBarRect.xMin += techComp.expertise[Tech] * progressBarRect.width;
                 }
                 //else
                 //{
@@ -283,29 +283,29 @@ namespace HumanResources
                     Text.Anchor = TextAnchor.UpperLeft;
                     Text.WordWrap = false;
                     Text.Font = _largeLabel ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(LabelRect, Research.LabelCap);
+                    Widgets.Label(LabelRect, Tech.LabelCap);
                 }
                 else
                 {
                     Text.Anchor = TextAnchor.MiddleCenter;
                     Text.WordWrap = false;
                     Text.Font = GameFont.Small;//GameFont.Medium;
-                    Widgets.Label(Rect, Research.LabelCap);
+                    Widgets.Label(Rect, Tech.LabelCap);
                 }
 
                 // draw research cost and icon
                 if (detailedMode)
                 {
                     Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = Research.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, Research.CostApparent.ToStringByStyle(ToStringStyle.Integer));
+                    Text.Font = Tech.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label(CostLabelRect, Tech.CostApparent.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
                 }
 
                 Text.WordWrap = true;
 
                 // attach description and further info to a tooltip
-                TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Research.GetHashCode());
+                TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
                 if (!BuildingPresent())
                 {
                     string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
@@ -316,7 +316,7 @@ namespace HumanResources
                 // draw unlock icons
                 if (detailedMode)
                 {
-                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Research);
+                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Tech);
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(
@@ -351,22 +351,22 @@ namespace HumanResources
                 if (Event.current.button == 0)
                 {
                     UpdateAssignment();
-                    if (Completed && Research.IsKnownBy(Pawn))
+                    if (Completed && Tech.IsKnownBy(Pawn))
                     {
-                        Messages.Message("TechAlreadyKnown".Translate(Research), Pawn, MessageTypeDefOf.RejectInput, false);
+                        Messages.Message("TechAlreadyKnown".Translate(Tech), Pawn, MessageTypeDefOf.RejectInput, false);
                     }
                 }
                 if (Event.current.button == 1)
                 {
                     MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                    ResearchTree_Patches.subjectToShow = Research;
+                    ResearchTree_Patches.subjectToShow = Tech;
                 }
             }
         }
 
         public List<ThingDef> MissingFacilities()
         {
-            return ResearchTree_Patches.MissingFacilities(Research);
+            return ResearchTree_Patches.MissingFacilities(Tech);
         }
 
         public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
@@ -380,11 +380,11 @@ namespace HumanResources
         private string GetResearchTooltipString()
         {
             var text = new StringBuilder();
-            text.AppendLine(Research.description);
+            text.AppendLine(Tech.description);
             text.AppendLine();
-            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Research)) text.AppendLine("ClickToUnassign".Translate());
-            else if (Research.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForDocumentation".Translate());
-            else text.AppendLine("ClickToAssignForStudying".Translate());
+            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Tech)) text.AppendLine("ClickToUnassign".Translate());
+            else if (!Tech.IsFinished && Tech.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForDocumentation".Translate());
+            else if (Tech.IsFinished && !Tech.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForStudying".Translate());
             text.AppendLine("RightClickToTree".Translate());
             return text.ToString();
         }
@@ -400,7 +400,7 @@ namespace HumanResources
                     face = ContentFinder<Texture2D>.Get("UI/write", true);
                     assignment = TechStrings.headerWrite;
                 }
-                else if (Research.IsFinished)
+                else if (Tech.IsFinished)
                 {
                     face = ContentFinder<Texture2D>.Get("UI/read");
                     assignment = TechStrings.headerRead;
@@ -419,7 +419,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Research);
+                if (Pawn.IsColonist && techComp != null && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Tech);
                 else return false;
             }
         }
@@ -428,7 +428,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null) return Research.IsKnownBy(Pawn);
+                if (Pawn.IsColonist && techComp != null) return Tech.IsKnownBy(Pawn);
                 else return false;
             }
         }
@@ -437,8 +437,8 @@ namespace HumanResources
         {
             if (techComp != null)
             {
-                if (Pawn.IsColonist && !Assigned && ((!techComp.expertise.ContainsKey(Research) || techComp.expertise[Research] < 1f) || !Completed)) techComp.AssignBranch(Research);
-                else if (Assigned) techComp.CancelBranch(Research);
+                if (Pawn.IsColonist && !Assigned && ((!techComp.expertise.ContainsKey(Tech) || techComp.expertise[Tech] < 1f) || !Completed)) techComp.AssignBranch(Tech);
+                else if (Assigned) techComp.CancelBranch(Tech);
             }
         }
     }

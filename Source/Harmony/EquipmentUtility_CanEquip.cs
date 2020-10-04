@@ -11,6 +11,7 @@ namespace HumanResources
     {
         public static bool Prefix(Thing thing, Pawn pawn, out string cantReason)
         {
+            Log.Warning("checking if "+pawn+" knows "+thing);
             ThingWithComps equipment = null;
             if (thing.TryGetComp<CompEquippable>() != null) equipment = thing as ThingWithComps;
             if (pawn.Faction != null && pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && equipment != null && equipment.def.IsWeapon && !HarmonyPatches.CheckKnownWeapons(pawn, equipment))

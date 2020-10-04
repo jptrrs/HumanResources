@@ -387,6 +387,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{74EA3E96
 		Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml = Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{D15B3718-A909-499F-9EBC-6060831FBFA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -472,6 +474,7 @@ Global
 		{7CFDB5E0-34C0-4B4E-80D1-3E3CC3B090D0} = {348F713F-C8DC-40EE-BDBB-58AD63027CB3}
 		{BACF16C9-FEA2-468B-8F6A-F15605F71ED2} = {348F713F-C8DC-40EE-BDBB-58AD63027CB3}
 		{74EA3E96-49D7-4D53-9BAA-E8EF85922CE8} = {8BE6A2B3-343E-44C2-BD23-80BA34FDB0B9}
+		{D15B3718-A909-499F-9EBC-6060831FBFA0} = {452F02AB-B76F-4DFD-A0EA-42F2522A0A4D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}
