@@ -31,9 +31,15 @@ namespace HumanResources
                 var requisites = t.def.entityDefToBuild.researchPrerequisites;
                 if (!requisites.NullOrEmpty())
                 {
-                    string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
-                    JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
-                    return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                    bool result = requisites.All(x => x.IsKnownBy(pawn));
+                    if (!result)
+                    {
+                        var missing = requisites.Where(x => !x.IsKnownBy(pawn));
+                        string preReqText = (missing.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : missing.FirstOrDefault().label;
+                        JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
+                    }
+                    //return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                    return result;
                 }
             }
             return true;

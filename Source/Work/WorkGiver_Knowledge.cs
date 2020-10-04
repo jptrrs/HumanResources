@@ -10,7 +10,12 @@ namespace HumanResources
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
-			return pawn.TryGetComp<CompKnowledge>()?.expertise == null;
+			CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+			if (techComp != null)
+			{
+				return techComp.expertise == null || techComp.homework.NullOrEmpty();
+			}
+			return true;
 		}
 
 		protected bool CheckJobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -37,7 +42,5 @@ namespace HumanResources
 			}
 			return null;
 		}
-
-		protected IEnumerable<ResearchProjectDef> availableTechs;
 	}
 }

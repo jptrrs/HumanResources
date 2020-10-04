@@ -91,7 +91,9 @@ namespace HumanResources
             //b. Also removing atipical weapons
             ThingDef WeaponsNotBasicDef = DefDatabase<ThingDef>.GetNamed("NotBasic");
             List<string> ForbiddenWeaponTags = WeaponsNotBasicDef.weaponTags;
+            Log.Warning("DEBUG weapons to be removed from universal: " + UniversalWeapons.Where(x => SplitSimpleWeapons(x, ForbiddenWeaponTags)).ToStringSafeEnumerable());
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
+            Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
             AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { WeaponsNotBasicDef });
 
             //c. Telling humans what's going on
@@ -152,9 +154,27 @@ namespace HumanResources
             }
         }
 
-        //public override void WorldLoaded()
-        //{
-        //}
+        //Dealing with older versions
+        public override void MapLoaded(Map map)
+        {
+            var obsolete = new List<Building_WorkTable>();
+            ThingDef simpleBench = DefDatabase<ThingDef>.GetNamed("SimpleResearchBench");
+            ThingDef hiTechBench = DefDatabase<ThingDef>.GetNamed("HiTechResearchBench");
+            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(simpleBench)) obsolete.Add(oldBench);
+            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(hiTechBench)) obsolete.Add(oldBench);
+            if (obsolete.Any())
+            {
+                Log.Warning("[HumanResources] Replacing " + obsolete.Count() + " outdated research benches.");
+                foreach (Building_WorkTable oldBench in obsolete)
+                {
+                    Building_ResearchBench newBench;
+                    newBench = (Building_ResearchBench)ThingMaker.MakeThing(oldBench.def, oldBench.Stuff);
+                    newBench.SetFactionDirect(oldBench.Faction);
+                    var spawnedBench = (Building_ResearchBench)GenSpawn.Spawn(newBench, oldBench.Position, oldBench.Map, oldBench.Rotation);
+                    spawnedBench.HitPoints = oldBench.HitPoints;
+                }
+            }
+        }
 
         public override void SettingsChanged()
         {
@@ -190,11 +210,11 @@ namespace HumanResources
                 flag = true;
                 SimpleWeapons.Add(t);
             }
-            if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
-            {
-                flag = true;
-                SimpleWeapons.Add(t);
-            }
+            //if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
+            //{
+            //    flag = true;
+            //    SimpleWeapons.Add(t);
+            //}
             return flag;
         }
     }

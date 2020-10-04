@@ -31,7 +31,6 @@ namespace HumanResources
         {
             if (!(selPawn.WorkTypeIsDisabled(WorkTypeDefOf.Research) || selPawn.WorkTagIsDisabled(WorkTags.Intellectual)) && selPawn.CanReach(__instance.parent, PathEndMode.ClosestTouch, Danger.Some, false, TraverseMode.ByPawn) && selPawn.CanReserve(__instance.parent, 1, -1, null, false))
             {
-                Log.Warning("Ei!");
                 List<FloatMenuOption> modified = new List<FloatMenuOption>();
                 Thing thing = GenClosest.ClosestThingReachable(selPawn.Position, selPawn.Map, ThingRequest.ForGroup(ThingRequestGroup.ResearchBench), PathEndMode.InteractionCell, TraverseParms.For(selPawn, Danger.Some, TraverseMode.ByPawn, false), 9999f, (Thing t) => t is Building_WorkTable && selPawn.CanReserve(t, 1, -1, null, false), null, 0, -1, false, RegionType.Set_Passable, false);
                 Job job = null;

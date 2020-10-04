@@ -15,10 +15,10 @@ namespace HumanResources
             return allowedTechs;
         }
 
-        public static bool IsResearch(this Bill bill)
-        {
-            return bill.recipe.requiredGiverWorkType == WorkTypeDefOf.Research;
-        }
+        //public static bool IsResearch(this Bill bill)
+        //{
+        //    return bill.recipe.requiredGiverWorkType == WorkTypeDefOf.Research;
+        //}
 
         public static bool UsesKnowledge(this Bill bill)
         {

@@ -10,13 +10,12 @@ namespace HumanResources
     public static class HarmonyPatches
     {
         public static Harmony instance = null;
-        public static bool CurrentTech;
-        public static bool FutureTech;
-        public static bool WeaponTrainingSelection;
-        public static bool Ball;
         public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
-        public static bool ResearchPal = false;
-        public static bool PrisonLabor = false;
+        public static bool
+            //WeaponTrainingSelection,
+            ResearchPal = false,
+            PrisonLabor = false,
+            RunSpecialCases = false;
 
         public static Harmony Instance
         {
@@ -91,6 +90,23 @@ namespace HumanResources
                 Log.Message("[HumanResources] Prison Labor detected! Integrating...");
                 PrisonLabor = true;
             }
+
+            //Children, School and Learning integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Dylan.CSL"))
+            {
+                Log.Message("[HumanResources] Children, School and Learning detected! Integrating...");
+                Type SchoolDefOfType = AccessTools.TypeByName("School.SchoolDefOf");
+                TechDefOf.HR_Learn = (WorkTypeDef)AccessTools.Field(SchoolDefOfType, "Study").GetValue(new object());
+            }
+
+            //Provisions for specific research projects
+            if (LoadedModManager.RunningModsListForReading.Any(x => 
+            x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 
+            x.PackageIdPlayerFacing == "fluffy.backuppower" || 
+            x.PackageIdPlayerFacing == "fluffy.fluffybreakdowns"))
+            {
+                RunSpecialCases = true;
+            }
         }
 
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)
@@ -98,8 +114,14 @@ namespace HumanResources
             return CheckKnownWeapons(pawn, thing.def);
         }
 
+        public static bool CheckKnownWeapons(Pawn pawn, ThingWithComps thing)
+        {
+            return CheckKnownWeapons(pawn, thing.def);
+        }
+
         public static bool CheckKnownWeapons(Pawn pawn, ThingDef def)
         {
+
             var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
             bool result = false;
             if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(def);

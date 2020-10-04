@@ -12,15 +12,14 @@ namespace HumanResources
 {
     public class CompKnowledge : ThingComp
     {
-        public Dictionary<ResearchProjectDef,float> expertise;
-        public List<ResearchProjectDef> HomeWork = new List<ResearchProjectDef>();
+        public Dictionary<ResearchProjectDef, float> expertise;
+        public List<ResearchProjectDef> homework;
         public List<ThingDef> proficientPlants;
         public List<ThingDef> proficientWeapons;
         protected static bool isFighter = false;
         protected static bool isShooter = false;
         protected static TechLevel startingTechLevel;
         public IEnumerable<ResearchProjectDef> knownTechs => expertise.Where(x => x.Value >= 1f).Select(x => x.Key);
-        public IEnumerable<ResearchProjectDef> partiallyKnownTechs => expertise.Where(x => x.Value < 1f).Select(x => x.Key);
 
         public List<ThingDef> knownWeapons
         {
@@ -216,25 +215,24 @@ namespace HumanResources
 
         public void AcquireExpertise()
         {
-            if (expertise == null)
+            if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
+            expertise = new Dictionary<ResearchProjectDef, float>();
+            FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+            var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
+            if (!acquiredExpertise.EnumerableNullOrEmpty())
             {
-                if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
-                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
-                var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
-                if (!acquiredExpertise.EnumerableNullOrEmpty())
-                {
-                    expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
-                    if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
-                }
-                else
-                {
-                    Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
-                }
-                AcquireWeaponKnowledge(faction);
-                if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
-                AcquirePlantKnowledge();
-                if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+                expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
+                if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
             }
+            else
+            {
+                Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
+            }
+            AcquireWeaponKnowledge(faction);
+            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
+            AcquirePlantKnowledge();
+            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+            string test2 = expertise != null ? "ok" : "bad";
         }
 
         public void AcquirePlantKnowledge()
@@ -308,13 +306,13 @@ namespace HumanResources
 
         public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
         {
-            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + HomeWork.Count());
+            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + homework.Count());
             if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
             {
                 var expertiseKeys = from x in expertise
                                     where x.Value >= 1f
                                     select x.Key;
-                var available = studyMaterial.Except(expertiseKeys).Except(HomeWork);
+                var available = studyMaterial.Except(expertiseKeys).Except(homework);
                 if (!available.Any())
                 {
                     JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
@@ -329,20 +327,7 @@ namespace HumanResources
                     JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
                     return;
                 }
-                HomeWork.AddRange(starters.Concat(derived).Concat(preceding));
-            }
-        }
-
-        public override void CompTickRare()
-        {
-            if (!HomeWork.NullOrEmpty())
-            {
-                var excess = HomeWork.Except(SelectedAnywhere);
-                if (excess.Any())
-                {
-                    HomeWork.RemoveAll(x => excess.Contains(x));
-                    if (Prefs.LogVerbose) Log.Message("Removing " + excess.Count() + " unassigned projects from" + pawn);
-                }
+                homework.AddRange(starters.Concat(derived).Concat(preceding));
             }
         }
 
@@ -375,13 +360,15 @@ namespace HumanResources
                 }
             }
             Scribe_Collections.Look(ref expertise, "Expertise");
+            Scribe_Collections.Look(ref homework, "homework");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && homework == null) homework = new List<ResearchProjectDef>();
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            AcquireExpertise();
+            if (expertise == null) AcquireExpertise();
         }
 
         private static int FactionExpertiseRange(TechLevel level)
@@ -420,6 +407,39 @@ namespace HumanResources
                 else if (skills.All(s => unskilled.Contains(s))) return (100f - chance) / 10;
             }
             return 100f - chance;
+        }
+
+        //new functions
+        public void AssignBranch(ResearchProjectDef tech)
+        {
+            if (homework == null) homework = new List<ResearchProjectDef>();
+            homework.Add(tech);
+            homework.AddRange(GetRequiredRecursive(tech));
+        }
+
+        public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
+        {
+            if (expertise.Where(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)).Any()) return new List<ResearchProjectDef>();
+            var parents = tech.prerequisites?.Where(x => !x.IsKnownBy(pawn));
+            if (parents == null) return new List<ResearchProjectDef>();
+            var allParents = new List<ResearchProjectDef>(parents);
+            foreach (var parent in parents) allParents.AddRange(GetRequiredRecursive(parent));
+            return allParents.Distinct().ToList();
+        }
+
+        public void CancelBranch(ResearchProjectDef tech)
+        {
+            foreach (var child in GetDescendentsRecursive(tech)) homework.Remove(child);
+            homework.Remove(tech);
+        }
+
+        public List<ResearchProjectDef> GetDescendentsRecursive(ResearchProjectDef tech)
+        {
+            var children = homework.Where(x => !x.prerequisites.NullOrEmpty() && x.prerequisites.Contains(tech));
+            if (children.EnumerableNullOrEmpty()) return new List<ResearchProjectDef>();
+            var allChildren = new List<ResearchProjectDef>(children);
+            foreach (var child in children) allChildren.AddRange(GetDescendentsRecursive(child));
+            return allChildren.Distinct().ToList();
         }
     }
 }

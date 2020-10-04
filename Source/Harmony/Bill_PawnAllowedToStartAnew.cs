@@ -54,7 +54,7 @@ namespace HumanResources
                             requisite = recipeHolder.researchPrerequisites.FirstOrDefault();
                         }
                     }
-                    if (requisite != null && !(expertise.ContainsKey(requisite) && expertise[requisite] >= 1f))
+                    if (requisite != null && !requisite.IsKnownBy(p))
                     {
                         JobFailReason.Is("DoesntKnowHowToCraft".Translate(p, ___recipe.label, requisite.label));
                         return false;

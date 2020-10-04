@@ -12,7 +12,7 @@ namespace HumanResources
         {
 			if (!base.ShouldSkip(pawn, forced))
 			{
-				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished).Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs);
+				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished)/*.Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs)*/;
 				return !available.Any();
 			}
 			return true;
@@ -30,23 +30,9 @@ namespace HumanResources
 					//Log.Message("...no job on desk.");
 					return false;
 				}
-				List<ResearchProjectDef> studyMaterial = new List<ResearchProjectDef>();
-				foreach (Bill bill in relevantBills)
-				{
-                    //Log.Message("...checking recipe: " + bill.recipe + ", on bill " + bill.GetType());
-                    //Log.Message("...selected techs count: " + bill.SelectedTech().ToList().Count());
-                    studyMaterial.AddRange(bill.SelectedTech().Where(x => x.IsFinished));
-				}
-				availableTechs = studyMaterial;
-                //Log.Message("...studyMaterial count is " + studyMaterial.Count());
-                CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-				techComp.AssignHomework(studyMaterial);
-                //Log.Message("...homework count is " + techComp.HomeWork.Count());
-                if (techComp.HomeWork.Count() > 0) return true;
-                if (studyMaterial.Intersect(techComp.HomeWork).Any()) return true;
-				return false;
+				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any();
 			}
-            Log.Message("case 4");
+            //Log.Message("case 4");
             return false;
 
 		}
@@ -62,7 +48,7 @@ namespace HumanResources
 					billGiver.BillStack.RemoveIncompletableBills();
 					foreach (Bill bill in RelevantBills(thing, pawn))
 					{
-						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) && bill.SelectedTech().Intersect(availableTechs).Any())
+						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn)/*&& bill.SelectedTech().Intersect(availableTechs).Any()*/)
 						{
 							return new Job(TechJobDefOf.LearnTech, target)
 							{

@@ -18,10 +18,12 @@ namespace HumanResources
                 var requisites = t.def.researchPrerequisites;
                 if (!requisites.NullOrEmpty())
                 {
-                    __result = pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                    //__result = pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
+                    __result = requisites.All(x => x.IsKnownBy(pawn));
                     if (!__result)
                     {
-                        string preReqText = (requisites.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                        var missing = requisites.Where(x => !x.IsKnownBy(pawn));
+                        string preReqText = (missing.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : missing.FirstOrDefault().label;
                         JobFailReason.Is("DoesntKnowHowToRepair".Translate(pawn, t.def.label, preReqText));
                     }
                 }

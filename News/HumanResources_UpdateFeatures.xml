@@ -49,5 +49,22 @@ Many, many thanks for your support!
       |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
     </content>
   </HugsLib.UpdateFeatureDef>
-
+  
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_0_16</defName>
+    <assemblyVersion>0.16</assemblyVersion>
+    <content>
+      &lt;b&gt;Easy Homework Update (IMPORTANT!)&lt;/b&gt;
+      |Following your feedback, we've made important changes to the way you select technologies for your colonists to study, document and research. The days of picking techs on the bills ingredient filter are over! Instead, now you do it...
+      |A) &lt;b&gt;On the Tech tab itself&lt;/b&gt;, simply by clicking on the desired technology. 
+      |img:HomeworkIndicator|caption:If the pawn knows it but its not on your library yet, it will be marked to be documented. If he doesn't know it but it's available, it will be marked for studying.
+      |B) &lt;b&gt;On the main Research Tab&lt;/b&gt;, by clicking on the the desired tech and selecting the pawn on a pop-up menu. 
+      |img:HomeworkOnTree|caption:This will set the techs to be researched or studied, depending on their availability. A picture of your colonist will be displayed on that tech, so it will be much easier to plan his path.
+      |The game will automatically assign any other pre-requisites that might be necessary, so no more hassle trying to figure this out! By the way: now a pawn can forego learning a pre-requisite tech if he already knows its descendants. (No need to go all the way back to &lt;i&gt;Smithing&lt;/i&gt; in order to research &lt;i&gt;Machining&lt;/i&gt; if you're already an expert &lt;i&gt;Gunsmith&lt;/i&gt;!)
+      |Those changes mean we don't need the bills on the Research Benches anymore. But they remain on the Study Desk, where you must still assign &lt;i&gt;study&lt;/i&gt; and &lt;i&gt;documenting&lt;/i&gt; jobs.  
+      |Check the full change notes on our Steam page.
+      |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+  
 </Defs>

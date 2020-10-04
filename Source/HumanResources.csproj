@@ -59,8 +59,8 @@
       <HintPath>..\packages\Lib.Harmony.2.0.1\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\..\..\RimWorldWin64_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
@@ -321,7 +321,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\TechJobDefOf.cs" />
+    <Compile Include="Base\TechJobDefOf .cs" />
+    <Compile Include="Base\TechStrings.cs" />
+    <Compile Include="Base\TechWorkDefOf.cs" />
     <Compile Include="Base\TechDefOf.cs" />
     <Compile Include="Books\Building_BookStore.cs" />
     <Compile Include="Books\StockGenerator_TechBooks.cs" />
@@ -332,9 +334,8 @@
     <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
     <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
-    <Compile Include="Harmony\Compatibility\Royalty_Patches.cs" />
+    <Compile Include="Harmony\Compatibility\Royalty\Royalty_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
-    <Compile Include="Harmony\ThingListGroupHelper_Includes.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\CompTechprint_CompFloatMenuOptions.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
@@ -346,8 +347,7 @@
     <Compile Include="Harmony\Compatibility\GoExplore_Patches.cs" />
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
-    <Compile Include="Harmony\ResearchProjectDef_PlayerHasAnyAppropriateResearchBench.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\Constants.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
@@ -359,14 +359,10 @@
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
-    <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
-    <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
-    <Compile Include="Harmony\Dialog_BillConfig_DoWindowContents.cs" />
     <Compile Include="Books\ITab_Inventory.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
-    <Compile Include="Graphic\Node.cs" />
     <Compile Include="Books\RoomRoleWorker_Library.cs" />
     <Compile Include="Books\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />

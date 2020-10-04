@@ -8,6 +8,8 @@
     <label>NotBasic</label>
     <weaponTags>
       <li>Gun</li>
+      <li>Bladelink</li>
+      <li>UltratechMelee</li>
     </weaponTags>
   </ThingDef>
 

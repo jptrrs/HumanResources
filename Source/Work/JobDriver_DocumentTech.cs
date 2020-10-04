@@ -15,14 +15,15 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
-			project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.knownTechs).RandomElement();
+			//project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.knownTechs).RandomElement();
+			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
 		protected ThingDef techStuff;
 
-		protected override IEnumerable<Toil> MakeNewToils()
+		public override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
 			{
@@ -39,14 +40,15 @@ namespace HumanResources
 				IBillGiver billGiver = job.GetTarget(TargetIndex.A).Thing as IBillGiver;
 				if (billGiver != null)
 				{
-					if (job.bill.DeletedOrDereferenced)
+					if (job.bill.DeletedOrDereferenced) return true;
+					if (!billGiver.CurrentlyUsableForBills()) return true;
+					if (project == null)
 					{
+						Log.Warning("[HumanResources] " + pawn + " tried to document a null project.");
+						TryMakePreToilReservations(true);
 						return true;
 					}
-					if (!billGiver.CurrentlyUsableForBills())
-					{
-						return true;
-					}
+					if (!techComp.homework.Contains(project)) return true;
 				}
 				return false;
 			});
@@ -204,6 +206,7 @@ namespace HumanResources
 				if (list.Any<Thing>())
 				{
 					Find.QuestManager.Notify_ThingsProduced(actor, list);
+					techComp.homework.Remove(project);
 				}
 				if (list.Count == 0)
 				{
