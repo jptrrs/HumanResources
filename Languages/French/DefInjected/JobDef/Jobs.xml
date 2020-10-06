@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <!--EN: learning TargetB.-->
-  <LearnTech.reportString>Apprend TargetB.</LearnTech.reportString>
-  <!--EN: documenting TargetB.-->
-  <DocumentTech.reportString>Documente TargetB.</DocumentTech.reportString>
-  <!--EN: researching TargetB.-->
-  <ResearchTech.reportString>Recherche TargetB.</ResearchTech.reportString>
-  <!--EN: practicing TargetB.-->
-  <TrainWeapon.reportString>S'entraîne avec TargetB.</TrainWeapon.reportString>
+  <!--EN: learning-->
+  <LearnTech.reportString>Apprend</LearnTech.reportString>
+  <!--EN: documenting-->
+  <DocumentTech.reportString>Documente</DocumentTech.reportString>
+  <!--EN: researching-->
+  <ResearchTech.reportString>Recherche</ResearchTech.reportString>
+  <!--EN: practicing-->
+  <TrainWeapon.reportString>S'entraîne avec</TrainWeapon.reportString>
 
 
 </LanguageData> 
