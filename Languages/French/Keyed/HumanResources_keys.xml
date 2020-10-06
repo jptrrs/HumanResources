@@ -27,25 +27,21 @@
   <TabCatalogue>Catalogue</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{0} livre(s) dans {1} étagère(s)</AvailableBooksReport>
-  
-  <!--NEW
-  <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
-  <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
-  <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
-  <RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
-  <AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
-  <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
-  <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
-  <ClickToRemove>click to remove</ClickToRemove>
-  -->
-
+    <!--EN: Left-click to assign for studying.-->
   <ClickToAssignForStudying>Clic-gauche pour affecter à l'étude.</ClickToAssignForStudying>
+  <!--EN: Left-click to assign for documentation.-->
   <ClickToAssignForDocumentation>Clic-gauche pour affecter à la documentation.</ClickToAssignForDocumentation>
+  <!--EN: Left-click to unassign.-->
   <ClickToUnassign>Clic-gauche pour annuler l'affectation.</ClickToUnassign>
+  <!--EN: Right-click to show on Research tree.-->
   <RightClickToTree>Clic-droit pour afficher dans l'arbre des recherches.</RightClickToTree>
-  <AssignedToResearch>{0} est affecté.e à cette recherche.</AssignedToResearch>
-  <AssignedToStudy>{0} est affecté.e à l'étude de ceci.</AssignedToStudy>
-  <AssignedToDocument>{0} est affecté.e à la documentation de ceci.</AssignedToDocument>
+  <!--EN: {0} is tasked with researching this.-->
+  <AssignedToResearch>{0} est affectée à cette recherche.</AssignedToResearch>
+  <!--EN: {0} is tasked with studying this.-->
+  <AssignedToStudy>{0} est affectée à l'étude de ceci.</AssignedToStudy>
+  <!--EN: {0} is tasked with documenting this.-->
+  <AssignedToDocument>{0} est affectée à la documentation de ceci.</AssignedToDocument>
+  <!--EN: click to remove-->
   <ClickToRemove>Clic-gauche pour retirer.</ClickToRemove>
   
   <!--Settings-->
@@ -146,12 +142,10 @@
   <DoesntKnowHowToCraft>{0_nameDef} ne sait pas “{1}”（nécessite {2}）。</DoesntKnowHowToCraft>
   <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
   <DoesntKnowThisPlant>{0_nameDef} ne sait pas cultiver des {1}（nécessite {2}）。</DoesntKnowThisPlant>
-  
-  <!--CHANGED--><!--EN: Pawn has not been trained to use this weapon-->
+  <!--EN: Pawn has not been trained to use this weapon-->
   <UnknownWeapon>Ce colon n'a pas été entraîné au maniement de cette arme.</UnknownWeapon>
-  <!--CHANGED--><!--EN: Pawn cannot comprehend this weapon and is scared of it-->
+  <!--EN: Pawn cannot comprehend this weapon and is scared of it-->
   <EvilWeapon>Ce colon ne comprend pas cette arme, et en a un peu peur.</EvilWeapon>
-  
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} est déjà connu.e.</TechAlreadyKnown>
 
@@ -163,7 +157,5 @@
   <LetterResearchRequest_TriumphHR>La recherche partagée est un vrai triomphe !  Collectivement, vous avez repoussé les frontières et percé les secrets de {2} ! \n\nLes relations avec {0} se sont améliorées de {1}.</LetterResearchRequest_TriumphHR>
   <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
   <ResearchRequestXPGainHR>Votre chercheur {0} a acquis une expertise considérable sur {1} et gagné {2} d'expérience intellectuelle.</ResearchRequestXPGainHR>
-
-  <!--MISSING:-->
 
 </LanguageData> 
