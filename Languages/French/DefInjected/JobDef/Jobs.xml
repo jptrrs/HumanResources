@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: learning-->
+  <LearnTech.reportString>Apprend</LearnTech.reportString>
+  <!--EN: documenting-->
+  <DocumentTech.reportString>Documente</DocumentTech.reportString>
+  <!--EN: researching-->
+  <ResearchTech.reportString>Recherche</ResearchTech.reportString>
+  <!--EN: practicing-->
+  <TrainWeapon.reportString>S'entraîne avec</TrainWeapon.reportString>
+
+
+</LanguageData> 

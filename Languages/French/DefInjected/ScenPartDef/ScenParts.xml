@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: know all starting weapons-->
+  <Rule_knowAllStartingWeapons.label>Connaître toutes les armes de départ</Rule_knowAllStartingWeapons.label>
+  <!--EN: The colonists will be able to use all weapons included on this scenario.-->
+  <Rule_knowAllStartingWeapons.description>Les colons seront capables de manier toutes les armes présentes dans le scénario de départ.</Rule_knowAllStartingWeapons.description>
+
+
+</LanguageData>

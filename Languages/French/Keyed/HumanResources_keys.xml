@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--UI-->
+  
+  <!--EN: Tech-->
+  <TabKnowledge>Technologie</TabKnowledge>
+  <!--EN: Knowledge-->
+  <TabKnowledgeTitle>Connaissance</TabKnowledgeTitle>
+  <!--EN: Weapons Proficiency-->
+  <TabKnowledgeWeapons>Habileté au maniement des armes</TabKnowledgeWeapons>
+  <!--EN: Show common weapons.-->
+  <ShowCommon>Afficher les armes courantes</ShowCommon>
+  <!--EN: Show melee weapons.-->
+  <ShowMelee>Afficher les armes de corps-à-corps</ShowMelee>
+  <!--EN: Show ranged weapons.-->
+  <ShowRanged>Afficher les armes à distance</ShowRanged>
+  <!--EN: Show techs available to learn.-->
+  <ShowAvailable>Afficher les technologies disponibles à l'apprentissage</ShowAvailable>
+  <!--EN: Compact view.-->
+  <ShowCompact>Vue compacte</ShowCompact>
+  <!--EN: Expand-->
+  <Expand>Étendre</Expand>
+  <!--EN: Collapse-->
+  <Collapse>Réduire</Collapse>
+  <!--EN: Catalog-->
+  <TabCatalogue>Catalogue</TabCatalogue>
+  <!--EN: {0} books in {1} shelves-->
+  <AvailableBooksReport>{0} livre(s) dans {1} étagère(s)</AvailableBooksReport>
+    <!--EN: Left-click to assign for studying.-->
+  <ClickToAssignForStudying>Clic-gauche pour affecter à l'étude.</ClickToAssignForStudying>
+  <!--EN: Left-click to assign for documentation.-->
+  <ClickToAssignForDocumentation>Clic-gauche pour affecter à la documentation.</ClickToAssignForDocumentation>
+  <!--EN: Left-click to unassign.-->
+  <ClickToUnassign>Clic-gauche pour annuler l'affectation.</ClickToUnassign>
+  <!--EN: Right-click to show on Research tree.-->
+  <RightClickToTree>Clic-droit pour afficher dans l'arbre des recherches.</RightClickToTree>
+  <!--EN: {0} is tasked with researching this.-->
+  <AssignedToResearch>{0} est affectée à cette recherche.</AssignedToResearch>
+  <!--EN: {0} is tasked with studying this.-->
+  <AssignedToStudy>{0} est affectée à l'étude de ceci.</AssignedToStudy>
+  <!--EN: {0} is tasked with documenting this.-->
+  <AssignedToDocument>{0} est affectée à la documentation de ceci.</AssignedToDocument>
+  <!--EN: click to remove-->
+  <ClickToRemove>Clic-gauche pour retirer.</ClickToRemove>
+  
+  <!--Settings-->
+  
+  <!--EN: Knowledge generation draws from...-->
+  <TechPoolModeTitle>La génération de connaissance s'inspire de…</TechPoolModeTitle>
+  <!--EN: Defines the pool from which to draw technologies for the player's colonists when they are created.-->
+  <TechPoolModeDesc>Détermine l'ensemble à partir duquel choisir les technologies lors de la création des colons.</TechPoolModeDesc>
+  <!--EN: both faction settings-->
+  <TechPoolMode_Both>Paramètres des deux factions</TechPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <TechPoolMode_TechLevel>Le niveau de technologie de la faction uniquement</TechPoolMode_TechLevel>
+  <!--EN: the starting techs for that faction only-->
+  <TechPoolMode_Starting>Les technologies de départ pour cette faction uniquement</TechPoolMode_Starting>
+  <!--EN: Also include starting research parts from the scenario.-->
+  <TechPoolIncludesScenarioTitle>Inclure également les recherches de départ du scénario.</TechPoolIncludesScenarioTitle>
+  <!--EN: If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.-->
+  <TechPoolIncludesScenarioDesc>Si activé, toute technologie ajoutée à l'éditeur de scénario sera aussi incluse dans la base de connaissances de vos colons.</TechPoolIncludesScenarioDesc>
+  <!--EN: Combat specialists start with weapons from...-->
+  <WeaponPoolModeTitle>Les spécialistes du combat débutent avec des armes parmi...</WeaponPoolModeTitle>
+  <!--EN: Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.-->
+  <WeaponPoolModeDesc>Détermine l'ensemble à partir duquel choisir les armes favorites des spécialistes du combat lors de la création des colons.</WeaponPoolModeDesc>
+  <!--EN: both weapon lists-->
+  <WeaponPoolMode_Both>Armes des deux listes</WeaponPoolMode_Both>
+  <!--EN: the faction's tech level only-->
+  <WeaponPoolMode_TechLevel>Le niveau de technologie de la faction uniquement</WeaponPoolMode_TechLevel>
+  <!--EN: the scenario only-->
+  <WeaponPoolMode_Scenario>Le scénario uniquement</WeaponPoolMode_Scenario>
+  <!--EN: All colonists start with scenario weapons.-->
+  <FreeScenarioWeaponsTitle>Tous les colons débutent avec des armes du scénario</FreeScenarioWeaponsTitle>
+  <!--EN: If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here)-->
+  <FreeScenarioWeaponsDesc>Si activé, toute arme ajoutée via l'éditeur de scénario sera aussi incluse dans la liste des armes que vos colons pourront utiliser. (Le scénario "vanilla" Riche explorateur a été codé pour toujours implémenter ceci, et ignore donc ce paramètre).</FreeScenarioWeaponsDesc>
+  <!--EN: Difficulty settings slows down research.-->
+  <ResearchSpeedTiedToDifficultyTitle>Le niveau de difficulté ralenti la recherche.</ResearchSpeedTiedToDifficultyTitle>
+  <!--EN: If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.-->
+  <ResearchSpeedTiedToDifficultyDesc>Si activé, la vitesse de recherche est liée au niveau de difficulté, avec aucun changement en facile et jusqu'à 30% plus lent en difficile. Si désactivé, ce sera par défaut 10% plus lent que le jeu de base.</ResearchSpeedTiedToDifficultyDesc>
+  <!--EN: Difficulty settings slows down tech studying.</-->
+  <StudySpeedTiedToDifficultyTitle>Le niveau de difficulté ralenti l'étude des technologies</StudySpeedTiedToDifficultyTitle>
+  <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
+  <StudySpeedTiedToDifficultyDesc>Si activé, la vitesse de recherche est liée au niveau de difficulté, avec 10% de malus en facile et 20% en difficile.</StudySpeedTiedToDifficultyDesc>
+
+  <!--Things-->
+  
+  <!--EN: Empty-->
+  <BookStoreEmpty>Vide</BookStoreEmpty>
+  <!--EN: Archived technologies: {0}/{1}-->
+  <BookStoreCapacity>Technologies archivées ：{0} / {1}</BookStoreCapacity>
+  <!--EN: Retrieve Book-->
+  <BookStoreRetrieveBook>Récupérer le livre</BookStoreRetrieveBook>
+  <!--EN: Find and remove a particular book from the book shelf.-->
+  <BookStoreRetrieveBookDesc>Aller chercher un livre particulier dans la bibliothèque.</BookStoreRetrieveBookDesc>
+  <!--EN: {0} doesn't fit at any book shelf.-->
+  <BookStoreNoInternalStorage>{0} ne rentre dans aucune étagère.</BookStoreNoInternalStorage>
+  <!--EN: {0} knowledge-->
+  <KnowledgeLabel>connaissance de {0}</KnowledgeLabel>
+  <!--EN: Book of {0}-->
+  <Book>Livre de {0}</Book>
+  <!--EN: {0} Compendium-->
+  <BookCompendium>Collection de {0}</BookCompendium>
+  <!--EN: {0} Manual-->
+  <BookManual>Manuel de {0}</BookManual>
+  <!--EN: {0} Theory-->
+  <BookTheory>Théorie sur {0}</BookTheory>
+  <!--EN: {0} Database-->
+  <BookDatabase>Base de données de {0}</BookDatabase>
+
+  <!--Feedback-->
+  
+  <!--EN: {0_nameDef} has learned the secrets of {1}.-->
+  <MessageStudyComplete>{0_nameDef} a appris les secrets de {1}.</MessageStudyComplete>
+  <!--EN: {0_nameDef} wrote a book on {1}.-->
+  <MessageDocumentComplete>{0_nameDef} a écrit un livre sur {1}.</MessageDocumentComplete>
+  <!--EN: The knowledge for {0} was added to our library.-->
+  <MessageFiledTech>La connaissance de {0} a été ajoutée à notre bibliothèque.</MessageFiledTech>
+  <!--EN: The knowledge for {0} was removed from our library.-->
+  <MessageEjectedTech>La connaissance de {0} a été retirée de notre bibliothèque.</MessageEjectedTech>
+  <!--EN: {0_nameDef} has mastered the {1}.-->
+  <MessageTrainingComplete>{0_nameDef} a maitrisé {1}.</MessageTrainingComplete>
+  <!--EN: You know nothing, {0_nameFull}.-->
+  <NothingToAddToLibrary>Tu ne sais rien, {0_nameFull}</NothingToAddToLibrary>
+  <!--EN: {0_nameDef} has read all the books.-->
+  <AlreadyKnowsTheWholeLibrary>{0_nameDef} a déjà lu tous les livres</AlreadyKnowsTheWholeLibrary>
+  <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
+  <LacksFundamentalKnowledge>{0_nameDef} manque des connaissances de base sur ces sujets.</LacksFundamentalKnowledge>
+  <!--EN: No available weapons to train.-->
+  <NoWeaponsFoundToLearn>Pas d'armes disponible à entraîner?</NoWeaponsFoundToLearn>
+  <!--EN: {0_nameDef} has no corresponding knowledge or books to learn about {1}.-->
+  <MissingRequirementToLearnWeapon>{0_nameDef} n'a pas de connaissances ou de livre pour apprendre {1}.</MissingRequirementToLearnWeapon>
+  <!--EN: those weapons-->
+  <ThoseWeapons>ces armes</ThoseWeapons>
+  <!--EN: {0_nameDef} already knows how to use those weapons.-->
+  <NoWeaponToLearn>{0_nameDef} sait déjà se servir de ces armes.</NoWeaponToLearn>
+  <!--EN: {0_nameDef} doesn't know how to build a {1} (requires {2}).-->
+  <DoesntKnowHowToBuild>{0_nameDef} ne sait pas construire un.e {1}（nécessite {2}).</DoesntKnowHowToBuild>
+  <!--EN: {0_nameDef} doesn't know how to repair a {1} (requires {2}).-->
+  <DoesntKnowHowToRepair>{0_nameDef} ne sait pas comment réparer un.e {1}（nécessite {2}）.</DoesntKnowHowToRepair>
+  <!--EN: {0_nameDef} doesn't know how to {1} (requires {2}).-->
+  <DoesntKnowHowToCraft>{0_nameDef} ne sait pas “{1}”（nécessite {2}）。</DoesntKnowHowToCraft>
+  <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
+  <DoesntKnowThisPlant>{0_nameDef} ne sait pas cultiver des {1}（nécessite {2}）。</DoesntKnowThisPlant>
+  <!--EN: Pawn has not been trained to use this weapon-->
+  <UnknownWeapon>Ce colon n'a pas été entraîné au maniement de cette arme.</UnknownWeapon>
+  <!--EN: Pawn cannot comprehend this weapon and is scared of it-->
+  <EvilWeapon>Ce colon ne comprend pas cette arme, et en a un peu peur.</EvilWeapon>
+  <!--EN: {0} is already known.-->
+  <TechAlreadyKnown>{0} est déjà connu.e.</TechAlreadyKnown>
+
+  <!--Go Explore-->
+  
+  <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_SuccessHR>L'effort conjoint de recherche est une réussite. En travaillant ensemble, vous avez avancé dans la compréhension de {2}. \n\nLes relations avec {0} se sont améliorées de {1}.</LetterResearchRequest_SuccessHR>
+  <!--EN: The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.-->
+  <LetterResearchRequest_TriumphHR>La recherche partagée est un vrai triomphe !  Collectivement, vous avez repoussé les frontières et percé les secrets de {2} ! \n\nLes relations avec {0} se sont améliorées de {1}.</LetterResearchRequest_TriumphHR>
+  <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
+  <ResearchRequestXPGainHR>Votre chercheur {0} a acquis une expertise considérable sur {1} et gagné {2} d'expérience intellectuelle.</ResearchRequestXPGainHR>
+
+</LanguageData> 

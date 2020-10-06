@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: Study-->
+  <HR_Learn.labelShort>Étudier</HR_Learn.labelShort>
+  <!--EN: Student-->
+  <HR_Learn.pawnLabel>Étudiant</HR_Learn.pawnLabel>
+  <!--EN: studying-->
+  <HR_Learn.gerundLabel>étudie</HR_Learn.gerundLabel>
+  <!--EN: Acquire new knowledge.-->
+  <HR_Learn.description>Aqcuérir de nouvelles connaissances</HR_Learn.description>
+  <!--EN: Study at-->
+  <HR_Learn.verb>Étudier à</HR_Learn.verb>
+
+</LanguageData>

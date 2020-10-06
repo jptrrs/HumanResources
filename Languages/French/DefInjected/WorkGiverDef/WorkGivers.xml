@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: Document technologies-->
+  <DocumentTech.label>Documenter des technologies</DocumentTech.label>
+  <!--EN: write-->
+  <DocumentTech.verb>écrire</DocumentTech.verb>
+  <!--EN: writing at-->
+  <DocumentTech.gerund>écrit à</DocumentTech.gerund>
+
+  <!--EN: Study Technologies-->
+  <LearnTech.label>Étudier des technologies</LearnTech.label>
+  <!--EN: study-->
+  <LearnTech.verb>étudier</LearnTech.verb>
+  <!--EN: studying at-->
+  <LearnTech.gerund>étudie à</LearnTech.gerund>
+
+  <!--EN: Learn weapon use-->
+  <TrainWeapon.label>Apprendre l'usage d'une arme</TrainWeapon.label>
+  <!--EN: train-->
+  <TrainWeapon.verb>S'entraîner avec une arme</TrainWeapon.verb>
+  <!--EN: training-->
+  <TrainWeapon.gerund>s'entraîne avec une arme</TrainWeapon.gerund>
+
+  <!--EN: shooting practice-->
+  <PracticeShooting.label>Entraînement au tir</PracticeShooting.label>
+  <!--EN: train-->
+  <PracticeShooting.verb>s'entraîner au tir</PracticeShooting.verb>
+  <!--EN: training-->
+  <PracticeShooting.gerund>s'entraîne au tir</PracticeShooting.gerund>
+
+  <!--EN: melee practice-->
+  <PracticeMelee.label>S'entraîner au corps-à-corps</PracticeMelee.label>
+  <!--EN: train-->
+  <PracticeMelee.verb>s'entraîner au corps-à-corps</PracticeMelee.verb>
+  <!--EN: training-->
+  <PracticeMelee.gerund>S'entraîne au corps-à-corps</PracticeMelee.gerund>
+
+
+</LanguageData>

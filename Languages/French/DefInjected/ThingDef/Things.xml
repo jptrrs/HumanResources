@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!--EN: Study Desk-->
+  <StudyDesk.label>Bureau d'étude</StudyDesk.label>
+  <!--EN: A desk to study and research technologies. Comes with all your faction's starting research.-->
+  <StudyDesk.description>Un bureau pour étudier et rechercher les technologies. Pré-équipé avec toutes les recherches de départ de votre faction.</StudyDesk.description>
+
+
+  <!-- Borrowed from Jecrell's RimWriter -->
+
+  <!--EN: Book Shelf-->
+  <BookShelf.label>Bibliothèque</BookShelf.label>
+  <!--EN: A sturdy shelf for storing knowledge in form of books.-->
+  <BookShelf.description>Une étagère solide pour y ranger des connaissances sous forme de livres.</BookShelf.description>
+
+
+  <!-- Technical Book -->
+
+  <!--EN: Unfinished technical book-->
+  <UnfinishedTechBook.label>Livre technique inachevé</UnfinishedTechBook.label>
+
+  <!--EN: Technical Book-->
+  <TechBook.label>Livre technique</TechBook.label>
+  <!--EN: A book filled with knowledge.-->
+  <TechBook.description>Un livre empli de connaissances.</TechBook.description>
+
+
+  <!-- Borrewed from ItchyFlea's Practise Target -->
+
+  <!--EN: Target Stand-->
+  <Target.label>Cible d'entrainement</Target.label>
+  <!--EN: A target for your sharpshooters to hone their skills with.-->
+  <Target.description>Une cible pour que vos combattants s'y entraînent au tir.</Target.description>
+
+  <!--EN: Training Dummy-->
+  <MrDummy.label>Manequin d'entraînement</MrDummy.label>
+  <!--EN: A straw dummy for training melee skill.-->
+  <MrDummy.description>Une poupée de paille pour s'entraîner au corps-à-corps.</MrDummy.description>
+
+
+</LanguageData>
