@@ -537,10 +537,10 @@ namespace HumanResources
         {
             string status = "error";
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            if (!tech.IsFinished) status = "AssignedToResearch".Translate(pawn);
-            else if (techComp != null && !techComp.homework.NullOrEmpty())
+            if (techComp != null && !techComp.homework.NullOrEmpty())
             {
-                status = tech.IsKnownBy(pawn) ? "AssignedToDocument".Translate(pawn) : "AssignedToStudy".Translate(pawn);
+                if (tech.IsKnownBy(pawn)) status = "AssignedToDocument".Translate(pawn);
+                else status = tech.IsFinished ? "AssignedToStudy".Translate(pawn) : "AssignedToResearch".Translate(pawn);
             }
             return status + " (" + "ClickToRemove".Translate() + ")";
         };

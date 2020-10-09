@@ -304,34 +304,34 @@ namespace HumanResources
             }
         }
 
-        public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
-        {
-            if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + homework.Count());
-            if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
-            {
-                var expertiseKeys = from x in expertise
-                                    where x.Value >= 1f
-                                    select x.Key;
-                var available = studyMaterial.Except(expertiseKeys).Except(homework);
-                if (!available.Any())
-                {
-                    JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
-                    return;
-                }
-                if (Prefs.LogVerbose) Log.Message("...Available projects: " + available.ToStringSafeEnumerable());
-                var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
-                var starters = available.Where(t => t.prerequisites.NullOrEmpty());
-                var preceding = expertiseKeys.Where(t => t.prerequisites != null).SelectMany(t => t.prerequisites).Intersect(available);
-                if (!starters.Any() && !derived.Any() && !preceding.Any())
-                {
-                    JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
-                    return;
-                }
-                homework.AddRange(starters.Concat(derived).Concat(preceding));
-            }
-        }
+        //public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
+        //{
+        //    if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + homework.Count());
+        //    if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
+        //    {
+        //        var expertiseKeys = from x in expertise
+        //                            where x.Value >= 1f
+        //                            select x.Key;
+        //        var available = studyMaterial.Except(expertiseKeys).Except(homework);
+        //        if (!available.Any())
+        //        {
+        //            JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
+        //            return;
+        //        }
+        //        if (Prefs.LogVerbose) Log.Message("...Available projects: " + available.ToStringSafeEnumerable());
+        //        var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
+        //        var starters = available.Where(t => t.prerequisites.NullOrEmpty());
+        //        var preceding = expertiseKeys.Where(t => t.prerequisites != null).SelectMany(t => t.prerequisites).Intersect(available);
+        //        if (!starters.Any() && !derived.Any() && !preceding.Any())
+        //        {
+        //            JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
+        //            return;
+        //        }
+        //        homework.AddRange(starters.Concat(derived).Concat(preceding));
+        //    }
+        //}
 
-        private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
+        //private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
 
         public void ExposeData()
         {
@@ -414,7 +414,7 @@ namespace HumanResources
         {
             if (homework == null) homework = new List<ResearchProjectDef>();
             homework.Add(tech);
-            homework.AddRange(GetRequiredRecursive(tech));
+            if (!knownTechs.Contains(tech)) homework.AddRange(GetRequiredRecursive(tech));
         }
 
         public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
