@@ -23,7 +23,7 @@ namespace HumanResources
 
 		protected ThingDef techStuff;
 
-		public override IEnumerable<Toil> MakeNewToils()
+		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
 			{

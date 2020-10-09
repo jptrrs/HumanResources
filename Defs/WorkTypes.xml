@@ -3,7 +3,7 @@
 
 	<WorkTypeDef>
 		<defName>HR_Learn</defName>
-		<labelShort>StudyHR</labelShort>
+		<labelShort>Study</labelShort>
 		<pawnLabel>Student</pawnLabel>
 		<gerundLabel>studying</gerundLabel>
 		<description>Acquire new knowledge.</description>

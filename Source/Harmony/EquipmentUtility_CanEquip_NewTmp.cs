@@ -5,9 +5,9 @@ using Verse;
 
 namespace HumanResources
 {
-    //Checks if pawn knows a weapon before equiping it.
-    [HarmonyPatch(typeof(EquipmentUtility), "CanEquip", new Type[] { typeof(Thing), typeof(Pawn), typeof(string) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out})]
-    public static class EquipmentUtility_CanEquip
+    //Checks if pawn knows a weapon before equiping it. (1.2 only)
+    [HarmonyPatch(typeof(EquipmentUtility), "CanEquip_NewTmp", new Type[] { typeof(Thing), typeof(Pawn), typeof(string), typeof(bool) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
+    public static class EquipmentUtility_CanEquip_NewTmp
     {
         public static bool Prefix(Thing thing, Pawn pawn, out string cantReason)
         {

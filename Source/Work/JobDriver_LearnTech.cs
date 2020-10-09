@@ -19,7 +19,7 @@ namespace HumanResources
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
-		public override IEnumerable<Toil> MakeNewToils()	
+		protected override IEnumerable<Toil> MakeNewToils()	
 		{
             //Log.Message("Toil start:" + pawn + " is trying to learn " + project + ", globalFailConditions count:" + globalFailConditions.Count);
             Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
