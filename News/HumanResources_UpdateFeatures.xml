@@ -10,6 +10,7 @@
   <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
 	<defName>HumanResources_0_1</defName>
 	<assemblyVersion>0.1</assemblyVersion>
+  <targetAudience>NewPlayers</targetAudience>
 	<content>
 &lt;b&gt;You've been recruited to test this out!&lt;/b&gt;
 |This is a work in progress, and we're thrilled you are giving it a shot! Bear in mind you might encounter some errors and incompatibilities. If you do, please let me know. Don't forget to hit Ctrl+F12 to upload the error log and send me that link. I'm also open to any suggestions you might have, so please keep in touch!
@@ -22,7 +23,7 @@
 |Build a &lt;i&gt;study desk&lt;/i&gt; and a &lt;i&gt;bookshelf&lt;/i&gt; as soon as you can. This allows your colonists to &lt;i&gt;document&lt;/i&gt; their knowledge into books and then &lt;i&gt;study&lt;/i&gt; books to acquire new knowledge (when assigned to &lt;i&gt;study&lt;/i&gt;). 
 |
 |img:ResearchBenches
-|These are the new research benches. Now they operate like the other work stations: you'll need to assign bills for your colonists to perform research. And what they learn will remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
+|These are the new, more compact research benches. Their function hasn't changed, but you'll assign research projects individually to each colonist and what they learn will remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
 |
 |img:Target+Dummy
 |When you discover new weapons, your colonists will need to train at these facilities in order to learn how to use them (for that, they must also be assigned to &lt;i&gt;study&lt;/i&gt;). The &lt;i&gt;training dummy&lt;/i&gt; is for meleee weapons and the &lt;i&gt;target stand&lt;/i&gt; is for ranged ones. You can also task them with &lt;i&gt;practicing&lt;/i&gt; a weapon. This will allow them to sharpen their melee or shooting skills!
