@@ -415,8 +415,7 @@ namespace HumanResources
 			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
 		}
 
-        //TEST
-        private static IEnumerable<Pawn> currentPawns => PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+        private static IEnumerable<Pawn> currentPawns => HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null) : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
 
         public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {

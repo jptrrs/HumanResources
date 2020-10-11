@@ -343,12 +343,11 @@
     <Compile Include="Books\CompProperties_StorageGraphic.cs" />
     <Compile Include="Books\CompStorageGraphic.cs" />
     <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
-    <Compile Include="Extensions\Extension_Building_WorkTable.cs" />
-    <Compile Include="Extensions\Extension_ResearchProjectDef.cs" />
+    <Compile Include="Extensions\Extension_Pawn.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\Royalty_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\CompTechprint_CompFloatMenuOptions.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
+    <None Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
@@ -378,7 +377,6 @@
     <Compile Include="Books\RoomRoleWorker_Library.cs" />
     <Compile Include="Books\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />
-    <Compile Include="Extensions\Extension_Bill.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />

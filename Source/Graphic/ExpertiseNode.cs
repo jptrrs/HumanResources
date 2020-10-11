@@ -419,7 +419,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Tech);
+                if (Pawn.CanContribute() && techComp != null && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Tech);
                 else return false;
             }
         }
@@ -428,7 +428,7 @@ namespace HumanResources
         {
             get
             {
-                if (Pawn.IsColonist && techComp != null) return Tech.IsKnownBy(Pawn);
+                if (Pawn.CanContribute() && techComp != null) return Tech.IsKnownBy(Pawn);
                 else return false;
             }
         }
@@ -437,7 +437,7 @@ namespace HumanResources
         {
             if (techComp != null)
             {
-                if (Pawn.IsColonist && !Assigned && ((!techComp.expertise.ContainsKey(Tech) || techComp.expertise[Tech] < 1f) || !Completed)) techComp.AssignBranch(Tech);
+                if (Pawn.CanContribute() && !Assigned && ((!techComp.expertise.ContainsKey(Tech) || techComp.expertise[Tech] < 1f) || !Completed)) techComp.AssignBranch(Tech);
                 else if (Assigned) techComp.CancelBranch(Tech);
             }
         }
