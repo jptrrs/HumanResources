@@ -28,8 +28,8 @@ namespace HumanResources
 
         public static bool equipSpecificWeapon_Prefix(Pawn pawn, ThingWithComps weapon)
         {
-            //Log.Warning("DEBUG " + pawn + " is trying to equip " + weapon.Label);
-            if (pawn.RaceProps.Humanlike && pawn.Faction != null && pawn.Faction.IsPlayer && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, weapon);
+            //Thanks to Andy Brenneke for figuring out sometimes SS equips null weapons!
+            if (weapon != null && pawn.RaceProps.Humanlike && pawn.Faction != null && pawn.Faction.IsPlayer && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, weapon);
             else return true;
         }
     }
