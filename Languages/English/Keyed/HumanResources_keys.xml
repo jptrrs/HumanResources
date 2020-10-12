@@ -10,18 +10,19 @@
   <ShowRanged>Show ranged weapons.</ShowRanged>
   <ShowAvailable>Show techs available to learn.</ShowAvailable>
   <ShowCompact>Compact view.</ShowCompact>
+  <!--NEW--><ShowAssignment>Show assignments</ShowAssignment>
   <Expand>Expand</Expand>
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
-  <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
-  <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
-  <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
-  <!--NEW--><RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
-  <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
-  <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
-  <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
-  <!--NEW--><ClickToRemove>click to remove</ClickToRemove>
+  <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
+  <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
+  <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
+  <AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
+  <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
+  <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
+  <ClickToRemove>click to remove</ClickToRemove>
                     
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>
@@ -73,8 +74,8 @@
   <DoesntKnowHowToRepair>{0_nameDef} doesn't know how to repair a {1} (requires {2}).</DoesntKnowHowToRepair>
   <DoesntKnowHowToCraft>{0_nameDef} doesn't know how to {1} (requires {2}).</DoesntKnowHowToCraft>
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1} (requires {2}).</DoesntKnowThisPlant>
-  <!--CHANGED--> <UnknownWeapon>Pawn has not been trained to use this weapon</UnknownWeapon>
-  <!--CHANGED--> <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
+  <UnknownWeapon>Pawn has not been trained to use this weapon</UnknownWeapon>
+  <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
   
   <!--Go Explore-->

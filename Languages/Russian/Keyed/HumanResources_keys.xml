@@ -10,6 +10,7 @@
   <ShowRanged>Показать оружие дальнего боя.</ShowRanged>
   <ShowAvailable>Показать доступные для обучения технологий.</ShowAvailable>
   <ShowCompact>Компактный вид.</ShowCompact>
+  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
   <Expand>Развернуть</Expand>
   <Collapse>Свернуть</Collapse>
   <TabCatalogue>Каталог</TabCatalogue>

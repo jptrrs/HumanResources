@@ -19,6 +19,9 @@
   <ShowAvailable>显示可供学习的科技。</ShowAvailable>
   <!--EN: Compact view.-->
   <ShowCompact>小窗口</ShowCompact>
+  
+  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
+  
   <!--EN: Expand-->
   <Expand>扩展</Expand>
   <!--EN: Collapse-->

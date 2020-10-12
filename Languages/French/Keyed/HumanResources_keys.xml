@@ -19,6 +19,9 @@
   <ShowAvailable>Afficher les technologies disponibles à l'apprentissage</ShowAvailable>
   <!--EN: Compact view.-->
   <ShowCompact>Vue compacte</ShowCompact>
+    
+  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
+
   <!--EN: Expand-->
   <Expand>Étendre</Expand>
   <!--EN: Collapse-->

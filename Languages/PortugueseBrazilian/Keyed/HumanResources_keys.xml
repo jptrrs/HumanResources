@@ -10,6 +10,7 @@
   <ShowRanged>Mostrar armas de longo alcance.</ShowRanged>
   <ShowAvailable>Mostrar tecnologias disponíveis para serem aprendidas.</ShowAvailable>
   <ShowCompact>Vizualização compacta.</ShowCompact>
+  <ShowAssignment>Mostrar tarefas.</ShowAssignment>
   <Expand>Expandir</Expand>
   <Collapse>Recolher</Collapse>
   <TabCatalogue>Catálogo</TabCatalogue>

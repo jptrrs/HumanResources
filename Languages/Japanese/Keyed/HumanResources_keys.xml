@@ -19,6 +19,9 @@
   <ShowAvailable>学習できるテクノロジーを表示</ShowAvailable>
   <!--EN: Compact view.-->
   <ShowCompact>縮小表示</ShowCompact>
+  
+  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
+
   <!--EN: Expand-->
   <Expand>展開</Expand>
   <!--EN: Collapse-->
