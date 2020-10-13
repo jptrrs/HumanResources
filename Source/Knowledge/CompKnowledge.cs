@@ -290,48 +290,19 @@ namespace HumanResources
                     }
                     if(Prefs.LogVerbose) stringBuilder.Append(".");
                 }
-                if ((!isPlayer || pawn.kindDef?.defName == "StrangerInBlack" || pawn.kindDef?.defName == "VSE_ManInTheCoat") && pawn.equipment.HasAnything())
+                if (pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
                     if (!knownWeapons.Contains(weapon.def))
                     {
                         proficientWeapons.Add(weapon.def);
-                        if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
+                        if (Prefs.LogVerbose) stringBuilder.AppendLine(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
                     }
                 }
                 proficientWeapons.RemoveDuplicates();
                 if (Prefs.LogVerbose && stringBuilder.Length > 0) Log.Message(stringBuilder.ToString());
             }
         }
-
-        //public void AssignHomework(IEnumerable<ResearchProjectDef> studyMaterial)
-        //{
-        //    if (Prefs.LogVerbose) Log.Message("Assigning homework for " + pawn + ", received " + studyMaterial.Count() + " projects, homework count is " + homework.Count());
-        //    if (pawn.Faction != null && pawn.Faction.IsPlayer || (HarmonyPatches.PrisonLabor && pawn.guest.IsPrisoner))
-        //    {
-        //        var expertiseKeys = from x in expertise
-        //                            where x.Value >= 1f
-        //                            select x.Key;
-        //        var available = studyMaterial.Except(expertiseKeys).Except(homework);
-        //        if (!available.Any())
-        //        {
-        //            JobFailReason.Is("AlreadyKnowsTheWholeLibrary".Translate(pawn), null);
-        //            return;
-        //        }
-        //        if (Prefs.LogVerbose) Log.Message("...Available projects: " + available.ToStringSafeEnumerable());
-        //        var derived = available.Where(t => t.prerequisites != null && t.prerequisites.All(r => expertise.Keys.Contains(r)));
-        //        var starters = available.Where(t => t.prerequisites.NullOrEmpty());
-        //        var preceding = expertiseKeys.Where(t => t.prerequisites != null).SelectMany(t => t.prerequisites).Intersect(available);
-        //        if (!starters.Any() && !derived.Any() && !preceding.Any())
-        //        {
-        //            JobFailReason.Is("LacksFundamentalKnowledge".Translate(pawn), null);
-        //            return;
-        //        }
-        //        homework.AddRange(starters.Concat(derived).Concat(preceding));
-        //    }
-        //}
-
-        //private static IEnumerable<ResearchProjectDef> SelectedAnywhere => Find.Maps.SelectMany(x => x.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>()).SelectMany(x => x.billStack.Bills).Where(x => x.UsesKnowledge()).SelectMany(x => x.SelectedTech()).Distinct();
 
         public void ExposeData()
         {
