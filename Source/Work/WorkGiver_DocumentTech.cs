@@ -62,7 +62,7 @@ namespace HumanResources
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
-				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn) /*&& bill.SelectedTech().Intersect(availableTechs).Any()*/)
+				if (bill.recipe == TechDefOf.DocumentTech && bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 				{
 					SkillRequirement skillRequirement = bill.recipe.FirstSkillRequirementPawnDoesntSatisfy(pawn);
 					if (skillRequirement != null)
