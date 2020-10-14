@@ -62,7 +62,7 @@
   <MessageDocumentComplete>{0_nameDef} escreveu um livro sobre {1}.</MessageDocumentComplete>
   <MessageFiledTech>O conhecimento de for {0} foi acrescentado à biblioteca.</MessageFiledTech>
   <MessageEjectedTech>O conhecimento de {0} foi removido da biblioteca.</MessageEjectedTech>
-  <MessageTrainingComplete>{0_nameDef} dominou {1}.</MessageTrainingComplete>
+  <MessageTrainingComplete>{0_nameDef} dominou {1_definite}.</MessageTrainingComplete>
   <NothingToAddToLibrary>Não sabes nada, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} já leu todos os livros.</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} não domina conhecimentos básicos nessa matéria.</LacksFundamentalKnowledge>

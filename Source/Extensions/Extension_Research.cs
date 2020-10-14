@@ -405,7 +405,7 @@ namespace HumanResources
                 result.Add(weapon);
                 if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
             }
-            if (!result.NullOrEmpty() && (!WeaponsByTech.ContainsKey(tech) || WeaponsByTech[tech].NullOrEmpty())) WeaponsByTech.Add(tech, result);
+            if (!result.NullOrEmpty() && (!WeaponsByTech.ContainsKey(tech) || WeaponsByTech[tech].EnumerableNullOrEmpty())) WeaponsByTech.Add(tech, result);
             return result;
         }
 

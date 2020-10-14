@@ -216,18 +216,28 @@ namespace HumanResources
 
 		protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)
 		{
-			if (ModBaseHumanResources.LearnWeaponsByGroup && Extension_Research.TechByWeapon.ContainsKey(weapon))
+			bool ranged = weapon.IsRangedWeapon;
+			bool melee = weapon.IsMeleeWeapon;
+			if (ModBaseHumanResources.LearnAnyWeaponByGroup && Extension_Research.TechByWeapon.ContainsKey(weapon))
 			{
 				foreach (ThingDef sister in Extension_Research.WeaponsByTech[Extension_Research.TechByWeapon[weapon]])
-				{
-					techComp.proficientWeapons.Add(sister);
-					Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion, false);
-				}
+                {
+					bool flag = true;
+					if ((ModBaseHumanResources.LearnRangedWeaponsByGroup && sister.IsRangedWeapon != ranged) || 
+						(ModBaseHumanResources.LearnMeleeWeaponsByGroup && sister.IsMeleeWeapon != melee)) flag = false;
+					if (flag)
+					{
+						techComp.proficientWeapons.Add(sister);
+						Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion);
+					}
+
+					//TEST group by: sister.projectile.damageDef !
+                }
 			}
 			else
 			{
 				techComp.proficientWeapons.Add(weapon);
-				Messages.Message("MessageTrainingComplete".Translate(pawn, weapon), MessageTypeDefOf.TaskCompletion, false);
+				Messages.Message("MessageTrainingComplete".Translate(pawn, weapon), MessageTypeDefOf.TaskCompletion);
 			}
 		}
 	}

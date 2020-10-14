@@ -121,8 +121,8 @@
   <MessageFiledTech>La connaissance de {0} a été ajoutée à notre bibliothèque.</MessageFiledTech>
   <!--EN: The knowledge for {0} was removed from our library.-->
   <MessageEjectedTech>La connaissance de {0} a été retirée de notre bibliothèque.</MessageEjectedTech>
-  <!--EN: {0_nameDef} has mastered the {1}.-->
-  <MessageTrainingComplete>{0_nameDef} a maitrisé {1}.</MessageTrainingComplete>
+  <!--EN: {0_nameDef} has mastered the {1_definite}.-->
+  <MessageTrainingComplete>{0_nameDef} a maitrisé {1_definite}.</MessageTrainingComplete>
   <!--EN: You know nothing, {0_nameFull}.-->
   <NothingToAddToLibrary>Tu ne sais rien, {0_nameFull}</NothingToAddToLibrary>
   <!--EN: {0_nameDef} has read all the books.-->

@@ -23,7 +23,8 @@ namespace HumanResources
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
 
-        public static SettingHandle<bool> LearnWeaponsByGroup;
+        public static SettingHandle<bool> LearnMeleeWeaponsByGroup;
+        public static SettingHandle<bool> LearnRangedWeaponsByGroup;
 
         public ModBaseHumanResources()
         {
@@ -31,13 +32,12 @@ namespace HumanResources
         }
 
         public enum FactionTechPool { Both, TechLevel, Starting }
-
         public enum FactionWeaponPool { Both, TechLevel, Scenario }
-
         public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
         public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
         public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
         public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
+        public static bool LearnAnyWeaponByGroup => LearnMeleeWeaponsByGroup || LearnRangedWeaponsByGroup;
 
         public override string ModIdentifier
         {
@@ -187,7 +187,8 @@ namespace HumanResources
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
-            LearnWeaponsByGroup = Settings.GetHandle<bool>("LearnWeaponsByGroup", "LearnWeaponsByGroupTitle".Translate(), "LearnWeaponsByGroupDesc".Translate(), true);
+            LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), true);
+            LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
         }

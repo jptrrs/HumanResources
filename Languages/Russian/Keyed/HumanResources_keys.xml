@@ -59,7 +59,8 @@
 
   <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} узнал секреты {1}.</MessageStudyComplete>
-  <MessageDocumentComplete>{0_nameDef} написал книгу по {1}.</MessageDocumentComplete>
+  <!--CHANGED--><!--EN: {0_nameDef} has mastered {1_definite}.-->
+  <MessageDocumentComplete>{0_nameDef} написал книгу по {1_definite}.</MessageDocumentComplete>
   <MessageFiledTech>В нашу библиотеку были добавлены знания для {0}.</MessageFiledTech>
   <MessageEjectedTech>Информация о {0} была удалена из нашей библиотеки.</MessageEjectedTech>
   <MessageTrainingComplete>{0_nameDef} освоил {1}.</MessageTrainingComplete>

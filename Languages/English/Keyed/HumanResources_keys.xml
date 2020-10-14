@@ -62,7 +62,7 @@
   <MessageDocumentComplete>{0_nameDef} wrote a book on {1}.</MessageDocumentComplete>
   <MessageFiledTech>The knowledge for {0} was added to our library.</MessageFiledTech>
   <MessageEjectedTech>The knowledge for {0} was removed from our library.</MessageEjectedTech>
-  <MessageTrainingComplete>{0_nameDef} has mastered the {1}.</MessageTrainingComplete>
+  <MessageTrainingComplete>{0_nameDef} has mastered {1_definite}.</MessageTrainingComplete>
   <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} is missing basic knowledge on those subjects.</LacksFundamentalKnowledge>
