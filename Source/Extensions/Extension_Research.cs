@@ -13,18 +13,15 @@ namespace HumanResources
     public static class Extension_Research
     {
         public static SkillDef Bias = new SkillDef();
-
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
-
+        public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
+        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
- 
         private const float MarketValueOffset = 200f;
-
         private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
 
-
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
-        {
+        { 
             get
             {
                 float delta = 1 - Find.Storyteller.difficulty.researchSpeedFactor;
@@ -400,12 +397,15 @@ namespace HumanResources
                 foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(t => t.Contains("Basic"))) && !(x.defName.Contains("Tool") || x.defName.Contains("tool"))))
                 {
                     result.Add(weapon);
+                    if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
                 }
             }
             foreach (ThingDef weapon in tech.GetThingsUnlocked().Where(x => x.building != null && x.building.turretGunDef != null).Select(x => x.building.turretGunDef))
             {
                 result.Add(weapon);
+                if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
             }
+            if (!result.NullOrEmpty() && (!WeaponsByTech.ContainsKey(tech) || WeaponsByTech[tech].NullOrEmpty())) WeaponsByTech.Add(tech, result);
             return result;
         }
 

@@ -2,7 +2,6 @@
 using HugsLib;
 using HugsLib.Settings;
 using RimWorld;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,21 +11,19 @@ namespace HumanResources
 {
     public class ModBaseHumanResources : ModBase
     {
-
         public static SettingHandle<bool> FreeScenarioWeapons;
         public static SettingHandle<bool> ResearchSpeedTiedToDifficulty;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
-
         public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
         public static SettingHandle<bool> StudySpeedTiedToDifficulty;
         public static SettingHandle<bool> TechPoolIncludesScenario;
         public static FactionTechPool TechPoolMode;
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
-
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
-
         public static FactionWeaponPool WeaponPoolMode;
+
+        public static SettingHandle<bool> LearnWeaponsByGroup;
 
         public ModBaseHumanResources()
         {
@@ -34,12 +31,14 @@ namespace HumanResources
         }
 
         public enum FactionTechPool { Both, TechLevel, Starting }
+
         public enum FactionWeaponPool { Both, TechLevel, Scenario }
 
         public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
         public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
         public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
         public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
+
         public override string ModIdentifier
         {
             get
@@ -107,7 +106,7 @@ namespace HumanResources
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
                 Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
             }
-            else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + "+SimpleWeapons.Count()+ " that require training.");
+            else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + " + SimpleWeapons.Count() + " that require training.");
 
             //3. Filling gaps on the database
 
@@ -188,11 +187,12 @@ namespace HumanResources
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
+            LearnWeaponsByGroup = Settings.GetHandle<bool>("LearnWeaponsByGroup", "LearnWeaponsByGroupTitle".Translate(), "LearnWeaponsByGroupDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
         }
 
-        private static bool SplitSimpleWeapons (ThingDef t, List<string> forbiddenWeaponTags)
+        private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
         {
             bool flag = false;
             //if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains("TurretGun")))
@@ -210,7 +210,7 @@ namespace HumanResources
                 flag = true;
                 SimpleWeapons.Add(t);
             }
-            //if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink"))) 
+            //if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink")))
             //{
             //    flag = true;
             //    SimpleWeapons.Add(t);

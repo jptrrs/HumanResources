@@ -195,7 +195,8 @@ namespace HumanResources
 				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
 				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def)) 
 				{
-					techComp.proficientWeapons.Add(TargetThingB.def);
+					//techComp.proficientWeapons.Add(TargetThingB.def);
+					LearnWeaponGroup(TargetThingB.def, actor, techComp);
 				}
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
@@ -211,6 +212,23 @@ namespace HumanResources
 			yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
 
 			yield break;
+		}
+
+		protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)
+		{
+			if (ModBaseHumanResources.LearnWeaponsByGroup && Extension_Research.TechByWeapon.ContainsKey(weapon))
+			{
+				foreach (ThingDef sister in Extension_Research.WeaponsByTech[Extension_Research.TechByWeapon[weapon]])
+				{
+					techComp.proficientWeapons.Add(sister);
+					Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion, false);
+				}
+			}
+			else
+			{
+				techComp.proficientWeapons.Add(weapon);
+				Messages.Message("MessageTrainingComplete".Translate(pawn, weapon), MessageTypeDefOf.TaskCompletion, false);
+			}
 		}
 	}
 }
