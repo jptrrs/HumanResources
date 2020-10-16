@@ -8,24 +8,11 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
+    internal class WorkGiver_ExperimentWeapon : WorkGiver_LearnWeapon
     {
-        public List<ThingCount> chosenIngThings = new List<ThingCount>();
-        protected MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-        protected FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
-
-        public static bool ShouldReserve(Pawn p, LocalTargetInfo target, int maxPawns = 1, int stackCount = -1, ReservationLayerDef layer = null, bool ignoreOtherReservations = false)
-        {
-            if (p.TryGetComp<CompKnowledge>().knownWeapons.Contains(target.Thing.def))
-            {
-                return false;
-            }
-            return p.CanReserve(target, maxPawns, stackCount, layer, ignoreOtherReservations);
-        }
-
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            //Log.Message(pawn + " is looking for a training job...");
+            //Log.Message(pawn + " is looking for an experimenting job...");
             Building_WorkTable Target = t as Building_WorkTable;
             if (Target != null)
             {
@@ -77,7 +64,7 @@ namespace HumanResources
             return true;
         }
 
-        protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
+        protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
             IEnumerable<ThingDef> known = techComp.knownWeapons;
@@ -85,19 +72,19 @@ namespace HumanResources
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
-            if (!unavailable.EnumerableNullOrEmpty())
-            {
-                string thoseWeapons = "ThoseWeapons".Translate();
-                string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
-                JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
-            }
-            var result = chosen.Intersect(available).Except(known);
+            //if (!unavailable.EnumerableNullOrEmpty())
+            //{
+            //    string thoseWeapons = "ThoseWeapons".Translate();
+            //    string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
+            //    JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
+            //}
+            var result = chosen.Intersect(unavailable).Except(known);
             return result;
         }
 
         private Job StartBillJob(Pawn pawn, IBillGiver giver)
         {
-            //Log.Warning(pawn + " is trying to start a training job...");
+            //Log.Warning(pawn + " is trying to start a experimenting job...");
             for (int i = 0; i < giver.BillStack.Count; i++)
             {
                 Bill bill = giver.BillStack[i];
@@ -142,26 +129,6 @@ namespace HumanResources
             //Log.Message("...job failed.");
             chosenIngThings.Clear();
             return null;
-        }
-
-        protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
-        {
-            Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
-            if (job != null)
-            {
-                return job;
-            }
-            Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
-            job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
-            job2.countQueue = new List<int>(chosenIngThings.Count);
-            for (int i = 0; i < chosenIngThings.Count; i++)
-            {
-                job2.targetQueueB.Add(chosenIngThings[i].Thing);
-                job2.countQueue.Add(chosenIngThings[i].Count);
-            }
-            job2.haulMode = HaulMode.ToCellNonStorage;
-            job2.bill = bill;
-            return job2;
         }
 
         private bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)

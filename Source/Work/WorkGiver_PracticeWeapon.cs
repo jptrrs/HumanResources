@@ -8,13 +8,6 @@ namespace HumanResources
 {
     internal class WorkGiver_PracticeWeapon : WorkGiver_LearnWeapon
     {
-        private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
-        {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
-            return studyWeapons.Any();
-        }
-
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             //Log.Message(pawn + " is looking for a practice job...");
@@ -49,5 +42,11 @@ namespace HumanResources
             return chosen.Intersect(knownWeapons);
         }
 
+        private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
+        {
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
+            var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
+            return studyWeapons.Any();
+        }
     }
 }

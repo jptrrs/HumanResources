@@ -394,7 +394,7 @@ namespace HumanResources
             List<ThingDef> result = new List<ThingDef>();
             foreach (RecipeDef r in tech.GetRecipesUnlocked().Where(x => !x.products.NullOrEmpty()))
             {
-                foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => x.IsWeapon && (x.weaponTags.NullOrEmpty() || !x.weaponTags.Any(t => t.Contains("Basic"))) && !(x.defName.Contains("Tool") || x.defName.Contains("tool"))))
+                foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(x => ShouldLockWeapon(x)))
                 {
                     result.Add(weapon);
                     if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
@@ -408,6 +408,14 @@ namespace HumanResources
             if (!result.NullOrEmpty() && (!WeaponsByTech.ContainsKey(tech) || WeaponsByTech[tech].EnumerableNullOrEmpty())) WeaponsByTech.Add(tech, result);
             return result;
         }
+
+        private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
+        {
+            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
+            bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
+            bool exempted = x.IsExempted();
+            return !basic && !tool && !exempted;
+        };
 
         //higher tech level
         private static float StuffMarketValueFactor(this ResearchProjectDef tech)

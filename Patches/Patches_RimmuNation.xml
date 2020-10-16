@@ -6,7 +6,7 @@
       <li>[CP] Rimmu-Nation - Weapons</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
       <value>
         <li>RN_HK417HRT</li>
         <li>RN_Shotgun</li>

@@ -6,11 +6,12 @@ namespace HumanResources
     [DefOf]
     public static class TechWorkDefOf
     {
-        public static WorkGiverDef 
+        public static WorkGiverDef
             LearnTech,
             DocumentTech,
             TrainWeapon,
-            PracticeShooting,
-            PracticeMelee;
+            PracticeWeapon;
+            //PracticeShooting,
+            //PracticeMelee;
     }
 }

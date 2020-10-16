@@ -14,6 +14,7 @@ namespace HumanResources
         public ThingOwner innerContainer;
         protected StorageSettings storageSettings;
         private CompStorageGraphic compStorageGraphic = null;
+        public int dynamicCapacity => Math.Max(ModBaseHumanResources.unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
         public CompStorageGraphic CompStorageGraphic
         {
             get
@@ -49,7 +50,7 @@ namespace HumanResources
             if (thing.def == TechDefOf.TechBook && thing.Stuff != null && thing.Stuff.IsWithinCategory(TechDefOf.Knowledge))
             {
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
-                bool fits = innerContainer.Count < CompStorageGraphic.Props.countFullCapacity;
+                bool fits = innerContainer.Count < dynamicCapacity;
                 bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;
                 return allowed && fits && !duplicate;
             }
@@ -137,7 +138,7 @@ namespace HumanResources
             if (baseStr != "")
                 s.AppendLine(baseStr);
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
-            else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, CompStorageGraphic.Props.countFullCapacity.ToString()));
+            else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
             return s.ToString().TrimEndNewlines();
         }
 

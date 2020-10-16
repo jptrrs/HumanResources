@@ -26,7 +26,6 @@ namespace HumanResources
         private static bool showCompact = false;
         private Vector2 buttonSize = new Vector2(24f, 24f);
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
-        private bool test => TechLevelVisibility[0];
 
         public ITab_PawnKnowledge()
         {
@@ -239,7 +238,7 @@ namespace HumanResources
         private static Func<ThingDef, bool> weaponsFilter = (x) =>
         {
             bool valid = !x.menuHidden;
-            bool commom = commomWeapons ? true : !x.weaponTags.NullOrEmpty();
+            bool commom = commomWeapons ? true : !x.NotReallyAWeapon();
             bool melee = meleeWeapons ? true : !x.IsMeleeWeapon;
             bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
             return valid & commom & melee & ranged;
@@ -274,7 +273,8 @@ namespace HumanResources
             DrawBase(row, width, col, shift);
             float next = col;
             next = DrawIcons(next, row, width, thing, shift);
-            PrintCell(thing.LabelCap, row, next, shift, width - (iconSize + margin/2), thing.description);
+            string tooltip = Prefs.DevMode ? thing.weaponTags?.ToStringSafeEnumerable() : thing.description;
+            PrintCell(thing.LabelCap, row, next, shift, width - (iconSize + margin/2), tooltip);
         }
 
         private void DrawTechColorBar(float w, int x)

@@ -58,7 +58,7 @@ namespace HumanResources
         private const float decay = 0.02f;
         private static float ratio = 1 / (1 + decay);
         private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
-        private int total => techByStuff.Count;
+        public int total => techByStuff.Count;
         private float geoSum => (float) (Math.Pow(ratio, total)-1) / (ratio - 1);
         private float quota => semiMaxBuff / geoSum;
         private float linear => semiMaxBuff / total;

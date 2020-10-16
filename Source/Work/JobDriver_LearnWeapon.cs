@@ -17,6 +17,7 @@ namespace HumanResources
 		}
 
 		protected bool unknown = false;
+		protected bool practice = false;
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
@@ -24,11 +25,11 @@ namespace HumanResources
 			LocalTargetInfo target = this.job.GetTarget(TargetIndex.A);
 			Job job = this.job;
 			Bill bill = job.bill;
-			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed))
-			{
-				return false;
-			}
+			if (bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting) practice = true;
+			else if (bill.recipe == TechDefOf.ExperimentWeaponShooting) unknown = true;
+			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed)) return false;
 			pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
+			//Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTargetQueue(TargetIndex.A).ToString() + ", TargetB=" + job.GetTargetQueue(TargetIndex.B).ToString());
 			return true;
 		}
 
@@ -170,8 +171,8 @@ namespace HumanResources
 				}
 				if (job.RecipeDef.workSkill != null)
 				{
-					//float xpDelta = techComp.proficientWeapons.Contains(job.targetB.Thing.def) ? 1f : 0.1f;
-					float xp = 0.1f * job.RecipeDef.workSkillLearnFactor;
+					float xpDelta = practice ? 0.5f : 0.1f;
+					float xp = xpDelta * job.RecipeDef.workSkillLearnFactor;
 					actor.skills.GetSkill(job.RecipeDef.workSkill).Learn(xp, false);
 				}
 			};
@@ -188,12 +189,25 @@ namespace HumanResources
 			train.FailOn(() => train.actor.CurJob.bill.suspended);
 			train.activeSkill = () => train.actor.CurJob.bill.recipe.workSkill;
 			yield return train.FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+			if (!practice) yield return FinalizeTraining();
+
+			//testing
+			//yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
+			//Toil findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
+			//yield return findPlaceTarget;
+			//yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
+
+			yield break;
+		}
+
+		protected Toil FinalizeTraining()
+        {
 			Toil finalizeTraining = new Toil();
 			finalizeTraining.initAction = delegate
 			{
 				Pawn actor = finalizeTraining.actor;
 				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
-				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def)) 
+				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def))
 				{
 					//techComp.proficientWeapons.Add(TargetThingB.def);
 					LearnWeaponGroup(TargetThingB.def, actor, techComp);
@@ -203,15 +217,7 @@ namespace HumanResources
 			};
 			finalizeTraining.defaultCompleteMode = ToilCompleteMode.Instant;
 			finalizeTraining.FailOnDespawnedOrNull(TargetIndex.A);
-			yield return finalizeTraining;
-
-			//testing
-			yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
-			Toil findPlaceTarget = Toils_Haul.CarryHauledThingToCell(TargetIndex.B);
-			yield return findPlaceTarget;
-			yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, findPlaceTarget, true, true);
-
-			yield break;
+			return finalizeTraining;
 		}
 
 		protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)

@@ -97,10 +97,7 @@
     <designationHotKey>Misc10</designationHotKey>
     <comps>
       <li Class="CompProperties_Facility">
-        <!--<statOffsets>
-          <ResearchSpeedFactor>0.025</ResearchSpeedFactor>
-        </statOffsets>-->
-        <maxSimultaneous>6</maxSimultaneous>
+        <maxSimultaneous>20</maxSimultaneous>
         <maxDistance>7.0</maxDistance>
       </li>
       <li Class="HumanResources.CompProperties_StorageGraphic">
@@ -123,7 +120,7 @@
           <drawSize>(3,2)</drawSize>
         </graphicFull>
         <countSparseThreshhold>1</countSparseThreshhold>
-        <countFullCapacity>12</countFullCapacity>
+        <countFullCapacity>10</countFullCapacity>
       </li>
     </comps>
     <placeWorkers>

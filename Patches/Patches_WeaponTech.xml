@@ -5,7 +5,7 @@
 			<li>Weapon Tech 1.1</li>
 		</mods>
 		<match Class="PatchOperationAdd">
-			<xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+			<xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
 			<value>
 				<li>SniperRifle</li>
 			</value>

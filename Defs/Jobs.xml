@@ -28,7 +28,7 @@
   <JobDef>
     <defName>TrainWeapon</defName>
     <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
-    <reportString>practicing TargetB.</reportString>
+    <reportString>training weapon</reportString>
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>   

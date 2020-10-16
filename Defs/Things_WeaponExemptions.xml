@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+   
+  <!--This is just to sort out weapons that aren't unlocked by research but should require training-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>WeaponsNotBasic</defName>
+    <label>WeaponsNotBasic</label>
+    <weaponTags>
+      <li>Gun</li>
+      <li>Bladelink</li>
+      <li>UltratechMelee</li>
+      <li>EltexStaff</li>
+    </weaponTags>
+  </ThingDef>
+
+  <!--This is just to sort out weapons that should not ever require training-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>WeaponsAlwaysBasic</defName>
+    <label>WeaponsAlwaysBasic</label>
+    <weaponTags>
+      <li>ImprovisedMelee</li>
+    </weaponTags>
+    <!--These will only be used if ExemptSingleUseWeapons is activated on options-->
+    <thingSetMakerTags>
+      <li>SingleUseWeapon</li>
+    </thingSetMakerTags>
+  </ThingDef>
+  
+</Defs>

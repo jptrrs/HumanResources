@@ -42,6 +42,40 @@
   </WorkGiverDef>
 
   <WorkGiverDef>
+    <defName>PracticeWeapon</defName>
+    <label>Weapon practice</label>
+    <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
+    <workType>HR_Learn</workType>
+    <verb>train</verb>
+    <gerund>training</gerund>
+    <priorityInType>1</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <fixedBillGiverDefs>
+      <li>Target</li>
+      <li>MrDummy</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>ExperimentWeapon</defName>
+    <label>Weapon experimenting</label>
+    <giverClass>HumanResources.WorkGiver_ExperimentWeapon</giverClass>
+    <workType>HR_Learn</workType>
+    <verb>train</verb>
+    <gerund>training</gerund>
+    <priorityInType>8</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <fixedBillGiverDefs>
+      <li>Target</li>
+      <li>MrDummy</li>
+    </fixedBillGiverDefs>
+  </WorkGiverDef>
+  
+  <!--<WorkGiverDef>
     <defName>PracticeShooting</defName>
     <label>shooting practice</label>
     <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
@@ -71,6 +105,6 @@
     <fixedBillGiverDefs>
       <li>MrDummy</li>
     </fixedBillGiverDefs>
-  </WorkGiverDef>
+  </WorkGiverDef>-->
 
 </Defs>

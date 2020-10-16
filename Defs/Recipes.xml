@@ -13,7 +13,6 @@
     <recipeUsers>
       <li>StudyDesk</li>
     </recipeUsers>
-
   </RecipeDef>
 
   <RecipeDef>
@@ -72,7 +71,6 @@
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-
     <workSkill>Melee</workSkill>
     <recipeUsers>
       <li>MrDummy</li>
@@ -95,10 +93,38 @@
       </categories>
     </fixedIngredientFilter>
   </RecipeDef>
+  
+  <RecipeDef>
+    <defName>ExperimentWeaponShooting</defName>
+    <label>Experiment with an unknown weapon</label>
+    <description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
+    <jobString>Experimenting with a ranged weapon.</jobString>
+    <workAmount>3000</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Shooting</workSkill>
+    <recipeUsers>
+      <li>Target</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsRanged</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsRanged</li>
+      </categories>
+    </fixedIngredientFilter>
+  </RecipeDef>
 
   <!--From ItchyFlea's Practise Target-->
   <RecipeDef>
-    <defName>PracticeShooting</defName>
+    <defName>PracticeWeaponShooting</defName>
     <label>Practice shooting</label>
     <description>Shoots at a target to practice shooting accuracy.</description>
     <jobString>Practicing shooting.</jobString>
@@ -128,7 +154,7 @@
   </RecipeDef>
 
   <RecipeDef>
-    <defName>PracticeMelee</defName>
+    <defName>PracticeWeaponMelee</defName>
     <label>Practice melee</label>
     <description>Practices close quarters combat against a straw dummy.</description>
     <jobString>Practicing melee.</jobString>

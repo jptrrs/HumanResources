@@ -28,7 +28,8 @@ namespace HumanResources
                     if (parent.TryGetInnerInteractableThingOwner() is ThingOwner thingOwner &&
                         thingOwner.Count is int count)
                     {
-                        if (count >= Props.countFullCapacity)
+                        Building_BookStore shelf = parent as Building_BookStore;
+                        if (count >= shelf.dynamicCapacity)
                         {
                             cachedGraphic = Props.graphicFull.GraphicColoredFor(parent);
                         }

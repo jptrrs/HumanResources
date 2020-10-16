@@ -25,6 +25,7 @@ namespace HumanResources
 
         public static SettingHandle<bool> LearnMeleeWeaponsByGroup;
         public static SettingHandle<bool> LearnRangedWeaponsByGroup;
+        public static SettingHandle<bool> ExemptSingleUseWeapons;
 
         public ModBaseHumanResources()
         {
@@ -49,7 +50,10 @@ namespace HumanResources
 
         public override void DefsLoaded()
         {
-            //1. Adding Tech Tab to Pawns
+            //1. Preparing settings
+            UpdateSettings();
+
+            //2. Adding Tech Tab to Pawns
             //ThingDef injection stolen from the work of notfood for Psychology
             var zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
             IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
@@ -71,7 +75,7 @@ namespace HumanResources
                 registered.Add(t.defName);
             }
 
-            //2. Preparing knowledge support infrastructure
+            //3. Preparing knowledge support infrastructure
 
             //a. Things everyone knows
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
@@ -88,12 +92,11 @@ namespace HumanResources
             };
 
             //b. Also removing atipical weapons
-            ThingDef WeaponsNotBasicDef = DefDatabase<ThingDef>.GetNamed("NotBasic");
-            List<string> ForbiddenWeaponTags = WeaponsNotBasicDef.weaponTags;
+            List<string> ForbiddenWeaponTags = TechDefOf.WeaponsNotBasic.weaponTags;
             //Log.Warning("DEBUG weapons to be removed from universal: " + UniversalWeapons.Where(x => SplitSimpleWeapons(x, ForbiddenWeaponTags)).ToStringSafeEnumerable());
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             //Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
-            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { WeaponsNotBasicDef });
+            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { TechDefOf.WeaponsNotBasic });
 
             //c. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
@@ -108,7 +111,7 @@ namespace HumanResources
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + " + SimpleWeapons.Count() + " that require training.");
 
-            //3. Filling gaps on the database
+            //4. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x == TechDefOf.TechBook || x == TechDefOf.UnfinishedTechBook))
@@ -140,8 +143,6 @@ namespace HumanResources
                 t.building.defaultStorageSettings.filter.ResolveReferences();
             }
 
-            //4. Finally, preparing settings
-            UpdateSettings();
         }
 
         public override void MapComponentsInitializing(Map map)
@@ -189,6 +190,7 @@ namespace HumanResources
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
             LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), true);
             LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
+            ExemptSingleUseWeapons = Settings.GetHandle<bool>("ExemptSingleUseWeapons", "ExemptSingleUseWeaponsTitle".Translate(), "ExemptSingleUseWeaponsDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
         }
@@ -196,26 +198,23 @@ namespace HumanResources
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
         {
             bool flag = false;
-            //if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains("TurretGun")))
-            foreach (string tag in forbiddenWeaponTags)
+            if (!t.IsExempted())
             {
-                if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains(tag)))
+                foreach (string tag in forbiddenWeaponTags)
+                {
+                    if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains(tag)))
+                    {
+                        flag = true;
+                        SimpleWeapons.Add(t);
+                        break;
+                    }
+                }
+                if (!flag && t.IsRangedWeapon && t.defName.ToLower().Contains("gun"))
                 {
                     flag = true;
                     SimpleWeapons.Add(t);
-                    break;
                 }
             }
-            if (!flag && t.IsRangedWeapon && t.defName.ToLower().Contains("gun"))
-            {
-                flag = true;
-                SimpleWeapons.Add(t);
-            }
-            //if (t.IsWithinCategory(DefDatabase<ThingCategoryDef>.GetNamed("WeaponsMeleeBladelink")))
-            //{
-            //    flag = true;
-            //    SimpleWeapons.Add(t);
-            //}
             return flag;
         }
     }

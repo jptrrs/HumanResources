@@ -6,7 +6,7 @@
       <li>[O21] Stargate</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "NotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
       <value>
         <li>StaffWeaponOC</li>
         <li>JaffaRanged</li>

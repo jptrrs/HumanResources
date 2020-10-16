@@ -35,10 +35,11 @@ namespace HumanResources
 
 		protected IEnumerable<Bill_Production> RelevantBills(Thing thing, Pawn pawn)
 		{
+			//Log.Warning("DEBUG: looking for relevant bills for workgiver " + def.defName+"...");
 			Building_WorkTable desk = thing as Building_WorkTable;	
 			if (desk != null)
 			{
-				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(def.defName) && x.ShouldDoNow()/*x.repeatCount > 0*/ && x.PawnAllowedToStartAnew(pawn));
+				return desk.BillStack.Bills.Cast<Bill_Production>().Where(x => x.recipe.defName.StartsWith(def.defName) && x.ShouldDoNow() && x.PawnAllowedToStartAnew(pawn));
 			}
 			return null;
 		}

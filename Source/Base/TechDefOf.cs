@@ -6,18 +6,21 @@ namespace HumanResources
     [DefOf]
     public static class TechDefOf
     {
-        public static RecipeDef 
+        public static RecipeDef
             LearnTech,
             DocumentTech,
             TrainWeaponShooting,
             TrainWeaponMelee,
-            PracticeShooting,
-            PracticeMelee;
+            PracticeWeaponShooting,
+            PracticeWeaponMelee,
+            ExperimentWeaponShooting;
         public static ThingCategoryDef Knowledge;
         public static StuffCategoryDef Technic;
         public static ThingDef 
             TechBook,
-            UnfinishedTechBook;
+            UnfinishedTechBook,
+            WeaponsNotBasic,
+            WeaponsAlwaysBasic;
         public static WorkTypeDef HR_Learn;
     }
 }
