@@ -3,6 +3,10 @@ using Verse;
 using Verse.AI;
 using RimWorld;
 using Verse.Sound;
+using HarmonyLib;
+using System.Reflection;
+using System;
+using UnityEngine;
 
 namespace HumanResources
 {
@@ -25,11 +29,11 @@ namespace HumanResources
 			LocalTargetInfo target = this.job.GetTarget(TargetIndex.A);
 			Job job = this.job;
 			Bill bill = job.bill;
-			if (bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting) practice = true;
-			else if (bill.recipe == TechDefOf.ExperimentWeaponShooting) unknown = true;
 			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed)) return false;
 			pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
-			//Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTargetQueue(TargetIndex.A).ToString() + ", TargetB=" + job.GetTargetQueue(TargetIndex.B).ToString());
+			practice = bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting;
+			unknown = bill.recipe == TechDefOf.ExperimentWeaponShooting;
+			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTarget(TargetIndex.A).Thing + ", TargetB=" + job.GetTarget(TargetIndex.B).ToString());
 			return true;
 		}
 
@@ -150,7 +154,7 @@ namespace HumanResources
 				}
 
 				//pawn posture
-				Verb verbToUse = actor.jobs.curJob.verbToUse;
+				Verb verbToUse = actor.TryGetAttackVerb(TargetThingB, true);//actor.jobs.curJob.verbToUse;
 				LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
 				pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
 
@@ -189,6 +193,14 @@ namespace HumanResources
 			train.FailOn(() => train.actor.CurJob.bill.suspended);
 			train.activeSkill = () => train.actor.CurJob.bill.recipe.workSkill;
 			yield return train.FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+			yield return new Toil
+			{
+				initAction = delegate ()
+				{
+					Log.Message("DEBUG search for " + job.targetB.Thing);
+				},
+				defaultCompleteMode = ToilCompleteMode.Instant
+			};
 			if (!practice) yield return FinalizeTraining();
 
 			//testing
@@ -206,11 +218,22 @@ namespace HumanResources
 			finalizeTraining.initAction = delegate
 			{
 				Pawn actor = finalizeTraining.actor;
+				ThingDef weapon = job.targetB.Thing.def;
 				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
-				if (!techComp.proficientWeapons.Contains(job.targetB.Thing.def))
+				if (unknown && CheckExperimentFail(actor, weapon))
 				{
-					//techComp.proficientWeapons.Add(TargetThingB.def);
-					LearnWeaponGroup(TargetThingB.def, actor, techComp);
+					Verb verb = actor.TryGetAttackVerb(TargetThingB, true);
+					if (verb != null)
+					{
+						Type projectileType = verb.GetProjectile().thingClass;
+						Projectile bullet = (Projectile)GenSpawn.Spawn(verb.GetProjectile(), actor.Position, actor.Map, WipeMode.Vanish);
+						ImpactInfo(projectileType).Invoke(bullet, new object[] { actor });
+					}
+					else Log.Error("[HumanResources] No verb found for using " + TargetThingB);
+				}
+				else if (!techComp.proficientWeapons.Contains(weapon))
+				{
+					LearnWeaponGroup(weapon, actor, techComp);
 				}
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
@@ -218,6 +241,11 @@ namespace HumanResources
 			finalizeTraining.defaultCompleteMode = ToilCompleteMode.Instant;
 			finalizeTraining.FailOnDespawnedOrNull(TargetIndex.A);
 			return finalizeTraining;
+		}
+
+		private MethodInfo ImpactInfo(Type type) 
+		{
+			return AccessTools.Method(type, "Impact");
 		}
 
 		protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)
@@ -228,15 +256,11 @@ namespace HumanResources
 			{
 				foreach (ThingDef sister in Extension_Research.WeaponsByTech[Extension_Research.TechByWeapon[weapon]])
                 {
-					bool flag = true;
-					if ((ModBaseHumanResources.LearnRangedWeaponsByGroup && sister.IsRangedWeapon != ranged) || 
-						(ModBaseHumanResources.LearnMeleeWeaponsByGroup && sister.IsMeleeWeapon != melee)) flag = false;
-					if (flag)
+					if (ModBaseHumanResources.LearnRangedWeaponsByGroup && sister.IsRangedWeapon == ranged || ModBaseHumanResources.LearnMeleeWeaponsByGroup && sister.IsMeleeWeapon == melee)
 					{
 						techComp.proficientWeapons.Add(sister);
 						Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion);
 					}
-
 					//TEST group by: sister.projectile.damageDef !
                 }
 			}
@@ -246,5 +270,61 @@ namespace HumanResources
 				Messages.Message("MessageTrainingComplete".Translate(pawn, weapon), MessageTypeDefOf.TaskCompletion);
 			}
 		}
-	}
+
+        protected bool CheckExperimentFail(Pawn tester, ThingDef weapon)
+        {
+            float num = 1f;
+            float delta = 1f;
+            if (tester.Faction?.def.techLevel != null) //Look for pawn's own actual techlevel?
+            {
+                delta = (int)tester.Faction.def.techLevel / (int)weapon.techLevel;
+            }
+            float test = WeaponExperimentChanceFactor.Evaluate(delta);
+            Log.Message("DEBUG Experiment Weapon chance for " + tester + " vs. " + weapon + " is " + test);
+            num *= test;
+            num = Mathf.Min(num, 0.98f);
+            Job job = this.job;
+            RecipeDef recipe = job.bill.recipe;
+
+            if (!Rand.Chance(num))
+            {
+                if (Rand.Chance(0.5f))
+                {
+                    if (Rand.Chance(0.1f))
+                    {
+                        Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureRidiculous".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+                        //HealthUtility.GiveInjuriesOperationFailureRidiculous(tester);
+                    }
+                    else
+                    {
+                        Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureCatastrophic".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+                        //HealthUtility.GiveInjuriesOperationFailureCatastrophic(tester, part);
+                    }
+                }
+                else
+                {
+                    Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureMinor".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+                    //HealthUtility.GiveInjuriesOperationFailureMinor(tester, part);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private static readonly SimpleCurve WeaponExperimentChanceFactor = new SimpleCurve
+        {
+            {
+                new CurvePoint(0f, 0.7f),
+                true
+            },
+            {
+                new CurvePoint(1f, 1f),
+                true
+            },
+            {
+                new CurvePoint(2f, 1.3f),
+                true
+            }
+        };
+    }
 }
