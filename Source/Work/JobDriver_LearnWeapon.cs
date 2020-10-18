@@ -30,10 +30,10 @@ namespace HumanResources
 			Job job = this.job;
 			Bill bill = job.bill;
 			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed)) return false;
-			pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
 			practice = bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting;
+			if (!practice) pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
 			unknown = bill.recipe == TechDefOf.ExperimentWeaponShooting;
-			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTarget(TargetIndex.A).Thing + ", TargetB=" + job.GetTarget(TargetIndex.B).Thing);
+			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", recipe is "+bill.recipe.label);
 			return true;
 		}
 
@@ -70,42 +70,47 @@ namespace HumanResources
 			{
 				//Log.Message("LearnWeapon: finishing");
 				ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
-				if (pawn.equipment.Primary != null) pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
+				if (pawn.equipment.Primary != null && !practice) pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
-			Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
-			yield return extract;
-			Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
-			yield return getToHaulTarget;
 
-			//temporary equip
-			yield return new Toil
+			if (!practice)
 			{
-				initAction = delegate ()
-				{
-					ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
-					ThingWithComps thingWithComps2;
-					if (thingWithComps.def.stackLimit > 1 && thingWithComps.stackCount > 1)
-					{
-						thingWithComps2 = (ThingWithComps)thingWithComps.SplitOff(1);
-					}
-					else
-					{
-						thingWithComps2 = thingWithComps;
-						thingWithComps2.DeSpawn(DestroyMode.Vanish);
-					}
-					pawn.equipment.MakeRoomFor(thingWithComps2);
-					pawn.equipment.AddEquipment(thingWithComps2);
-					if (thingWithComps.def.soundInteract != null)
-					{
-						thingWithComps.def.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
-					}
-				},
-				defaultCompleteMode = ToilCompleteMode.Instant
-			};
+				yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
+				Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
+				yield return extract;
+				Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
+				yield return getToHaulTarget;
 
-			yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
+				//temporary equip
+				yield return new Toil
+				{
+					initAction = delegate ()
+					{
+						ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
+						ThingWithComps thingWithComps2;
+						if (thingWithComps.def.stackLimit > 1 && thingWithComps.stackCount > 1)
+						{
+							thingWithComps2 = (ThingWithComps)thingWithComps.SplitOff(1);
+						}
+						else
+						{
+							thingWithComps2 = thingWithComps;
+							thingWithComps2.DeSpawn(DestroyMode.Vanish);
+						}
+						pawn.equipment.MakeRoomFor(thingWithComps2);
+						pawn.equipment.AddEquipment(thingWithComps2);
+						if (thingWithComps.def.soundInteract != null)
+						{
+							thingWithComps.def.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
+						}
+					},
+					defaultCompleteMode = ToilCompleteMode.Instant
+				};
+
+				yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
+			}
+			Thing currentWeapon = practice ? pawn.equipment.Primary : job.targetB.Thing;
 			yield return gotoBillGiver;
 			yield return Toils_Combat.TrySetJobToUseAttackVerb(TargetIndex.A);
 			Toil train = new Toil();
@@ -113,7 +118,7 @@ namespace HumanResources
 			{
 				Pawn actor = train.actor;
 				Job curJob = actor.jobs.curJob;
-				ThingDef weapon = job.targetB.Thing.def;
+				ThingDef weapon = practice ? currentWeapon.def : job.targetB.Thing.def;//currentWeapon.def;//job.targetB.Thing.def;
 				workLeft = curJob.bill.recipe.WorkAmountTotal(null);
 				billStartTick = Find.TickManager.TicksGame;
 				ticksSpentDoingRecipeWork = 0;
@@ -123,7 +128,7 @@ namespace HumanResources
 			{
 				Pawn actor = train.actor;
 				Job curJob = actor.jobs.curJob;
-				ThingDef weapon = job.targetB.Thing.def;
+				ThingDef weapon = practice ? currentWeapon.def : job.targetB.Thing.def; //currentWeapon.def;//job.targetB.Thing.def;
 				ticksSpentDoingRecipeWork++;
 				curJob.bill.Notify_PawnDidWork(actor);
 				IBillGiverWithTickAction billGiverWithTickAction = train.actor.CurJob.GetTarget(TargetIndex.A).Thing as IBillGiverWithTickAction;
@@ -152,7 +157,7 @@ namespace HumanResources
 				}
 
 				//pawn posture
-				Verb verbToUse = actor.TryGetAttackVerb(TargetThingB, true);//actor.jobs.curJob.verbToUse;
+				Verb verbToUse = actor.TryGetAttackVerb(currentWeapon, true);//actor.jobs.curJob.verbToUse;
 				LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
 				pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
 
@@ -191,15 +196,7 @@ namespace HumanResources
 			train.FailOn(() => train.actor.CurJob.bill.suspended);
 			train.activeSkill = () => train.actor.CurJob.bill.recipe.workSkill;
 			yield return train.FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return new Toil
-			{
-				initAction = delegate ()
-				{
-					Log.Message("DEBUG search for " + job.targetB.Thing);
-				},
-				defaultCompleteMode = ToilCompleteMode.Instant
-			};
-			if (!practice) yield return FinalizeTraining();
+			yield return FinalizeTraining();
 
 			//testing
 			//yield return Toils_Reserve.Reserve(TargetIndex.B, 1, -1, null);
@@ -216,11 +213,14 @@ namespace HumanResources
 			finalizeTraining.initAction = delegate
 			{
 				Pawn actor = finalizeTraining.actor;
-				ThingDef weapon = job.targetB.Thing.def;
-				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
-				bool safe = true;
-				if (unknown) safe = !CheckExperimentFail(actor, TargetThingB);
-				if (!techComp.proficientWeapons.Contains(weapon) && safe) LearnWeaponGroup(weapon, actor, techComp);
+				if (!practice)
+				{
+					ThingDef weapon = job.targetB.Thing.def;
+					CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
+					bool safe = true;
+					if (unknown) safe = !CheckExperimentFail(actor, TargetThingB);
+					if (!techComp.proficientWeapons.Contains(weapon) && safe) LearnWeaponGroup(weapon, actor, techComp);
+				}
 				Log.Warning("DEBUG finalizing " + job.bill.Label);
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);

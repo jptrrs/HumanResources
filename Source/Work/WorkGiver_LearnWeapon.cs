@@ -57,7 +57,7 @@ namespace HumanResources
                     {
                         if (ValidateChosenWeapons(bill, pawn, billGiver))
                         {
-                            return StartBillJob(pawn, billGiver);
+                            return StartBillJob(pawn, billGiver, bill);
                         }
                     }
                 }
@@ -95,47 +95,47 @@ namespace HumanResources
             return result;
         }
 
-        private Job StartBillJob(Pawn pawn, IBillGiver giver)
+        protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
         {
-            //Log.Warning(pawn + " is trying to start a training job...");
-            for (int i = 0; i < giver.BillStack.Count; i++)
+            Log.Warning(pawn + " is trying to start a training job for bill "+bill.Label);
+            //for (int i = 0; i < giver.BillStack.Count; i++)
+            //{
+            //    Bill bill = giver.BillStack[i];
+            //    if (bill.recipe.requiredGiverWorkType == null || bill.recipe.requiredGiverWorkType == def.workType)
+            //    {
+            IntRange range = (IntRange)rangeInfo.GetValue(this);
+            if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
             {
-                Bill bill = giver.BillStack[i];
-                if (bill.recipe.requiredGiverWorkType == null || bill.recipe.requiredGiverWorkType == def.workType)
+                bill.lastIngredientSearchFailTicks = 0;
+                if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                 {
-                    IntRange range = (IntRange)rangeInfo.GetValue(this);
-                    if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
-                    {
-                        bill.lastIngredientSearchFailTicks = 0;
-                        if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
-                        {
-                            //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                            //chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
-                            //if (chosenIngThings.Any())
-                            //{
-                                Job result = TryStartNewDoBillJob(pawn, bill, giver);
-                                chosenIngThings.Clear();
-                                return result;
-                            //}
-                            //else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn-L3".Translate(pawn));
-                            //if (FloatMenuMakerMap.makingFor != pawn)
-                            //{
-                            //    //Log.Message("...float menu maker case");
-                            //    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-                            //}
-                            //else
-                            //{
-                            //    //reflection info
-                            //    FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
-                            //    //
-                            //    //Log.Message("...missing materials");
-                            //    JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
-                            //}
-                            //chosenIngThings.Clear();
-                        }
-                    }
+                    Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
+                    //chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
+                    //if (chosenIngThings.Any())
+                    //{
+                        Job result = TryStartNewDoBillJob(pawn, bill, giver);
+                        chosenIngThings.Clear();
+                        return result;
+                    //}
+                    //else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn-L3".Translate(pawn));
+                    //if (FloatMenuMakerMap.makingFor != pawn)
+                    //{
+                    //    //Log.Message("...float menu maker case");
+                    //    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+                    //}
+                    //else
+                    //{
+                    //    //reflection info
+                    //    FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
+                    //    //
+                    //    //Log.Message("...missing materials");
+                    //    JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
+                    //}
+                    //chosenIngThings.Clear();
                 }
             }
+            //    }
+            //}
             //Log.Message("...job failed.");
             chosenIngThings.Clear();
             return null;
@@ -170,10 +170,12 @@ namespace HumanResources
                 if (chosenIngThings.Any())
                 {
                     if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+                    Log.Message("DEBUG weapons to learn: " + studyWeapons.ToStringSafeEnumerable());
                     return studyWeapons.Any();
                 }
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
+            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
             return false;
         }
     }

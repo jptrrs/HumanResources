@@ -28,6 +28,29 @@ namespace HumanResources
             return false;
         }
 
+        public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
+        {
+            //Log.Message(pawn + " looking for a job at " + thing);
+            IBillGiver billGiver = thing as IBillGiver;
+            if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
+            {
+                LocalTargetInfo target = thing;
+                if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+                {
+                    billGiver.BillStack.RemoveIncompletableBills();
+                    foreach (Bill bill in RelevantBills(thing, pawn))
+                    {
+                        if (ValidateChosenWeapons(bill, pawn))
+                        {
+                            return StartBillJob(pawn, billGiver, bill);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
@@ -43,11 +66,19 @@ namespace HumanResources
 
         private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
-            bool result = studyWeapons.Any();
-            if (!JobFailReason.HaveReason && !result) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+            bool result = pawn.equipment.Primary != null && bill.ingredientFilter.AllowedThingDefs.Contains(pawn.equipment.Primary.def);
+            if (!JobFailReason.HaveReason && !result) JobFailReason.Is("NoWeaponEquipped".Translate(pawn), null);
             return result;
         }
+
+
+        //private bool ValidateChosenWeapons(Bill bill, Pawn pawn)
+        //{
+        //    IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
+        //    var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
+        //    bool result = studyWeapons.Any();
+        //    if (!JobFailReason.HaveReason && !result) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+        //    return result;
+        //}
     }
 }
