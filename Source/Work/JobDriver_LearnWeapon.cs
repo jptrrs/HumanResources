@@ -33,7 +33,7 @@ namespace HumanResources
 			pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
 			practice = bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting;
 			unknown = bill.recipe == TechDefOf.ExperimentWeaponShooting;
-			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTarget(TargetIndex.A).Thing + ", TargetB=" + job.GetTarget(TargetIndex.B).ToString());
+			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", TargetA=" + job.GetTarget(TargetIndex.A).Thing + ", TargetB=" + job.GetTarget(TargetIndex.B).Thing);
 			return true;
 		}
 
@@ -118,8 +118,6 @@ namespace HumanResources
 				billStartTick = Find.TickManager.TicksGame;
 				ticksSpentDoingRecipeWork = 0;
 				curJob.bill.Notify_DoBillStarted(actor);
-				//sound:
-				//if (weapon.soundInteract != null) weapon.soundInteract.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
 			};
 			train.tickAction = delegate ()
 			{
@@ -159,7 +157,7 @@ namespace HumanResources
 				pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
 
 				//sound:
-				if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
+				if (!unknown && verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
 				{
 					if ((ticksSpentDoingRecipeWork % verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, actor).SecondsToTicks()) == 0)
 					{
@@ -220,21 +218,10 @@ namespace HumanResources
 				Pawn actor = finalizeTraining.actor;
 				ThingDef weapon = job.targetB.Thing.def;
 				CompKnowledge techComp = actor.TryGetComp<CompKnowledge>();
-				if (unknown && CheckExperimentFail(actor, weapon))
-				{
-					Verb verb = actor.TryGetAttackVerb(TargetThingB, true);
-					if (verb != null)
-					{
-						Type projectileType = verb.GetProjectile().thingClass;
-						Projectile bullet = (Projectile)GenSpawn.Spawn(verb.GetProjectile(), actor.Position, actor.Map, WipeMode.Vanish);
-						ImpactInfo(projectileType).Invoke(bullet, new object[] { actor });
-					}
-					else Log.Error("[HumanResources] No verb found for using " + TargetThingB);
-				}
-				else if (!techComp.proficientWeapons.Contains(weapon))
-				{
-					LearnWeaponGroup(weapon, actor, techComp);
-				}
+				bool safe = true;
+				if (unknown) safe = !CheckExperimentFail(actor, TargetThingB);
+				if (!techComp.proficientWeapons.Contains(weapon) && safe) LearnWeaponGroup(weapon, actor, techComp);
+				Log.Warning("DEBUG finalizing " + job.bill.Label);
 				job.bill.Notify_IterationCompleted(actor, new List<Thing> { });
 				actor.jobs.EndCurrentJob(JobCondition.Succeeded, false);
 			};
@@ -258,7 +245,7 @@ namespace HumanResources
                 {
 					if (ModBaseHumanResources.LearnRangedWeaponsByGroup && sister.IsRangedWeapon == ranged || ModBaseHumanResources.LearnMeleeWeaponsByGroup && sister.IsMeleeWeapon == melee)
 					{
-						techComp.proficientWeapons.Add(sister);
+						techComp.LearnWeapon(sister);
 						Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion);
 					}
 					//TEST group by: sister.projectile.damageDef !
@@ -266,65 +253,116 @@ namespace HumanResources
 			}
 			else
 			{
-				techComp.proficientWeapons.Add(weapon);
+				techComp.LearnWeapon(weapon);
 				Messages.Message("MessageTrainingComplete".Translate(pawn, weapon), MessageTypeDefOf.TaskCompletion);
 			}
 		}
 
-        protected bool CheckExperimentFail(Pawn tester, ThingDef weapon)
+        protected bool CheckExperimentFail(Pawn tester, Thing weapon)
         {
-            float num = 1f;
+			float num = 1f;
             float delta = 1f;
             if (tester.Faction?.def.techLevel != null) //Look for pawn's own actual techlevel?
             {
-                delta = (int)tester.Faction.def.techLevel / (int)weapon.techLevel;
+                delta = (int)tester.Faction.def.techLevel / (int)weapon.def.techLevel;
             }
             float test = WeaponExperimentChanceFactor.Evaluate(delta);
-            Log.Message("DEBUG Experiment Weapon chance for " + tester + " vs. " + weapon + " is " + test);
+            Log.Message("DEBUG Experiment Weapon chance for " + tester + " vs. " + weapon.def + " is " + test);
             num *= test;
             num = Mathf.Min(num, 0.98f);
             Job job = this.job;
             RecipeDef recipe = job.bill.recipe;
 
-            if (!Rand.Chance(num))
+            if (!Rand.Chance(num)) //Determined by the tech level difference according to curve.
             {
-                if (Rand.Chance(0.5f))
+                if (Rand.Chance(0.5f)) //50% chance the failure is harmless;
                 {
-                    if (Rand.Chance(0.1f))
-                    {
-                        Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureRidiculous".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
-                        //HealthUtility.GiveInjuriesOperationFailureRidiculous(tester);
-                    }
+					tester.TryGetComp<CompKnowledge>()?.AddWeaponTrauma(weapon.def);
+					if (Rand.Chance(0.5f)) //25% chance the weapon just takes some damage;
+					{
+						if (Rand.Chance(0.2f)) //5% chance the weapon is destroyed;
+						{
+							Find.LetterStack.ReceiveLetter("LetterLabelWeaponTestFailed".Translate(weapon.def.Named("WEAPON")), "MessageMedicalWeaponTestFailureRidiculous".Translate(tester.LabelShort, tester.LabelShort, weapon.def.Named("WEAPON"), tester.Named("TESTER"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+							Backfire(tester, weapon);
+							weapon.Destroy();
+						}
+						else //20% chance the weapon backfires.
+						{
+							Find.LetterStack.ReceiveLetter("LetterLabelWeaponTestFailed".Translate(weapon.def.Named("WEAPON")), "MessageWeaponTestFailureCatastrophic".Translate(tester.LabelShort, tester.LabelShort, weapon.def.Named("WEAPON"), tester.Named("TESTER"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+							Backfire(tester, weapon);
+						}
+					}
                     else
                     {
-                        Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureCatastrophic".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
-                        //HealthUtility.GiveInjuriesOperationFailureCatastrophic(tester, part);
+						Find.LetterStack.ReceiveLetter("LetterLabelWeaponTestFailed".Translate(weapon.def.Named("WEAPON")), "MessageWeaponTestFailureMinor".Translate(tester.LabelShort, tester.LabelShort, weapon.def.Named("WEAPON"), tester.Named("TESTER"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
+						float damageFactor = 4 - delta;
+						Scratch(weapon, damageFactor);
                     }
-                }
+				}
                 else
                 {
-                    Find.LetterStack.ReceiveLetter("LetterLabelSurgeryFailed".Translate(tester.Named("PATIENT")), "MessageMedicalOperationFailureMinor".Translate(tester.LabelShort, tester.LabelShort, tester.Named("SURGEON"), tester.Named("PATIENT"), recipe.Named("RECIPE")), LetterDefOf.NegativeEvent, tester, null, null, null, null);
-                    //HealthUtility.GiveInjuriesOperationFailureMinor(tester, part);
-                }
-                return true;
+					Messages.Message("WeaponTestFail".Translate(tester, weapon.def), MessageTypeDefOf.NegativeEvent);
+				}
+				return true;
             }
             return false;
         }
 
-        private static readonly SimpleCurve WeaponExperimentChanceFactor = new SimpleCurve
+		private static FieldInfo launcherInfo = AccessTools.Field(typeof(Projectile), "launcher");
+		private static FieldInfo equipmentDefInfo = AccessTools.Field(typeof(Projectile), "equipmentDef");
+		//private FieldInfo targetCoverDefInfo = AccessTools.Field(typeof(Projectile), "targetCoverDef");
+
+		private void Backfire(Pawn tester, Thing weapon)
         {
-            {
-                new CurvePoint(0f, 0.7f),
-                true
-            },
-            {
-                new CurvePoint(1f, 1f),
-                true
-            },
-            {
-                new CurvePoint(2f, 1.3f),
-                true
-            }
+			Verb verb = tester.TryGetAttackVerb(weapon, true);
+			if (verb != null)
+			{
+				ThingDef projectileDef = verb.GetProjectile();
+				Type projectileType = projectileDef.thingClass;
+				Projectile bullet = (Projectile)GenSpawn.Spawn(verb.GetProjectile(), tester.Position, tester.Map, WipeMode.Vanish);
+				launcherInfo.SetValue(bullet, tester);
+				bullet.intendedTarget = TargetA;
+				equipmentDefInfo.SetValue(bullet, weapon.def);
+				bullet.def = projectileDef;
+				ImpactInfo(projectileType).Invoke(bullet, new object[] { tester });
+			}
+			else Log.Error("[HumanResources] No verb found for using " + weapon.def);
+		}
+
+		private void Scratch(Thing weapon, float factor)
+        {
+			float damage = Rand.Range(1f, 10f) * factor;
+			weapon.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, damage, 0f, -1f, null, null, null, DamageInfo.SourceCategory.ThingOrUnknown, null));
+		}
+
+		private static readonly SimpleCurve WeaponExperimentChanceFactor = new SimpleCurve
+        {
+			{
+				new CurvePoint(0f, 0f),
+				true
+			},
+			{
+				new CurvePoint(0.5f, 0.1f),
+				true
+			},
+			{
+				new CurvePoint(2f, 0.8f),
+				true
+			}
+
+
+            //{
+            //    new CurvePoint(0f, 0.7f),
+            //    true
+            //},
+            //{
+            //    new CurvePoint(1f, 1f),
+            //    true
+            //},
+            //{
+            //    new CurvePoint(2f, 1.3f),
+            //    true
+            //}
         };
     }
 }

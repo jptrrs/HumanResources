@@ -96,12 +96,12 @@
   
   <RecipeDef>
     <defName>ExperimentWeaponShooting</defName>
-    <label>Experiment with an unknown weapon</label>
+    <label>Experiment with unknown weapon</label>
     <description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
     <jobString>Experimenting with a ranged weapon.</jobString>
     <workAmount>3000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Shooting</workSkill>
+    <workSkill>Intellectual</workSkill>
     <recipeUsers>
       <li>Target</li>
     </recipeUsers>

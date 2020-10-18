@@ -109,32 +109,29 @@ namespace HumanResources
                         bill.lastIngredientSearchFailTicks = 0;
                         if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                         {
-                            //if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
-                            //{
                             //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                            chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
-                            if (chosenIngThings.Any())
-                            {
+                            //chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
+                            //if (chosenIngThings.Any())
+                            //{
                                 Job result = TryStartNewDoBillJob(pawn, bill, giver);
                                 chosenIngThings.Clear();
                                 return result;
-                            }
-                            else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
                             //}
-                            if (FloatMenuMakerMap.makingFor != pawn)
-                            {
-                                //Log.Message("...float menu maker case");
-                                bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-                            }
-                            else
-                            {
-                                //reflection info
-                                FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
-                                //
-                                //Log.Message("...missing materials");
-                                JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
-                            }
-                            chosenIngThings.Clear();
+                            //else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn-L3".Translate(pawn));
+                            //if (FloatMenuMakerMap.makingFor != pawn)
+                            //{
+                            //    //Log.Message("...float menu maker case");
+                            //    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+                            //}
+                            //else
+                            //{
+                            //    //reflection info
+                            //    FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
+                            //    //
+                            //    //Log.Message("...missing materials");
+                            //    JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
+                            //}
+                            //chosenIngThings.Clear();
                         }
                     }
                 }

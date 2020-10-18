@@ -76,7 +76,15 @@
   <DoesntKnowThisPlant>{0_nameDef} doesn't know how to cultivate {1} (requires {2}).</DoesntKnowThisPlant>
   <UnknownWeapon>Pawn has not been trained to use this weapon</UnknownWeapon>
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
-  <TechAlreadyKnown>{0} is already known.</TechAlreadyKnown>
+  <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
+  
+  <!--weapon testing -->
+  <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
+  <FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
+  <LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
+  <MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
+  <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic> 
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
   
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.</LetterResearchRequest_SuccessHR>

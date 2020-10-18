@@ -71,6 +71,7 @@ namespace HumanResources
             IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
             IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
+            IEnumerable<ThingDef> feared = techComp.fearedWeapons;
             IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
             //if (!unavailable.EnumerableNullOrEmpty())
             //{
@@ -78,7 +79,7 @@ namespace HumanResources
             //    string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
             //    JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
             //}
-            var result = chosen.Intersect(unavailable).Except(known);
+            var result = feared.EnumerableNullOrEmpty() ? chosen.Intersect(unavailable) : chosen.Intersect(unavailable).Except(feared);
             return result;
         }
 
@@ -96,32 +97,34 @@ namespace HumanResources
                         bill.lastIngredientSearchFailTicks = 0;
                         if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                         {
-                            //if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
-                            //{
                             //Log.Message("...weapon found, chosen ingredients: " + chosenIngThings.Select(x => x.Thing).ToStringSafeEnumerable());
-                            chosenIngThings.RemoveAll(x => !StudyWeapons(bill, pawn).Contains(x.Thing.def));
-                            if (chosenIngThings.Any())
-                            {
+                            //var studyWeapons = StudyWeapons(bill, pawn);
+                            //chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
+                            //if (chosenIngThings.Any())
+                            //{
                                 Job result = TryStartNewDoBillJob(pawn, bill, giver);
                                 chosenIngThings.Clear();
                                 return result;
-                            }
-                            else if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
                             //}
-                            if (FloatMenuMakerMap.makingFor != pawn)
-                            {
-                                //Log.Message("...float menu maker case");
-                                bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-                            }
-                            else
-                            {
-                                //reflection info
-                                FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
-                                //
-                                //Log.Message("...missing materials");
-                                JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
-                            }
-                            chosenIngThings.Clear();
+                            //else if (!JobFailReason.HaveReason)
+                            //{
+                            //    if (studyWeapons.All(x => pawn.TryGetComp<CompKnowledge>().fearedWeapons.Contains(x))) JobFailReason.Is("FearedWeapon".Translate(pawn));
+                            //    else JobFailReason.Is("NoWeaponToLearn".Translate(pawn));
+                            //}
+                            //if (FloatMenuMakerMap.makingFor != pawn)
+                            //{
+                            //    //Log.Message("...float menu maker case");
+                            //    bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+                            //}
+                            //else
+                            //{
+                            //    //reflection info
+                            //    FieldInfo MissingMaterialsTranslatedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "MissingMaterialsTranslated");
+                            //    //
+                            //    //Log.Message("...missing materials");
+                            //    JobFailReason.Is((string)MissingMaterialsTranslatedInfo.GetValue(this), bill.Label);
+                            //}
+                            //chosenIngThings.Clear();
                         }
                     }
                 }
@@ -139,7 +142,11 @@ namespace HumanResources
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
                 if (chosenIngThings.Any())
                 {
-                    if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+                    if (!JobFailReason.HaveReason)
+                    {
+                        if (studyWeapons.All(x => pawn.TryGetComp<CompKnowledge>().fearedWeapons.Contains(x))) JobFailReason.Is("FearedWeapon".Translate(pawn));
+                        else JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+                    }
                     return studyWeapons.Any();
                 }
             }

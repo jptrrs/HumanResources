@@ -22,7 +22,6 @@ namespace HumanResources
                 {
                     return ValidateChosenWeapons(bill, pawn);
                 }
-                JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                 return false;
             }
             //Log.Message("case 4");
@@ -46,7 +45,9 @@ namespace HumanResources
         {
             IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
             var studyWeapons = bill.ingredientFilter.AllowedThingDefs.Intersect(knownWeapons);
-            return studyWeapons.Any();
+            bool result = studyWeapons.Any();
+            if (!JobFailReason.HaveReason && !result) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+            return result;
         }
     }
 }

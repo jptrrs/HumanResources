@@ -16,6 +16,7 @@ namespace HumanResources
         public List<ResearchProjectDef> homework;
         public List<ThingDef> proficientPlants;
         public List<ThingDef> proficientWeapons;
+        public List<ThingDef> fearedWeapons;
         protected static bool isFighter = false;
         protected static bool isShooter = false;
         protected static TechLevel startingTechLevel;
@@ -319,6 +320,18 @@ namespace HumanResources
             proficientWeapons.AddRange(tech.UnlockedWeapons());
         }
 
+        public void LearnWeapon(ThingDef weapon)
+        {
+            if (!fearedWeapons.NullOrEmpty() && fearedWeapons.Contains(weapon)) fearedWeapons.Remove(weapon);
+            proficientWeapons.Add(weapon);
+        }
+
+        public void AddWeaponTrauma(ThingDef weapon)
+        {
+            if (fearedWeapons == null) fearedWeapons = new List<ThingDef>();
+            fearedWeapons.AddDistinct(weapon);
+        }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -334,6 +347,7 @@ namespace HumanResources
             Scribe_Collections.Look(ref homework, "homework");
             Scribe_Collections.Look(ref proficientWeapons, "proficientWeapons");
             Scribe_Collections.Look(ref proficientPlants, "proficientPlants");
+            Scribe_Collections.Look(ref fearedWeapons, "fearedWeapons");
             if (Scribe.mode == LoadSaveMode.PostLoadInit && homework == null) homework = new List<ResearchProjectDef>();
         }
 

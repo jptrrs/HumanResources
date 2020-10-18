@@ -103,7 +103,7 @@ namespace HumanResources
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose)
             {
-                Log.Message("[HumanResources] Codified technologies:" + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
+                Log.Message("[HumanResources] Codified technologies: " + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
