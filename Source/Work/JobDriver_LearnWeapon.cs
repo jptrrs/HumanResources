@@ -32,7 +32,7 @@ namespace HumanResources
 			if (!pawn.Reserve(target, job, 1, -1, null, errorOnFailed)) return false;
 			practice = bill.recipe == TechDefOf.PracticeWeaponMelee || bill.recipe == TechDefOf.PracticeWeaponShooting;
 			if (!practice) pawn.ReserveAsManyAsPossible(job.GetTargetQueue(TargetIndex.B), job, 1, -1, null);
-			unknown = bill.recipe == TechDefOf.ExperimentWeaponShooting;
+			unknown = bill.recipe == TechDefOf.ExperimentWeaponShooting || bill.recipe == TechDefOf.ExperimentWeaponMelee;
 			Log.Warning("DEBUG LearWeapon Job: practice=" + practice + ", unknown=" + unknown + ", recipe is "+bill.recipe.label);
 			return true;
 		}
@@ -310,21 +310,28 @@ namespace HumanResources
 
 		private static FieldInfo launcherInfo = AccessTools.Field(typeof(Projectile), "launcher");
 		private static FieldInfo equipmentDefInfo = AccessTools.Field(typeof(Projectile), "equipmentDef");
-		//private FieldInfo targetCoverDefInfo = AccessTools.Field(typeof(Projectile), "targetCoverDef");
+		private MethodInfo ApplyMeleeDamageToTargetInfo = AccessTools.Method(typeof(Verb_MeleeAttack), "ApplyMeleeDamageToTarget");
 
 		private void Backfire(Pawn tester, Thing weapon)
         {
 			Verb verb = tester.TryGetAttackVerb(weapon, true);
 			if (verb != null)
 			{
-				ThingDef projectileDef = verb.GetProjectile();
-				Type projectileType = projectileDef.thingClass;
-				Projectile bullet = (Projectile)GenSpawn.Spawn(verb.GetProjectile(), tester.Position, tester.Map, WipeMode.Vanish);
-				launcherInfo.SetValue(bullet, tester);
-				bullet.intendedTarget = TargetA;
-				equipmentDefInfo.SetValue(bullet, weapon.def);
-				bullet.def = projectileDef;
-				ImpactInfo(projectileType).Invoke(bullet, new object[] { tester });
+				if (verb.IsMeleeAttack)
+				{
+					ApplyMeleeDamageToTargetInfo.Invoke(verb, new object[] { tester });
+				}
+				else
+				{
+					ThingDef projectileDef = verb.GetProjectile();
+					Type projectileType = projectileDef.thingClass;
+					Projectile bullet = (Projectile)GenSpawn.Spawn(verb.GetProjectile(), tester.Position, tester.Map, WipeMode.Vanish);
+					launcherInfo.SetValue(bullet, tester);
+					bullet.intendedTarget = TargetA;
+					equipmentDefInfo.SetValue(bullet, weapon.def);
+					bullet.def = projectileDef;
+					ImpactInfo(projectileType).Invoke(bullet, new object[] { tester });
+				}
 			}
 			else Log.Error("[HumanResources] No verb found for using " + weapon.def);
 		}

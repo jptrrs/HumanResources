@@ -13,7 +13,8 @@ namespace HumanResources
             TrainWeaponMelee,
             PracticeWeaponShooting,
             PracticeWeaponMelee,
-            ExperimentWeaponShooting;
+            ExperimentWeaponShooting,
+            ExperimentWeaponMelee;
         public static ThingCategoryDef Knowledge;
         public static StuffCategoryDef Technic;
         public static ThingDef 

@@ -99,7 +99,7 @@
     <label>Experiment with unknown weapon</label>
     <description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
     <jobString>Experimenting with a ranged weapon.</jobString>
-    <workAmount>3000</workAmount>
+    <workAmount>5000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <recipeUsers>
@@ -118,6 +118,36 @@
     <fixedIngredientFilter>
       <categories>
         <li>WeaponsRanged</li>
+      </categories>
+    </fixedIngredientFilter>
+  </RecipeDef>
+  
+  <RecipeDef>
+    <defName>ExperimentWeaponMelee</defName>
+    <label>Experiment with unknown weapon</label>
+    <description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
+    <jobString>Experimenting with a melee weapon.</jobString>
+    <workAmount>5000</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <recipeUsers>
+      <li>MrDummy</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsMelee</li>
+            <li>WeaponsMeleeBladelink</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+            <li>WeaponsMelee</li>
+            <li>WeaponsMeleeBladelink</li>
       </categories>
     </fixedIngredientFilter>
   </RecipeDef>

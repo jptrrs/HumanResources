@@ -157,11 +157,10 @@ namespace HumanResources
         //Dealing with older versions
         public override void MapLoaded(Map map)
         {
-            var obsolete = new List<Building_WorkTable>();
             ThingDef simpleBench = DefDatabase<ThingDef>.GetNamed("SimpleResearchBench");
             ThingDef hiTechBench = DefDatabase<ThingDef>.GetNamed("HiTechResearchBench");
-            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(simpleBench)) obsolete.Add(oldBench);
-            foreach (Building_WorkTable oldBench in map.listerBuildings.AllBuildingsColonistOfDef(hiTechBench)) obsolete.Add(oldBench);
+            var obsolete = new List<Building_WorkTable>();
+            obsolete.AddRange(map.listerBuildings.AllBuildingsColonistOfClass<Building_WorkTable>().Where(x => x.def == simpleBench || x.def == hiTechBench));
             if (obsolete.Any())
             {
                 Log.Warning("[HumanResources] Replacing " + obsolete.Count() + " outdated research benches.");
