@@ -7,7 +7,7 @@
 
   <DocumentTech.label>documentar tecnologia</DocumentTech.label>
   <DocumentTech.description>Consolidar conhecimentos em um livro técnico</DocumentTech.description>
-  <DocumentTech.jobString>Documentando uma tecnologia</DocumentTech.jobString>
+  <DocumentTech.jobString>Documentando uma tecnologia</DocumentTech.jobString>ExperimentWeapon
 
   <ResearchTech.label>Pesquisar tecnologias</ResearchTech.label>
   <ResearchTech.description>Expandir a fronteira do conhecimento pesquisando novas tecnologias.</ResearchTech.description>
@@ -20,6 +20,14 @@
   <TrainWeaponMelee.label>Treinar para usar uma arma branca</TrainWeaponMelee.label>
   <TrainWeaponMelee.description>Treinar com uma arma até se tornar proficiente nela.</TrainWeaponMelee.description>
   <TrainWeaponMelee.jobString>Treinando o uso de uma arma.</TrainWeaponMelee.jobString>
+  
+  <ExperimentWeaponShooting.label>Experimentar com arma desconhecida</ExperimentWeaponShooting.label>
+  <ExperimentWeaponShooting.description>Experimentar com arma desconhecida para tentar aprender a usá-la mesmo sem realmente entender como ela funciona. Muito arriscado.</ExperimentWeaponShooting.description>
+  <ExperimentWeaponShooting.jobString>Experimentando com uma arma.</ExperimentWeaponShooting.jobString>
+  
+  <ExperimentWeaponMelee.label>Experimentar com arma desconhecida</ExperimentWeaponMelee.label>
+  <ExperimentWeaponMelee.description>Experimentar com arma desconhecida para tentar aprender a usá-la mesmo sem realmente entender como ela funciona. Muito arriscado.</ExperimentWeaponMelee.description>
+  <ExperimentWeaponMelee.jobString>Experimentando com uma arma.</ExperimentWeaponMelee.jobString>  
   
   <PracticeShooting.label>Praticar tiro</PracticeShooting.label>
   <PracticeShooting.description>Atirar em um alvo para praticar tiro.</PracticeShooting.description>

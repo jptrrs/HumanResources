@@ -91,14 +91,11 @@ namespace HumanResources
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
                 if (chosenIngThings.Any())
                 {
-                    if (!JobFailReason.HaveReason)
-                    {
-                        if (studyWeapons.All(x => pawn.TryGetComp<CompKnowledge>().fearedWeapons.Contains(x))) JobFailReason.Is("FearedWeapon".Translate(pawn));
-                        else JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
-                    }
-                    Log.Message("DEBUG weapons to experiment: " + studyWeapons.ToStringSafeEnumerable());
+                    if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                     return studyWeapons.Any();
                 }
+                var traumas = pawn.TryGetComp<CompKnowledge>().fearedWeapons;
+                if (!traumas.NullOrEmpty() && chosenIngThings.All(x => traumas.Contains(x.Thing.def))) JobFailReason.Is("FearedWeapon".Translate(pawn));
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
             if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;

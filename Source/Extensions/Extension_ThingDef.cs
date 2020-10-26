@@ -8,7 +8,7 @@ namespace HumanResources
 	{
 		public static bool IsExempted(this ThingDef weapon)
         {
-			return ModBaseHumanResources.ExemptSingleUseWeapons && !weapon.thingSetMakerTags.NullOrEmpty() && weapon.thingSetMakerTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.thingSetMakerTags.Contains(tag));
+			return !ModBaseHumanResources.RequireTrainingForSingleUseWeapons && !weapon.thingSetMakerTags.NullOrEmpty() && weapon.thingSetMakerTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.thingSetMakerTags.Contains(tag));
 		}
 
 		public static bool NotReallyAWeapon(this ThingDef weapon)

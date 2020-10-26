@@ -170,7 +170,6 @@ namespace HumanResources
                 if (chosenIngThings.Any())
                 {
                     if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
-                    Log.Message("DEBUG weapons to learn: " + studyWeapons.ToStringSafeEnumerable());
                     return studyWeapons.Any();
                 }
             }

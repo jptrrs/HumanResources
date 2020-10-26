@@ -10,7 +10,7 @@
   <ShowRanged>Show ranged weapons.</ShowRanged>
   <ShowAvailable>Show techs available to learn.</ShowAvailable>
   <ShowCompact>Compact view.</ShowCompact>
-  <!--NEW--><ShowAssignment>Show assignments</ShowAssignment>
+  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
   <Expand>Expand</Expand>
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
@@ -39,6 +39,12 @@
   <WeaponPoolMode_Scenario>the scenario only</WeaponPoolMode_Scenario>
   <FreeScenarioWeaponsTitle>All colonists start with scenario weapons.</FreeScenarioWeaponsTitle>
   <FreeScenarioWeaponsDesc>If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here) </FreeScenarioWeaponsDesc>
+  <!--NEW--><LearnMeleeWeaponsByGroupTitle>Learn melee weapons by group.</LearnMeleeWeaponsByGroupTitle>
+  <!--NEW--><LearnMeleeWeaponsByGroupDesc>When learning melee weapons, learn all weapons unlocked by that technology at the same time.</LearnMeleeWeaponsByGroupDesc>
+  <!--NEW--><LearnRangedWeaponsByGroupTitle>Learn ranged weapons by group.</LearnRangedWeaponsByGroupTitle>
+  <!--NEW--><LearnRangedWeaponsByGroupDesc>When learning ranged weapons, learn all weapons unlocked by that technology at the same time.</LearnRangedWeaponsByGroupDesc>
+  <!--NEW--><RequireTrainingForSingleUseWeaponsTitle>Require training for single-use weapons.</RequireTrainingForSingleUseWeaponsTitle>
+  <!--NEW--><RequireTrainingForSingleUseWeaponsDesc>If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.</RequireTrainingForSingleUseWeaponsDesc>
   <ResearchSpeedTiedToDifficultyTitle>Difficulty settings slows down research.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Difficulty settings slows down tech studying.</StudySpeedTiedToDifficultyTitle>
@@ -77,16 +83,15 @@
   <UnknownWeapon>Pawn has not been trained to use this weapon</UnknownWeapon>
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
-  
-  <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
+  <!--NEW--><NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
   
   <!--weapon testing -->
-  <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
-  <FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
-  <LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
-  <MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
-  <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic> 
-  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+  <!--NEW--><WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
+  <!--NEW--><FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
+  <!--NEW--><LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
+  <!--NEW--><MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
+  <!--NEW--><MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
+  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
   
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.</LetterResearchRequest_SuccessHR>

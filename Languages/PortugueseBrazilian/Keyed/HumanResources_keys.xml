@@ -39,6 +39,12 @@
   <WeaponPoolMode_Scenario>dentre as incluídas no cenário, somente</WeaponPoolMode_Scenario>
   <FreeScenarioWeaponsTitle>Todos os colonos começam com as armas do cenário.</FreeScenarioWeaponsTitle>
   <FreeScenarioWeaponsDesc>Quando marcado, qualquer arma incluída no cenário também será acrescentada à lista de armas que os colonos podem usar. (O cenário do "Explorador Rico" foi modificado para sempre fazer isso, independente do que for marcado aqui.)</FreeScenarioWeaponsDesc>
+  <LearnMeleeWeaponsByGroupTitle>Aprender armas de corpo-a-corpo por grupo.</LearnMeleeWeaponsByGroupTitle>
+  <LearnMeleeWeaponsByGroupDesc>Quando treinar armas de corpo-a-corpo, aprender todas as armas de uma tecnologia ao mesmo tempo.</LearnMeleeWeaponsByGroupDesc>
+  <LearnRangedWeaponsByGroupTitle>Aprender armas de longo alcance por grupo.</LearnRangedWeaponsByGroupTitle>
+  <LearnRangedWeaponsByGroupDesc>Quando treinar armas de longo alcance, aprender todas as armas de uma tecnologia ao mesmo tempo.</LearnRangedWeaponsByGroupDesc>
+  <RequireTrainingForSingleUseWeaponsTitle>Armas de uso único requerem treinamento.</RequireTrainingForSingleUseWeaponsTitle>
+  <RequireTrainingForSingleUseWeaponsDesc>Quando marcado, armas como lançadores de foguetes também vão requerer treinamento antes que o colono possa utilizá-las.</RequireTrainingForSingleUseWeaponsDesc>
   <ResearchSpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de pesquisa.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>Quando marcado, a velocidade de pesquisa é vinculada ao nível de dificuldade selecionado. No nível fácil ela parmanece a mesma, mas ela é reduzida até em 30% no nível difícil. Quando desmarcado, ela retorna ao padrão de 10% mais lento que o jogo base.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de estudo.</StudySpeedTiedToDifficultyTitle>
@@ -77,7 +83,17 @@
   <UnknownWeapon>O personagem não foi treinado para usar essa arma.</UnknownWeapon>
   <EvilWeapon>O personagem não compreende esta arma e tem receio de tocá-la.</EvilWeapon>
   <TechAlreadyKnown>{0} já é algo conhecido.</TechAlreadyKnown>
-  
+  <NoWeaponEquipped>Equipamento inválido.</NoWeaponEquipped>
+
+  <!--weapon testing -->
+  <WeaponTestFail>{0_nameDef} não conseguiu entender como {1_definite} funciona.</WeaponTestFail>
+  <FearedWeapon>{0_nameDef} já experimentou essas armas antes e não deu certo.</FearedWeapon>
+  <LetterLabelWeaponTestFailed>Acidente com {WEAPON}</LetterLabelWeaponTestFailed>
+  <MessageWeaponTestFailureMinor>{TESTER_labelShort} danificou {WEAPON_definite} ao tentar usá-la ({RECIPE_label}).</MessageWeaponTestFailureMinor>
+  <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} sofreu um acidente ao tentar usar {WEAPON_definite} e saiu {TESTER_gender ? ferido : ferida} ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} falhou completamente ao tentar usar {WEAPON_definite}. {TESTER_pronoun} foi {TESTER_gender ? ferido : ferida} e a arma foi destruída. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+
+
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>A investigação foi um sucesso. Trabalhando juntos vocês avançaram no entendimento de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_SuccessHR>
   <LetterResearchRequest_TriumphHR>A investigação foi um triunfo! Trabalhando juntos você conseguiram desvendar todos os segredos de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_TriumphHR>

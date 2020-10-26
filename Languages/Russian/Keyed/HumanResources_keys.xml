@@ -39,6 +39,14 @@
   <WeaponPoolMode_Scenario>только сценарий</WeaponPoolMode_Scenario>
   <FreeScenarioWeaponsTitle>Все колонисты начинают с сценарным оружием.</FreeScenarioWeaponsTitle>
   <FreeScenarioWeaponsDesc>Если этот флажок установлен, любое оружие, которое вы добавляете в редактор сценария, также будет включено в список оружия, которое колонисты игрока могут использовать. (Стандартный сценарий «Богатый исследователь» исправлен так, чтобы всегда делать это, независимо от того, что здесь выбрано)</FreeScenarioWeaponsDesc>
+  
+  <!--NEW--><LearnMeleeWeaponsByGroupTitle>Learn melee weapons by group.</LearnMeleeWeaponsByGroupTitle>
+  <!--NEW--><LearnMeleeWeaponsByGroupDesc>When learning melee weapons, learn all weapons unlocked by that technology at the same time.</LearnMeleeWeaponsByGroupDesc>
+  <!--NEW--><LearnRangedWeaponsByGroupTitle>Learn ranged weapons by group.</LearnRangedWeaponsByGroupTitle>
+  <!--NEW--><LearnRangedWeaponsByGroupDesc>When learning ranged weapons, learn all weapons unlocked by that technology at the same time.</LearnRangedWeaponsByGroupDesc>
+  <!--NEW--><RequireTrainingForSingleUseWeaponsTitle>Require training for single-use weapons.</RequireTrainingForSingleUseWeaponsTitle>
+  <!--NEW--><RequireTrainingForSingleUseWeaponsDesc>If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.</RequireTrainingForSingleUseWeaponsDesc>
+
   <ResearchSpeedTiedToDifficultyTitle>Настройки сложности замедляют исследования.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>Если этот флажок установлен, базовая скорость исследования привязана к настройкам сложности, без изменений на Легком уровне и до 30% медленнее на Сложном. Если этот флажок не установлен, по умолчанию он на 10% медленнее, чем ванильный.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Настройки сложности замедляют изучение технологий.</StudySpeedTiedToDifficultyTitle>
@@ -83,6 +91,16 @@
   
   <TechAlreadyKnown>{0} уже известен.</TechAlreadyKnown>
   
+  <!--NEW--><NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
+  
+  <!--weapon testing -->
+  <!--NEW--><WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
+  <!--NEW--><FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
+  <!--NEW--><LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
+  <!--NEW--><MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
+  <!--NEW--><MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
+  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>Исследование прошло успешно. Работая вместе, вы продвинулись в понимании {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
   <LetterResearchRequest_TriumphHR>Исследование было большим триумфом! Работая вместе, вы достигли прорыва и раскрыли секреты {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>

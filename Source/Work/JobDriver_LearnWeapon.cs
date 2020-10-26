@@ -272,8 +272,7 @@ namespace HumanResources
             num = Mathf.Min(num, 0.98f);
             Job job = this.job;
             RecipeDef recipe = job.bill.recipe;
-
-            if (!Rand.Chance(num)) //Determined by the tech level difference according to curve.
+			if (!Rand.Chance(num)) //Determined by the tech level difference according to curve.
             {
                 if (Rand.Chance(0.5f)) //50% chance the failure is harmless;
                 {
@@ -310,7 +309,8 @@ namespace HumanResources
 
 		private static FieldInfo launcherInfo = AccessTools.Field(typeof(Projectile), "launcher");
 		private static FieldInfo equipmentDefInfo = AccessTools.Field(typeof(Projectile), "equipmentDef");
-		private MethodInfo ApplyMeleeDamageToTargetInfo = AccessTools.Method(typeof(Verb_MeleeAttack), "ApplyMeleeDamageToTarget");
+		private static FieldInfo currentTargetInfo = AccessTools.Field(typeof(Verb), "currentTarget");
+		private static MethodInfo TryCastShotInfo = AccessTools.Method(typeof(Verb_MeleeAttack), "TryCastShot");
 
 		private void Backfire(Pawn tester, Thing weapon)
         {
@@ -319,7 +319,8 @@ namespace HumanResources
 			{
 				if (verb.IsMeleeAttack)
 				{
-					ApplyMeleeDamageToTargetInfo.Invoke(verb, new object[] { tester });
+					currentTargetInfo.SetValue(verb, new LocalTargetInfo(tester));
+					TryCastShotInfo.Invoke(verb, new object[] { });
 				}
 				else
 				{
