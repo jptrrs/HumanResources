@@ -32,32 +32,30 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>   
-  
+
   <!--From ItchyFlea's Practise Target-->
-  <!--<JobDef>
-    <defName>UseDummy</defName>
-    --><!--<driverClass>JobDriver_WatchBuilding</driverClass>--><!--
-    <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
+  <JobDef>
+    <defName>PlayAtDummy</defName>
+    <driverClass>JobDriver_WatchBuilding</driverClass>
     <reportString>Training Melee.</reportString>
     <joyDuration>4000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants> 
     <joySkill>Melee</joySkill>
     <joyXpPerTick>0.004</joyXpPerTick>
     <joyGainRate>1.2</joyGainRate>
-    <joyKind>Meditative</joyKind>
+    <joyKind>Gaming_Dexterity</joyKind>
   </JobDef>
   
   <JobDef>
-    <defName>UseTarget</defName>
-    --><!--<driverClass>JobDriver_WatchBuilding</driverClass>--><!--
-    <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
+    <defName>PlayAtTarget</defName>
+    <driverClass>JobDriver_WatchBuilding</driverClass>
     <reportString>Training Shooting.</reportString>
     <joyDuration>4000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants>
     <joySkill>Shooting</joySkill>
     <joyXpPerTick>0.004</joyXpPerTick>
     <joyGainRate>1.2</joyGainRate>
-    <joyKind>Meditative</joyKind>
-  </JobDef>-->
+    <joyKind>Gaming_Dexterity</joyKind>
+  </JobDef>
 
 </Defs>
