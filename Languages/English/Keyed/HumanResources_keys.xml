@@ -91,7 +91,7 @@
   <!--NEW--><LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
   <!--NEW--><MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
   <!--NEW--><MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
-  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
   
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.</LetterResearchRequest_SuccessHR>
