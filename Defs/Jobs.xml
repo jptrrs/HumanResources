@@ -36,7 +36,8 @@
   <!--From ItchyFlea's Practise Target-->
   <JobDef>
     <defName>PlayAtDummy</defName>
-    <driverClass>JobDriver_WatchBuilding</driverClass>
+    <!--<driverClass>JobDriver_WatchBuilding</driverClass>-->
+    <driverClass>HumanResources.JobDriver_PlayWithWeapon</driverClass>
     <reportString>Training Melee.</reportString>
     <joyDuration>4000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants> 
@@ -48,7 +49,7 @@
   
   <JobDef>
     <defName>PlayAtTarget</defName>
-    <driverClass>JobDriver_WatchBuilding</driverClass>
+    <driverClass>HumanResources.JobDriver_PlayWithWeapon</driverClass>
     <reportString>Training Shooting.</reportString>
     <joyDuration>4000</joyDuration>
     <joyMaxParticipants>1</joyMaxParticipants>

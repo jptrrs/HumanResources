@@ -2,15 +2,15 @@
 <Defs>
 
   <JoyGiverDef>
-    <defName>PracticeShooting</defName>
-    <giverClass>JoyGiver_InteractBuildingInteractionCell</giverClass>
+    <defName>PlayShooting</defName>
+    <giverClass>HumanResources.JoyGiver_PlayWithWeapon</giverClass>
     <baseChance>3</baseChance>
     <thingDefs>
       <li>Target</li>
     </thingDefs>
     <desireSit>false</desireSit>
     <jobDef>PlayAtTarget</jobDef>
-    <joyKind>Shooting</joyKind>
+    <joyKind>Gaming_Dexterity</joyKind>
     <requiredCapacities>
       <li>Sight</li>
       <li>Manipulation</li>
@@ -18,15 +18,15 @@
   </JoyGiverDef>
 
   <JoyGiverDef>
-    <defName>PracticeMartialArts</defName>
-    <giverClass>JoyGiver_InteractBuildingInteractionCell</giverClass>
+    <defName>PlayMartialArts</defName>
+    <giverClass>HumanResources.JoyGiver_PlayWithWeapon</giverClass>
     <baseChance>4</baseChance>
     <thingDefs>
       <li>MrDummy</li>
     </thingDefs>
     <desireSit>false</desireSit>
     <jobDef>PlayAtDummy</jobDef>
-    <joyKind>MartialArts</joyKind>
+    <joyKind>Gaming_Dexterity</joyKind>
     <requiredCapacities>
       <li>Manipulation</li>
     </requiredCapacities>

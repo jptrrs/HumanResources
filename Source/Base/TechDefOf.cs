@@ -23,5 +23,8 @@ namespace HumanResources
             WeaponsNotBasic,
             WeaponsAlwaysBasic;
         public static WorkTypeDef HR_Learn;
+        public static JoyGiverDef
+            PlayShooting,
+            PlayMartialArts;
     }
 }
