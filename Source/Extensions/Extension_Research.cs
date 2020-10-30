@@ -423,7 +423,16 @@ namespace HumanResources
 			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
 		}
 
-        private static IEnumerable<Pawn> currentPawns => HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null) : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+        private static IEnumerable<Pawn> currentPawnsCache;
+
+        private static IEnumerable<Pawn> currentPawns //=> HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null) : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+        {
+            get
+            {
+                if (currentPawnsCache.EnumerableNullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null) : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+                return currentPawnsCache;
+            }
+        }            
 
         public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {
