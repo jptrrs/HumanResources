@@ -9,10 +9,12 @@ namespace HumanResources
 {
     public class JobDriver_LearnTech : JobDriver_Knowledge
 	{
+		protected bool IsResearch;
+
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			//var selected = job.bill.SelectedTech();
-			var valid = techComp.homework?.Where(x => job.bill == null ? (!x.IsFinished && x.RequisitesKnownBy(pawn)) : x.IsFinished).Reverse();
+			IsResearch = job.bill == null;
+			var valid = techComp.homework?.Where(x => IsResearch ? (!x.IsFinished && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn)) : x.IsFinished).Reverse();
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			else if (valid.Any()) project = valid.FirstOrDefault();
@@ -45,7 +47,8 @@ namespace HumanResources
 						TryMakePreToilReservations(true);
 						return true;
                     }
-					if (!techComp.homework.Contains(project)) return true;
+					//if (!techComp.homework.Contains(project)) return true;
+					if (project.IsKnownBy(pawn)) return true;
 				}
 				return false;
 			});
@@ -60,20 +63,25 @@ namespace HumanResources
 				{
 					expertise.Add(project, 0f);
 				}
-				acquireKnowledge.AddEndCondition(delegate
-				{
-					if (expertise[project] > 1f)
-					{
-						expertise[project] = 1f;
-						techComp.homework.Remove(project);
-						techComp.LearnCrops(project);
-						Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
-						if (job.bill != null) Notify_IterationCompleted(actor, job.bill as Bill_Production);
-						return JobCondition.Succeeded;
-					}
-					return JobCondition.Ongoing;
-				});
 			};
+			acquireKnowledge.AddEndCondition(delegate
+			{
+				Pawn actor = acquireKnowledge.actor;
+				if (expertise.ContainsKey(project) && expertise[project] > 1f)
+				{
+					expertise[project] = 1f;
+					if (!IsResearch)
+					{
+						Notify_IterationCompleted(actor, job.bill as Bill_Production);
+						techComp.homework.Remove(project);
+					}
+					techComp.LearnCrops(project);
+					Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
+					project = null;
+					return JobCondition.Succeeded;
+				}
+				return JobCondition.Ongoing;
+			});
 			acquireKnowledge.tickAction = delegate ()
 			{
 				Pawn actor = acquireKnowledge.actor;
