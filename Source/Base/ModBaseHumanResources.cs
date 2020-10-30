@@ -57,7 +57,7 @@ namespace HumanResources
             //ThingDef injection stolen from the work of notfood for Psychology
             var zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
             IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
-                                            where def.race?.intelligence == Intelligence.Humanlike && !def.defName.Contains("Android") && !def.defName.Contains("Robot") && (zombieThinkTree == null || def.race.thinkTreeMain != zombieThinkTree)
+                                            where def.race?.intelligence == Intelligence.Humanlike /*&& !def.defName.Contains("Android") && !def.defName.Contains("Robot")*/ && (zombieThinkTree == null || def.race.thinkTreeMain != zombieThinkTree)
                                             select def);
             List<string> registered = new List<string>();
             foreach (ThingDef t in things)

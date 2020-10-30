@@ -18,9 +18,6 @@
             <requiredGiverWorkType>Study</requiredGiverWorkType>
           </value>
         </li>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/WorkTypeDef[defName="HR_Learn"]</xpath>
-        </li>
       </operations>
 		</match>
 	</Operation>

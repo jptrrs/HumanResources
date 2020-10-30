@@ -97,6 +97,7 @@ namespace HumanResources
                 Log.Message("[HumanResources] Children, School and Learning detected! Integrating...");
                 Type SchoolDefOfType = AccessTools.TypeByName("School.SchoolDefOf");
                 TechDefOf.HR_Learn = (WorkTypeDef)AccessTools.Field(SchoolDefOfType, "Study").GetValue(new object());
+                AccessTools.Method(typeof(DefDatabase<WorkTypeDef>), "Remove").Invoke(new ModBaseHumanResources(), new object[] { DefDatabase<WorkTypeDef>.GetNamed("HR_Learn") });
             }
 
             //Provisions for specific research projects
