@@ -2,7 +2,7 @@
 <Defs>
 
   <JoyGiverDef>
-    <defName>PlayShooting</defName>
+    <defName>Play_Shooting</defName>
     <giverClass>HumanResources.JoyGiver_PlayWithWeapon</giverClass>
     <baseChance>3</baseChance>
     <thingDefs>
@@ -18,7 +18,7 @@
   </JoyGiverDef>
 
   <JoyGiverDef>
-    <defName>PlayMartialArts</defName>
+    <defName>Play_MartialArts</defName>
     <giverClass>HumanResources.JoyGiver_PlayWithWeapon</giverClass>
     <baseChance>4</baseChance>
     <thingDefs>

@@ -13,21 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4A36335D
 		About\PublishedFileId.txt = About\PublishedFileId.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{A425CC4D-B9E9-4338-8845-ACD73F533D7D}"
-	ProjectSection(SolutionItems) = preProject
-		Defs\Jobs.xml = Defs\Jobs.xml
-		Defs\Recipes.xml = Defs\Recipes.xml
-		Defs\Rooms.xml = Defs\Rooms.xml
-		Defs\ScenParts.xml = Defs\ScenParts.xml
-		Defs\StuffCategories.xml = Defs\StuffCategories.xml
-		Defs\ThingCategories.xml = Defs\ThingCategories.xml
-		Defs\Things.xml = Defs\Things.xml
-		Defs\Things_WeaponExemptions.xml = Defs\Things_WeaponExemptions.xml
-		Defs\TraderKinds.xml = Defs\TraderKinds.xml
-		Defs\WorkGivers.xml = Defs\WorkGivers.xml
-		Defs\WorkTypes.xml = Defs\WorkTypes.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{6A809623-353B-411E-BDB4-7C4428221C02}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}"
@@ -448,6 +433,22 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{9F6946F0-2EFE-4895-83F4-601C18536C72}"
 	ProjectSection(SolutionItems) = preProject
 		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{5B913D14-8BD4-40BD-B084-DD9C727DE3A1}"
+	ProjectSection(SolutionItems) = preProject
+		Defs\Jobs.xml = Defs\Jobs.xml
+		Defs\JoyGivers.xml = Defs\JoyGivers.xml
+		Defs\Recipes.xml = Defs\Recipes.xml
+		Defs\Rooms.xml = Defs\Rooms.xml
+		Defs\ScenParts.xml = Defs\ScenParts.xml
+		Defs\StuffCategories.xml = Defs\StuffCategories.xml
+		Defs\ThingCategories.xml = Defs\ThingCategories.xml
+		Defs\Things.xml = Defs\Things.xml
+		Defs\Things_WeaponExemptions.xml = Defs\Things_WeaponExemptions.xml
+		Defs\TraderKinds.xml = Defs\TraderKinds.xml
+		Defs\WorkGivers.xml = Defs\WorkGivers.xml
+		Defs\WorkTypes.xml = Defs\WorkTypes.xml
 	EndProjectSection
 EndProject
 Global

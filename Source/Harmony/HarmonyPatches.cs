@@ -10,6 +10,10 @@ namespace HumanResources
     public static class HarmonyPatches
     {
         public static Harmony instance = null;
+
+        public static bool WeaponTrainingSelection;
+        public static bool VisibleBooksCategory;
+
         public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
         public static bool
             //WeaponTrainingSelection,
