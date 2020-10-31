@@ -12,7 +12,7 @@ namespace HumanResources
     {
         public override bool CanBeGivenTo(Pawn pawn)
         {
-            if (pawn.equipment != null && ((def == TechDefOf.PlayShooting && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) || def == TechDefOf.PlayMartialArts))
+            if (pawn.equipment != null && ((def == TechDefOf.Play_Shooting && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) || def == TechDefOf.Play_MartialArts))
             {
                 return base.CanBeGivenTo(pawn);
             }
