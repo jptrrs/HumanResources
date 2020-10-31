@@ -72,6 +72,7 @@
   <NothingToAddToLibrary>You know nothing, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} has read all the books.</AlreadyKnowsTheWholeLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} is missing basic knowledge on those subjects.</LacksFundamentalKnowledge>
+  <!--NEW--><NoSpaceInLibrary>Nowhere to store the book when it's finished.</NoSpaceInLibrary>
   <NoWeaponsFoundToLearn>No available weapons to train.</NoWeaponsFoundToLearn>
   <MissingRequirementToLearnWeapon>{0_nameDef} has no corresponding knowledge or books to learn about {1}.</MissingRequirementToLearnWeapon>
   <ThoseWeapons>those weapons</ThoseWeapons>

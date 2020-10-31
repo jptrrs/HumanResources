@@ -24,7 +24,7 @@ namespace HumanResources
 		{
 			//Log.Message(pawn + " is looking for a document job...");
 			Building_WorkTable Desk = t as Building_WorkTable;
-			if (Desk != null)
+			if (Desk != null && ModBaseHumanResources.unlocked.libraryFreeSpace > 0)
 			{
 				var relevantBills = RelevantBills(Desk, pawn);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
@@ -35,7 +35,7 @@ namespace HumanResources
 				return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
 
 			}
-			//Log.Message("case 4");
+			if (ModBaseHumanResources.unlocked.libraryFreeSpace <= 0) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			return false;
 		}
 
@@ -105,7 +105,7 @@ namespace HumanResources
 			return null;
 		}
 
-		public new static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
+		public static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
 		{
 			if (pawn.TryGetComp<CompKnowledge>().expertise.Where(x => !x.Key.IsFinished && x.Value >= 1f && x.Key.LabelCap == uft.Stuff.stuffProps.stuffAdjective).Any() == false)
 			{

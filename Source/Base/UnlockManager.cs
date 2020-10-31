@@ -18,6 +18,7 @@ namespace HumanResources
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
         private static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         private static FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
+        public int libraryFreeSpace;
 
         public void ExposeData()
         {

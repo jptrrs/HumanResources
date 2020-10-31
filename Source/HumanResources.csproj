@@ -345,6 +345,7 @@
     <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Extensions\Extension_ThingDef.cs" />
     <Compile Include="Extensions\Extension_Pawn.cs" />
+    <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\Royalty_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\CompTechprint_CompFloatMenuOptions.cs" />

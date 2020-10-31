@@ -142,7 +142,6 @@ namespace HumanResources
                 t.building.fixedStorageSettings.filter.ResolveReferences();
                 t.building.defaultStorageSettings.filter.ResolveReferences();
             }
-
         }
 
         public override void MapComponentsInitializing(Map map)
@@ -152,6 +151,7 @@ namespace HumanResources
                 unlocked.RegisterStartingResources();
                 unlocked.RecacheUnlockedWeapons();
             }
+            unlocked.libraryFreeSpace = 0;
         }
 
         //Dealing with older versions

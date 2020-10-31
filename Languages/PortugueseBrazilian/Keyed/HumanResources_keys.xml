@@ -71,6 +71,7 @@
   <MessageTrainingComplete>{0_nameDef} dominou {1_definite}.</MessageTrainingComplete>
   <NothingToAddToLibrary>Você não sabe nada, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} já leu todos os livros.</AlreadyKnowsTheWholeLibrary>
+  <NoSpaceInLibrary>Não há espaço para guardar o livro.</NoSpaceInLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} não domina conhecimentos básicos nessa matéria.</LacksFundamentalKnowledge>
   <NoWeaponsFoundToLearn>Não há armas disponíveis para treinar.</NoWeaponsFoundToLearn>
   <MissingRequirementToLearnWeapon>{0_nameDef} não possui o conhecimento ou livro correspondente para aprender {1}.</MissingRequirementToLearnWeapon>

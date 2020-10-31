@@ -14,7 +14,18 @@ namespace HumanResources
         public ThingOwner innerContainer;
         protected StorageSettings storageSettings;
         private CompStorageGraphic compStorageGraphic = null;
-        public int dynamicCapacity => Math.Max(ModBaseHumanResources.unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
+        private static int dynamicCapacityInt;
+        public int dynamicCapacity
+        {
+            get
+            {
+                if (dynamicCapacityInt == 0)
+                {
+                    dynamicCapacityInt = Math.Max(ModBaseHumanResources.unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
+                }
+                return dynamicCapacityInt;
+            }
+        }
         public CompStorageGraphic CompStorageGraphic
         {
             get
@@ -67,6 +78,13 @@ namespace HumanResources
             }
         }
 
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
+            base.SpawnSetup(map, respawningAfterLoad);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -76,6 +94,7 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
+            ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
             if (innerContainer.Count > 0)
             {
                 innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this); });
@@ -106,6 +125,8 @@ namespace HumanResources
                 ResearchProjectDef tech = ModBaseHumanResources.unlocked.techByStuff[outThing.Stuff];
                 tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
+                ModBaseHumanResources.unlocked.libraryFreeSpace++;
+                CompStorageGraphic.UpdateGraphics();
                 return true;
             }
             return false;
@@ -139,6 +160,7 @@ namespace HumanResources
                 s.AppendLine(baseStr);
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
+            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
             return s.ToString().TrimEndNewlines();
         }
 

@@ -120,7 +120,6 @@ namespace HumanResources
 							{
 								flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
 							}
-							shelf.CompStorageGraphic.UpdateGraphics();
 							pawn.carryTracker.innerContainer.Remove(book);
 						}
 						else

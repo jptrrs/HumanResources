@@ -131,6 +131,9 @@
   <NothingToAddToLibrary>{0_nameFull}，我看你完全是不懂喔。</NothingToAddToLibrary>
   <!--EN: {0_nameDef} has read all the books.-->
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} 已閱讀所有書籍。</AlreadyKnowsTheWholeLibrary>
+  
+  <!--NEW--><NoSpaceInLibrary>Nowhere to store the book when it's finished.</NoSpaceInLibrary>
+  
   <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
   <LacksFundamentalKnowledge>{0_nameDef} 缺少這些課題的前置知識。</LacksFundamentalKnowledge>
   <!--EN: No available weapons to train.-->

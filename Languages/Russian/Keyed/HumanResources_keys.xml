@@ -74,6 +74,7 @@
   <MessageTrainingComplete>{0_nameDef} освоил {1}.</MessageTrainingComplete>
   <NothingToAddToLibrary>Ты ничего не знаешь, {0_nameFull}.</NothingToAddToLibrary>
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} прочитал все книги.</AlreadyKnowsTheWholeLibrary>
+  <!--NEW--><NoSpaceInLibrary>Nowhere to store the book when it's finished.</NoSpaceInLibrary>
   <LacksFundamentalKnowledge>{0_nameDef} не хватает базовых знаний по этим предметам.</LacksFundamentalKnowledge>
   <NoWeaponsFoundToLearn>Нет доступного оружия для обучения.</NoWeaponsFoundToLearn>
   <MissingRequirementToLearnWeapon>{0_nameDef} не имеет соответствующих знаний или книг, о которых можно было бы узнать {1}.</MissingRequirementToLearnWeapon>
