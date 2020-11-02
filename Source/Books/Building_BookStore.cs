@@ -154,8 +154,6 @@ namespace HumanResources
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
             if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
-            //testing
-            s.AppendLine("Allowed defs:" + storageSettings.filter.AllowedDefCount.ToString());
             return s.ToString().TrimEndNewlines();
         }
 
