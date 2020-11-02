@@ -39,22 +39,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{C1DD231C-4
 		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{1A49A134-082B-49CA-BAED-1708C8422690}"
-	ProjectSection(SolutionItems) = preProject
-		Patches\Patches.xml = Patches\Patches.xml
-		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
-		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
-		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
-		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
-		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
-		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
-		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
-		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
-		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
-		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
-		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{FB43E893-944D-41CA-854B-49B12159459C}"
 	ProjectSection(SolutionItems) = preProject
 		News\HumanResources_UpdateFeatures.xml = News\HumanResources_UpdateFeatures.xml
@@ -449,6 +433,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{5B913D14-8
 		Defs\TraderKinds.xml = Defs\TraderKinds.xml
 		Defs\WorkGivers.xml = Defs\WorkGivers.xml
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{DEEA167E-BFFD-45AC-B46D-4BCA28BCB86F}"
+	ProjectSection(SolutionItems) = preProject
+		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
+		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
+		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
+		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
+		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
+		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
+		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
+		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
+		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
+		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
+		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
+		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
 EndProject
 Global

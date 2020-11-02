@@ -23,7 +23,6 @@ namespace HumanResources
             Func<Thing, bool> books = (Thing t) => t.Stuff != null && t.Stuff.IsWithinCategory(TechDefOf.Knowledge);
             if (request.group == ThingRequestGroup.HaulableEver && outThings.Any(books))
             {
-                var preList = outThings;
                 outThings.RemoveAll(new Predicate<Thing>(books));
             }
         }

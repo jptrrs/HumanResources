@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--oskarpotocki.vfe.vikings-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Factions Expanded - Vikings</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+      <value>
+        <li>CryptoWeaponAdvanced</li>
+        <li>WeaponsMeleeCrypto</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

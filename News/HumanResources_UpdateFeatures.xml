@@ -68,4 +68,25 @@ Many, many thanks for your support!
     </content>
   </HugsLib.UpdateFeatureDef>
   
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_0_19</defName>
+    <assemblyVersion>0.19</assemblyVersion>
+    <content>
+      &lt;b&gt;"Don't try this at home"  Update&lt;/b&gt;
+      |This time around we focused on what seemed to bother people the most about the mod: weapon training. The jobs at the &lt;i&gt;Target Stand&lt;/i&gt; and the &lt;i&gt;Training Dummy&lt;/i&gt; were re-worked and improved, among other changes. Here are the ones you might want to know about:
+      |1. When training with a new weapon, &lt;b&gt;the pawns will no longer drop their current equipped one&lt;/b&gt;, keeping them on their inventory instead. When they are done, they'll drop the weapon they were training with and re-equip the one they were using before.
+      |2. When learning a new ranged weapon, the pawns will become proficient in &lt;b&gt;all weapons&lt;/b&gt; unlocked by that technology at the same time. This should make it easier to keep up the pace in games with many weapon mods. If you feel you don't need the nerf, you can turn it off on the mod settings panel, where you can also apply that rule to melee weapons if you want to, as well.
+      |3. You can now set up a bill for your pawns to &lt;b&gt;Experiment with an unknown weapon.&lt;/b&gt; This has the benefit of allowing them to learn how to use advanced weapons you can't yet fabricate. But since they will be literally playing with fire, &lt;b&gt;there's a good chance they will mess things up and end up injuring themselves or damaging (or even destroying) the weapon&lt;/b&gt;. The more advanced the thing, the more dangerous it is. Proceed at your own risk!
+      |4. Practicing with weapons is now restricted to pawns equipped with the appropriate piece: ranged weapons to do it at the &lt;i&gt;Target Stand&lt;/i&gt; and melee weapons for practicing at the &lt;i&gt;Training Dummy&lt;/i&gt;. Also, we made it possible for your pawns to &lt;b&gt;do this just for fun&lt;/b&gt;, even if you don't set up a bill for it.
+      |5. You can now choose, in the mod options panel, if you prefer single-use weapons, like &lt;i&gt;rocket lauchers&lt;/i&gt;, to also require training.
+      |Apart from weapon training, we made a couple key changes to other areas:
+      |6. After researching a new technology, &lt;b&gt;it will be automatically assigned for the pawn to document it&lt;/b&gt;. Provided there's a study desk with the corresponding bill set up, the pawns will proceed to write the corresponding book on their own.
+      |6. The paws &lt;b&gt;will no longer write a book&lt;/b&gt; if there's no space on your library to hold it.
+      |7. The capacity of &lt;i&gt;Book Shelves&lt;/i&gt; will now scale based on how many research projects were added by other mods, increasing proportionally to the technologies count. (This might mean their capacity was &lt;i&gt;reduced&lt;/i&gt; on games with few mods.) The limit of how many shelves can link to a single workstation was also raised, so you can now leverage the full power of the knowledge you accumulate.
+      |8. The AI won't take into consideration the value of your library when determining the adequate threat levels anymore.
+      |Check the full change notes on our Steam page.
+      |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+  
 </Defs>
