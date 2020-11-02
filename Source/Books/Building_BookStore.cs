@@ -78,13 +78,6 @@ namespace HumanResources
             }
         }
 
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
-        {
-            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
-            this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
-            base.SpawnSetup(map, respawningAfterLoad);
-        }
-
         public override void ExposeData()
         {
             base.ExposeData();
@@ -161,6 +154,8 @@ namespace HumanResources
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
             if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
+            //testing
+            s.AppendLine("Allowed defs:" + storageSettings.filter.AllowedDefCount.ToString());
             return s.ToString().TrimEndNewlines();
         }
 
@@ -200,5 +195,11 @@ namespace HumanResources
             Find.WindowStack.Add(new FloatMenu(list));
         }
 
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
+            base.SpawnSetup(map, respawningAfterLoad);
+        }
     }
 }

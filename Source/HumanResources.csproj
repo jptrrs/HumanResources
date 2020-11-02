@@ -349,6 +349,7 @@
     <Compile Include="Harmony\Compatibility\Royalty\Royalty_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\Compatibility\Royalty\CompTechprint_CompFloatMenuOptions.cs" />
+    <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
