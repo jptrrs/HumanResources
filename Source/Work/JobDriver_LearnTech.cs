@@ -47,8 +47,8 @@ namespace HumanResources
 						TryMakePreToilReservations(true);
 						return true;
                     }
-					//if (!techComp.homework.Contains(project)) return true;
-					if (project.IsKnownBy(pawn)) return true;
+					bool flag = IsResearch ? project.IsKnownBy(pawn) : !techComp.homework.Contains(project);
+					if (flag) return true;
 				}
 				return false;
 			});

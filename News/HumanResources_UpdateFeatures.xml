@@ -81,9 +81,9 @@ Many, many thanks for your support!
       |5. You can now choose, in the mod options panel, if you prefer single-use weapons, like &lt;i&gt;rocket lauchers&lt;/i&gt;, to also require training.
       |Apart from weapon training, we made a couple key changes to other areas:
       |6. After researching a new technology, &lt;b&gt;it will be automatically assigned for the pawn to document it&lt;/b&gt;. Provided there's a study desk with the corresponding bill set up, the pawns will proceed to write the corresponding book on their own.
-      |6. The paws &lt;b&gt;will no longer write a book&lt;/b&gt; if there's no space on your library to hold it.
-      |7. The capacity of &lt;i&gt;Book Shelves&lt;/i&gt; will now scale based on how many research projects were added by other mods, increasing proportionally to the technologies count. (This might mean their capacity was &lt;i&gt;reduced&lt;/i&gt; on games with few mods.) The limit of how many shelves can link to a single workstation was also raised, so you can now leverage the full power of the knowledge you accumulate.
-      |8. The AI won't take into consideration the value of your library when determining the adequate threat levels anymore.
+      |7. The paws &lt;b&gt;will no longer write a book&lt;/b&gt; if there's no space on your library to hold it.
+      |8. The capacity of &lt;i&gt;Book Shelves&lt;/i&gt; will now scale based on how many research projects were added by other mods, increasing proportionally to the technologies count. (This might mean their capacity was &lt;i&gt;reduced&lt;/i&gt; on games with few mods.) The limit of how many shelves can link to a single workstation was also raised, so you can now leverage the full power of the knowledge you accumulate.
+      |9. The AI won't take into consideration the value of your library when determining the adequate threat levels anymore.
       |Check the full change notes on our Steam page.
       |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
     </content>

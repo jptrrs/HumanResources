@@ -10,7 +10,10 @@ namespace HumanResources
     {
         public static void Postfix(ThingDef td, ref bool __result)
         {
-            __result = HarmonyPatches.VisibleBooksCategory && td.IsWithinCategory(TechDefOf.Knowledge);
+            if (HarmonyPatches.VisibleBooksCategory)
+            {
+                __result = td.IsWithinCategory(TechDefOf.Knowledge);
+            }
         }
     }
 }
