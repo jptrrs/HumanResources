@@ -50,13 +50,6 @@ namespace HumanResources
                 Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");
             }
 
-            ////Royalty integration
-            //if (ModLister.RoyaltyInstalled)
-            //{
-            //    Log.Message("[HumanResources] Royalty detected! Integrating...");
-            //    Royalty_Patches.Execute(Instance);
-            //}
-
             //Go Explore! integration
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))
             {

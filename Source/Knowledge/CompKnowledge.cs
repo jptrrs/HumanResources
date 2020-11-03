@@ -91,7 +91,7 @@ namespace HumanResources
             {
                 bool flag = false;
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("[HumanResources] Including technologies from");
+                stringBuilder.Append("... Including technologies from");
                 if (ModBaseHumanResources.TechPoolIncludesTechLevel)
                 {
                     stringBuilder.Append(" the faction tech level,");
@@ -108,7 +108,7 @@ namespace HumanResources
                     flag = true;
                 }
                 if (flag) Log.Message(stringBuilder.ToString().TrimEnd(new char[] { ',' }) + ".");
-                else Log.Message("[HumanResources] Empty technology pool!");
+                else Log.Warning("[HumanResources] Empty technology pool!");
             }
 
             //1. Gather info on that pawn
@@ -134,7 +134,7 @@ namespace HumanResources
             int slots = Mathf.Max(minSlots, FactionExpertiseRange(startingTechLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) + oldBonus - fighterHandicap);
             if (slots == 0)
             {
-                if (Prefs.LogVerbose) Log.Warning("Expertise generation for " + pawn + ": no slots, returning null. StartingTechLevel is "+startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap);
+                if (Prefs.LogVerbose) Log.Warning("... No slots for " + pawn.gender.GetObjective() + ", returning null. (StartingTechLevel is " + startingTechLevel+", CurLifeStageIndex is "+ pawn.ageTracker.CurLifeStageIndex+", fighterHandicap is "+ fighterHandicap+")");
                 return null;
             }
 
@@ -142,7 +142,7 @@ namespace HumanResources
             if (Prefs.LogVerbose)
             {
                 string guruNote = guru ? " (with intellectual bounus)" : "";
-                Log.Message("Expertise generation for " + pawn + ": techLevel is " + startingTechLevel + guruNote + ", highest skills: " + highestSkill.label + " & "+ secondSkill.label + ", "+slots+" calculated slots.");
+                Log.Message("... "+slots+" calculated slots (techLevel is " + startingTechLevel + guruNote + ", highest skills: " + highestSkill.label + " & "+ secondSkill.label + ")");
             }
             bool isPlayer = pawn.Faction?.IsPlayer ?? false;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, startingTechLevel, faction));
@@ -172,7 +172,7 @@ namespace HumanResources
             {
                 return result;
             }
-            Log.Warning("Couldn't calculate any expertise for " + pawn);
+            Log.Error("[HumanResources] Couldn't calculate any expertise for " + pawn);
             return null;
         }
 
@@ -216,24 +216,23 @@ namespace HumanResources
 
         public void AcquireExpertise()
         {
-            if (Prefs.LogVerbose) Log.Warning("Acquiring expertise for " + pawn + "...");
+            if (Prefs.LogVerbose) Log.Warning("[HumanResources] Acquiring expertise for " + pawn + "...");
             expertise = new Dictionary<ResearchProjectDef, float>();
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
             var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
             if (!acquiredExpertise.EnumerableNullOrEmpty())
             {
                 expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
-                if (Prefs.LogVerbose) Log.Message(pawn.gender.GetPossessive().CapitalizeFirst() + " expertise is " + expertise.Keys.ToStringSafeEnumerable() + ".");
+                if (Prefs.LogVerbose) Log.Message("... "+pawn.gender.GetPossessive().CapitalizeFirst() + " knowledge is going to be " + expertise.Keys.ToStringSafeEnumerable() + ".");
             }
             else
             {
                 Log.Warning("[HumanResources] "+pawn+" spawned without acquiring any expertise.");
             }
             AcquireWeaponKnowledge(faction);
-            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can use the following weapons: " + proficientWeapons.ToStringSafeEnumerable());
+            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message("... "+ pawn.gender.GetPossessive().CapitalizeFirst() + " weapon proficiency is going to be: " + proficientWeapons.ToStringSafeEnumerable());
             AcquirePlantKnowledge();
-            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message(pawn.gender.GetPronoun().CapitalizeFirst() + " can cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
-            string test2 = expertise != null ? "ok" : "bad";
+            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message("... "+pawn.gender.GetPronoun().CapitalizeFirst() + " will be able to cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
         }
 
         public void AcquirePlantKnowledge()
@@ -256,6 +255,7 @@ namespace HumanResources
             {
                 proficientWeapons = new List<ThingDef>();
                 StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.Append("... ");
                 if (!expertise.EnumerableNullOrEmpty())
                 {
                     foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
@@ -297,7 +297,7 @@ namespace HumanResources
                     if (!knownWeapons.Contains(weapon.def))
                     {
                         proficientWeapons.Add(weapon.def);
-                        if (Prefs.LogVerbose) stringBuilder.AppendLine(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
+                        if (Prefs.LogVerbose) stringBuilder.AppendLine("... "+pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
                     }
                 }
                 proficientWeapons.RemoveDuplicates();

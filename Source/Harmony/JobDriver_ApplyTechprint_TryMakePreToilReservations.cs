@@ -8,7 +8,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    [HarmonyPatch(typeof(JobDriver_ApplyTechprint), "TryMakePreToilReservations")]
+    //[HarmonyPatch(typeof(JobDriver_ApplyTechprint), "TryMakePreToilReservations")]
     public static class JobDriver_ApplyTechprint_TryMakePreToilReservations
     {
         private static PropertyInfo TechprintInfo = AccessTools.Property(typeof(JobDriver_ApplyTechprint), "Techprint");
