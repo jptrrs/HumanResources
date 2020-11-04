@@ -10,6 +10,8 @@ namespace HumanResources
             LearnTech,
             DocumentTech,
             ResearchTech,
-            TrainWeapon;
+            TrainWeapon,
+            PlayAtDummy,
+            PlayAtTarget;
     }
 }

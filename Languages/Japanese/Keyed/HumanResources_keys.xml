@@ -78,6 +78,8 @@
   <!--NEW--><LearnRangedWeaponsByGroupDesc>When learning ranged weapons, learn all weapons unlocked by that technology at the same time.</LearnRangedWeaponsByGroupDesc>
   <!--NEW--><RequireTrainingForSingleUseWeaponsTitle>Require training for single-use weapons.</RequireTrainingForSingleUseWeaponsTitle>
   <!--NEW--><RequireTrainingForSingleUseWeaponsDesc>If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.</RequireTrainingForSingleUseWeaponsDesc>
+  <!--NEW--><EnableJoyGiverTitle>Use training facilities for fun.</EnableJoyGiverTitle>
+  <!--NEW--><EnableJoyGiverDesc>Pawns will go practice at the target stand and training dummy just to blow off some steam.</EnableJoyGiverDesc>
 
   <!--EN: Difficulty settings slows down research.-->
   <ResearchSpeedTiedToDifficultyTitle>難易度は研究速度に影響します。</ResearchSpeedTiedToDifficultyTitle>

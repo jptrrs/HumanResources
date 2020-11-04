@@ -29,12 +29,14 @@ namespace HumanResources
 				var relevantBills = RelevantBills(Desk, pawn);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
+					//Log.Message("... no job on thing");
 					return false;
 				}
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 				return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
 
 			}
+			//Log.Message("... no free space");
 			if (ModBaseHumanResources.unlocked.libraryFreeSpace <= 0) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			return false;
 		}
@@ -59,6 +61,7 @@ namespace HumanResources
 
 		private Job StartOrResumeBillJob(Pawn pawn, IBillGiver giver, LocalTargetInfo target)
 		{
+			//Log.Message("...StartOrResumeBillJob for "+pawn);
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
@@ -76,7 +79,9 @@ namespace HumanResources
 						{
 							if (bill_ProductionWithUft.BoundUft != null)
 							{
-
+								bool BoundWorker = bill_ProductionWithUft.BoundWorker == pawn;
+								bool canReach = pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false);
+								bool isforbidden = bill_ProductionWithUft.BoundUft.IsForbidden(pawn);
 								if (bill_ProductionWithUft.BoundWorker == pawn && pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false) && !bill_ProductionWithUft.BoundUft.IsForbidden(pawn))
 								{
 									return FinishUftJob(pawn, bill_ProductionWithUft.BoundUft, bill_ProductionWithUft);
@@ -100,7 +105,7 @@ namespace HumanResources
 						return result;
 					}
 				}
-				
+
 			}
 			return null;
 		}

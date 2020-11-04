@@ -19,6 +19,4 @@ namespace HumanResources
             return false;
         }
     }
-
-
 }

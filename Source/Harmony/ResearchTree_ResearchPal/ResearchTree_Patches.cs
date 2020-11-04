@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.AccessControl;
 using System.Text;
 using UnityEngine;
 using Verse;
@@ -53,6 +52,8 @@ namespace HumanResources
             //ResearchNode
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
+            instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "TechprintAvailable", new Type[] { typeof(ResearchProjectDef) }),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
             instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
@@ -78,7 +79,7 @@ namespace HumanResources
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
             //fix for tree overlapping search bar on higher UI scales
-            instance.Patch(AccessTools.Method(MainTabType(), "SetRects"), 
+            instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
 
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
@@ -136,6 +137,7 @@ namespace HumanResources
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
         public static bool BuildingPresent(ResearchProjectDef research) { throw stubMsg; }
+        public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
         public static void DrawColouredIcon(this Def def, Rect canvas) { throw stubMsg; }
         public static IEnumerable<RecipeDef> GetRecipesUnlocked(this ResearchProjectDef research) { throw stubMsg; }
@@ -230,7 +232,7 @@ namespace HumanResources
                 Window.StandardMargin / Prefs.UIScale,
                 (ResearchTree_Constants.TopBarHeight + ResearchTree_Constants.Margin + Window.StandardMargin),
                 (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
-                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - ResearchTree_Constants.TopBarHeight - ResearchTree_Constants.Margin)
+                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - ResearchTree_Constants.TopBarHeight - ResearchTree_Constants.Margin * 2 )
                 );
         }
 
@@ -281,11 +283,9 @@ namespace HumanResources
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
-                GUI.color = mouseOver ? HighlightColor/*GenUI.MouseoverColor*/ : (Color)ColorInfo.GetValue(__instance);
-                if (mouseOver || (bool)HighlightedInfo.GetValue(__instance))
-                    GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
-                else
-                    GUI.DrawTexture(rect, ResearchTree_Assets.Button);
+                GUI.color = mouseOver ? HighlightColor : (Color)ColorInfo.GetValue(__instance);
+                if (mouseOver || (bool)HighlightedInfo.GetValue(__instance)) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
+                else GUI.DrawTexture(rect, ResearchTree_Assets.Button);
 
                 //grey out center to create a progress bar effect, completely greying out research not started.
                 if (available)
@@ -295,8 +295,7 @@ namespace HumanResources
                     progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
-
-                HighlightedInfo.SetValue(__instance, /*false*/subjectToShow == Research);
+                HighlightedInfo.SetValue(__instance, subjectToShow == Research);
 
                 //draw the research label
                 if (!completed && !available)
@@ -339,8 +338,12 @@ namespace HumanResources
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
                 }
-                else if (!Research.TechprintRequirementMet)
-                    TooltipHandler.TipRegion(rect, root + ".MissingTechprints".Translate(Research.TechprintsApplied, Research.techprintCount));
+                else if (!ResearchTree_Patches.TechprintAvailable(Research))
+                {
+                    string languageKey = root + ".MissingTechprints";
+                    TooltipHandler.TipRegion(rect, languageKey.Translate(Research.TechprintsApplied, Research.techprintCount));
+                }
+
 
                 //draw unlock icons
                 if (detailedMode)

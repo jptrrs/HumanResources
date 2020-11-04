@@ -11,21 +11,22 @@ namespace HumanResources
 {
     public class ModBaseHumanResources : ModBase
     {
-        public static SettingHandle<bool> FreeScenarioWeapons;
-        public static SettingHandle<bool> ResearchSpeedTiedToDifficulty;
+        public static SettingHandle<bool>
+            TechPoolIncludesScenario,
+            FreeScenarioWeapons,
+            LearnMeleeWeaponsByGroup,
+            LearnRangedWeaponsByGroup,
+            RequireTrainingForSingleUseWeapons,
+            EnableJoyGiver,
+            ResearchSpeedTiedToDifficulty,
+            StudySpeedTiedToDifficulty;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
-        public static SettingHandle<bool> StudySpeedTiedToDifficulty;
-        public static SettingHandle<bool> TechPoolIncludesScenario;
         public static FactionTechPool TechPoolMode;
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
-
-        public static SettingHandle<bool> LearnMeleeWeaponsByGroup;
-        public static SettingHandle<bool> LearnRangedWeaponsByGroup;
-        public static SettingHandle<bool> RequireTrainingForSingleUseWeapons;
 
         public ModBaseHumanResources()
         {
@@ -190,6 +191,7 @@ namespace HumanResources
             LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);
             LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
             RequireTrainingForSingleUseWeapons = Settings.GetHandle<bool>("RequireTrainingForSingleUseWeapons", "RequireTrainingForSingleUseWeaponsTitle".Translate(), "RequireTrainingForSingleUseWeaponsDesc".Translate(), false);
+            EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
         }

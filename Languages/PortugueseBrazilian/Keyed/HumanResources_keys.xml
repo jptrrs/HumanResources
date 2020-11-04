@@ -45,6 +45,8 @@
   <LearnRangedWeaponsByGroupDesc>Quando treinar armas de longo alcance, aprender todas as armas de uma tecnologia ao mesmo tempo.</LearnRangedWeaponsByGroupDesc>
   <RequireTrainingForSingleUseWeaponsTitle>Armas de uso único requerem treinamento.</RequireTrainingForSingleUseWeaponsTitle>
   <RequireTrainingForSingleUseWeaponsDesc>Quando marcado, armas como lançadores de foguetes também vão requerer treinamento antes que o colono possa utilizá-las.</RequireTrainingForSingleUseWeaponsDesc>
+  <EnableJoyGiverTitle>Utilizar instalações de treinamento por diversão.</EnableJoyGiverTitle>
+  <EnableJoyGiverDesc>Os personagens vão praticar tiro ao alvo e no boneco de treino só para descontrair.</EnableJoyGiverDesc>
   <ResearchSpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de pesquisa.</ResearchSpeedTiedToDifficultyTitle>
   <ResearchSpeedTiedToDifficultyDesc>Quando marcado, a velocidade de pesquisa é vinculada ao nível de dificuldade selecionado. No nível fácil ela parmanece a mesma, mas ela é reduzida até em 30% no nível difícil. Quando desmarcado, ela retorna ao padrão de 10% mais lento que o jogo base.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Dificuldade afeta a velocidade de estudo.</StudySpeedTiedToDifficultyTitle>

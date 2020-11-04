@@ -521,8 +521,19 @@ namespace HumanResources
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)
         {
             Find.WindowStack.FloatMenu?.Close(false);
-            List<FloatMenuOption> options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
-                                             select opt.option).ToList<FloatMenuOption>();
+            List<FloatMenuOption> options = new List<FloatMenuOption>();
+            if (tech.TechprintRequirementMet)
+            {
+                options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
+                           select opt.option).ToList<FloatMenuOption>();
+            }
+            else
+            {
+                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.TechprintCount), null)
+                {
+                    Disabled = true,
+                });
+            }
             if (!options.Any()) options.Add(new FloatMenuOption("NoOptionsFound".Translate(), null));
             Find.WindowStack.Add(new FloatMenu(options));
         }

@@ -233,6 +233,11 @@ namespace HumanResources
             return ResearchTree_Patches.BuildingPresent(Tech);
         }
 
+        public bool TechprintAvailable()
+        {
+            return ResearchTree_Patches.TechprintAvailable(Tech);
+        }
+
         public void Draw(Rect visibleRect, bool forceDetailedMode = false)
         {
             if (!IsVisible(visibleRect))
@@ -241,35 +246,23 @@ namespace HumanResources
                 return;
             }
 
-            var detailedMode = forceDetailedMode; //|| MainTabWindow_ResearchTree.Instance.ZoomLevel < DetailedModeZoomLevelCutoff;
+            var detailedMode = forceDetailedMode;
             var mouseOver = Mouse.IsOver(Rect);
             if (Event.current.type == EventType.Repaint)
             {
                 // researches that are completed or could be started immediately, and that have the required building(s) available
                 GUI.color = mouseOver ? GenUI.MouseoverColor : Color;
-
-                if (mouseOver || Highlighted)
-                    GUI.DrawTexture(Rect, ResearchTree_Assets.ButtonActive);
-                else
-                    GUI.DrawTexture(Rect, ResearchTree_Assets.Button);
+                if (mouseOver || Highlighted) GUI.DrawTexture(Rect, ResearchTree_Assets.ButtonActive);
+                else GUI.DrawTexture(Rect, ResearchTree_Assets.Button);
 
                 // grey out center to create a progress bar effect, completely greying out research not started.
-                //if (Available)
-                //{
                 var progressBarRect = Rect.ContractedBy(3f);
-                //GUI.color = Assets.ColorAvailable[Research.techLevel];
                 GUI.color = Widgets.WindowBGFillColor;
                 if (techComp.expertise.ContainsKey(Tech))
                 {
                     progressBarRect.xMin += techComp.expertise[Tech] * progressBarRect.width;
                 }
-                //else
-                //{
-                //    progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
-                //}
                 GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
-                //}
-
                 Highlighted = false;
 
                 // draw the research label
@@ -305,12 +298,17 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 // attach description and further info to a tooltip
+                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
                 if (!BuildingPresent())
                 {
-                    string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(Rect, languageKey.Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
+                }
+                else if (!TechprintAvailable())
+                {
+                    string languageKey = root + ".MissingTechprints";
+                    TooltipHandler.TipRegion(Rect, languageKey.Translate(Tech.TechprintsApplied, Tech.techprintCount));
                 }
 
                 // draw unlock icons

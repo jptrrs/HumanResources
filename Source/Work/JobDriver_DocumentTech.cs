@@ -14,8 +14,7 @@ namespace HumanResources
 	{
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is" + TargetB);
-			//project = job.bill.SelectedTech().Where(x => !x.IsFinished).Intersect(techComp.knownTechs).RandomElement();
+			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
 			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
@@ -105,7 +104,7 @@ namespace HumanResources
 						Thing book = pawn.carryTracker.CarriedThing;
 						if (pawn.carryTracker.CarriedThing == null)
 						{
-							Log.Error(this.pawn + " tried to place a book on shelf but is not hauling anything.");
+							Log.Error(pawn + " tried to place a book on shelf but is not hauling anything.");
 							return;
 						}
 						if (shelf.Accepts(book))
@@ -151,7 +150,7 @@ namespace HumanResources
 				}
 				UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, techStuff);
 				unfinishedThing.Creator = actor;
-				unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill;
+				unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill; // <- when pawn is a prisoner, the recipe doesn't seem to register this.
 				unfinishedThing.ingredients = new List<Thing>
 				{
 					new Thing()
@@ -160,7 +159,6 @@ namespace HumanResources
 						stackCount = 0
 					}
 				};
-
 				GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
 				curJob.SetTarget(TargetIndex.B, unfinishedThing);
 				actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
@@ -249,7 +247,6 @@ namespace HumanResources
 					}
 				}
 				IHaulDestination destination;
-				//IntVec3 invalid = IntVec3.Invalid;
 				if (curJob.bill.GetStoreMode() == BillStoreModeDefOf.BestStockpile)
 				{
 					StoreUtility.TryFindBestBetterNonSlotGroupStorageFor(list[0], actor, actor.Map, StoragePriority.Unstored, actor.Faction, out destination);
@@ -257,23 +254,11 @@ namespace HumanResources
 					curJob.targetA = list[0];
 					curJob.count = 1;
 				}
-				//else if (curJob.bill.GetStoreMode() == BillStoreModeDefOf.SpecificStockpile)
-				//{
-				//	StoreUtility.TryFindBestBetterStoreCellForIn(list[0], actor, actor.Map, StoragePriority.Unstored, actor.Faction, curJob.bill.GetStoreZone().slotGroup, out invalid, true);
-				//}
 				else
 				{
 					Log.ErrorOnce("Unknown store mode", 9158246, false);
 				}
-				//if (invalid.IsValid)
-				//{
-				//	actor.carryTracker.TryStartCarry(list[0]);
-				//	curJob.targetB = invalid;
-				//	curJob.targetA = list[0];
-				//	curJob.count = 99999;
-				//	return;
-				//}
-				if (!GenPlace.TryPlaceThing(list[0], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
+                if (!GenPlace.TryPlaceThing(list[0], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
 				{
 					Log.Error(string.Concat(new object[]
 					{
