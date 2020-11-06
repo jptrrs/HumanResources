@@ -108,7 +108,7 @@ namespace HumanResources
             x.PackageIdPlayerFacing == "syrchalis.bulletcasings" ||
             x.PackageIdPlayerFacing == "LimeTreeSnake.Community.Ammunition"))
             {
-                Log.Message("[HumanResources] Ammunition mod detected!");
+                Log.Message("[HumanResources] Ammunition mod detected! Adapting...");
                 ConserveAmmo = true;
             }
         }
