@@ -16,7 +16,8 @@ namespace HumanResources
             ResearchPal = false,
             PrisonLabor = false,
             RunSpecialCases = false,
-            VisibleBooksCategory = false;
+            VisibleBooksCategory = false,
+            ConserveAmmo = false;
 
         public static Harmony Instance
         {
@@ -99,6 +100,16 @@ namespace HumanResources
             x.PackageIdPlayerFacing == "fluffy.fluffybreakdowns"))
             {
                 RunSpecialCases = true;
+            }
+
+            //Work-arounds for Combat Extended and similar bullet mods
+            if (LoadedModManager.RunningModsListForReading.Any(x =>
+            x.PackageIdPlayerFacing == "CETeam.CombatExtended" ||
+            x.PackageIdPlayerFacing == "syrchalis.bulletcasings" ||
+            x.PackageIdPlayerFacing == "LimeTreeSnake.Community.Ammunition"))
+            {
+                Log.Message("[HumanResources] Ammunition mod detected!");
+                ConserveAmmo = true;
             }
         }
 

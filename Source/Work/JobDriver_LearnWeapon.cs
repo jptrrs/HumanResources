@@ -300,7 +300,8 @@ namespace HumanResources
                 //pawn posture
                 Verb verbToUse = actor.TryGetAttackVerb(currentWeapon, true);
                 LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
-                pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
+                if (!HarmonyPatches.ConserveAmmo)
+                    pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
 
                 //sound:
                 if (!unknown && verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
