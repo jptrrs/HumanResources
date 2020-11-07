@@ -20,7 +20,7 @@
   <JoyGiverDef>
     <defName>Play_MartialArts</defName>
     <giverClass>HumanResources.JoyGiver_PlayWithWeapon</giverClass>
-    <baseChance>4</baseChance>
+    <baseChance>3</baseChance>
     <thingDefs>
       <li>MrDummy</li>
     </thingDefs>

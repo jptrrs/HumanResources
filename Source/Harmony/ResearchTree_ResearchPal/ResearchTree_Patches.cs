@@ -93,6 +93,9 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
+            instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+
 
             //Tree
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
@@ -190,6 +193,11 @@ namespace HumanResources
                 HighlightedInfo.SetValue(ResearchNodesCache[subjectToShow], true);
                 //subjectToShow = null;
             }
+        }
+
+        public static void Close_Postfix(object __instance)
+        {
+            if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache.Clear();
         }
 
         private static bool DrawQueue_Prefix(Rect canvas)
