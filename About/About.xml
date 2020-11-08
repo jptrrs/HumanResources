@@ -18,6 +18,7 @@
     <li>UnlimitedHugs.HugsLib</li>
     <li>jelly.survivaltoolsreborn</li>
     <li>roolo.whatthehack</li>
+    <li>bennington.medievalpatches</li>
   </loadAfter>
   <incompatibleWith>
     <li>GHXX.TechAdvancing</li>

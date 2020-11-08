@@ -440,6 +440,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{DEEA
 		Patches\Patches.xml = Patches\Patches.xml
 		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
 		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
+		Patches\Patches_MedievalPatches.xml = Patches\Patches_MedievalPatches.xml
 		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
 		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
 		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml

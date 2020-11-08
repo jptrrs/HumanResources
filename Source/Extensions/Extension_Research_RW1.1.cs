@@ -148,7 +148,7 @@ namespace HumanResources
 
         public static void InferSkillBias(this ResearchProjectDef tech)
         {
-            Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
+            //Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
             //1. check what it unlocks
             List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
             IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
@@ -529,7 +529,7 @@ namespace HumanResources
             }
             else
             {
-                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.TechprintCount), null)
+                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.techprintCount), null)
                 {
                     Disabled = true,
                 });

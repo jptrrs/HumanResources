@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationFindMod">
+		<mods>
+			<li>Medieval Patches</li>
+		</mods>
+		<match Class="PatchOperationRemove">
+      <xpath>Defs/ResearchProjectDef[defName="Bionics"]/prerequisites</xpath>
+		</match>
+	</Operation>
+</Patch>
