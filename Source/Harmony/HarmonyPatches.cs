@@ -102,7 +102,7 @@ namespace HumanResources
                 RunSpecialCases = true;
             }
 
-            //Work-arounds for Combat Extended and similar bullet mods
+            //Work-around for ammunition mods
             if (LoadedModManager.RunningModsListForReading.Any(x =>
             x.PackageIdPlayerFacing == "CETeam.CombatExtended" ||
             x.PackageIdPlayerFacing == "syrchalis.bulletcasings" ||

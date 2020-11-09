@@ -73,6 +73,15 @@ namespace HumanResources
             Find.ResearchManager.FinishProject(project);
             if (careful) project.prerequisites.AddRange(prerequisitesCopy);
             Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
+            using (IEnumerator<Pawn> enumerator = currentPawns.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    CompKnowledge techComp = enumerator.Current.TryGetComp<CompKnowledge>();
+                    techComp.homework?.RemoveAll(x => x == project);
+                }
+            }
+            currentPawnsCache.Clear();
         }
 
         public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
@@ -148,7 +157,7 @@ namespace HumanResources
 
         public static void InferSkillBias(this ResearchProjectDef tech)
         {
-            Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
+            //Log.Warning("InferSkillBias Starting for "+tech.LabelCap);
             //1. check what it unlocks
             List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
             IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
