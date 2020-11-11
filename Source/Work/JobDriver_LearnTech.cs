@@ -87,7 +87,7 @@ namespace HumanResources
 				Pawn actor = acquireKnowledge.actor;
 				float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
 				num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
-				float workAmount = job.bill == null ? 1f : job.bill.recipe.workAmount;
+				float workAmount = IsResearch ? 1f : job.bill.recipe.workAmount;
 				project.Learned(num, workAmount, actor, job.bill == null);
 				actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
 				actor.GainComfortFromCellIfPossible(true);
