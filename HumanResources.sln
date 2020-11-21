@@ -448,7 +448,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{DEEA
 		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
 		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
 		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
-		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
+		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
 		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
 		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
