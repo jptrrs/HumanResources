@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RimWorld;
+﻿using RimWorld;
 using Verse;
 
 namespace HumanResources
@@ -18,7 +13,7 @@ namespace HumanResources
                 if (def == TechDefOf.Play_Shooting && pawn.equipment.Primary.def.IsRangedWeapon) flag = true;
                 else if (def == TechDefOf.Play_MartialArts && pawn.equipment.Primary.def.IsMeleeWeapon) flag = true;
             }
-            if (!flag && def == TechDefOf.Play_MartialArts) flag = true;
+            else if (def == TechDefOf.Play_MartialArts) flag = true;
             if (flag) return base.CanInteractWith(pawn, t, inBed);
             return false;
         }
