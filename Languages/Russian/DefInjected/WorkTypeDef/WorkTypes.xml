@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<HR_Learn.label>Ученик</HR_Learn.label>
+	<HR_Learn.description>Ученики обучаются новым знаниям.</HR_Learn.description>
+	<HR_Learn.labelShort>Ученик</HR_Learn.labelShort>
+	<HR_Learn.pawnLabel>Ученик</HR_Learn.pawnLabel>
+	<HR_Learn.gerundLabel>Обучаться</HR_Learn.gerundLabel>
+	<HR_Learn.verb>Обучаться</HR_Learn.verb>
+
+</LanguageData>
