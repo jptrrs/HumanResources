@@ -35,7 +35,7 @@ namespace HumanResources
                     if (!result)
                     {
                         var missing = requisites.Where(x => !x.IsKnownBy(pawn));
-                        string preReqText = (missing.Count() > 1) ? missing.ToStringSafeEnumerable() : missing.FirstOrDefault().label;
+                        string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;
                         JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
                     }
                     //return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
