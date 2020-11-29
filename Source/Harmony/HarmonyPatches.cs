@@ -92,6 +92,13 @@ namespace HumanResources
                 ChildrenSchoolLearning_Patch.Execute(Instance);
             }
 
+            //Dual Wield integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Roolo.DualWield"))
+            {
+                Log.Message("[HumanResources] Dual Wield detected! Integrating...");
+                DualWield_Patch.Execute(Instance);
+            }
+
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x => 
             x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 

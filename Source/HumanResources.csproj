@@ -348,6 +348,7 @@
     <Compile Include="Extensions\Extension_Pawn.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
+    <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
     <Compile Include="Harmony\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\CompTechprint_CompFloatMenuOptions.cs" />
     <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
