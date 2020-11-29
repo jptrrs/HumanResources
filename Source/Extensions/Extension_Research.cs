@@ -302,7 +302,7 @@ namespace HumanResources
             if (!relevantSkills.NullOrEmpty())
             {
                 SkillsByTech.Add(tech, relevantSkills);
-                if (Prefs.LogVerbose) Log.Message("[HumanResources] " + tech + " associated to "+relevantSkills.ToStringSafeEnumerable()+".");
+                //if (Prefs.LogVerbose) Log.Message("[HumanResources] " + tech + " associated to "+relevantSkills.ToStringSafeEnumerable()+".");
             }
             else
             {
