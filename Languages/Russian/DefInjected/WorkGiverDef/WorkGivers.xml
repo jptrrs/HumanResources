@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<DocumentTech.label>документировать знания</DocumentTech.label>
+	<DocumentTech.verb>задокументировать</DocumentTech.verb>
+	<DocumentTech.gerund>документировать, используя</DocumentTech.gerund>
+
+	<LearnTech.label>изучать технологии</LearnTech.label>
+	<LearnTech.verb>обучиться</LearnTech.verb>
+	<LearnTech.gerund>обучаться, используя</LearnTech.gerund>
+
+	<TrainWeapon.label>обучаться владению оружием</TrainWeapon.label>
+	<TrainWeapon.verb>тренироваться, используя</TrainWeapon.verb>
+	<TrainWeapon.gerund>тренироваться, используя</TrainWeapon.gerund>
+
+	<PracticeWeapon.label>практиковаться в применении оружия</PracticeWeapon.label>
+	<PracticeWeapon.verb>практиковаться, используя</PracticeWeapon.verb>
+	<PracticeWeapon.gerund>практиковаться, используя</PracticeWeapon.gerund>
+
+	<ExperimentWeapon.label>экспериментировать с оружием</ExperimentWeapon.label>
+	<ExperimentWeapon.verb>экспериментировать, используя</ExperimentWeapon.verb>
+	<ExperimentWeapon.gerund>экспериментировать, используя</ExperimentWeapon.gerund>
+
+</LanguageData>

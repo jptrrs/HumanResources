@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<StudyDesk.label>рабочий стол</StudyDesk.label>
+	<StudyDesk.description>Стол для изучения и конспектирования технологий.</StudyDesk.description>
+
+	<!-- Borrowed from Jecrell's RimWriter -->
+	<BookShelf.label>книжный шкаф</BookShelf.label>
+	<BookShelf.description>Прочный шкаф для хранения знаний в виде книг.</BookShelf.description>
+
+	<!-- Technical Book -->
+	<UnfinishedTechBook.label>незавершённая техническая книга</UnfinishedTechBook.label>
+	<TechBook.label>техническая книга</TechBook.label>
+	<TechBook.description>Книга, полная знаний.</TechBook.description>
+
+	<!-- Borrewed from ItchyFlea's Practise Target -->
+	<Target.label>мишень для стрельбы</Target.label>
+	<Target.description>Мишень для стрелков для оттачивания своего мастерства.</Target.description>
+
+	<MrDummy.label>тренировочный манекен</MrDummy.label>
+	<MrDummy.description>Соломенный манекен для тренировки навыков рукопашного боя.</MrDummy.description>
+
+</LanguageData>

@@ -1,113 +1,111 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  
-  <!--UI-->
-  <TabKnowledge>Технологии</TabKnowledge>
-  <TabKnowledgeTitle>Знания</TabKnowledgeTitle>
-  <TabKnowledgeWeapons>Владение оружием</TabKnowledgeWeapons>
-  <ShowCommon>Показать обычное оружие.</ShowCommon>
-  <ShowMelee>Показать холодное оружие.</ShowMelee>
-  <ShowRanged>Показать оружие дальнего боя.</ShowRanged>
-  <ShowAvailable>Показать доступные для обучения технологий.</ShowAvailable>
-  <ShowCompact>Компактный вид.</ShowCompact>
-  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
-  <Expand>Развернуть</Expand>
-  <Collapse>Свернуть</Collapse>
-  <TabCatalogue>Каталог</TabCatalogue>
-  <AvailableBooksReport>{0} книг на {1} полках</AvailableBooksReport>
-  <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
-  <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
-  <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
-  <!--NEW--><RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
-  <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
-  <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
-  <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
-  <!--NEW--><ClickToRemove>click to remove</ClickToRemove>
 
-  <!--Settings-->
-  <TechPoolModeTitle>Знания формируются из ...</TechPoolModeTitle>
-  <TechPoolModeDesc>Определяет пул, из которого будут извлекать технологии для игрока, колонисты при их создании.</TechPoolModeDesc>
-  <TechPoolMode_Both>настройки обеих фракций</TechPoolMode_Both>
-  <TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>
-  <TechPoolMode_Starting>только стартовые технологии для этой фракции</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>Также включает начальные части исследования из сценария.</TechPoolIncludesScenarioTitle>
-  <TechPoolIncludesScenarioDesc>Если этот флажок установлен, любые технологии, которые вы добавляете в редактор сценария, также будут включены в пул знаний для новых колонистов.</TechPoolIncludesScenarioDesc>
-  <WeaponPoolModeTitle>Боевые специалисты начинают с оружием из ...</WeaponPoolModeTitle>
-  <WeaponPoolModeDesc>Определяет пул, из которого можно получить навыки владения оружием для колонистов игрока, которые являются опытными стрелками или скандалистами при их создании.</WeaponPoolModeDesc>
-  <WeaponPoolMode_Both>оба списка оружия</WeaponPoolMode_Both>
-  <WeaponPoolMode_TechLevel>только технический уровень фракции</WeaponPoolMode_TechLevel>
-  <WeaponPoolMode_Scenario>только сценарий</WeaponPoolMode_Scenario>
-  <FreeScenarioWeaponsTitle>Все колонисты начинают с сценарным оружием.</FreeScenarioWeaponsTitle>
-  <FreeScenarioWeaponsDesc>Если этот флажок установлен, любое оружие, которое вы добавляете в редактор сценария, также будет включено в список оружия, которое колонисты игрока могут использовать. (Стандартный сценарий «Богатый исследователь» исправлен так, чтобы всегда делать это, независимо от того, что здесь выбрано)</FreeScenarioWeaponsDesc>
-  
-  <!--NEW--><LearnMeleeWeaponsByGroupTitle>Learn melee weapons by group.</LearnMeleeWeaponsByGroupTitle>
-  <!--NEW--><LearnMeleeWeaponsByGroupDesc>When learning melee weapons, learn all weapons unlocked by that technology at the same time.</LearnMeleeWeaponsByGroupDesc>
-  <!--NEW--><LearnRangedWeaponsByGroupTitle>Learn ranged weapons by group.</LearnRangedWeaponsByGroupTitle>
-  <!--NEW--><LearnRangedWeaponsByGroupDesc>When learning ranged weapons, learn all weapons unlocked by that technology at the same time.</LearnRangedWeaponsByGroupDesc>
-  <!--NEW--><RequireTrainingForSingleUseWeaponsTitle>Require training for single-use weapons.</RequireTrainingForSingleUseWeaponsTitle>
-  <!--NEW--><RequireTrainingForSingleUseWeaponsDesc>If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.</RequireTrainingForSingleUseWeaponsDesc>
-  <!--NEW--><EnableJoyGiverTitle>Use training facilities for fun.</EnableJoyGiverTitle>
-  <!--NEW--><EnableJoyGiverDesc>Pawns will go practice at the target stand and training dummy just to blow off some steam.</EnableJoyGiverDesc>
+	<!--UI-->
+	<TabKnowledge>Знания</TabKnowledge>
+	<TabKnowledgeTitle>Технологии</TabKnowledgeTitle>
+	<TabKnowledgeWeapons>Владение оружием</TabKnowledgeWeapons>
+	<ShowCommon>Отображать простое оружие</ShowCommon>
+	<ShowMelee>Отображать оружие ближнего боя</ShowMelee>
+	<ShowRanged>Отображать оружие дальнего боя</ShowRanged>
+	<ShowAvailable>Отображать доступные для изучения технологии</ShowAvailable>
+	<ShowCompact>Компактный вид</ShowCompact>
+	<ShowAssignment>Отображать назначения</ShowAssignment>
+	<Expand>Развернуть</Expand>
+	<Collapse>Свернуть</Collapse>
+	<TabCatalogue>Каталог</TabCatalogue>
+	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
+	<ClickToAssignForStudying>ЛКМ, чтобы назначить для изучения</ClickToAssignForStudying>
+	<ClickToAssignForDocumentation>ЛКМ, чтобы назначить для документирования</ClickToAssignForDocumentation>
+	<ClickToUnassign>ЛКМ, чтобы отменить назначение</ClickToUnassign>
+	<RightClickToTree>ПКМ, чтобы показать в окне исследований</RightClickToTree>
+	<AssignedToResearch>{0} {0_gender ? назначен : назначена} для исследования этой технологии</AssignedToResearch>
+	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
+	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>
+	<ClickToRemove>нажмите, чтобы отменить</ClickToRemove>
 
+	<!--Settings-->
+	<TechPoolModeTitle>Получать знания из следующих списков:</TechPoolModeTitle>
+	<TechPoolModeDesc>Определяет список, из которого следует получать технологии для ваших поселенцев при их создании.</TechPoolModeDesc>
+	<TechPoolMode_Both>оба варианта</TechPoolMode_Both>
+	<TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>
+	<TechPoolMode_Starting>только стартовые технологии фракции</TechPoolMode_Starting>
+	<TechPoolIncludesScenarioTitle>Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
+	<TechPoolIncludesScenarioDesc>Если включено, то любые технологии, добавленные в редакторе сценариев, также будут включены в список знаний для новых поселенцев.</TechPoolIncludesScenarioDesc>
+	<WeaponPoolModeTitle>Боевые специалисты получают оружие из:</WeaponPoolModeTitle>
+	<WeaponPoolModeDesc>Определяет список, из которого следует получать навыки владения оружием для ваших поселенцев, являющихся опытными стрелками или драчунами, при их создании.</WeaponPoolModeDesc>
+	<WeaponPoolMode_Both>обоих списков</WeaponPoolMode_Both>
+	<WeaponPoolMode_TechLevel>списка вашего технического уровня</WeaponPoolMode_TechLevel>
+	<WeaponPoolMode_Scenario>списка оружия, указанного в сценарии</WeaponPoolMode_Scenario>
+	<FreeScenarioWeaponsTitle>Стартовое оружие уже изучено</FreeScenarioWeaponsTitle>
+	<FreeScenarioWeaponsDesc>Если включено, любое оружие, которое вы добавите в редакторе сценариев, также будет включено в список оружия, которое могут использовать поселенцы.\n(Для сценария "Богатый исследователь" эта настройка всегда включена)</FreeScenarioWeaponsDesc>
+	<LearnMeleeWeaponsByGroupTitle>Изучать оружие ближнего боя группами</LearnMeleeWeaponsByGroupTitle>
+	<LearnMeleeWeaponsByGroupDesc>При обучении пользованию оружием ближнего боя изучать все виды оружия, разблокированные с помощью этой технологии.</LearnMeleeWeaponsByGroupDesc>
+	<LearnRangedWeaponsByGroupTitle>Изучать оружие дальнего боя группами</LearnRangedWeaponsByGroupTitle>
+	<LearnRangedWeaponsByGroupDesc>При обучении пользованию оружием дальнего боя изучать все виды оружия, разблокированные с помощью этой технологии.</LearnRangedWeaponsByGroupDesc>
+	<RequireTrainingForSingleUseWeaponsTitle>Выучка для одноразового оружия</RequireTrainingForSingleUseWeaponsTitle>
+	<RequireTrainingForSingleUseWeaponsDesc>Если включено, то оружие, такое как ракетница судного дня, также потребует, чтобы поселенец был компетентен в обращении с ним перед экипировкой.</RequireTrainingForSingleUseWeaponsDesc>
+	<EnableJoyGiverTitle>Использовать тренажёры для забавы</EnableJoyGiverTitle>
+	<EnableJoyGiverDesc>Поселенцы будут практиковаться, используя мишень для стрельбы и тренировочный манекен, чтобы просто выпустить пар.</EnableJoyGiverDesc>
+	<ResearchSpeedTiedToDifficultyTitle>Скорость исследования</ResearchSpeedTiedToDifficultyTitle>
+	<ResearchSpeedTiedToDifficultyDesc>Если включено, то скорость исследования становится зависимой от настроек сложности.\nБез изменений на низком уровне сложности и вплоть до -30% на высоком.\nЕсли выключено, скорость исследования будет снижена на 10% от значений настроек игры.</ResearchSpeedTiedToDifficultyDesc>
+	<StudySpeedTiedToDifficultyTitle>Скорость изучения технологий</StudySpeedTiedToDifficultyTitle>
+	<StudySpeedTiedToDifficultyDesc>Если включено, то скорость изучения новых технологий становится зависимой от настроек сложности.\nНа среднем уровне сложности: -10%\nНа высоком уровне сложности: -20%</StudySpeedTiedToDifficultyDesc>
 
-  <ResearchSpeedTiedToDifficultyTitle>Настройки сложности замедляют исследования.</ResearchSpeedTiedToDifficultyTitle>
-  <ResearchSpeedTiedToDifficultyDesc>Если этот флажок установлен, базовая скорость исследования привязана к настройкам сложности, без изменений на Легком уровне и до 30% медленнее на Сложном. Если этот флажок не установлен, по умолчанию он на 10% медленнее, чем ванильный.</ResearchSpeedTiedToDifficultyDesc>
-  <StudySpeedTiedToDifficultyTitle>Настройки сложности замедляют изучение технологий.</StudySpeedTiedToDifficultyTitle>
-  <StudySpeedTiedToDifficultyDesc>Если этот флажок установлен, базовая скорость для изучения новых технологий привязана к настройкам сложности, снижаясь на 10% на Среднем уровне и до 20% на Сложном.</StudySpeedTiedToDifficultyDesc>
+	<!--Things-->
+	<BookStoreEmpty>Пусто</BookStoreEmpty>
+	<BookStoreCapacity>Архивированные знания: {0}/{1}</BookStoreCapacity>
+	<BookStoreRetrieveBook>Извлечь книгу</BookStoreRetrieveBook>
+	<BookStoreRetrieveBookDesc>Найти и извлечь конкретную книгу с полки книжного шкафа.</BookStoreRetrieveBookDesc>
+	<BookStoreNoInternalStorage>{0} не помещается ни на одной полке книжного шкафа.</BookStoreNoInternalStorage>
+	<KnowledgeLabel>{0}</KnowledgeLabel>
+	<Book>манускрипт "{0}"</Book>
+	<BookCompendium>компендиум "{0}"</BookCompendium>
+	<BookManual>монография "{0}"</BookManual>
+	<BookTheory>справочник "{0}"</BookTheory>
+	<BookDatabase>руководство "{0}"</BookDatabase>
 
-  <!--Things-->
-  <BookStoreEmpty>Пусто</BookStoreEmpty>
-  <BookStoreCapacity>Архивные технологии: {0}/{1}</BookStoreCapacity>
-  <BookStoreRetrieveBook>Получить книгу</BookStoreRetrieveBook>
-  <BookStoreRetrieveBookDesc>Найти и удалить определенную книгу с книжной полки.</BookStoreRetrieveBookDesc>
-  <BookStoreNoInternalStorage>{0} не помещается ни на одной книжной полке.</BookStoreNoInternalStorage>
-  <KnowledgeLabel>{0} знания</KnowledgeLabel>
-  <Book>Книг из {0}</Book>
-  <BookCompendium>{0} Сборник</BookCompendium>
-  <BookManual>{0} Руководство</BookManual>
-  <BookTheory>{0} Теория</BookTheory>
-  <BookDatabase>{0} База данных</BookDatabase>
+	<!--Feedback-->
+	<MessageStudyComplete>{0_nameDef} {0_gender ? овладел : овладела } знаниями по теме "{1}".</MessageStudyComplete>
+	<MessageDocumentComplete>{0_nameDef} {0_gender ? написал : написала } книгу на тему "{1}".</MessageDocumentComplete>
+	<MessageFiledTech>Знания по теме "{0}" были добавлены в нашу библиотеку.</MessageFiledTech>
+	<MessageEjectedTech>Знания по теме "{0}" были изъяты из нашей библиотеки.</MessageEjectedTech>
+	<MessageTrainingComplete>{0_nameDef} {0_gender ? освоил : освоила } новый вид оружия: {1_definite}.</MessageTrainingComplete>
+	<NothingToAddToLibrary>Вы ничего не знаете, {0_nameFull}.</NothingToAddToLibrary>
+	<AlreadyKnowsTheWholeLibrary>{0_nameDef} прочитал все книги.</AlreadyKnowsTheWholeLibrary>
+	<LacksFundamentalKnowledge>{0_nameDef} не владеет базовыми знаниями по этим темам.</LacksFundamentalKnowledge>
+	<NoSpaceInLibrary>В книжных шкафах нет свободных мест для новых книг.</NoSpaceInLibrary>
+	<NoWeaponsFoundToLearn>Нет доступного оружия для тренировки.</NoWeaponsFoundToLearn>
+	<MissingRequirementToLearnWeapon>{0_nameDef} не владеет соответствующими знаниями или книгами, чтобы узнать о {1}.</MissingRequirementToLearnWeapon>
+	<ThoseWeapons>данном оружии</ThoseWeapons>
+	<NoWeaponToLearn>{0_nameDef} уже знает, как пользоваться этим оружием.</NoWeaponToLearn>
+	<DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется "{2}").</DoesntKnowHowToBuild>
+	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется "{2}").</DoesntKnowHowToRepair>
+	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется "{2}").</DoesntKnowHowToCraft>
+	<DoesntKnowThisPlant>{0_nameDef} не знает, как культивировать {1} (требуется "{2}").</DoesntKnowThisPlant>
+	<!-- Pawn has not been trained to use this weapon -->
+	<UnknownWeapon>необходимо сперва обучиться владению этим оружием</UnknownWeapon>
+	<!-- Pawn cannot comprehend this weapon and is scared of it -->
+	<EvilWeapon>необходимо сперва изучить соответствующую технологию</EvilWeapon>
+	<TechAlreadyKnown>"{0_label}" уже известно.</TechAlreadyKnown>
+	<NoWeaponEquipped>Неподходящий тип оружия.</NoWeaponEquipped>
 
-  <!--Feedback-->
-  <MessageStudyComplete>{0_nameDef} узнал секреты {1}.</MessageStudyComplete>
-  <!--CHANGED--><!--EN: {0_nameDef} has mastered {1_definite}.-->
-  <MessageDocumentComplete>{0_nameDef} написал книгу по {1_definite}.</MessageDocumentComplete>
-  <MessageFiledTech>В нашу библиотеку были добавлены знания для {0}.</MessageFiledTech>
-  <MessageEjectedTech>Информация о {0} была удалена из нашей библиотеки.</MessageEjectedTech>
-  <MessageTrainingComplete>{0_nameDef} освоил {1}.</MessageTrainingComplete>
-  <NothingToAddToLibrary>Ты ничего не знаешь, {0_nameFull}.</NothingToAddToLibrary>
-  <AlreadyKnowsTheWholeLibrary>{0_nameDef} прочитал все книги.</AlreadyKnowsTheWholeLibrary>
-  <!--NEW--><NoSpaceInLibrary>Nowhere to store the book when it's finished.</NoSpaceInLibrary>
-  <LacksFundamentalKnowledge>{0_nameDef} не хватает базовых знаний по этим предметам.</LacksFundamentalKnowledge>
-  <NoWeaponsFoundToLearn>Нет доступного оружия для обучения.</NoWeaponsFoundToLearn>
-  <MissingRequirementToLearnWeapon>{0_nameDef} не имеет соответствующих знаний или книг, о которых можно было бы узнать {1}.</MissingRequirementToLearnWeapon>
-  <ThoseWeapons>это оружие</ThoseWeapons>
-  <NoWeaponToLearn>{0_nameDef} уже знает, как использовать это оружие.</NoWeaponToLearn>
-  <DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется {2}).</DoesntKnowHowToBuild>
-  <DoesntKnowHowToRepair>{0_nameDef} не знает, как восстановить {1} (требуется {2}).</DoesntKnowHowToRepair>
-  <DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется {2}).</DoesntKnowHowToCraft>
-  <DoesntKnowThisPlant>{0_nameDef} не знает, как выращивать {1} (требуется {2}).</DoesntKnowThisPlant>
-  
-  <!--CHANGED--><!--EN: Pawn has not been trained to use this weapon-->
-  <UnknownWeapon>{0_nameDef} не обучался пользоваться этим оружием.</UnknownWeapon>
-  <!--CHANGED--><!--EN: Pawn cannot comprehend this weapon and is scared of it-->
-  <EvilWeapon>{0_nameDef} считает это странное оружие злом, {0_pronoun} не тронет его.</EvilWeapon>
-  
-  <TechAlreadyKnown>{0} уже известен.</TechAlreadyKnown>
-  
-  <!--NEW--><NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
-  
-  <!--weapon testing -->
-  <!--NEW--><WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
-  <!--NEW--><FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
-  <!--NEW--><LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
-  <!--NEW--><MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
-  <!--NEW--><MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
-  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+	<!--weapon testing -->
+	<WeaponTestFail>{0_nameDef} не {0_gender ? смог : смогла } понять, как работает {1_definite}.</WeaponTestFail>
+	<FearedWeapon>{0_nameDef} уже {0_gender ? испытывал : испытывала } это оружие прежде, что привело к печальным последствиям.</FearedWeapon>
 
-  <!--Go Explore-->
-  <LetterResearchRequest_SuccessHR>Исследование прошло успешно. Работая вместе, вы продвинулись в понимании {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
-  <LetterResearchRequest_TriumphHR>Исследование было большим триумфом! Работая вместе, вы достигли прорыва и раскрыли секреты {2}. \n\nОтношения с {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>
-  <ResearchRequestXPGainHR>{0}, ваш исследователь, приобрел ценный опыт в {1} и приобрел {2} интеллектуальный опыт.</ResearchRequestXPGainHR>
+	<!-- Accident with {WEAPON} -->
+	<LetterLabelWeaponTestFailed>Несчастный случай: {WEAPON}</LetterLabelWeaponTestFailed>
+	<!-- {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}). -->
+	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } {WEAPON_definite}, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.</MessageWeaponTestFailureMinor> 
+	<!-- {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}). -->
+	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label} ({WEAPON_definite}).</MessageWeaponTestFailureCatastrophic>
+	<!-- {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}). -->
+	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} всецело {TESTER_gender ? оплошал : оплошала }, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
 
-</LanguageData>
+	<!--Go Explore-->
+	<LetterResearchRequest_SuccessHR>Исследование прошло успешно. Совместными усилиями вы продвинулись в понимании технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
+	<LetterResearchRequest_TriumphHR>Исследование завершилось великим триумфом! Совместными усилиями вы совершили прорыв и раскрыли секреты технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>
+	<ResearchRequestXPGainHR>{0}, {0_gender ? ваш исследователь, приобрёл : ваша исследовательница, приобрела } ценные знания по теме "{1}" и {0_gender ? поднял : подняла } свой навык умственного труда на {2}.</ResearchRequestXPGainHR>
+
+</LanguageData> 
