@@ -270,6 +270,9 @@ namespace HumanResources
                 billStartTick = Find.TickManager.TicksGame;
                 ticksSpentDoingRecipeWork = 0;
                 curJob.bill.Notify_DoBillStarted(actor);
+                Verb verbToUse = actor.TryGetAttackVerb(currentWeapon, true);
+                LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
+                pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
             };
             train.tickAction = delegate ()
             {
@@ -303,16 +306,19 @@ namespace HumanResources
                     ReadyForNextToil();
                 }
 
-                //pawn posture
                 Verb verbToUse = actor.TryGetAttackVerb(currentWeapon, true);
-                LocalTargetInfo target = actor.jobs.curJob.GetTarget(TargetIndex.A);
-                if (!HarmonyPatches.ConserveAmmo)
-                    pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
+                Stance_Cooldown stance = pawn.stances.curStance as Stance_Cooldown;
+                if (stance != null) stance.ticksLeft++;
+                else
+                {
+                    LocalTargetInfo target = pawn.jobs.curJob.GetTarget(TargetIndex.A);
+                    pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
+                }
 
-                //sound:
                 if (!unknown && verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
                 {
-                    if ((ticksSpentDoingRecipeWork % verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, actor).SecondsToTicks()) == 0)
+                    int warmup = verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, actor).SecondsToTicks();
+                    if ((ticksSpentDoingRecipeWork % warmup) == 0)
                     {
                         if (verbToUse.verbProps.soundCast != null)
                         {

@@ -28,8 +28,9 @@ namespace HumanResources
 
             //pawn posture
             LocalTargetInfo target = pawn.jobs.curJob.GetTarget(TargetIndex.A);
-            if (!HarmonyPatches.ConserveAmmo)
-                pawn.stances.SetStance(new Stance_Warmup(1, target, verbToUse));
+            Stance_Cooldown stance = pawn.stances.curStance as Stance_Cooldown;
+            if (stance != null) stance.ticksLeft++;
+            else pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
 
             //sound:
             if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
