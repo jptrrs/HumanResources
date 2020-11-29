@@ -19,6 +19,7 @@
 	<ClickToAssignForDocumentation>ЛКМ, чтобы назначить для документирования</ClickToAssignForDocumentation>
 	<ClickToUnassign>ЛКМ, чтобы отменить назначение</ClickToUnassign>
 	<RightClickToTree>ПКМ, чтобы показать в окне исследований</RightClickToTree>
+  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
 	<AssignedToResearch>{0} {0_gender ? назначен : назначена} для исследования этой технологии</AssignedToResearch>
 	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
 	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>

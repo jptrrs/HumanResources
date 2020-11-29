@@ -214,16 +214,27 @@ namespace HumanResources
                     Rect box = new Rect(position, size);
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     if (Mouse.IsOver(box.ContractedBy(12f)))
                     {
                         if (subjectToShow != null) subjectToShow = null;
-                        if (!pawn.TryGetComp<CompKnowledge>().expertise.EnumerableNullOrEmpty())
+                        if (!techComp.expertise.EnumerableNullOrEmpty())
                         {
-                            foreach (ResearchProjectDef tech in pawn.TryGetComp<CompKnowledge>().expertise.Keys)
+                            foreach (ResearchProjectDef tech in techComp.expertise.Keys)
                             {
                                 HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
                             }
                         }
+                    }
+                    if (!techComp.homework.NullOrEmpty())
+                    {
+                        StringBuilder homeworkSummary = new StringBuilder();
+                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                        foreach (var tech in techComp.homework)
+                        {
+                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                        }
+                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
                     }
                     Vector2 pos = new Vector2(box.center.x, box.yMax);
                     GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);

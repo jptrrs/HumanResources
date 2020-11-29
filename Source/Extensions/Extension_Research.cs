@@ -483,7 +483,7 @@ namespace HumanResources
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     bool known = tech.IsKnownBy(pawn);
                     WorkTypeDef workGiver = (completed || known) ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
-                    string header = known ? TechStrings.headerWrite : completed ? TechStrings.headerRead : TechStrings.headerResearch;
+                    string header = TechStrings.GetTask(pawn, tech);
                     if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech))) 
                     {
                         if (pawn.WorkTypeIsDisabled(workGiver))

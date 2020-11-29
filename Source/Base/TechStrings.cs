@@ -10,5 +10,12 @@ namespace HumanResources
             headerWrite = TechWorkDefOf.DocumentTech.verb.CapitalizeFirst(),
             headerRead = TechWorkDefOf.LearnTech.verb.CapitalizeFirst(),
             headerResearch = DefDatabase<WorkGiverDef>.GetNamed("Research").verb.CapitalizeFirst();
+
+        public static string GetTask(Pawn pawn, ResearchProjectDef tech)
+        {
+            bool known = tech.IsKnownBy(pawn);
+            bool completed = tech.IsFinished;
+            return known ? headerWrite : completed ? headerRead : headerResearch;
+        }
     }
 }

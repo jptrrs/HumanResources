@@ -38,6 +38,9 @@
   <ClickToUnassign>Clic-gauche pour annuler l'affectation.</ClickToUnassign>
   <!--EN: Right-click to show on Research tree.-->
   <RightClickToTree>Clic-droit pour afficher dans l'arbre des recherches.</RightClickToTree>
+  
+  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
+  
   <!--EN: {0} is tasked with researching this.-->
   <AssignedToResearch>{0} est affectée à cette recherche.</AssignedToResearch>
   <!--EN: {0} is tasked with studying this.-->

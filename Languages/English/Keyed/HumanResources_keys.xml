@@ -19,6 +19,7 @@
   <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
   <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
   <RightClickToTree>Right-click to show on Research tree.</RightClickToTree>
+  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
   <AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
   <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
   <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>

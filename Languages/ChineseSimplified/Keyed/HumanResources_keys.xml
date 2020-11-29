@@ -36,6 +36,7 @@
   <!--NEW--><ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
   <!--NEW--><ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
   <!--NEW--><ClickToUnassign>Left-click to unassign.</ClickToUnassign>
+  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
   <!--NEW--><AssignedToResearch>{0} is tasked with researching this.</AssignedToResearch>
   <!--NEW--><AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
   <!--NEW--><AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
