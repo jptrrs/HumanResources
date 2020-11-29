@@ -11,6 +11,12 @@ namespace HumanResources
 	{
 		protected bool IsResearch;
 
+		public override void ExposeData()
+		{
+			Scribe_Values.Look<bool>(ref IsResearch, "IsResearch");
+			base.ExposeData();
+		}
+
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			IsResearch = job.bill == null;

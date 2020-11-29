@@ -8,8 +8,10 @@ namespace HumanResources
 {
     public class JobDriver_Knowledge : JobDriver_DoBill
     {
-		protected Thing desk
-		{
+        protected ResearchProjectDef project;
+
+        protected Thing desk
+        {
 			get
 			{
 				return job.GetTarget(TargetIndex.A).Thing;
@@ -23,11 +25,29 @@ namespace HumanResources
 				return pawn.TryGetComp<CompKnowledge>();
 			}
 		}
-
-		protected ResearchProjectDef project;
-
-		public override bool TryMakePreToilReservations(bool errorOnFailed)
+		public override void ExposeData()
 		{
+			Scribe_Defs.Look<ResearchProjectDef>(ref project, "project");
+			base.ExposeData();
+		}
+
+        public void Notify_IterationCompleted(Pawn billDoer, Bill_Production bill)
+        {
+            if (bill.repeatMode == BillRepeatModeDefOf.RepeatCount)
+            {
+                if (bill.repeatCount > 0)
+                {
+                    bill.repeatCount--;
+                }
+                if (bill.repeatCount == 0)
+                {
+                    Messages.Message("MessageBillComplete".Translate(bill.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
+                }
+            }
+        }
+
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
+        {
 			Pawn pawn = this.pawn;
 			LocalTargetInfo target = desk;
 			Job job = this.job;
@@ -38,21 +58,6 @@ namespace HumanResources
 			}
 			else result = false;
 			return result;
-		}
-
-		public void Notify_IterationCompleted(Pawn billDoer, Bill_Production bill)
-		{
-			if (bill.repeatMode == BillRepeatModeDefOf.RepeatCount)
-			{
-				if (bill.repeatCount > 0)
-				{
-					bill.repeatCount--;
-				}
-				if (bill.repeatCount == 0)
-				{
-					Messages.Message("MessageBillComplete".Translate(bill.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
-				}
-			}
 		}
 	}
 }

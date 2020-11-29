@@ -50,6 +50,13 @@ namespace HumanResources
             }
         }
 
+        public override void ExposeData()
+        {
+            Scribe_Values.Look<bool>(ref practice, "practice", false, false);
+            Scribe_Values.Look<bool>(ref unknown, "unknown", false, false);
+            base.ExposeData();
+        }
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             Pawn pawn = this.pawn;
@@ -174,7 +181,6 @@ namespace HumanResources
                         techComp.LearnWeapon(sister);
                         Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion);
                     }
-                    //TEST group by: sister.projectile.damageDef !
                 }
             }
             else

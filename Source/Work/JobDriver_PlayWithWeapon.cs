@@ -10,6 +10,12 @@ namespace HumanResources
         protected int ticksSpentAlready = 0;
         protected Verb verbToUse;
 
+        public override void ExposeData()
+        {
+            Scribe_References.Look<Verb>(ref verbToUse, "verbToUse");
+            base.ExposeData();
+        }
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             verbToUse = pawn.TryGetAttackVerb(pawn.equipment?.Primary, true);
