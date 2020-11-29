@@ -23,7 +23,7 @@ namespace HumanResources
                     if (!__result)
                     {
                         var missing = requisites.Where(x => !x.IsKnownBy(pawn));
-                        string preReqText = (missing.Count() > 1) ? (string)"MultiplePrerequisites".Translate() : missing.FirstOrDefault().label;
+                        string preReqText = (missing.Count() > 1) ? missing.ToStringSafeEnumerable() : missing.FirstOrDefault().label;
                         JobFailReason.Is("DoesntKnowHowToRepair".Translate(pawn, t.def.label, preReqText));
                     }
                 }

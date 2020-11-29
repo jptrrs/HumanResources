@@ -25,7 +25,8 @@ namespace HumanResources
                     if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
                     if (!flag)
                     {
-                        string preReqText = requisites.Any() ? (string)"MultiplePrerequisites".Translate() : requisites.FirstOrDefault().label;
+                        var missing = requisites.Where(x => !x.IsKnownBy(pawn));
+                        string preReqText = (missing.Count() > 1) ? missing.ToStringSafeEnumerable() : missing.FirstOrDefault().label;
                         JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef, preReqText));
                         __result = null;
                     }
