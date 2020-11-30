@@ -39,7 +39,7 @@ namespace HumanResources
         public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
         public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
         public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
-        public static bool LearnAnyWeaponByGroup => LearnMeleeWeaponsByGroup || LearnRangedWeaponsByGroup;
+        //public static bool LearnAnyWeaponByGroup => LearnMeleeWeaponsByGroup || LearnRangedWeaponsByGroup;
 
         public override string ModIdentifier
         {

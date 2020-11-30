@@ -170,13 +170,13 @@ namespace HumanResources
 
         protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)
         {
-            bool ranged = weapon.IsRangedWeapon;
-            bool melee = weapon.IsMeleeWeapon;
-            if (ModBaseHumanResources.LearnAnyWeaponByGroup && Extension_Research.TechByWeapon.ContainsKey(weapon))
+            bool groupRanged = ModBaseHumanResources.LearnRangedWeaponsByGroup && weapon.IsRangedWeapon;
+            bool groupMelee = ModBaseHumanResources.LearnMeleeWeaponsByGroup && weapon.IsMeleeWeapon;
+            if (Extension_Research.TechByWeapon.ContainsKey(weapon) && (groupRanged || groupMelee))
             {
                 foreach (ThingDef sister in Extension_Research.WeaponsByTech[Extension_Research.TechByWeapon[weapon]])
                 {
-                    if (ModBaseHumanResources.LearnRangedWeaponsByGroup && sister.IsRangedWeapon == ranged || ModBaseHumanResources.LearnMeleeWeaponsByGroup && sister.IsMeleeWeapon == melee)
+                    if ((groupRanged && sister.IsRangedWeapon) || (groupMelee && sister.IsMeleeWeapon))
                     {
                         techComp.LearnWeapon(sister);
                         Messages.Message("MessageTrainingComplete".Translate(pawn, sister), MessageTypeDefOf.TaskCompletion);
