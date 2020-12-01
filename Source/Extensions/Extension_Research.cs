@@ -403,7 +403,7 @@ namespace HumanResources
             List<ThingDef> result = new List<ThingDef>();
             foreach (RecipeDef r in tech.GetRecipesUnlocked().Where(x => !x.products.NullOrEmpty()))
             {
-                foreach (ThingDef weapon in r.products.Select(x => x.thingDef).Where(ShouldLockWeapon))
+                foreach (ThingDef weapon in r.products.Where(x => x.thingDef != null).Select(x => x.thingDef).Where(ShouldLockWeapon))
                 {
                     result.Add(weapon);
                     if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
