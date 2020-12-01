@@ -434,7 +434,7 @@ namespace HumanResources
 
         public static List<Pawn> currentPawnsCache;
 
-        private static IEnumerable<Pawn> currentPawns //=> HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null) : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null);
+        private static IEnumerable<Pawn> currentPawns
         {
             get
             {
