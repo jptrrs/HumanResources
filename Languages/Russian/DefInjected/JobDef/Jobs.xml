@@ -5,8 +5,6 @@
 	<DocumentTech.reportString>документирует</DocumentTech.reportString>
 	<ResearchTech.reportString>исследует</ResearchTech.reportString>
 	<TrainWeapon.reportString>тренируется с оружием</TrainWeapon.reportString>
-
-	<!-- From ItchyFlea's Practise Target -->
 	<PlayAtDummy.reportString>практикуется в рукопашном бою</PlayAtDummy.reportString>
 	<PlayAtTarget.reportString>практикуется в стрельбе</PlayAtTarget.reportString>
 

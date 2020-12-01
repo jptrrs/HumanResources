@@ -4,8 +4,8 @@
   <DocumentTech.reportString>a documentar TargetA.</DocumentTech.reportString>
   <ResearchTech.reportString>a pesquisar TargetA.</ResearchTech.reportString>
   <TrainWeapon.reportString>a praticar TargetA.</TrainWeapon.reportString>
-
-
+  <PlayAtDummy.reportString>a praticar combate corpo-a-corpo.</PlayAtDummy.reportString>
+  <PlayAtTarget.reportString>a praticar tiro.</PlayAtTarget.reportString>
 
 
 </LanguageData>

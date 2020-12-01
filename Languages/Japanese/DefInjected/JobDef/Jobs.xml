@@ -10,5 +10,10 @@
   <!--EN: practicing TargetB.-->
   <TrainWeapon.reportString>TargetBを練習している。</TrainWeapon.reportString>
 
+  <!--NeW-->
+  <!--EN: training melee.-->
+  <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
+  <!--EN: training shooting.-->
+  <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
 
 </LanguageData> 
