@@ -20,7 +20,8 @@
   <!--EN: Compact view.-->
   <ShowCompact>Vue compacte</ShowCompact>
     
-  <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
+  <!--EN: Show Assignments.-->
+  <ShowAssignment>Voir les affectations..</ShowAssignment>
 
   <!--EN: Expand-->
   <Expand>Étendre</Expand>
@@ -39,7 +40,8 @@
   <!--EN: Right-click to show on Research tree.-->
   <RightClickToTree>Clic-droit pour afficher dans l'arbre des recherches.</RightClickToTree>
   
-  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
+  <!--EN: {0} is tasked with:-->
+  <AssignedTo>{0} est affecté à :</AssignedTo>
   
   <!--EN: {0} is tasked with researching this.-->
   <AssignedToResearch>{0} est affectée à cette recherche.</AssignedToResearch>
@@ -81,23 +83,30 @@
   <!--EN: If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here)-->
   <FreeScenarioWeaponsDesc>Si activé, toute arme ajoutée via l'éditeur de scénario sera aussi incluse dans la liste des armes que vos colons pourront utiliser. (Le scénario "vanilla" Riche explorateur a été codé pour toujours implémenter ceci, et ignore donc ce paramètre).</FreeScenarioWeaponsDesc>
   
-  <!--NEW--><LearnMeleeWeaponsByGroupTitle>Learn melee weapons by group.</LearnMeleeWeaponsByGroupTitle>
-  <!--NEW--><LearnMeleeWeaponsByGroupDesc>When learning melee weapons, learn all weapons unlocked by that technology at the same time.</LearnMeleeWeaponsByGroupDesc>
-  <!--NEW--><LearnRangedWeaponsByGroupTitle>Learn ranged weapons by group.</LearnRangedWeaponsByGroupTitle>
-  <!--NEW--><LearnRangedWeaponsByGroupDesc>When learning ranged weapons, learn all weapons unlocked by that technology at the same time.</LearnRangedWeaponsByGroupDesc>
-  <!--NEW--><RequireTrainingForSingleUseWeaponsTitle>Require training for single-use weapons.</RequireTrainingForSingleUseWeaponsTitle>
-  <!--NEW--><RequireTrainingForSingleUseWeaponsDesc>If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.</RequireTrainingForSingleUseWeaponsDesc>
-  <!--NEW--><EnableJoyGiverTitle>Use training facilities for fun.</EnableJoyGiverTitle>
-  <!--NEW--><EnableJoyGiverDesc>Pawns will go practice at the target stand and training dummy just to blow off some steam.</EnableJoyGiverDesc>
+  <!--EN: Learn melee weapons by group.-->
+  <LearnMeleeWeaponsByGroupTitle>Apprendre à manier des armes de corps-à-corps en groupe.</LearnMeleeWeaponsByGroupTitle>
+  <!--EN: When learning melee weapons, learn all weapons unlocked by that technology at the same time.-->
+  <LearnMeleeWeaponsByGroupDesc>En apprenant à manier des armes de corps-à-corps, apprendre en même temps toutes les armes débloquées par cette technologie.</LearnMeleeWeaponsByGroupDesc>
+  <!--EN: Learn ranged weapons by group.-->
+  <LearnRangedWeaponsByGroupTitle>Apprendre à manier des armes à distance en groupe.</LearnRangedWeaponsByGroupTitle>
+  <!--EN: When learning ranged weapons, learn all weapons unlocked by that technology at the same time.-->
+  <LearnRangedWeaponsByGroupDesc>En apprenant à manier des armes à distance, apprendre en même temps toutes les armes débloquées par cette technologie.</LearnRangedWeaponsByGroupDesc>
+  <!--EN: Require training for single-use weapons.-->
+  <RequireTrainingForSingleUseWeaponsTitle>Les armes à usage unique nécessitent un apprentissage.</RequireTrainingForSingleUseWeaponsTitle>
+  <!--En: If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.--><RequireTrainingForSingleUseWeaponsDesc>Si sélectionné, les armes comme le lance-roquette exigeront aussi que le personnage ait appris à les manier avant de les équiper.</RequireTrainingForSingleUseWeaponsDesc>
+  <!--EN: Use training facilities for fun.-->
+  <EnableJoyGiverTitle>Utiliser les lieux d'entrainement pour le loisir.</EnableJoyGiverTitle>
+  <!--EN : Pawns will go practice at the target stand and training dummy just to blow off some steam.-->
+  <EnableJoyGiverDesc>Les personnages iront s'entrainer à la cible et au manequin pour se défouler.</EnableJoyGiverDesc>
 
   <!--EN: Difficulty settings slows down research.-->
-  <ResearchSpeedTiedToDifficultyTitle>Le niveau de difficulté ralenti la recherche.</ResearchSpeedTiedToDifficultyTitle>
+  <ResearchSpeedTiedToDifficultyTitle>Le niveau de difficulté ralentit la recherche.</ResearchSpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.-->
   <ResearchSpeedTiedToDifficultyDesc>Si activé, la vitesse de recherche est liée au niveau de difficulté, avec aucun changement en facile et jusqu'à 30% plus lent en difficile. Si désactivé, ce sera par défaut 10% plus lent que le jeu de base.</ResearchSpeedTiedToDifficultyDesc>
   <!--EN: Difficulty settings slows down tech studying.</-->
-  <StudySpeedTiedToDifficultyTitle>Le niveau de difficulté ralenti l'étude des technologies</StudySpeedTiedToDifficultyTitle>
+  <StudySpeedTiedToDifficultyTitle>Le niveau de difficulté ralentit l'étude des technologies</StudySpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
-  <StudySpeedTiedToDifficultyDesc>Si activé, la vitesse de recherche est liée au niveau de difficulté, avec 10% de malus en facile et 20% en difficile.</StudySpeedTiedToDifficultyDesc>
+  <StudySpeedTiedToDifficultyDesc>Si activé, la vitesse d'étude est liée au niveau de difficulté, avec 10% de malus en facile et 20% en difficile.</StudySpeedTiedToDifficultyDesc>
 
   <!--Things-->
   
@@ -141,7 +150,8 @@
   <!--EN: {0_nameDef} has read all the books.-->
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} a déjà lu tous les livres</AlreadyKnowsTheWholeLibrary>
 
-  <!--NEW--><NoSpaceInLibrary>Nowhere to store the book when it's finished.</NoSpaceInLibrary>
+  <!--EN: Nowhere to store the book when it's finished.-->
+  <NoSpaceInLibrary>Nulle part où ranger le livre quand il est fini.</NoSpaceInLibrary>
 
   <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
   <LacksFundamentalKnowledge>{0_nameDef} manque des connaissances de base sur ces sujets.</LacksFundamentalKnowledge>
@@ -168,15 +178,22 @@
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} est déjà connu.e.</TechAlreadyKnown>
 
-  <!--NEW--><NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
+  <!--EN: Invalid equipment.-->
+  <NoWeaponEquipped>Équipement incorrect.</NoWeaponEquipped>
   
   <!--weapon testing -->
-  <!--NEW--><WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
-  <!--NEW--><FearedWeapon>{0_nameDef} has tried these weapons before with bad results.</FearedWeapon>
-  <!--NEW--><LetterLabelWeaponTestFailed>Accident with {WEAPON}</LetterLabelWeaponTestFailed>
-  <!--NEW--><MessageWeaponTestFailureMinor>{TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
-  <!--NEW--><MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
-  <!--NEW--><MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
+  <!--EN: {0_nameDef} couldn't figure out how {1_definite} works.-->
+  <WeaponTestFail>{0_nameDef} N'a pas pu découvrir comment {1_definite} fonctionne.</WeaponTestFail>
+  <!--EN: {0_nameDef} has tried these weapons before with bad results.-->
+  <FearedWeapon>{0_nameDef} a déjà essayé ces armes et en garde un mauvais souvenir.</FearedWeapon>
+  <!--EN : Accident with {WEAPON}-->
+  <LetterLabelWeaponTestFailed>Accident avec {WEAPON}</LetterLabelWeaponTestFailed>
+  <!--EN: {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}).-->
+  <MessageWeaponTestFailureMinor>{TESTER_labelShort} a endommagé {WEAPON_definite} en essayant de l'utiliser ({RECIPE_label}).</MessageWeaponTestFailureMinor> 
+  <!--EN: {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).-->
+  <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} a provoqué un accident en essayant d'utiliser {WEAPON_definite} et a subi des blessures ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
+  <!--EN: {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).-->
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} a lamentablement échoué en essayant d'utiliser {WEAPON_definite}. {TESTER_pronoun} est blessé.e et l'arme, détruite. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
 
   <!--Go Explore-->
   
