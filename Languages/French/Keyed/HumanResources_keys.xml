@@ -90,7 +90,7 @@
   <!--EN: Learn ranged weapons by group.-->
   <LearnRangedWeaponsByGroupTitle>Apprendre à manier des armes à distance en groupe.</LearnRangedWeaponsByGroupTitle>
   <!--EN: When learning ranged weapons, learn all weapons unlocked by that technology at the same time.-->
-  <LearnRangedWeaponsByGroupDesc>En apprenant à manier des armes de corps-à-corps, apprendre en même temps toutes les armes débloquées par cette technologie.</LearnRangedWeaponsByGroupDesc>
+  <LearnRangedWeaponsByGroupDesc>En apprenant à manier des armes à distance, apprendre en même temps toutes les armes débloquées par cette technologie.</LearnRangedWeaponsByGroupDesc>
   <!--EN: Require training for single-use weapons.-->
   <RequireTrainingForSingleUseWeaponsTitle>Les armes à usage unique nécessitent un apprentissage.</RequireTrainingForSingleUseWeaponsTitle>
   <!--En: If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.--><RequireTrainingForSingleUseWeaponsDesc>Si sélectionné, les armes comme le lance-roquette exigeront aussi que le personnage ait appris à les manier avant de les équiper.</RequireTrainingForSingleUseWeaponsDesc>
