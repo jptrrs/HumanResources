@@ -113,18 +113,25 @@ namespace HumanResources
             //1. Gather info on that pawn
 
             //a. tech level
-            startingTechLevel = faction?.techLevel ?? 0;
-            if (startingTechLevel == 0) /*startingTechLevel = InferTechLevelfromBG(pawn);*/
-            {
-                if (pawn.story != null)
-                {
-                    TechLevel childhoodTechLevel = PawnBackgroundUtility.InferTechLevelfromBackstory(pawn.story.childhood);
-                    TechLevel adulthoodTechLevel = pawn.story.adulthood != null ? PawnBackgroundUtility.InferTechLevelfromBackstory(pawn.story.adulthood) : 0;
-                    if (childhoodTechLevel == TechLevel.Undefined) childhoodTechLevel = TechLevel.Industrial;
-                    if (adulthoodTechLevel == TechLevel.Undefined) adulthoodTechLevel = TechLevel.Industrial;
-                    startingTechLevel = (TechLevel)Math.Max((int)childhoodTechLevel, (int)adulthoodTechLevel);
-                }
-            }
+
+            //working method
+            //startingTechLevel = faction?.techLevel ?? 0;
+            //if (startingTechLevel == 0) /*startingTechLevel = InferTechLevelfromBG(pawn);*/
+            //{
+            //    if (pawn.story != null)
+            //    {
+            //        TechLevel childhoodTechLevel = PawnBackgroundUtility.InferTechLevelfromBackstory(pawn.story.childhood);
+            //        TechLevel adulthoodTechLevel = pawn.story.adulthood != null ? PawnBackgroundUtility.InferTechLevelfromBackstory(pawn.story.adulthood) : 0;
+            //        if (childhoodTechLevel == TechLevel.Undefined) childhoodTechLevel = TechLevel.Industrial;
+            //        if (adulthoodTechLevel == TechLevel.Undefined) adulthoodTechLevel = TechLevel.Industrial;
+            //        startingTechLevel = (TechLevel)Math.Max((int)childhoodTechLevel, (int)adulthoodTechLevel);
+            //    }
+            //}
+
+            //FIND OUT HOW TO INCORPORATE THIS. 
+            // idea: 1 slot for childhood, 1 for adulthood, remaining por faction.
+            TechLevel childhoodLevel; 
+            startingTechLevel = FindBGTechLevel(pawn, out childhoodLevel); 
 
             //b. higest skills
             SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate(AccessHighestSkill);
@@ -183,6 +190,26 @@ namespace HumanResources
             }
             Log.Error("[HumanResources] Couldn't calculate any expertise for " + pawn);
             return null;
+        }
+
+        private static TechLevel FindBGTechLevel(Pawn pawn, out TechLevel childhoodLevel)
+        {
+            TechLevel asAdult = 0;
+            TechLevel asChild = 0;
+            if (pawn.story != null)
+            {
+                asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.childhood.identifier];
+                if (pawn.story.adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.adulthood.identifier];
+            }
+            if (asAdult == 0 || asChild == 0)
+            {
+                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+                TechLevel fallback = faction?.techLevel ?? TechLevel.Industrial;
+                if (asAdult == 0) asAdult = fallback;
+                if (asChild == 0) asChild = fallback;
+            }
+            childhoodLevel = asChild;
+            return asAdult;
         }
 
         //private static TechLevel InferTechLevelfromBG(Pawn pawn)
