@@ -99,7 +99,10 @@ namespace HumanResources
             //Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
             AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { TechDefOf.WeaponsNotBasic });
 
-            //c. Telling humans what's going on
+            //c. Classifying pawn backstories
+            PawnBackgroundUtility.BuildCache();
+
+            //d. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose)
@@ -109,6 +112,15 @@ namespace HumanResources
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
                 Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
+                for (int i = 0; i < 8; i++)
+                {
+                    TechLevel level = (TechLevel)i;
+                    IEnumerable<string> found = PawnBackgroundUtility.TechLevelByBackstory.Where(e => e.Value == level).Select(e => e.Key);
+                    if (!found.EnumerableNullOrEmpty())
+                    {
+                        Log.Message("[HumanResources] "+ found.EnumerableCount() + " " + level.ToString().ToLower() + " backstories: " + found.ToStringSafeEnumerable());
+                    }
+                }
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + " + SimpleWeapons.Count() + " that require training.");
 

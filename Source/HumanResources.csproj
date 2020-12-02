@@ -332,6 +332,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\PawnBackgroundUtility.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />
     <Compile Include="Base\TechStrings.cs" />
     <Compile Include="Base\TechWorkDefOf.cs" />
