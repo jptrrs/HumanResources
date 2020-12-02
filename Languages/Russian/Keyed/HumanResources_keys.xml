@@ -15,11 +15,11 @@
 	<Collapse>Свернуть</Collapse>
 	<TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
-	<ClickToAssignForStudying>ЛКМ, чтобы назначить для изучения</ClickToAssignForStudying>
-	<ClickToAssignForDocumentation>ЛКМ, чтобы назначить для документирования</ClickToAssignForDocumentation>
-	<ClickToUnassign>ЛКМ, чтобы отменить назначение</ClickToUnassign>
-	<RightClickToTree>ПКМ, чтобы показать в окне исследований</RightClickToTree>
-  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
+	<ClickToAssignForStudying>ЛКМ - назначить для изучения</ClickToAssignForStudying>
+	<ClickToAssignForDocumentation>ЛКМ - назначить для документирования</ClickToAssignForDocumentation>
+	<ClickToUnassign>ЛКМ - отменить назначение</ClickToUnassign>
+	<RightClickToTree>ПКМ - показать в окне исследований</RightClickToTree>
+	<AssignedTo>{0} имеет следующие назначения:\n</AssignedTo>
 	<AssignedToResearch>{0} {0_gender ? назначен : назначена} для исследования этой технологии</AssignedToResearch>
 	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
 	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>
@@ -83,7 +83,7 @@
 	<DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется "{2}").</DoesntKnowHowToBuild>
 	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется "{2}").</DoesntKnowHowToRepair>
 	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется "{2}").</DoesntKnowHowToCraft>
-	<DoesntKnowThisPlant>{0_nameDef} не знает, как культивировать {1} (требуется "{2}").</DoesntKnowThisPlant>
+	<DoesntKnowThisPlant>{0_nameDef} не знает, как вырастить {1} (требуется "{2}").</DoesntKnowThisPlant>
 	<!-- Pawn has not been trained to use this weapon -->
 	<UnknownWeapon>необходимо сперва обучиться владению этим оружием</UnknownWeapon>
 	<!-- Pawn cannot comprehend this weapon and is scared of it -->
@@ -98,11 +98,11 @@
 	<!-- Accident with {WEAPON} -->
 	<LetterLabelWeaponTestFailed>Несчастный случай: {WEAPON}</LetterLabelWeaponTestFailed>
 	<!-- {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}). -->
-	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } {WEAPON_definite}, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.</MessageWeaponTestFailureMinor> 
+	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } оружие "{WEAPON_definite}", пока {TESTER_gender ? пытался : пыталась } с ним экспериментировать.</MessageWeaponTestFailureMinor> 
 	<!-- {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}). -->
-	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label} ({WEAPON_definite}).</MessageWeaponTestFailureCatastrophic>
+	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, произошедшего во время экспериментирования с оружием "{WEAPON_definite}".</MessageWeaponTestFailureCatastrophic>
 	<!-- {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}). -->
-	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} всецело {TESTER_gender ? оплошал : оплошала }, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
+	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} {TESTER_gender ? допустил : допустила } серьёзную оплошность во время экспериментирования с оружием.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
 
 	<!--Go Explore-->
 	<LetterResearchRequest_SuccessHR>Исследование прошло успешно. Совместными усилиями вы продвинулись в понимании технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
