@@ -332,7 +332,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\PawnBackgroundUtility.cs" />
+    <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />
     <Compile Include="Base\TechStrings.cs" />
     <Compile Include="Base\TechWorkDefOf.cs" />
@@ -379,6 +379,7 @@
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books\ITab_Inventory.cs" />
+    <Compile Include="Work\LearningUtility.cs" />
     <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
