@@ -13,10 +13,11 @@ namespace HumanResources
         public static Dictionary<string, TechLevel> TechLevelByBackstory = new Dictionary<string, TechLevel>();
 
         public static List<string>
-            spacerHints = new List<string> { "glitterworld", "space", "imperial", "robot", "cryptosleep", "star system", "starship", "planetary", "genetic", "outer rim", "orbital", "prosthetic", "virtual", "stellar", "pilot", "coreworld", "research", "worlds" },
+            //leading spaces are on purpose, for ex.: " industrial" excludes "pre-industrial"
+            spacerHints = new List<string> { "glitterworld", "space", "imperial", "robot", "cryptosleep", "star system", "starship", "planetary", "genetic", "outer rim", "orbital", "prosthetic", "virtual", "stellar", "pilot", "coreworld", "research", " worlds" },
             spacerSecondaryHints = new List<string> { "stars", "planet" },
-            industrialHints = new List<string> { "midworld", " industrial", "urbworld", "corporate", "computer", "surgery", "video", "doctor", "medic", "drug", "infantry", "army", "sniper", "bullet", "nuclear", "machine", "pop idol", "science", "scientist", "university", "college", "engineer", "police" }, //leading space on " industrial" excludes "pre-industrial"
-            medievalHints = new List<string> { "medieval", "feudal", "monastery", "court", "royal", "lord", "plague", "coliseum", "caravan", "farm", "title", "herder", "blacksmith", "noble", "village", " house" }, //leading space on " house" also on purpose.
+            industrialHints = new List<string> { "midworld", " industrial", "urbworld", "corporate", "computer", "surgery", "video", "doctor", "medic", "drug", "infantry", "army", "sniper", "bullet", "nuclear", "machine", "pop idol", "science", "scientist", "university", "college", "engineer", "police" },
+            medievalHints = new List<string> { "medieval", "feudal", "monastery", "court", "royal", "lord", "plague", "coliseum", "caravan", "farm", "title", "herder", "blacksmith", "noble", "village", " house" },
             tribalHints = new List<string> { "tribe", "tribal", "digger", "caveworld", "feral", "wild", "iceworld" };
 
         public static void BuildCache()
