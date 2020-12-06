@@ -5,6 +5,7 @@ using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Verse;
 
 namespace HumanResources
@@ -12,6 +13,10 @@ namespace HumanResources
     public class ModBaseHumanResources : ModBase
     {
         public static SettingHandle<bool>
+            TechPoolTitle,
+            TechPoolIncludesStarting,
+            TechPoolIncludesTechLevel,
+            TechPoolIncludesBackground,
             TechPoolIncludesScenario,
             FreeScenarioWeapons,
             LearnMeleeWeaponsByGroup,
@@ -19,10 +24,10 @@ namespace HumanResources
             RequireTrainingForSingleUseWeapons,
             EnableJoyGiver,
             ResearchSpeedTiedToDifficulty,
-            StudySpeedTiedToDifficulty;
+            StudySpeedTiedToDifficulty,
+            FullStartupReport;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
-        public static FactionTechPool TechPoolMode;
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
@@ -33,13 +38,10 @@ namespace HumanResources
             Settings.EntryName = "Human Resources";
         }
 
-        public enum FactionTechPool { Both, TechLevel, Starting }
         public enum FactionWeaponPool { Both, TechLevel, Scenario }
-        public static bool TechPoolIncludesStarting => TechPoolMode != FactionTechPool.TechLevel;
-        public static bool TechPoolIncludesTechLevel => TechPoolMode < FactionTechPool.Starting;
+
         public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
         public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
-        //public static bool LearnAnyWeaponByGroup => LearnMeleeWeaponsByGroup || LearnRangedWeaponsByGroup;
 
         public override string ModIdentifier
         {
@@ -99,7 +101,10 @@ namespace HumanResources
             //Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
             AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { TechDefOf.WeaponsNotBasic });
 
-            //c. Telling humans what's going on
+            //c. Classifying pawn backstories
+            PawnBackgroundUtility.BuildCache();
+
+            //d. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose)
@@ -109,6 +114,27 @@ namespace HumanResources
                 Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
                 Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
+                if (FullStartupReport)
+                {
+                    Log.Warning("[HumanResources] Backstories classified by TechLevel:");
+                    for (int i = 0; i < 8; i++)
+                    {
+                        TechLevel level = (TechLevel)i;
+                        IEnumerable<string> found = PawnBackgroundUtility.TechLevelByBackstory.Where(e => e.Value == level).Select(e => e.Key);
+                        if (!found.EnumerableNullOrEmpty())
+                        {
+                            Log.Message("- "+level.ToString().CapitalizeFirst() + " (" + found.EnumerableCount() + "): " + found.ToStringSafeEnumerable());
+                        }
+                    }
+                    Log.Warning("[HumanResources] Techs classified by associated skill:");
+                    var skills = DefDatabase<SkillDef>.AllDefsListForReading.GetEnumerator();
+                    while (skills.MoveNext())
+                    {
+                        SkillDef skill = skills.Current;
+                        IEnumerable<string> found = Extension_Research.SkillsByTech.Where(e => e.Value.Contains(skill)).Select(e => e.Key.label);
+                        Log.Message("- " + skill.LabelCap + " (" + found.EnumerableCount() + "): " + found.ToStringSafeEnumerable());
+                    }
+                }
             }
             else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + " + SimpleWeapons.Count() + " that require training.");
 
@@ -184,8 +210,14 @@ namespace HumanResources
 
         public void UpdateSettings()
         {
-            TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
+            TechPoolTitle = Settings.GetHandle("TechPoolTitle", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), false);
+            TechPoolTitle.CustomDrawer = rect => false;
+            TechPoolTitle.CanBeReset = false;
+            TechPoolIncludesStarting = Settings.GetHandle<bool>("TechPoolIncludesStarting", "TechPoolIncludesStartingTitle".Translate(), "TechPoolIncludesStartingDesc".Translate(), true);
+            TechPoolIncludesTechLevel = Settings.GetHandle<bool>("TechPoolIncludesTechLevel", "TechPoolIncludesTechLevelTitle".Translate(), "TechPoolIncludesTechLevelDesc".Translate(), true);
+            TechPoolIncludesBackground = Settings.GetHandle<bool>("TechPoolIncludesBackground", "TechPoolIncludesBackgroundTitle".Translate(), "TechPoolIncludesBackgroundDesc".Translate(), false);
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
+            //TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
             LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);
@@ -194,6 +226,8 @@ namespace HumanResources
             EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
+            FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "Print full startup report", null, false);
+            FullStartupReport.NeverVisible = !Prefs.LogVerbose;
         }
 
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)

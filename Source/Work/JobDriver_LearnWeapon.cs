@@ -13,7 +13,6 @@ namespace HumanResources
     public class JobDriver_LearnWeapon : JobDriver_DoBill
     {
         protected bool practice = false;
-
         protected bool unknown = false;
 
         private static readonly SimpleCurve WeaponExperimentChanceFactor = new SimpleCurve
@@ -305,31 +304,7 @@ namespace HumanResources
                 {
                     ReadyForNextToil();
                 }
-
-                Verb verbToUse = actor.TryGetAttackVerb(currentWeapon, true);
-                Stance_Cooldown stance = pawn.stances.curStance as Stance_Cooldown;
-                if (stance != null) stance.ticksLeft++;
-                else
-                {
-                    LocalTargetInfo target = pawn.jobs.curJob.GetTarget(TargetIndex.A);
-                    pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
-                }
-
-                if (!unknown && verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
-                {
-                    int warmup = verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, actor).SecondsToTicks();
-                    if ((ticksSpentDoingRecipeWork % warmup) == 0)
-                    {
-                        if (verbToUse.verbProps.soundCast != null)
-                        {
-                            verbToUse.verbProps.soundCast.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map, false));
-                        }
-                        if (verbToUse.verbProps.soundCastTail != null)
-                        {
-                            verbToUse.verbProps.soundCastTail.PlayOneShotOnCamera(pawn.Map);
-                        }
-                    }
-                }
+                LearningUtility.WeaponTrainingAnimation(pawn, pawn.jobs.curJob.GetTarget(TargetIndex.A), actor.TryGetAttackVerb(currentWeapon, true), ticksSpentDoingRecipeWork);
                 if (job.RecipeDef.workSkill != null)
                 {
                     float xpDelta = practice ? 0.5f : 0.1f;

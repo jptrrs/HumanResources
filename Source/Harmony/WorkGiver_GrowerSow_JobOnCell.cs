@@ -14,7 +14,7 @@ namespace HumanResources
     {
         public static void Postfix(object __instance, Pawn pawn, ThingDef ___wantedPlantDef, ref Job __result)
         {
-            if (pawn.Faction != null && pawn.Faction.IsPlayer && __result != null && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
+            if (pawn.TechBound())
             {
                 var requisites = ___wantedPlantDef.plant?.sowResearchPrerequisites;
                 if (!requisites.NullOrEmpty())

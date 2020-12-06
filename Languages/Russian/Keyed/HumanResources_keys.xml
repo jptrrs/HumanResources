@@ -15,11 +15,11 @@
 	<Collapse>Свернуть</Collapse>
 	<TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
-	<ClickToAssignForStudying>ЛКМ, чтобы назначить для изучения</ClickToAssignForStudying>
-	<ClickToAssignForDocumentation>ЛКМ, чтобы назначить для документирования</ClickToAssignForDocumentation>
-	<ClickToUnassign>ЛКМ, чтобы отменить назначение</ClickToUnassign>
-	<RightClickToTree>ПКМ, чтобы показать в окне исследований</RightClickToTree>
-  <!--NEW--><AssignedTo>{0} is tasked with:</AssignedTo>
+	<ClickToAssignForStudying>ЛКМ - назначить для изучения</ClickToAssignForStudying>
+	<ClickToAssignForDocumentation>ЛКМ - назначить для документирования</ClickToAssignForDocumentation>
+	<ClickToUnassign>ЛКМ - отменить назначение</ClickToUnassign>
+	<RightClickToTree>ПКМ - показать в окне исследований</RightClickToTree>
+	<AssignedTo>{0} имеет следующие назначения:\n</AssignedTo>
 	<AssignedToResearch>{0} {0_gender ? назначен : назначена} для исследования этой технологии</AssignedToResearch>
 	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
 	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>
@@ -28,11 +28,22 @@
 	<!--Settings-->
 	<TechPoolModeTitle>Получать знания из следующих списков:</TechPoolModeTitle>
 	<TechPoolModeDesc>Определяет список, из которого следует получать технологии для ваших поселенцев при их создании.</TechPoolModeDesc>
-	<TechPoolMode_Both>оба варианта</TechPoolMode_Both>
-	<TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>
-	<TechPoolMode_Starting>только стартовые технологии фракции</TechPoolMode_Starting>
-	<TechPoolIncludesScenarioTitle>Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
-	<TechPoolIncludesScenarioDesc>Если включено, то любые технологии, добавленные в редакторе сценариев, также будут включены в список знаний для новых поселенцев.</TechPoolIncludesScenarioDesc>
+
+  <!--NEW--><TechPoolIncludesStartingTitle>...the faction's default starting techs</TechPoolIncludesStartingTitle>
+  <!--NEW--><TechPoolIncludesStartingDesc>If checked, the knowledge pool for new colonists will include the default starting technologies for your faction.</TechPoolIncludesStartingDesc>
+  <!--NEW--><TechPoolIncludesTechLevelTitle>...the faction's tech level</TechPoolIncludesTechLevelTitle>
+  <!--NEW--><TechPoolIncludesTechLevelDesc>If checked, the knowledge pool for new colonists will include all technologies from your faction's tech level.</TechPoolIncludesTechLevelDesc>
+  <!--NEW--><TechPoolIncludesBackgroundTitle>...the pawn's background</TechPoolIncludesBackgroundTitle>
+  <!--NEW--><TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
+  <!--NEW--><TechPoolIncludesScenarioTitle>...the scenario starting research</TechPoolIncludesScenarioTitle>
+
+  <!--OLD-->
+	<!--<TechPoolMode_Both>оба варианта</TechPoolMode_Both>-->
+	<!--<TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>-->
+	<!--<TechPoolMode_Starting>только стартовые технологии фракции</TechPoolMode_Starting>-->
+	<!--<TechPoolIncludesScenarioTitle>Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>-->  
+  
+  <TechPoolIncludesScenarioDesc>Если включено, то любые технологии, добавленные в редакторе сценариев, также будут включены в список знаний для новых поселенцев.</TechPoolIncludesScenarioDesc>
 	<WeaponPoolModeTitle>Боевые специалисты получают оружие из:</WeaponPoolModeTitle>
 	<WeaponPoolModeDesc>Определяет список, из которого следует получать навыки владения оружием для ваших поселенцев, являющихся опытными стрелками или драчунами, при их создании.</WeaponPoolModeDesc>
 	<WeaponPoolMode_Both>обоих списков</WeaponPoolMode_Both>
@@ -83,7 +94,7 @@
 	<DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется "{2}").</DoesntKnowHowToBuild>
 	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется "{2}").</DoesntKnowHowToRepair>
 	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется "{2}").</DoesntKnowHowToCraft>
-	<DoesntKnowThisPlant>{0_nameDef} не знает, как культивировать {1} (требуется "{2}").</DoesntKnowThisPlant>
+	<DoesntKnowThisPlant>{0_nameDef} не знает, как вырастить {1} (требуется "{2}").</DoesntKnowThisPlant>
 	<!-- Pawn has not been trained to use this weapon -->
 	<UnknownWeapon>необходимо сперва обучиться владению этим оружием</UnknownWeapon>
 	<!-- Pawn cannot comprehend this weapon and is scared of it -->
@@ -98,11 +109,11 @@
 	<!-- Accident with {WEAPON} -->
 	<LetterLabelWeaponTestFailed>Несчастный случай: {WEAPON}</LetterLabelWeaponTestFailed>
 	<!-- {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}). -->
-	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } {WEAPON_definite}, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.</MessageWeaponTestFailureMinor> 
+	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } оружие "{WEAPON_definite}", пока {TESTER_gender ? пытался : пыталась } с ним экспериментировать.</MessageWeaponTestFailureMinor> 
 	<!-- {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}). -->
-	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label} ({WEAPON_definite}).</MessageWeaponTestFailureCatastrophic>
+	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, произошедшего во время экспериментирования с оружием "{WEAPON_definite}".</MessageWeaponTestFailureCatastrophic>
 	<!-- {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}). -->
-	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} всецело {TESTER_gender ? оплошал : оплошала }, пока {TESTER_gender ? пытался : пыталась } {RECIPE_label}.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
+	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} {TESTER_gender ? допустил : допустила } серьёзную оплошность во время экспериментирования с оружием.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
 
 	<!--Go Explore-->
 	<LetterResearchRequest_SuccessHR>Исследование прошло успешно. Совместными усилиями вы продвинулись в понимании технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>

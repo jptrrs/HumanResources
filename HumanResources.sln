@@ -65,24 +65,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{5B913D14-8
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{DEEA167E-BFFD-45AC-B46D-4BCA28BCB86F}"
-	ProjectSection(SolutionItems) = preProject
-		Patches\Patches.xml = Patches\Patches.xml
-		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
-		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
-		Patches\Patches_MedievalPatches.xml = Patches\Patches_MedievalPatches.xml
-		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
-		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
-		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
-		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
-		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
-		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
-		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
-		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
-		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
-		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{85441F37-161D-46B6-9A2D-7950A3262593}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChineseSimplified", "ChineseSimplified", "{E3F5BEEB-213E-46D8-9C6A-5B75D2C132CD}"
@@ -503,6 +485,26 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{5FDE203C-D8D4-409C-87C9-03D4C7173788}"
 	ProjectSection(SolutionItems) = preProject
 		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{CA35F2FC-D337-4AE7-84A9-8432474AD0BE}"
+	ProjectSection(SolutionItems) = preProject
+		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_BabyAndChildren.xml = Patches\Patches_BabyAndChildren.xml
+		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
+		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
+		Patches\Patches_MedievalPatches.xml = Patches\Patches_MedievalPatches.xml
+		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
+		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
+		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
+		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
+		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
+		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
+		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
+		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
+		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
+		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
+		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
 EndProject
 Global

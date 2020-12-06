@@ -15,7 +15,7 @@ namespace HumanResources
         public IEnumerable<ThingDef> startingWeapons;
         public IEnumerable<ResearchProjectDef> startingTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
-        public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>();
+        public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>(); //use only one of them?
         private static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         private static FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
         public int libraryFreeSpace;

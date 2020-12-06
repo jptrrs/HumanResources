@@ -14,6 +14,7 @@ namespace HumanResources
     {
         public static SkillDef Bias = new SkillDef();
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
+        public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
         public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
         public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
@@ -48,18 +49,26 @@ namespace HumanResources
             }
         }
 
-        private static bool animalsTag = false;
-        private static bool artisticTag = false;
-        private static bool constructionTag = false;
-        private static bool cookingTag = false;
-        private static bool craftingTag = false;
-        private static bool intellectualTag = false;
-        private static bool medicineTag = false;
-        private static bool meleeTag = false;
-        private static bool miningTag = false;
-        private static bool plantsTag = false;
-        private static bool shootingTag = false;
-        private static bool socialTag = false;
+        private static List<string>
+            MiningHints = new List<string>() { "scanner", "terraform" },
+            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
+            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" },
+            CraftingHints = new List<string>() { "tool" },
+            IntellectualHints = new List<string>() { "manage" };
+
+        private static bool
+            animalsTag = false,
+            artisticTag = false,
+            constructionTag = false,
+            cookingTag = false,
+            craftingTag = false,
+            intellectualTag = false,
+            medicineTag = false,
+            meleeTag = false,
+            miningTag = false,
+            plantsTag = false,
+            shootingTag = false,
+            socialTag = false;
 
         public static void CarefullyFinishProject(this ResearchProjectDef project, Thing place)
         {
@@ -174,16 +183,11 @@ namespace HumanResources
             //2. look for skills based on unlocked stuff
 
             //a. checking by query on the research tree
-            //int matches = 0;
-            if (tech.Matches("scanner") > 0 | tech.Matches("terraform") > 0) { miningTag = true; /*matches++;*/ };
-
-            if (tech.Matches("sterile") > 0 | tech.Matches("medical") > 0 | tech.Matches("medicine") > 0 | tech.Matches("cryptosleep") > 0 | tech.Matches("prostheses") > 0 | tech.Matches("implant") > 0 | tech.Matches("organs") > 0 | tech.Matches("surgery") > 0) { medicineTag = true; /*matches++;*/ };
-
-            if (tech.Matches("irrigation") > 0 | tech.Matches("soil") > 0 | tech.Matches("hydroponic") > 0) { plantsTag = true; /*matches++;*/ };
-
-            if (tech.Matches("tool") > 0) { craftingTag = true; }
-
-            if (tech.Matches("manage") > 0) { intellectualTag = true; }
+            foreach (string word in MiningHints) if (tech.Matches(word) > 0) { miningTag = true; break; }
+            foreach (string word in MedicineHints) if (tech.Matches(word) > 0) { medicineTag = true; break; }
+            foreach (string word in PlantsHints) if (tech.Matches(word) > 0) { plantsTag = true; break; }
+            foreach (string word in CraftingHints) if (tech.Matches(word) > 0) { craftingTag = true; break; }
+            foreach (string word in IntellectualHints) if (tech.Matches(word) > 0) { intellectualTag = true; break; }
 
             //b. checking by unlocked things
             if (thingDefs.Count() > 0)
@@ -233,10 +237,6 @@ namespace HumanResources
             }
 
             //3. Figure out Bias.
-            //int ThingDefCount = thingDefs.Count();
-            //int RecipeDefCount = recipeDefs.Count();
-            //int TerrainDefCount = terrainDefs.Count();
-
             List<SkillDef> relevantSkills = new List<SkillDef>();
             if (shootingTag)
             {
@@ -302,7 +302,11 @@ namespace HumanResources
             if (!relevantSkills.NullOrEmpty())
             {
                 SkillsByTech.Add(tech, relevantSkills);
-                //if (Prefs.LogVerbose) Log.Message("[HumanResources] " + tech + " associated to "+relevantSkills.ToStringSafeEnumerable()+".");
+                foreach (SkillDef skill in relevantSkills)
+                {
+                    if (!TechsBySkill.ContainsKey(skill)) TechsBySkill.Add(skill, new List<ResearchProjectDef>() { tech });
+                    else TechsBySkill[skill].Add(tech);
+                }
             }
             else
             {
@@ -438,7 +442,7 @@ namespace HumanResources
         {
             get
             {
-                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
+                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.TechBound()).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
                 return currentPawnsCache;
             }  
         }            

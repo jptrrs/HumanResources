@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static void PostFix(Pawn pawn, Thing t, ref bool __result)
         {
-            if (__result && pawn.Faction != null && pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
+            if (__result && pawn.TechBound())
             {
                 var requisites = t.def.researchPrerequisites;
                 if (!requisites.NullOrEmpty())

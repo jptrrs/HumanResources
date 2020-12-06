@@ -14,6 +14,7 @@ namespace HumanResources
     {
         public static SkillDef Bias = new SkillDef();
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
+        public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
         public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
         public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
@@ -293,7 +294,11 @@ namespace HumanResources
             if (!relevantSkills.NullOrEmpty())
             {
                 SkillsByTech.Add(tech, relevantSkills);
-                if (Prefs.LogVerbose) Log.Message("[HumanResources] " + tech + " associated to "+relevantSkills.ToStringSafeEnumerable()+".");
+                foreach (SkillDef skill in relevantSkills)
+                {
+                    if (!TechsBySkill.ContainsKey(skill)) TechsBySkill.Add(skill, new List<ResearchProjectDef>() { tech });
+                    else TechsBySkill[skill].Add(tech);
+                }
             }
             else
             {
@@ -428,10 +433,10 @@ namespace HumanResources
         {
             get
             {
-                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
+                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.TechBound()).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
                 return currentPawnsCache;
             }  
-        }            
+        }
 
         public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {

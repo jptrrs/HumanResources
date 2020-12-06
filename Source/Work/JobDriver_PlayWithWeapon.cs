@@ -25,28 +25,7 @@ namespace HumanResources
         protected override void WatchTickAction()
         {
             ticksSpentAlready++;
-
-            //pawn posture
-            LocalTargetInfo target = pawn.jobs.curJob.GetTarget(TargetIndex.A);
-            Stance_Cooldown stance = pawn.stances.curStance as Stance_Cooldown;
-            if (stance != null) stance.ticksLeft++;
-            else pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
-
-            //sound:
-            if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
-            {
-                if ((ticksSpentAlready % verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, pawn).SecondsToTicks()) == 0)
-                {
-                    if (verbToUse.verbProps.soundCast != null)
-                    {
-                        verbToUse.verbProps.soundCast.PlayOneShot(new TargetInfo(base.pawn.Position, base.pawn.Map, false));
-                    }
-                    if (verbToUse.verbProps.soundCastTail != null)
-                    {
-                        verbToUse.verbProps.soundCastTail.PlayOneShotOnCamera(base.pawn.Map);
-                    }
-                }
-            }
+            LearningUtility.WeaponTrainingAnimation(pawn, pawn.jobs.curJob.GetTarget(TargetIndex.A), verbToUse, ticksSpentAlready);
             base.WatchTickAction();
         }
     }
