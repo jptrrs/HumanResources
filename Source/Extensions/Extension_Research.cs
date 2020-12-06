@@ -442,7 +442,7 @@ namespace HumanResources
         {
             get
             {
-                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.CanContribute() && x.TryGetComp<CompKnowledge>() != null).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
+                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.TechBound()).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
                 return currentPawnsCache;
             }  
         }            
