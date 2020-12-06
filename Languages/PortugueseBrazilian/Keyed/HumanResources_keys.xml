@@ -28,10 +28,14 @@
   <!--Settings-->
   <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
   <TechPoolModeDesc>Define o conjunto de tecnologias que alimenta a geração de conhecimento para os colonos quando eles são criados.</TechPoolModeDesc>
-  <TechPoolMode_Both>de ambas as configurações da facção</TechPoolMode_Both>
-  <TechPoolMode_TechLevel>do nível tecnológico da facção, somente</TechPoolMode_TechLevel>
-  <TechPoolMode_Starting>das tecnologias iniciais da facção, somente</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>Incluir também tecnologias que constem em partes acrescentadas ao cenário.</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesStartingTitle>...das tecnologias iniciais padrão da facção</TechPoolIncludesStartingTitle>
+  <TechPoolIncludesStartingDesc>Quando marcado, o conjunto incluirá as tecnologias iniciais padrão para a sua facção.</TechPoolIncludesStartingDesc>
+  <TechPoolIncludesTechLevelTitle>...do nível tecnológico da facção</TechPoolIncludesTechLevelTitle>
+  <TechPoolIncludesTechLevelDesc>Quando marcado, o conjunto incluirá todas as tecnologias do nível tecnológico da sua facção.</TechPoolIncludesTechLevelDesc>
+  <TechPoolIncludesBackgroundTitle>...do histórico de cada personagem</TechPoolIncludesBackgroundTitle>
+  <TechPoolIncludesBackgroundDesc>Quando marcado, a história individual do personagem será levada em consideração. Isto fará com que seus conhecimentos se alinhem melhor à sua biografia, mas também pode resultar em colonos com conhecimentos descolados do nível tecnologico original de sua facção. Entretanto, pode ser algo divertido!</TechPoolIncludesBackgroundDesc>
+  <TechPoolIncludesScenarioTitle>...das tecnologias acrescentadas ao cenário</TechPoolIncludesScenarioTitle>
+    
   <TechPoolIncludesScenarioDesc>Quando marcado, qualquer tecnologia que você acrescentar no editor do cenário também será incluída.</TechPoolIncludesScenarioDesc>
   <WeaponPoolModeTitle>Especialistas em combate começam com armas...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Define a lista de armas que vão compor a perícia dos colonos que são prioritariamente atiradores ou combatentes corpo-a-corpo quando eles são criados.</WeaponPoolModeDesc>

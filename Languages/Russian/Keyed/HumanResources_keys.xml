@@ -28,11 +28,22 @@
 	<!--Settings-->
 	<TechPoolModeTitle>Получать знания из следующих списков:</TechPoolModeTitle>
 	<TechPoolModeDesc>Определяет список, из которого следует получать технологии для ваших поселенцев при их создании.</TechPoolModeDesc>
-	<TechPoolMode_Both>оба варианта</TechPoolMode_Both>
-	<TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>
-	<TechPoolMode_Starting>только стартовые технологии фракции</TechPoolMode_Starting>
-	<TechPoolIncludesScenarioTitle>Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
-	<TechPoolIncludesScenarioDesc>Если включено, то любые технологии, добавленные в редакторе сценариев, также будут включены в список знаний для новых поселенцев.</TechPoolIncludesScenarioDesc>
+
+  <!--NEW--><TechPoolIncludesStartingTitle>...the faction's default starting techs</TechPoolIncludesStartingTitle>
+  <!--NEW--><TechPoolIncludesStartingDesc>If checked, the knowledge pool for new colonists will include the default starting technologies for your faction.</TechPoolIncludesStartingDesc>
+  <!--NEW--><TechPoolIncludesTechLevelTitle>...the faction's tech level</TechPoolIncludesTechLevelTitle>
+  <!--NEW--><TechPoolIncludesTechLevelDesc>If checked, the knowledge pool for new colonists will include all technologies from your faction's tech level.</TechPoolIncludesTechLevelDesc>
+  <!--NEW--><TechPoolIncludesBackgroundTitle>...the pawn's background</TechPoolIncludesBackgroundTitle>
+  <!--NEW--><TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
+  <!--NEW--><TechPoolIncludesScenarioTitle>...the scenario starting research</TechPoolIncludesScenarioTitle>
+
+  <!--OLD-->
+	<!--<TechPoolMode_Both>оба варианта</TechPoolMode_Both>-->
+	<!--<TechPoolMode_TechLevel>только технический уровень фракции</TechPoolMode_TechLevel>-->
+	<!--<TechPoolMode_Starting>только стартовые технологии фракции</TechPoolMode_Starting>-->
+	<!--<TechPoolIncludesScenarioTitle>Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>-->  
+  
+  <TechPoolIncludesScenarioDesc>Если включено, то любые технологии, добавленные в редакторе сценариев, также будут включены в список знаний для новых поселенцев.</TechPoolIncludesScenarioDesc>
 	<WeaponPoolModeTitle>Боевые специалисты получают оружие из:</WeaponPoolModeTitle>
 	<WeaponPoolModeDesc>Определяет список, из которого следует получать навыки владения оружием для ваших поселенцев, являющихся опытными стрелками или драчунами, при их создании.</WeaponPoolModeDesc>
 	<WeaponPoolMode_Both>обоих списков</WeaponPoolMode_Both>

@@ -34,7 +34,7 @@
   <TechPoolIncludesTechLevelTitle>...the faction's tech level</TechPoolIncludesTechLevelTitle>
   <TechPoolIncludesTechLevelDesc>If checked, the knowledge pool for new colonists will include all technologies from your faction's tech level.</TechPoolIncludesTechLevelDesc>
   <TechPoolIncludesBackgroundTitle>...the pawn's background</TechPoolIncludesBackgroundTitle>
-  <TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be considered when determining the knowledge pool for new colonists. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
+  <TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
   <TechPoolIncludesScenarioTitle>...the scenario starting research</TechPoolIncludesScenarioTitle>
   <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.</TechPoolIncludesScenarioDesc>
 
