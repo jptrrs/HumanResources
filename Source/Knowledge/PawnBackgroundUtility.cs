@@ -1,24 +1,20 @@
 ﻿using RimWorld;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Verse;
 
 namespace HumanResources
 {
     public class PawnBackgroundUtility
     {
-        public static Dictionary<string, TechLevel> TechLevelByBackstory = new Dictionary<string, TechLevel>();
-
         public static List<string>
-            //leading spaces are on purpose, for ex.: " industrial" excludes "pre-industrial"
-            spacerHints = new List<string> { "glitterworld", "space", "imperial", "robot", "cryptosleep", "star system", "starship", "planetary", "genetic", "outer rim", "orbital", "prosthetic", "virtual", "stellar", "pilot", "coreworld", "research", " worlds" },
-            spacerSecondaryHints = new List<string> { "stars", "planet" },
-            industrialHints = new List<string> { "midworld", " industrial", "urbworld", "corporate", "computer", "surgery", "video", "doctor", "medic", "drug", "infantry", "army", "sniper", "bullet", "nuclear", "machine", "pop idol", "science", "scientist", "university", "college", "engineer", "police" },
-            medievalHints = new List<string> { "medieval", "feudal", "monastery", "court", "royal", "lord", "plague", "coliseum", "caravan", "farm", "title", "herder", "blacksmith", "noble", "village", " house" },
-            tribalHints = new List<string> { "tribe", "tribal", "digger", "caveworld", "feral", "wild", "iceworld" };
+            //leading and trailing spaces are on purpose, for ex.: " industrial" excludes "pre-industrial"
+            spacerHints = new List<string> { "coreworld", "cryptosleep", "deep space", "galactic", "genetic", "glitterworld", "imperial", "marine", "of space", "orbital", "outer rim", "pilot", "planetary", "prosthetic", "research", "robot", "rocket", "spaceship", "star system", "starship", "stellar", "virtual", " worlds" },
+            spacerSecondaryHints = new List<string> { "corporation", "navy", "planet", "space", " ship", "stars" },
+            industrialHints = new List<string> { "army", "bullet", "college", "computer", "corporate", "doctor", "engineer", " industrial", "infantry", "machine", "medic", "midworld", "nuclear", "police", "pop idol", "science", "scientist", "sniper", "surgery", "university", "urbworld", "video" },
+            medievalHints = new List<string> { "blacksmith", "caravan", "coliseum", "court", "estate", "farm", "feudal", "herder", " house", "lord", "medieval", "monastery", "noble", "plague", "royal", "title", "village" },
+            tribalHints = new List<string> { " cave ", "caveworld", "digger", "feral", "iceworld", "tribal", "tribe", "wild" };
+
+        public static Dictionary<string, TechLevel> TechLevelByBackstory = new Dictionary<string, TechLevel>();
 
         public static void BuildCache()
         {
@@ -60,6 +56,5 @@ namespace HumanResources
             }
             return TechLevel.Undefined;
         }
-
     }
 }
