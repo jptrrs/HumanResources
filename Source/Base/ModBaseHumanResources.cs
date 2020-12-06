@@ -177,8 +177,8 @@ namespace HumanResources
             {
                 unlocked.RegisterStartingResources();
                 unlocked.RecacheUnlockedWeapons();
+                unlocked.libraryFreeSpace = 0;
             }
-            unlocked.libraryFreeSpace = 0;
         }
 
         //Dealing with older versions
