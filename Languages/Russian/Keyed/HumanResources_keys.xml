@@ -36,6 +36,7 @@
 	<TechPoolIncludesBackgroundDesc>Если включено, то во внимание будут приняты биографии вновь создаваемых персонажей. Это сделает их компетенцию приближенной к их истории, однако также может привести к тому, что персонажи не вполне будут соответсовать техническому уровню своей фракции. Впрочем, это может быть забавно!</TechPoolIncludesBackgroundDesc>
 	<TechPoolIncludesScenarioTitle> [] Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
 	<TechPoolIncludesScenarioDesc>Если включено, то в список будут добавлены любые технологии, добавленные в редакторе сценариев.</TechPoolIncludesScenarioDesc>
+  <!--NEW--><TechPoolMinimumDefaultMsg>They must know something!</TechPoolMinimumDefaultMsg>
 	<WeaponPoolModeTitle>Боевые специалисты получают оружие из:</WeaponPoolModeTitle>
 	<WeaponPoolModeDesc>Определяет список, из которого следует получать навыки владения оружием для ваших поселенцев, являющихся опытными стрелками или драчунами, при их создании.</WeaponPoolModeDesc>
 	<WeaponPoolMode_Both>обоих списков</WeaponPoolMode_Both>
