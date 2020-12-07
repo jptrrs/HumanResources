@@ -69,6 +69,8 @@
   <TechPoolIncludesScenarioTitle>... Les recherches de base du scénario</TechPoolIncludesScenarioTitle>  
   <!--EN: If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.-->
   <TechPoolIncludesScenarioDesc>Si activé, toute technologie ajoutée à l'éditeur de scénario sera aussi incluse dans la base de connaissances de vos colons.</TechPoolIncludesScenarioDesc>
+  <!--EN: They must know something!-->
+  <TechPoolMinimumDefaultMsg>Ils doivent savoir quelque chose!</TechPoolMinimumDefaultMsg>
   <!--EN: Combat specialists start with weapons from...-->
   <WeaponPoolModeTitle>Les spécialistes du combat débutent avec des armes parmi...</WeaponPoolModeTitle>
   <!--EN: Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.-->
