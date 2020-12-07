@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UnityEngine.SceneManagement;
 using Verse;
 
 namespace HumanResources
@@ -32,6 +33,7 @@ namespace HumanResources
         public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
+        private static bool GameJustLoaded = false;
 
         public ModBaseHumanResources()
         {
@@ -171,14 +173,21 @@ namespace HumanResources
             }
         }
 
+        public override void SceneLoaded (Scene scene)
+        {
+            if (GenScene.InPlayScene) GameJustLoaded = true;
+        }
+
         public override void MapComponentsInitializing(Map map)
         {
-            if (GenScene.InPlayScene)
+            if (GameJustLoaded)
             {
+                if (Prefs.LogVerbose) Log.Message("[HumanResources] Game started, resetting and caching resources...");
+                unlocked.libraryFreeSpace = 0;
                 unlocked.RegisterStartingResources();
                 unlocked.RecacheUnlockedWeapons();
+                GameJustLoaded = false;
             }
-            unlocked.libraryFreeSpace = 0;
         }
 
         //Dealing with older versions
@@ -214,9 +223,13 @@ namespace HumanResources
             TechPoolTitle.CustomDrawer = rect => false;
             TechPoolTitle.CanBeReset = false;
             TechPoolIncludesStarting = Settings.GetHandle<bool>("TechPoolIncludesStarting", "TechPoolIncludesStartingTitle".Translate(), "TechPoolIncludesStartingDesc".Translate(), true);
+            TechPoolIncludesStarting.OnValueChanged = x => { ValidateTechPoolSettings(x); };
             TechPoolIncludesTechLevel = Settings.GetHandle<bool>("TechPoolIncludesTechLevel", "TechPoolIncludesTechLevelTitle".Translate(), "TechPoolIncludesTechLevelDesc".Translate(), true);
+            TechPoolIncludesTechLevel.OnValueChanged = x => { ValidateTechPoolSettings(x); };
             TechPoolIncludesBackground = Settings.GetHandle<bool>("TechPoolIncludesBackground", "TechPoolIncludesBackgroundTitle".Translate(), "TechPoolIncludesBackgroundDesc".Translate(), false);
+            TechPoolIncludesBackground.OnValueChanged = x => { ValidateTechPoolSettings(x); };
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
+            TechPoolIncludesScenario.OnValueChanged = x => { ValidateTechPoolSettings(x); };
             //TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
@@ -228,6 +241,17 @@ namespace HumanResources
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
             FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "Print full startup report", null, false);
             FullStartupReport.NeverVisible = !Prefs.LogVerbose;
+        }
+
+        public void ValidateTechPoolSettings(bool value)
+        {
+            if (!value && !TechPoolIncludesStarting.Value && !TechPoolIncludesTechLevel.Value && !TechPoolIncludesBackground && !TechPoolIncludesScenario)
+            {
+                Messages.Message("TechPoolMinimumDefaultMsg".Translate(), MessageTypeDefOf.CautionInput);
+                TechPoolIncludesStarting.ResetToDefault();
+                MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
+                ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { TechPoolIncludesStarting } );
+            }
         }
 
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)

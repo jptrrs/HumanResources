@@ -12,7 +12,8 @@ namespace HumanResources
 			ResearchProjectDef currentProj = Find.ResearchManager.currentProj;
 			if (currentProj != null)
 			{
-				currentProj.LearnInstantly(usedBy);
+				CompKnowledge techComp = usedBy.TryGetComp<CompKnowledge>();
+				if (techComp != null) techComp.LearnTech(currentProj);
 			}
 		}
 

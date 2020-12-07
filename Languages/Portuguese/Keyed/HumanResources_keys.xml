@@ -35,12 +35,9 @@
   <TechPoolIncludesBackgroundTitle>...do histórico de cada personagem</TechPoolIncludesBackgroundTitle>
   <TechPoolIncludesBackgroundDesc>Quando marcado, a história individual do personagem será levada em consideração. Isto fará com que seus conhecimentos se alinhem melhor à sua biografia, mas também pode resultar em colonos com conhecimentos descolados do nível tecnologico original de sua facção. Entretanto, pode ser algo divertido!</TechPoolIncludesBackgroundDesc>
   <TechPoolIncludesScenarioTitle>...das tecnologias acrescentadas ao cenário</TechPoolIncludesScenarioTitle>  <TechPoolIncludesScenarioDesc>Quando marcado, qualquer tecnologia que acrescentares ao editor de cenário também será incluída.</TechPoolIncludesScenarioDesc>
+  <TechPoolMinimumDefaultMsg>Eles têm que saber de algo!</TechPoolMinimumDefaultMsg>
   <WeaponPoolModeTitle>Especialistas em combate começam com armas...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Define a lista de armas que vão compor a perícia dos colonos que são prioritariamente atiradores ou combatentes corpo-a-corpo quando eles são criados.</WeaponPoolModeDesc>
-  <WeaponPoolMode_Both>de ambas as listas</WeaponPoolMode_Both>
-  <WeaponPoolMode_TechLevel>do nível tecnológico da facção, somente</WeaponPoolMode_TechLevel>
-  <WeaponPoolMode_Scenario>dentre as incluídas no cenário, somente</WeaponPoolMode_Scenario>
-  <FreeScenarioWeaponsTitle>Todos os colonos começam com as armas do cenário.</FreeScenarioWeaponsTitle>
   <FreeScenarioWeaponsDesc>Quando marcado, qualquer arma incluída no cenário também será acrescentada à lista de armas que os colonos podem usar. (O cenário do "Explorador Rico" foi modificado para sempre fazer isso, independente do que for marcado aqui.)</FreeScenarioWeaponsDesc>
   <LearnMeleeWeaponsByGroupTitle>Aprender armas de corpo-a-corpo por grupo.</LearnMeleeWeaponsByGroupTitle>
   <LearnMeleeWeaponsByGroupDesc>Quando treinar armas de corpo-a-corpo, aprender todas as armas de uma tecnologia ao mesmo tempo.</LearnMeleeWeaponsByGroupDesc>

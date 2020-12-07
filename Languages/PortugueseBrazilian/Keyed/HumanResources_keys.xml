@@ -35,8 +35,9 @@
   <TechPoolIncludesBackgroundTitle>...do histórico de cada personagem</TechPoolIncludesBackgroundTitle>
   <TechPoolIncludesBackgroundDesc>Quando marcado, a história individual do personagem será levada em consideração. Isto fará com que seus conhecimentos se alinhem melhor à sua biografia, mas também pode resultar em colonos com conhecimentos descolados do nível tecnologico original de sua facção. Entretanto, pode ser algo divertido!</TechPoolIncludesBackgroundDesc>
   <TechPoolIncludesScenarioTitle>...das tecnologias acrescentadas ao cenário</TechPoolIncludesScenarioTitle>
-    
   <TechPoolIncludesScenarioDesc>Quando marcado, qualquer tecnologia que você acrescentar no editor do cenário também será incluída.</TechPoolIncludesScenarioDesc>
+  <TechPoolMinimumDefaultMsg>Alguma coisa eles têm que saber!</TechPoolMinimumDefaultMsg>
+
   <WeaponPoolModeTitle>Especialistas em combate começam com armas...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Define a lista de armas que vão compor a perícia dos colonos que são prioritariamente atiradores ou combatentes corpo-a-corpo quando eles são criados.</WeaponPoolModeDesc>
   <WeaponPoolMode_Both>de ambas as listas</WeaponPoolMode_Both>
