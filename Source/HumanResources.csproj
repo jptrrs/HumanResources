@@ -344,7 +344,7 @@
     <Compile Include="Books\CompProperties_StorageGraphic.cs" />
     <Compile Include="Books\CompStorageGraphic.cs" />
     <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
-    <Compile Include="Extensions\Extension_Research_RW1.1.cs" />
+    <None Include="Extensions\Extension_Research_RW1.1.cs" />
     <Compile Include="Extensions\Extension_ThingDef.cs" />
     <Compile Include="Extensions\Extension_Pawn.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
@@ -353,13 +353,13 @@
     <Compile Include="Harmony\JobDriver_ApplyTechprint_TryMakePreToilReservations.cs" />
     <Compile Include="Harmony\CompTechprint_CompFloatMenuOptions.cs" />
     <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
-    <None Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
+    <Compile Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip_RW1.1.cs" />
+    <None Include="Harmony\EquipmentUtility_CanEquip_RW1.1.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
@@ -391,7 +391,7 @@
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <None Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Base\ModBaseHumanResources.cs" />

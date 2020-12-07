@@ -326,10 +326,11 @@ namespace HumanResources
         {
             float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
             amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
-            Dictionary<ResearchProjectDef, float> expertise = researcher.TryGetComp<CompKnowledge>().expertise;
-            foreach (ResearchProjectDef ancestor in expertise.Keys)
+            CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
+            Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
             {
-                if (!tech.prerequisites.NullOrEmpty() && tech.prerequisites.Contains(ancestor))
+                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
                 {
                     amount *= 2;
                     break;
@@ -337,7 +338,8 @@ namespace HumanResources
             }
             if (researcher != null && researcher.Faction != null)
             {
-                amount /= tech.CostFactor(researcher.Faction.def.techLevel);
+                //amount /= tech.CostFactor(researcher.Faction.def.techLevel);
+                amount /= tech.CostFactor(techComp.techLevel);
             }
             if (DebugSettings.fastResearch)
             {

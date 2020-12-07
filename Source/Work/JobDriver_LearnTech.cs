@@ -75,14 +75,12 @@ namespace HumanResources
 				Pawn actor = acquireKnowledge.actor;
 				if (expertise.ContainsKey(project) && expertise[project] > 1f)
 				{
-					expertise[project] = 1f;
+					techComp.LearnTech(project);
 					if (!IsResearch)
 					{
 						Notify_IterationCompleted(actor, job.bill as Bill_Production);
 						techComp.homework.Remove(project);
 					}
-					techComp.LearnCrops(project);
-					Messages.Message("MessageStudyComplete".Translate(actor, project.LabelCap), desk, MessageTypeDefOf.TaskCompletion, true);
 					project = null;
 					return JobCondition.Succeeded;
 				}

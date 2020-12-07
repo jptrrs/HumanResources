@@ -28,7 +28,6 @@
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>
   <TechPoolModeDesc>Defines the pool from which to draw technologies for the player's colonists when they are created.</TechPoolModeDesc>
-  <!--NEW-->
   <TechPoolIncludesStartingTitle>...the faction's default starting techs</TechPoolIncludesStartingTitle>
   <TechPoolIncludesStartingDesc>If checked, the knowledge pool for new colonists will include the default starting technologies for your faction.</TechPoolIncludesStartingDesc>
   <TechPoolIncludesTechLevelTitle>...the faction's tech level</TechPoolIncludesTechLevelTitle>
@@ -37,13 +36,7 @@
   <TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
   <TechPoolIncludesScenarioTitle>...the scenario starting research</TechPoolIncludesScenarioTitle>
   <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.</TechPoolIncludesScenarioDesc>
-
-  <!--OLD-->
-  <TechPoolMode_Both>both faction settings</TechPoolMode_Both>
-  <TechPoolMode_TechLevel>the faction's tech level only</TechPoolMode_TechLevel>
-  <TechPoolMode_Starting>the starting techs for that faction only</TechPoolMode_Starting>
-  <TechPoolIncludesScenarioTitle>Also include starting research parts from the scenario.</TechPoolIncludesScenarioTitle>
-  
+  <!--NEW--><TechPoolMinimumDefaultMsg>They must know something!</TechPoolMinimumDefaultMsg>
   <WeaponPoolModeTitle>Combat specialists start with weapons from...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.</WeaponPoolModeDesc>
   <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
