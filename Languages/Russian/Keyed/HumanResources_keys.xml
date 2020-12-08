@@ -28,13 +28,13 @@
 	<!--Settings-->
 	<TechPoolModeTitle>Получать знания из следующих списков:</TechPoolModeTitle>
 	<TechPoolModeDesc>Определяет общий список, из которого следует получать знания для ваших поселенцев при их создании.</TechPoolModeDesc>
-	<TechPoolIncludesStartingTitle> [] Стартовые технологии фракции</TechPoolIncludesStartingTitle>
+	<TechPoolIncludesStartingTitle>  [..] Стартовые технологии фракции</TechPoolIncludesStartingTitle>
 	<TechPoolIncludesStartingDesc>Если включено, то в список будут добавлены стандартные стартовые технологии для вашей фракции.</TechPoolIncludesStartingDesc>
-	<TechPoolIncludesTechLevelTitle> [] Технический  уровень фракции</TechPoolIncludesTechLevelTitle>
+	<TechPoolIncludesTechLevelTitle>  [..] Технический  уровень фракции</TechPoolIncludesTechLevelTitle>
 	<TechPoolIncludesTechLevelDesc>Если включено, то в список будут добавлены все технологии технического уровня вашей фракции.</TechPoolIncludesTechLevelDesc>
-	<TechPoolIncludesBackgroundTitle> [] Биография персонажа</TechPoolIncludesBackgroundTitle>
+	<TechPoolIncludesBackgroundTitle>  [..] Биография персонажа</TechPoolIncludesBackgroundTitle>
 	<TechPoolIncludesBackgroundDesc>Если включено, то во внимание будут приняты биографии вновь создаваемых персонажей. Это сделает их компетенцию приближенной к их истории, однако также может привести к тому, что персонажи не вполне будут соответсовать техническому уровню своей фракции. Впрочем, это может быть забавно!</TechPoolIncludesBackgroundDesc>
-	<TechPoolIncludesScenarioTitle> [] Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
+	<TechPoolIncludesScenarioTitle>  [..] Исследования, указанные в сценарии</TechPoolIncludesScenarioTitle>
 	<TechPoolIncludesScenarioDesc>Если включено, то в список будут добавлены любые технологии, добавленные в редакторе сценариев.</TechPoolIncludesScenarioDesc>
 	<TechPoolMinimumDefaultMsg>Необходимо указать хотя бы один список!</TechPoolMinimumDefaultMsg>
 	<WeaponPoolModeTitle>Боевые специалисты получают оружие из:</WeaponPoolModeTitle>
