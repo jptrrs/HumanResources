@@ -213,7 +213,6 @@ namespace HumanResources
 
         private static TechLevel FindBGTechLevel(Pawn pawn, out TechLevel childhoodLevel, out SkillDef childhoodSkill)
         {
-            Log.Warning("DEBUG FindBGTechLevel for " + pawn);
             TechLevel asAdult = 0;
             TechLevel asChild = 0;
             childhoodSkill = null;
@@ -231,7 +230,6 @@ namespace HumanResources
                 if (asChild == 0) asChild = fallback;
             }
             childhoodLevel = asChild;
-            Log.Warning("DEBUG FindBGTechLevel finished for " + pawn);
             return asAdult;
         }
 
