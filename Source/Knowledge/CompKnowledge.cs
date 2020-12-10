@@ -19,6 +19,7 @@ namespace HumanResources
         protected static bool isShooter = false;
         public TechLevel techLevel;
         public IEnumerable<ResearchProjectDef> knownTechs => expertise.Where(x => x.Value >= 1f).Select(x => x.Key);
+
         public List<ThingDef> knownWeapons
         {
             get
@@ -110,13 +111,11 @@ namespace HumanResources
             //1. Gather info on that pawn
 
             //a. tech level
-
-            //FIND OUT HOW TO INCORPORATE THIS. 
-            // idea: 1 slot for childhood, 1 for adulthood, remaining por faction.
             TechLevel factionTechLevel = faction?.techLevel ?? 0;
             TechLevel childhoodLevel = 0;
             SkillDef childhoodSkill = null;
-            techLevel = ModBaseHumanResources.TechPoolIncludesBackground ? FindBGTechLevel(pawn, out childhoodLevel, out childhoodSkill) : factionTechLevel;
+            bool isPlayer = pawn.Faction?.IsPlayer ?? false;
+            techLevel = ModBaseHumanResources.TechPoolIncludesBackground || !isPlayer ? FindBGTechLevel(pawn, out childhoodLevel, out childhoodSkill) : factionTechLevel;
             TechLevel workingTechLevel = techLevel;
 
             //b. higest skills
@@ -150,7 +149,6 @@ namespace HumanResources
                     "techLevel is " + techLevel;
                 Log.Message("... " + slots + " calculated slots ("+ techlevelText + guruNote + "; highest relevant skills: " + highestSkill.label + " & " + secondSkill.label + ")");
             }
-            bool isPlayer = pawn.Faction?.IsPlayer ?? false;
             bool strict = false;
             bool useChildhood = ModBaseHumanResources.TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, faction, strict));
@@ -215,6 +213,7 @@ namespace HumanResources
 
         private static TechLevel FindBGTechLevel(Pawn pawn, out TechLevel childhoodLevel, out SkillDef childhoodSkill)
         {
+            Log.Warning("DEBUG FindBGTechLevel for " + pawn);
             TechLevel asAdult = 0;
             TechLevel asChild = 0;
             childhoodSkill = null;
@@ -226,12 +225,13 @@ namespace HumanResources
             }
             if (asAdult == 0 || asChild == 0)
             {
-                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef?.defaultFactionType;
                 TechLevel fallback = faction?.techLevel ?? TechLevel.Industrial;
                 if (asAdult == 0) asAdult = fallback;
                 if (asChild == 0) asChild = fallback;
             }
             childhoodLevel = asChild;
+            Log.Warning("DEBUG FindBGTechLevel finished for " + pawn);
             return asAdult;
         }
 
