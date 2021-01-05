@@ -19,28 +19,7 @@
 							<li>ResearchingSpot</li>
 						</value>
 					</li>
-					<!--Add ResearchingSpot to Recipe-->
-					<li Class="PatchOperationAdd">
-						<xpath>/Defs/RecipeDef[defName = "ResearchTech"]/recipeUsers</xpath>
-						<value>
-							<li>ResearchingSpot</li>
-						</value>
-					</li>
-					<!--Add Bill and Bookshelf to ResearchingSpot-->
-					<li Class="PatchOperationReplace">
-						<xpath>/Defs/ThingDef[defName = "ResearchingSpot"]/thingClass</xpath>
-						<value>
-							<thingClass>Building_WorkTable</thingClass>
-						</value>
-					</li>
-					<li Class="PatchOperationAdd">
-						<xpath>/Defs/ThingDef[defName = "ResearchingSpot"]</xpath>
-						<value>
-							<inspectorTabs>
-								<li>ITab_Bills</li>
-							</inspectorTabs>
-						</value>
-					</li>
+					<!--Add Bookshelf to ResearchingSpot-->
 					<li Class="PatchOperationConditional">
 						<xpath>/Defs/ThingDef[defName = "ResearchingSpot"]/comps</xpath>
 						<match Class="PatchOperationConditional">
@@ -83,28 +62,7 @@
 						<li>ZARS_ResearchingSpot</li>
 					</value>
 				</li>
-				<!--Add ZARS_ResearchingSpot to Recipe-->
-				<li Class="PatchOperationAdd">
-					<xpath>/Defs/RecipeDef[defName = "ResearchTech"]/recipeUsers</xpath>
-					<value>
-						<li>ZARS_ResearchingSpot</li>
-					</value>
-				</li>
-				<!--Add Bill and Bookshelf to ZARS_ResearchingSpot-->
-				<li Class="PatchOperationReplace">
-					<xpath>/Defs/ThingDef[defName = "ZARS_ResearchingSpot"]/thingClass</xpath>
-					<value>
-						<thingClass>Building_WorkTable</thingClass>
-					</value>
-				</li>
-				<li Class="PatchOperationAdd">
-					<xpath>/Defs/ThingDef[defName = "ZARS_ResearchingSpot"]</xpath>
-					<value>
-						<inspectorTabs>
-							<li>ITab_Bills</li>
-						</inspectorTabs>
-					</value>
-				</li>
+				<!--Add Bookshelf to ZARS_ResearchingSpot-->
 				<li Class="PatchOperationConditional">
 					<xpath>/Defs/ThingDef[defName = "ZARS_ResearchingSpot"]/comps</xpath>
 					<match Class="PatchOperationConditional">
