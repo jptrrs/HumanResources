@@ -8,7 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4A36335D-CF65-4FAC-9C83-B135ECFBE53E}"
 	ProjectSection(SolutionItems) = preProject
 		About\About.xml = About\About.xml
-		About\Manifest.xml = About\Manifest.xml
 		About\Preview.png = About\Preview.png
 		About\PublishedFileId.txt = About\PublishedFileId.txt
 	EndProjectSection

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--ogliss.admech.armoury-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Adeptus Mechanicus: Armoury</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>
+            Defs/RecipeDef[defName = "TrainWeaponMelee" or defName = "ExperimentWeaponMelee" or defName = "PracticeWeaponMelee"]/ingredients/li/filter/categories | Defs/RecipeDef[defName = "TrainWeaponMelee" or defName = "ExperimentWeaponMelee" or defName = "PracticeWeaponMelee"]/fixedIngredientFilter/categories
+          </xpath>
+          <value>
+            <li>OGIMelee</li>
+            <li>OGAMMelee</li>
+            <li>OGEMelee</li>
+            <li>OGDEMelee</li>
+            <li>OGTMelee</li>
+            <li>OGKMelee</li>
+            <li>OGCMelee</li>
+            <li>OGOMelee</li>
+            <li>OGNMelee</li>
+        </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>
+            Defs/RecipeDef[defName = "TrainWeaponShooting" or defName = "ExperimentWeaponShooting" or defName = "PracticeShooting"]/ingredients/li/filter/categories | Defs/RecipeDef[defName = "TrainWeaponShooting" or defName = "ExperimentWeaponShooting" or defName = "PracticeShooting"]/fixedIngredientFilter/categories
+          </xpath>
+          <value>
+            <li>OGIRanged</li>
+            <li>OGAMRanged</li>
+            <li>OGERanged</li>
+            <li>OGDERanged</li>
+            <li>OGTRanged</li>
+            <li>OGKRanged</li>
+            <li>OGCRanged</li>
+            <li>OGORanged</li>
+            <li>OGNRanged</li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+          <value>
+            <li>PowerWeapon</li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>x 
+</Patch>
