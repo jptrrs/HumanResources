@@ -5,13 +5,23 @@
 		<mods>
 			<li>Pawnmorpher</li>
 		</mods>
-		<match Class="PatchOperationAdd">
-			<xpath>Defs/ScenarioDef[defName = "Escaped Morphs"]/scenario/parts</xpath>
-			<value>
-				<li Class="ScenPart_Rule_DisallowDesignator">
-					<def>Rule_knowAllStartingWeapons</def>
-				</li>
-			</value>
-		</match>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ScenarioDef[defName = "Escaped Morphs"]/scenario/parts</xpath>
+          <value>
+            <li Class="ScenPart_Rule_DisallowDesignator">
+              <def>Rule_knowAllStartingWeapons</def>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName = "MeleeWeapon_MutaniteKnife"]/weaponTags</xpath>
+          <value>
+            <li>NeolithicMeleeBasic</li>
+          </value>
+        </li>
+      </operations>
+    </match>
 	</Operation>
 </Patch>
