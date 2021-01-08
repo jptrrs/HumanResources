@@ -99,6 +99,13 @@ namespace HumanResources
                 DualWield_Patch.Execute(Instance);
             }
 
+            //Hospitality integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "orion.hospitality"))
+            {
+                Log.Message("[HumanResources] Hospitality detected! Integrating...");
+                Hospitality_Patches.Execute(Instance);
+            }
+
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x => 
             x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 

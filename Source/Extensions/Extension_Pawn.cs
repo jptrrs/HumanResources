@@ -1,5 +1,3 @@
-using RimWorld;
-using System.Collections.Generic;
 using Verse;
 
 namespace HumanResources
@@ -10,5 +8,10 @@ namespace HumanResources
         {
 			return (pawn.IsColonist || (HarmonyPatches.PrisonLabor && pawn.IsPrisoner)) && pawn.TryGetComp<CompKnowledge>() != null;
 		}
+
+		public static bool IsGuest(this Pawn pawn)
+        {
+			return Hospitality_Patches.active && Hospitality_Patches.IsGuestExternal(pawn);
+        }
 	}
 } 

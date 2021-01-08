@@ -332,6 +332,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />
     <Compile Include="Base\TechStrings.cs" />

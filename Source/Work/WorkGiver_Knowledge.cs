@@ -10,10 +10,13 @@ namespace HumanResources
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
-			CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-			if (techComp != null)
+			if (!pawn.IsGuest())
 			{
-				return techComp.expertise == null || techComp.homework.NullOrEmpty();
+				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+				if (techComp != null)
+				{
+					return techComp.expertise == null || techComp.homework.NullOrEmpty();
+				}
 			}
 			return true;
 		}
