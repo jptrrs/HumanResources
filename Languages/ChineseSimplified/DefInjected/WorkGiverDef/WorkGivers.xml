@@ -3,7 +3,7 @@
 
   <!--EN: Document technologies-->
   <DocumentTech.label>记录科技</DocumentTech.label>
-  <!--EN: write-->
+  <!--EN: document-->
   <DocumentTech.verb>书写</DocumentTech.verb>
   <!--EN: writing at-->
   <DocumentTech.gerund>书写</DocumentTech.gerund>
@@ -22,19 +22,19 @@
   <!--EN: training-->
   <TrainWeapon.gerund>练习</TrainWeapon.gerund>
 
-  <!--EN: shooting practice-->
-  <PracticeShooting.label>练习射击</PracticeShooting.label>
+  <!--EN: Weapon practice-->
+  <PracticeWeapon.label>练习武器</PracticeWeapon.label>
   <!--EN: train-->
-  <PracticeShooting.verb>练习</PracticeShooting.verb>
+  <PracticeWeapon.verb>练习</PracticeWeapon.verb>
   <!--EN: training-->
-  <PracticeShooting.gerund>练习</PracticeShooting.gerund>
+  <PracticeWeapon.gerund>练习</PracticeWeapon.gerund>
 
-  <!--EN: melee practice-->
-  <PracticeMelee.label>练习格斗</PracticeMelee.label>
+  <!--EN: Weapon experimenting-->
+  <ExperimentWeapon.label>试用武器</ExperimentWeapon.label>
   <!--EN: train-->
-  <PracticeMelee.verb>练习</PracticeMelee.verb>
+  <ExperimentWeapon.verb>试用</ExperimentWeapon.verb>
   <!--EN: training-->
-  <PracticeMelee.gerund>练习</PracticeMelee.gerund>
+  <ExperimentWeapon.gerund>试用</ExperimentWeapon.gerund>
 
 
 </LanguageData>

@@ -16,13 +16,6 @@
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>正在记录一项科技。</DocumentTech.jobString>
 
-  <!--EN: Research technologie-->
-  <ResearchTech.label>研究科技</ResearchTech.label>
-  <!--EN: Expand the frontier of knowledge by researching new technologies.-->
-  <ResearchTech.description>通过研究新科技来拓展知识面。</ResearchTech.description>
-  <!--EN: Researching.-->
-  <ResearchTech.jobString>研究中。</ResearchTech.jobString>
-
   <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>学习使用远程武器</TrainWeaponShooting.label>
   <!--EN: Train with a ranged weapon to acquire proficiency.-->
@@ -37,22 +30,35 @@
   <!--EN: Training to use a melee weapon.-->
   <TrainWeaponMelee.jobString>正在练习使用近战武器。</TrainWeaponMelee.jobString>
 
+  <!--EN: Experiment with unknown weapon-->
+  <ExperimentWeaponShooting.label>尝试使用未知武器</ExperimentWeaponShooting.label>
+  <!--EN: Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.-->
+  <ExperimentWeaponShooting.description>试用一把未知的远程武器，在对内部工作原理不求甚解的情况下尝试掌握其操控方法。风险极大。</ExperimentWeaponShooting.description>
+  <!--EN: Experimenting with a ranged weapon.-->
+  <ExperimentWeaponShooting.jobString>正在试用未知的远程武器。</ExperimentWeaponShooting.jobString>
+  
+  <!--EN: Experiment with unknown weapon-->
+  <ExperimentWeaponMelee.label>尝试使用未知武器</ExperimentWeaponMelee.label>
+  <!--EN: Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.-->
+  <ExperimentWeaponMelee.description>试用一把未知的近战武器，在对内部工作原理不求甚解的情况下尝试掌握其操控方法。风险极大。</ExperimentWeaponMelee.description>
+  <!--EN: Experimenting with a melee weapon.-->
+  <ExperimentWeaponMelee.jobString>正在试用未知的近战武器。</ExperimentWeaponMelee.jobString>
 
   <!-- From ItchyFlea's Practise Target -->
 
   <!--EN: Practice shooting-->
-  <PracticeShooting.label>练习射击</PracticeShooting.label>
+  <PracticeWeaponShooting.label>练习射击</PracticeWeaponShooting.label>
   <!--EN: Shoots at a target to practice shooting accuracy.-->
-  <PracticeShooting.description>向目标射击以练习射击精度。</PracticeShooting.description>
+  <PracticeWeaponShooting.description>向目标射击以练习射击精度。</PracticeWeaponShooting.description>
   <!--EN: Practicing shooting.-->
-  <PracticeShooting.jobString>正在练习射击。</PracticeShooting.jobString>
+  <PracticeWeaponShooting.jobString>正在练习射击。</PracticeWeaponShooting.jobString>
 
   <!--EN: Practice melee-->
-  <PracticeMelee.label>练习格斗</PracticeMelee.label>
+  <PracticeWeaponMelee.label>练习格斗</PracticeWeaponMelee.label>
   <!--EN: Practices close quarters combat against a straw dummy.-->
-  <PracticeMelee.description>利用稻草假人练习近距离对抗。</PracticeMelee.description>
+  <PracticeWeaponMelee.description>利用稻草假人练习近身对抗。</PracticeWeaponMelee.description>
   <!--EN: Practicing melee.-->
-  <PracticeMelee.jobString>正在练习格斗。</PracticeMelee.jobString>
+  <PracticeWeaponMelee.jobString>正在练习格斗。</PracticeWeaponMelee.jobString>
 
 
 </LanguageData>
