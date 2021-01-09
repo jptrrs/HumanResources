@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <!--EN: learning TargetB.-->
-  <LearnTech.reportString>正在學習 TargetB。</LearnTech.reportString>
-  <!--EN: documenting TargetB.-->
-  <DocumentTech.reportString>正在記錄 TargetB。</DocumentTech.reportString>
-  <!--EN: researching TargetB.-->
-  <ResearchTech.reportString>正在研究 TargetB。</ResearchTech.reportString>
-  <!--EN: practicing TargetB.-->
-  <TrainWeapon.reportString>正在練習使用 TargetB。</TrainWeapon.reportString>
-
-  <!--NeW-->
-  <!--EN: training melee.-->
-  <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
-  <!--EN: training shooting.-->
-  <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
+  <!--EN: studying-->
+  <LearnTech.reportString>正在學習</LearnTech.reportString>
+  <!--EN: documenting-->
+  <DocumentTech.reportString>正在記錄</DocumentTech.reportString>
+  <!--EN: researching-->
+  <ResearchTech.reportString>正在研究</ResearchTech.reportString>
+  <!--EN: training weapon-->
+  <TrainWeapon.reportString>正在練習使用武器</TrainWeapon.reportString>
+  
+  <!--From ItchyFlea's Practise Target-->
+  <!--EN: Training Melee.-->
+  <PlayAtDummy.reportString>正在練習使用近戰武器。</PlayAtDummy.reportString>
+  <!--EN: Training Shooting.-->
+  <PlayAtTarget.reportString>正在練習射擊。</PlayAtTarget.reportString>
 
 </LanguageData> 
