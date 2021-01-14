@@ -25,6 +25,8 @@ namespace HumanResources
 
         public static void Execute(Harmony instance, string modName)
         {
+            Harmony.DEBUG = true;
+
             ModName = modName;
 
             //ResearchProjectDef_Extensions
@@ -41,7 +43,7 @@ namespace HumanResources
 
             //Node
             IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
-            HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted");
+            HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted"); //Not found
             RectInfo = AccessTools.Property(NodeType(), "Rect");
             largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
             LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
@@ -51,7 +53,7 @@ namespace HumanResources
 
             //ResearchNode
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch(); //Not found. Harmony gives up here.
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "TechprintAvailable", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
@@ -61,7 +63,7 @@ namespace HumanResources
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix)))); //Not found
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
             instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
