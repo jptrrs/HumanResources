@@ -230,7 +230,7 @@ namespace HumanResources
 
         public bool BuildingPresent()
         {
-            return ResearchTree_Patches.BuildingPresent(Tech);
+            return ResearchTree_Patches.BuildingPresentProxy(Tech);
         }
 
         public bool TechprintAvailable()

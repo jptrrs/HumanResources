@@ -45,12 +45,12 @@ namespace HumanResources
                 ResearchTree_Patches.Execute(Instance, "ResearchPal");
                 ResearchPal = true;
             }
-            //else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "VinaLx.ResearchPalForked"))
-            //{
-            //    Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
-            //    ResearchTree_Patches.Execute(Instance, "ResearchPal");
-            //    ResearchPal = true;
-            //}
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "VinaLx.ResearchPalForked"))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
+                ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
+                ResearchPal = true;
+            }
             else
             {
                 Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");
