@@ -61,8 +61,8 @@ namespace HumanResources
             if (altRPal)
             {
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
-                HighlightedMethodInfo = AccessTools.Method(ResearchNodeType(), "Highlighted");
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
+                UnhighlightInfo = AccessTools.Method(ResearchNodeType(), "Unhighlight");
             }
             else instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch(); //fixed
@@ -70,7 +70,7 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
+            if (!altRPal) instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
@@ -112,9 +112,10 @@ namespace HumanResources
             }
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+            Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
+            MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
 
-
-            //Tree
+        //Tree
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
@@ -126,8 +127,13 @@ namespace HumanResources
             NodesInfo = AccessTools.Property(TreeType(), "Nodes");
 
             //Queue
-            if (!altRPal) instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix)))); //Notfound
+            if (altRPal)
+            {
+                instance.Patch(AccessTools.Method(QueueType(), "Draw"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(QueueDraw_Prefix))));
+            }
+            else instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
 
             //Constants
             EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
@@ -170,7 +176,7 @@ namespace HumanResources
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
         public static ResearchProjectDef subjectToShow;
-        private static MethodInfo MainTabCenterOnInfo => AccessTools.Method(MainTabType(), "CenterOn", new Type[] { NodeType() });
+        private static MethodInfo MainTabCenterOnInfo;
         private static PropertyInfo TreeNodesListInfo => AccessTools.Property(TreeType(), "Nodes");
 
         private static bool treeReady = false;
@@ -218,7 +224,13 @@ namespace HumanResources
 
         public static void Close_Postfix(object __instance)
         {
-            if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache.Clear();
+            if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache?.Clear();
+            if (AltRPal && subjectToShow != null) UnhighlightInfo.Invoke(ResearchNodesCache[subjectToShow], new object[] { 0 });
+        }
+
+        public static bool QueueDraw_Prefix(Rect baseCanvas)
+        {
+            return DrawQueue_Prefix(baseCanvas);
         }
 
         private static bool DrawQueue_Prefix(Rect canvas)
@@ -464,6 +476,7 @@ namespace HumanResources
             }
             return true;
         }
+
         public static bool Color_Prefix(object __instance, ref Color __result)
         {
             bool flag = HighlightedProxy(__instance);
@@ -485,7 +498,7 @@ namespace HumanResources
         public static void HighlightedProxy(object node, bool setting)
         {
             //Set
-            if (AltRPal) HighlightedMethodInfo.Invoke(node, new object[] { 0 });
+            if (AltRPal) HighlightInfo.Invoke(node, new object[] { 7 });
             else if (HighlightedInfo != null)
             {
                 HighlightedInfo.SetValue(node, setting);
@@ -508,8 +521,8 @@ namespace HumanResources
         private static MethodInfo
             ResearchNodeInfo,
             BuildingPresentInfo,
-            HighlightedMethodInfo,
-            HighlightInfo;
+            HighlightInfo,
+            UnhighlightInfo;
 
         public static bool BuildingPresentProxy(ResearchProjectDef research)
         {
