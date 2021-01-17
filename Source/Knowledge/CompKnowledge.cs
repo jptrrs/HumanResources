@@ -150,7 +150,7 @@ namespace HumanResources
                 Log.Message("... " + slots + " calculated slots ("+ techlevelText + guruNote + "; highest relevant skills: " + highestSkill.label + " & " + secondSkill.label + ")");
             }
             bool strict = false;
-            bool useChildhood = ModBaseHumanResources.TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
+            bool useChildhood = childhoodSkill != null && ModBaseHumanResources.TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, faction, strict));
             int pass = 0;
             List<ResearchProjectDef> result = new List<ResearchProjectDef>();
@@ -220,7 +220,9 @@ namespace HumanResources
             {
                 asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.childhood.identifier];
                 if (pawn.story.adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.adulthood.identifier];
-                childhoodSkill = pawn.story.childhood.skillGainsResolved.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
+                var skillGains = pawn.story.childhood.skillGainsResolved;
+                if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
+                else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
             }
             if (asAdult == 0 || asChild == 0)
             {
