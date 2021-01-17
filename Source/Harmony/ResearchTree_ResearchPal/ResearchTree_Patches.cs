@@ -60,35 +60,40 @@ namespace HumanResources
             //ResearchNode
             if (altRPal)
             {
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Postfix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleMouseEvents"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleMouseEvents_Prefix))));
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 UnhighlightInfo = AccessTools.Method(ResearchNodeType(), "Unhighlight");
             }
-            else instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch(); //fixed
+            else
+            {
+                instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
+                instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
+                GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
+                AvailableInfo = AccessTools.Property(ResearchNodeType(), "Available");
+            }
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "TechprintAvailable", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            if (!altRPal) instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
-            if (!altRPal) instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix)))); //fixed
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
             instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
 
-            if (!altRPal) GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive"); //Notfound
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children"); 
             ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
-            if (!altRPal)
-            {
-                AvailableInfo = AccessTools.Property(ResearchNodeType(), "Available"); //Notfound
-                CompletedInfo = AccessTools.Property(ResearchNodeType(), "Completed"); //Notfound
-            }
             ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
             GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
 
@@ -99,10 +104,12 @@ namespace HumanResources
             instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
 
-            InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
-            ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
-
             //MainTabWindow_ResearchTree
+            if (!AltRPal)
+            {
+                InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
+                ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
+            }
             instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             if (modName != "ResearchPal")
@@ -115,7 +122,7 @@ namespace HumanResources
             Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
 
-        //Tree
+            //Tree
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
@@ -303,15 +310,15 @@ namespace HumanResources
         private static MethodInfo
             GetMissingRequiredRecursiveInfo,
             GetResearchTooltipStringInfo;
-        private static PropertyInfo 
+        private static PropertyInfo
             ChildrenInfo,
             ColorInfo,
-            AvailableInfo,
-            CompletedInfo;
+            AvailableInfo;
+            //CompletedInfo;
         private static FieldInfo ResearchInfo;
 
         //MainWindow
-        private static PropertyInfo 
+        private static PropertyInfo
             InstanceInfo,
             ZoomLevelInfo;
 
@@ -321,7 +328,7 @@ namespace HumanResources
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
-            bool completed = (bool)CompletedInfo.GetValue(__instance);
+            bool completed = Research.IsFinished; //(bool)CompletedInfo.GetValue(__instance); //simplified
             //End of reflection info.
 
             if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect }))
@@ -335,7 +342,7 @@ namespace HumanResources
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
-                GUI.color = mouseOver ? HighlightColor : (Color)ColorInfo.GetValue(__instance);
+                GUI.color = mouseOver ? HighlightColor : (Color)ColorInfo.GetValue(__instance); //CUSTOM: HighlightColor substitui GenUI.MouseoverColor
                 if (mouseOver || HighlightedProxy(__instance)) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
                 else GUI.DrawTexture(rect, ResearchTree_Assets.Button);
 
@@ -347,7 +354,7 @@ namespace HumanResources
                     progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
-                HighlightedProxy(__instance, subjectToShow == Research);
+                HighlightedProxy(__instance, subjectToShow == Research); //CUSTOM: link with tech tab
 
                 //draw the research label
                 if (!completed && !available)
@@ -383,7 +390,7 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 //attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
+                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree"; //CUSTOM: tooltip adjust  
                 TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
                 if (!BuildingPresentProxy(Research))
                 {
@@ -432,7 +439,7 @@ namespace HumanResources
 
                 if (mouseOver)
                 {
-                    if (subjectToShow != null && subjectToShow != Research) subjectToShow = null;
+                    if (subjectToShow != null && subjectToShow != Research) subjectToShow = null; //CUSTOM: clear linked ftom techTab
 
                     //highlight prerequisites if research available
                     if (available)
@@ -450,12 +457,11 @@ namespace HumanResources
                 }
             }
 
-            Research.DrawAssignments(rect);
+            Research.DrawAssignments(rect); //CUSTOM: triggers draw assignments
 
-            //if clicked and not yet finished, queue up this research and all prereqs.
             if (Widgets.ButtonInvisible(rect))
             {
-                //LMB is queue operations, RMB is info
+                //CUSTOM: replace queue operations for assignment menu
                 if (Event.current.button == 0) Research.SelectMenu(completed);
                 if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
                 {
@@ -536,6 +542,37 @@ namespace HumanResources
                 Log.Error("[HumanResources] Error adapting to ResearchPal-Forked: null ResearchNodeInfo");
             }
             return BuildingPresent(research);
+        }
+
+        public static void Draw_Postfix(object __instance)
+        {
+            Rect rect = (Rect)RectInfo.GetValue(__instance);
+            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+            Research.DrawAssignments(rect);
+        }
+
+        public static bool HandleDragging_Prefix(object __instance, bool mouseOver, bool ____available)
+        {
+            if (mouseOver)
+            {
+                ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+                if (subjectToShow != null && subjectToShow != Research) subjectToShow = null; //There probably is a better way to focus and unfocus the tech selected from the Tech Tab...
+                if (Event.current.type == EventType.MouseDown)
+                {
+                    bool completed = Research.IsFinished;
+                    if (Event.current.button == 0) Research.SelectMenu(completed);
+                    if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !completed)
+                    {
+                        Find.ResearchManager.FinishProject(Research);
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static bool HandleMouseEvents_Prefix()
+        {
+            return false;
         }
 
         #endregion
