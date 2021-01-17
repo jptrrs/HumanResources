@@ -217,27 +217,31 @@ namespace HumanResources
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (Mouse.IsOver(box.ContractedBy(12f)))
+                    if (techComp != null)
                     {
-                        if (subjectToShow != null) subjectToShow = null;
-                        if (!techComp.expertise.EnumerableNullOrEmpty())
+                        if (Mouse.IsOver(box.ContractedBy(12f)))
                         {
-                            foreach (ResearchProjectDef tech in techComp.expertise.Keys)
+                            if (subjectToShow != null) subjectToShow = null;
+                            if (!techComp.expertise.EnumerableNullOrEmpty())
                             {
-                                HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
+                                foreach (ResearchProjectDef tech in techComp.expertise.Keys)
+                                {
+                                    HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
+                                }
                             }
                         }
-                    }
-                    if (!techComp.homework.NullOrEmpty())
-                    {
-                        StringBuilder homeworkSummary = new StringBuilder();
-                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
-                        foreach (var tech in techComp.homework)
+                        if (!techComp.homework.NullOrEmpty())
                         {
-                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                            StringBuilder homeworkSummary = new StringBuilder();
+                            homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                            foreach (var tech in techComp.homework)
+                            {
+                                homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                            }
+                            TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
                         }
-                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
                     }
+                    else Log.ErrorOnce("[HumanResources] Error fetching " + pawn + "'s expertise.", 0);
                     Vector2 pos = new Vector2(box.center.x, box.yMax);
                     GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
                     startPos -= height;
