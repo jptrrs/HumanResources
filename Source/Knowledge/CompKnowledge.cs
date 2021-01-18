@@ -216,20 +216,27 @@ namespace HumanResources
             TechLevel asAdult = 0;
             TechLevel asChild = 0;
             childhoodSkill = null;
-            if (pawn.story != null)
+            try
             {
-                asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.childhood.identifier];
-                if (pawn.story.adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.adulthood.identifier];
-                var skillGains = pawn.story.childhood.skillGainsResolved;
-                if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
-                else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
+                if (pawn.story != null)
+                {
+                    asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.childhood.identifier];
+                    if (pawn.story.adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.adulthood.identifier];
+                    var skillGains = pawn.story.childhood.skillGainsResolved;
+                    if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
+                    else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
+                }
+                if (asAdult == 0 || asChild == 0)
+                {
+                    FactionDef faction = pawn.Faction?.def ?? pawn.kindDef?.defaultFactionType;
+                    TechLevel fallback = faction?.techLevel ?? TechLevel.Industrial;
+                    if (asAdult == 0) asAdult = fallback;
+                    if (asChild == 0) asChild = fallback;
+                }
             }
-            if (asAdult == 0 || asChild == 0)
+            catch (Exception e) // if you are catching err's you might as well explain them.
             {
-                FactionDef faction = pawn.Faction?.def ?? pawn.kindDef?.defaultFactionType;
-                TechLevel fallback = faction?.techLevel ?? TechLevel.Industrial;
-                if (asAdult == 0) asAdult = fallback;
-                if (asChild == 0) asChild = fallback;
+                Log.Warning("[HumanResources] Error determining tech level from "+pawn+"'s background: " + e.Message);
             }
             childhoodLevel = asChild;
             return asAdult;
