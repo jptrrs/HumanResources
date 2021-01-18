@@ -243,88 +243,6 @@ namespace HumanResources
             }
         }
 
-        private static bool DrawQueue_Prefix(Rect canvas)
-        {
-            float height = canvas.height;
-            float frameOffset = height / 4;
-            float startPos = canvas.xMax - height - 12f;
-            Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
-            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Vector2 position = new Vector2(startPos, canvas.y);
-                    Rect box = new Rect(position, size);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
-                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (Mouse.IsOver(box.ContractedBy(12f)))
-                    {
-                        if (subjectToShow != null) subjectToShow = null;
-                        if (!techComp.expertise.EnumerableNullOrEmpty())
-                        {
-                            foreach (ResearchProjectDef tech in techComp.expertise.Keys)
-                            {
-                                HighlightedProxy(ResearchNodesCache[tech], true);
-                            }
-                        }
-                    }
-                    if (!techComp.homework.NullOrEmpty())
-                    {
-                        StringBuilder homeworkSummary = new StringBuilder();
-                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
-                        foreach (var tech in techComp.homework)
-                        {
-                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
-                        }
-                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
-                    }  
-                    Vector2 pos = new Vector2(box.center.x, box.yMax);
-                    GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
-                    startPos -= height;
-                }
-            }
-            return false;
-        }
-
-        private static void Set_Rects_Postfix(object __instance)
-        {
-            FieldInfo baseViewRectInfo = AccessTools.Field(MainTabType(), "_baseViewRect");
-            baseViewRectInfo.SetValue(__instance, new Rect(
-                Window.StandardMargin / Prefs.UIScale,
-                (ResearchTree_Constants.TopBarHeight + ResearchTree_Constants.Margin + Window.StandardMargin),
-                (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
-                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - ResearchTree_Constants.TopBarHeight - ResearchTree_Constants.Margin * 2 )
-                );
-        }
-
-        //Node
-        private static MethodInfo IsVisibleInfo;
-        private static PropertyInfo
-            HighlightedInfo,
-            RectInfo,
-            LabelRectInfo,
-            CostLabelRectInfo,
-            CostIconRectInfo,
-            IconsRectInfo;
-        private static FieldInfo largeLabelInfo;
-
-        //Research Node
-        private static MethodInfo
-            GetMissingRequiredRecursiveInfo,
-            GetResearchTooltipStringInfo;
-        private static PropertyInfo
-            ChildrenInfo,
-            ColorInfo,
-            AvailableInfo;
-            //CompletedInfo;
-        private static FieldInfo ResearchInfo;
-
-        //MainWindow
-        private static PropertyInfo
-            InstanceInfo,
-            ZoomLevelInfo;
-
         public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
         {
             //Reflected objects
@@ -514,7 +432,7 @@ namespace HumanResources
             float height = canvas.height;
             float startPos = canvas.xMax - height - 12f;
             Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
-            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().AsEnumerable().Reverse().GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
