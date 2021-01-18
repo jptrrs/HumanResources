@@ -25,7 +25,7 @@ namespace HumanResources
 
         public static void Execute(Harmony instance, string modName)
         {
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
 
             ModName = modName;
 
@@ -208,7 +208,7 @@ namespace HumanResources
             float frameOffset = height / 4;
             float startPos = canvas.xMax - height - 12f;
             Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
-            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().AsEnumerable().Reverse().GetEnumerator())// PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).Reverse().GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
@@ -217,31 +217,27 @@ namespace HumanResources
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (techComp != null)
+                    if (Mouse.IsOver(box.ContractedBy(12f)))
                     {
-                        if (Mouse.IsOver(box.ContractedBy(12f)))
+                        if (subjectToShow != null) subjectToShow = null;
+                        if (!techComp.expertise.EnumerableNullOrEmpty())
                         {
-                            if (subjectToShow != null) subjectToShow = null;
-                            if (!techComp.expertise.EnumerableNullOrEmpty())
+                            foreach (ResearchProjectDef tech in techComp.expertise.Keys)
                             {
-                                foreach (ResearchProjectDef tech in techComp.expertise.Keys)
-                                {
-                                    HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
-                                }
+                                HighlightedInfo.SetValue(ResearchNodesCache[tech], true);
                             }
-                        }
-                        if (!techComp.homework.NullOrEmpty())
-                        {
-                            StringBuilder homeworkSummary = new StringBuilder();
-                            homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
-                            foreach (var tech in techComp.homework)
-                            {
-                                homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
-                            }
-                            TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
                         }
                     }
-                    else Log.ErrorOnce("[HumanResources] Error fetching " + pawn + "'s expertise.", 0);
+                    if (!techComp.homework.NullOrEmpty())
+                    {
+                        StringBuilder homeworkSummary = new StringBuilder();
+                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                        foreach (var tech in techComp.homework)
+                        {
+                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                        }
+                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
+                    }  
                     Vector2 pos = new Vector2(box.center.x, box.yMax);
                     GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
                     startPos -= height;
