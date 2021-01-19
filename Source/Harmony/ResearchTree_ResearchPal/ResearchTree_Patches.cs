@@ -22,6 +22,7 @@ namespace HumanResources
         private static Color HighlightColor = new Color(1f, 0.85f, 0.2f);
         private static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
         public static ResearchProjectDef subjectToShow;
+        public static object MainTabInstance;
         #endregion
 
         #region "reflection info"
@@ -32,7 +33,7 @@ namespace HumanResources
         public static Type QueueType() => AccessTools.TypeByName(ModName + ".Queue");
         public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
-        
+
         //Constants:
         public static FieldInfo
             EpsilonInfo,
@@ -73,7 +74,11 @@ namespace HumanResources
         private static FieldInfo
         //Node:
             largeLabelInfo,
-            ResearchInfo;
+            ResearchInfo,
+        //ResearchNode:
+            isMatchedInfo,
+        //MainTabWindow_ResearchTree
+            searchActiveInfo;
 
         #endregion
 
@@ -125,6 +130,7 @@ namespace HumanResources
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 UnhighlightInfo = AccessTools.Method(ResearchNodeType(), "Unhighlight");
+                isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
             }
             else
             {
@@ -157,25 +163,25 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
 
             //MainTabWindow_ResearchTree
-            if (!AltRPal)
+            if (AltRPal) searchActiveInfo = AccessTools.Field(MainTabType(), "_searchActive");
+            else
             {
-                InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
                 ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
-                
+
                 //fix for tree overlapping search bar on higher UI scales
                 instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
-            }
-
-            instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+            };
             if (modName != "ResearchPal")
             {
                 instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
+            instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
-                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+            InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
             Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
 
@@ -221,6 +227,7 @@ namespace HumanResources
         {
             if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache?.Clear();
             if (AltRPal && subjectToShow != null) UnhighlightInfo.Invoke(ResearchNodesCache[subjectToShow], new object[] { 0 });
+            MainTabInstance = null;
         }
 
         public static bool Color_Prefix(object __instance, ref Color __result)
@@ -236,6 +243,7 @@ namespace HumanResources
 
         public static void DoWindowContents_Postfix(object __instance)
         {
+            if (MainTabInstance == null) MainTabInstance = __instance;
             if (subjectToShow != null && treeReady)
             {
                 MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[subjectToShow] });
@@ -412,45 +420,44 @@ namespace HumanResources
         public static IEnumerable<ThingDef> GetThingsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
-        
+
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
 
         public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
-        
+
         public static void TreeInitialized_Postfix(object __instance)
         {
             treeReady = !ResearchNodesCache.EnumerableNullOrEmpty();
         }
-        
-        private static bool DrawQueue_Prefix(Rect canvas)
+
+        private static bool DrawQueue_Prefix(object __instance, Rect canvas)
         {
             if (AltRPal)
             {
                 canvas.xMax += 130f + 2 * ResearchTree_Constants.Margin; //keep an eye on his MainTabWindow_ResearchTree.DrawTopBar method for changes to this number
                 canvas = canvas.ExpandedBy(ResearchTree_Constants.Margin);
+                ToggleSearch(false);
             }
+            float padding = 12f;
+            float spacing = Find.ColonistBar.SpaceBetweenColonistsHorizontal;
             float height = canvas.height;
-            float startPos = canvas.xMax - height - 12f;
-            Vector2 size = new Vector2(height + Find.ColonistBar.SpaceBetweenColonistsHorizontal, height - 12f);
+            float startPos = canvas.xMax - height - padding;
+            Vector2 size = new Vector2(height + spacing, height - padding);
+            Vector2 innerSize = new Vector2(height - padding, height - padding);
+            IEnumerable<object> expertiseDisplay = new object[] { };
             using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     Vector2 position = new Vector2(startPos, canvas.y);
                     Rect box = new Rect(position, size);
+                    Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (Mouse.IsOver(box.ContractedBy(12f)))
+                    if (Mouse.IsOver(innerBox))
                     {
-                        if (subjectToShow != null) subjectToShow = null;
-                        if (!techComp.expertise.EnumerableNullOrEmpty())
-                        {
-                            foreach (ResearchProjectDef tech in techComp.expertise.Keys)
-                            {
-                                HighlightedProxy(ResearchNodesCache[tech], true);
-                            }
-                        }
+                        ReflectKnowledge(__instance, techComp, out expertiseDisplay);
                     }
                     if (!techComp.homework.NullOrEmpty())
                     {
@@ -467,8 +474,39 @@ namespace HumanResources
                     startPos -= height;
                 }
             }
+            if (AltRPal) UpdateMatches(expertiseDisplay);
             return false;
         }
+
+        private static void ReflectKnowledge(object instance, CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
+        {
+            if (subjectToShow != null) subjectToShow = null;
+            bool valid = !techComp.expertise.EnumerableNullOrEmpty();
+            expertiseDisplay = new object[] { };
+            if (AltRPal)
+            {
+                ToggleSearch(true);
+                if (valid) expertiseDisplay = from e in ResearchNodesCache
+                                              where techComp.expertise.Keys.Contains(e.Key)
+                                              select e.Value;
+            }
+            else if (valid)
+            {
+                foreach (ResearchProjectDef tech in techComp.expertise.Keys)
+                {
+                    HighlightedProxy(ResearchNodesCache[tech], true);
+                }
+            }
+        }
+
+        private static void UpdateMatches(IEnumerable<object> expertiseDisplay)
+        {
+            foreach (object node in ResearchNodesCache.Values)
+            {
+                isMatchedInfo.SetValue(node, expertiseDisplay.Contains(node));
+            }
+        }
+
 
         private static bool GetResearchTooltipString_Prefix(ResearchProjectDef ___Research, ref string __result)
         {
@@ -587,9 +625,32 @@ namespace HumanResources
             return false;
         }
 
-        public static bool QueueDraw_Prefix(Rect baseCanvas)
+        private static void ToggleSearch(bool state)
         {
-            return DrawQueue_Prefix(baseCanvas);
+            if (searchActive != state) searchActive = state;
+        }
+
+        public static bool QueueDraw_Prefix(object __instance, Rect baseCanvas)
+        {
+            return DrawQueue_Prefix(__instance, baseCanvas);
+        }
+        private static bool searchActive
+        {
+            get
+            {
+                if (MainTabInstance != null)
+                {
+                    return (bool)searchActiveInfo.GetValue(MainTabInstance);
+                }
+                return false;
+            }
+            set
+            {
+                if (MainTabInstance != null)
+                {
+                    searchActiveInfo.SetValue(MainTabInstance, value);
+                }
+            }
         }
         #endregion
     }
