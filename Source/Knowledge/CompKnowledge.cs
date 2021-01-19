@@ -331,7 +331,7 @@ namespace HumanResources
             ((IExposable)pawn).ExposeData();
         }
 
-        public void LearnTech(ResearchProjectDef tech)
+        public bool LearnTech(ResearchProjectDef tech)
         {
             if (expertise != null)
             {
@@ -340,8 +340,13 @@ namespace HumanResources
                 techLevel = (TechLevel)Mathf.Max((int)tech.techLevel, (int)techLevel);
                 LearnCrops(tech);
                 Messages.Message("MessageStudyComplete".Translate(pawn, tech.LabelCap), pawn, MessageTypeDefOf.TaskCompletion, true);
+                return true;
             }
-            else Log.Warning("[HumanResources] " + pawn + " tried to learn a technology without being able to.");
+            else
+            {
+                Log.Warning("[HumanResources] " + pawn + " tried to learn a technology without being able to.");
+                return false;
+            }
         }
 
         public void LearnCrops(ResearchProjectDef tech)

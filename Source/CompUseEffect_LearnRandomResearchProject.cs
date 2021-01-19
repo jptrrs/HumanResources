@@ -1,5 +1,7 @@
 ﻿using RimWorld;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace HumanResources
@@ -9,23 +11,36 @@ namespace HumanResources
 		public override void DoEffect(Pawn usedBy)
 		{
 			base.DoEffect(usedBy);
-			ResearchProjectDef currentProj = Find.ResearchManager.currentProj;
-			if (currentProj != null)
-			{
-				CompKnowledge techComp = usedBy.TryGetComp<CompKnowledge>();
-				if (techComp != null) techComp.LearnTech(currentProj);
-			}
+			CompKnowledge techComp = usedBy.TryGetComp<CompKnowledge>();
+			var candidates = techComp.homework.Where(x => !x.IsFinished);
+			List<ResearchProjectDef> means = new List<ResearchProjectDef>();
+			foreach (ResearchProjectDef tech in candidates)
+            {
+				if (tech.prerequisites != null)
+                {
+					means.AddRange(candidates.Where(x => tech.prerequisites.Contains(x)));
+                }
+            }
+			ResearchProjectDef result = candidates.Except(means).RandomElement();
+			if (techComp.LearnTech(result) && result.prerequisites != null)
+            {
+				techComp.homework.RemoveAll(x => result.prerequisites.Contains(x));
+            }
 		}
 
 		public override bool CanBeUsedBy(Pawn p, out string failReason)
-		{
-			if (Find.ResearchManager.currentProj == null)
-			{
-				failReason = "NoActiveResearchProjectToFinish".Translate();
-				return false;
-			}
+		{ 
 			failReason = null;
-			return true;
+			CompKnowledge techComp = p.TryGetComp<CompKnowledge>();
+			if (techComp != null)
+            {
+				if (!techComp.homework.NullOrEmpty())
+                {
+					return techComp.homework.Any(x => !x.IsFinished);
+                }
+            }
+            failReason = "NoActiveResearchProjectToFinish".Translate();
+            return false;
 		}
 	}
 }
