@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +14,7 @@ namespace HumanResources
     {
         #region "variables"
         public static object MainTabInstance;
-        public static ResearchProjectDef subjectToShow;
+        public static ResearchProjectDef interest;
         private static Color HighlightColor = new Color(1f, 0.85f, 0.2f);
         private static string ModName = "";
         private static bool
@@ -121,14 +120,14 @@ namespace HumanResources
             //ResearchNode
             if (altRPal)
             {
+                HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Postfix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging", new Type[] { typeof(bool) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
-                //instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleMouseEvents"),
-                //    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleMouseEvents_Prefix))));
+                instance.Patch(HighlightInfo,
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Highlight_Prefix))));
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
-                HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 UnhighlightInfo = AccessTools.Method(ResearchNodeType(), "Unhighlight");
                 isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
             }
@@ -229,7 +228,6 @@ namespace HumanResources
         public static void Close_Postfix(object __instance)
         {
             if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache?.Clear();
-            if (AltRPal && subjectToShow != null) UnhighlightInfo.Invoke(ResearchNodesCache[subjectToShow], new object[] { 0 });
             MainTabInstance = null;
         }
 
@@ -244,14 +242,22 @@ namespace HumanResources
             return true;
         }
 
+        private static void DeInterest()
+        {
+            if (interest != null)
+            {
+                if (AltRPal) UnhighlightInfo.Invoke(ResearchNodesCache[interest], new object[] { interestHighlightReason });
+                interest = null;
+            }
+        }
+
         public static void DoWindowContents_Postfix(object __instance)
         {
-            Log.Message("DEBUG DoWindowContents: treeReady is " + treeReady);
             if (MainTabInstance == null) MainTabInstance = __instance;
-            if (subjectToShow != null && treeReady)
+            if (interest != null && treeReady)
             {
-                MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[subjectToShow] });
-                HighlightedProxy(ResearchNodesCache[subjectToShow], true);
+                MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
+                HighlightedProxy(ResearchNodesCache[interest], true);
             }
         }
 
@@ -287,7 +293,7 @@ namespace HumanResources
                     progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
-                HighlightedProxy(__instance, subjectToShow == Research); //CUSTOM: link with tech tab
+                HighlightedProxy(__instance, interest == Research); //CUSTOM: link with tech tab
 
                 //draw the research label
                 if (!completed && !available)
@@ -372,7 +378,7 @@ namespace HumanResources
 
                 if (mouseOver)
                 {
-                    if (subjectToShow != null && subjectToShow != Research) subjectToShow = null; //CUSTOM: clear linked ftom techTab
+                    if (interest != null && interest != Research) DeInterest(); //CUSTOM: clear linked ftom techTab
 
                     //highlight prerequisites if research available
                     if (available)
@@ -461,6 +467,7 @@ namespace HumanResources
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     if (Mouse.IsOver(innerBox))
                     {
+                        DeInterest();
                         ReflectKnowledge(__instance, techComp, out expertiseDisplay);
                         displayActive = true;
                     }
@@ -516,7 +523,6 @@ namespace HumanResources
 
         private static void ReflectKnowledge(object instance, CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
         {
-            if (subjectToShow != null) subjectToShow = null;
             Find.WindowStack.FloatMenu?.Close(false);
             bool valid = !techComp.expertise.EnumerableNullOrEmpty();
             expertiseDisplay = new object[] { };
@@ -566,6 +572,8 @@ namespace HumanResources
         public static bool 
             AltRPal = false,
             expertiseDisplayed = false;
+
+        private static int interestHighlightReason = 4;
 
         private static MethodInfo
         //ResearchProjectDef_Extensions:
@@ -620,7 +628,6 @@ namespace HumanResources
             if (mouseOver)
             {
                 ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
-                if (subjectToShow != null && subjectToShow != Research) subjectToShow = null; //There probably is a better way to focus and unfocus the tech selected from the Tech Tab...
                 if (Event.current.type == EventType.MouseDown)
                 {
                     bool completed = Research.IsFinished;
@@ -634,9 +641,12 @@ namespace HumanResources
             return false;
         }
 
-        public static bool HandleMouseEvents_Prefix()
+        public static void Highlight_Prefix(object __instance)
         {
-            return false;
+            if (interest != null && interest != (ResearchProjectDef)ResearchInfo.GetValue(__instance))
+            {
+                DeInterest();
+            }
         }
 
         public static bool Highlighted() { throw stubMsg; }
@@ -644,7 +654,7 @@ namespace HumanResources
         public static void HighlightedProxy(object node, bool setting)
         {
             //Set
-            if (AltRPal) HighlightInfo.Invoke(node, new object[] { 7 });
+            if (AltRPal) HighlightInfo.Invoke(node, new object[] { interestHighlightReason });
             else if (HighlightedInfo != null)
             {
                 HighlightedInfo.SetValue(node, setting);
