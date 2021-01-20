@@ -15,7 +15,9 @@ namespace HumanResources
         #region "variables"
         public static object MainTabInstance;
         public static ResearchProjectDef interest;
-        private static Color HighlightColor = new Color(1f, 0.85f, 0.2f);
+        private static Color BrightColor = new Color(1f, 0.85f, 0.2f); //yellow
+        private static Color ShadedColor = new Color(0.72f, 0.57f, 0.13f); //burnt yellow
+        private static Color VariantColor = new Color(1f, 0.6f, 0.08f); //light orange
         private static string ModName = "";
         private static bool
             populating = false,
@@ -70,7 +72,11 @@ namespace HumanResources
         //ResearchNode:
             isMatchedInfo,
         //MainTabWindow_ResearchTree
-            searchActiveInfo;
+            searchActiveInfo,
+        //Assets
+            NormalHighlightColorInfo,
+            HoverPrimaryColorInfo,
+            FixedPrimaryColorInfo;
 
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type ConstantsType() => AccessTools.TypeByName(ModName + ".Constants");
@@ -125,6 +131,8 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Postfix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging", new Type[] { typeof(bool) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "LeftClick"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
                 instance.Patch(HighlightInfo,
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Highlight_Prefix))));
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
@@ -193,7 +201,8 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
             if (modName == "ResearchPal")
             {
-                instance.Patch(AccessTools.Method(TreeType(), "Initialize"),
+                string initializer = AltRPal ? "InitializeLayout" : "Initialize";
+                instance.Patch(AccessTools.Method(TreeType(), initializer),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
             NodesInfo = AccessTools.Property(TreeType(), "Nodes");
@@ -218,6 +227,18 @@ namespace HumanResources
             TopBarHeightInfo = AccessTools.Field(ConstantsType(), "TopBarHeight");
             if (altRPal) TopBarHeightInfo.SetValue(instance, ResearchTree_Constants.NodeSize.y * 0.6f + 2 * ResearchTree_Constants.Margin);
 
+            //Assets
+            if (altRPal)
+            {
+                NormalHighlightColorInfo = AccessTools.Field(AssetsType(), "NormalHighlightColor"); //default blue
+                HoverPrimaryColorInfo = AccessTools.Field(AssetsType(), "HoverPrimaryColor"); //violet
+                FixedPrimaryColorInfo = AccessTools.Field(AssetsType(), "FixedPrimaryColor"); //cyan
+                NormalHighlightColorInfo.SetValue(instance, ShadedColor);
+                HoverPrimaryColorInfo.SetValue(instance, BrightColor);
+                FixedPrimaryColorInfo.SetValue(instance, VariantColor);
+            }
+
+
             Harmony.DEBUG = false;
         }
 
@@ -236,7 +257,7 @@ namespace HumanResources
             bool flag = HighlightedProxy(__instance);
             if (flag)
             {
-                __result = HighlightColor;
+                __result = BrightColor;
                 return false;
             }
             return true;
@@ -281,7 +302,7 @@ namespace HumanResources
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
-                GUI.color = mouseOver ? HighlightColor : (Color)ColorInfo.GetValue(__instance); //CUSTOM: HighlightColor substitui GenUI.MouseoverColor
+                GUI.color = mouseOver ? BrightColor : (Color)ColorInfo.GetValue(__instance); //CUSTOM: HighlightColor substitui GenUI.MouseoverColor
                 if (mouseOver || HighlightedProxy(__instance)) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
                 else GUI.DrawTexture(rect, ResearchTree_Assets.Button);
 
@@ -417,7 +438,7 @@ namespace HumanResources
             bool flag = HighlightedProxy(__instance);
             if (flag)
             {
-                __result = HighlightColor;
+                __result = BrightColor;
                 return false;
             }
             return true;
@@ -567,6 +588,8 @@ namespace HumanResources
         }
         #endregion
 
+
+
         #region "VinaLx.ResearchPalForked adaptation"
 
         public static bool 
@@ -669,6 +692,11 @@ namespace HumanResources
             {
                 return (bool)HighlightedInfo.GetValue(node);
             }
+            return false;
+        }
+
+        public static bool LeftClick_Prefix()
+        {
             return false;
         }
 
