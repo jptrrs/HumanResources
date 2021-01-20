@@ -637,19 +637,12 @@ namespace HumanResources
             return BuildingPresent(research);
         }
 
-        //public static void Draw_Alt_Prefix(object __instance)
-        //{
-        //    Rect rect = (Rect)RectInfo.GetValue(__instance);
-        //    ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
-        //    Research.DrawAssignments(rect);
-        //}
-
         public static bool HandleDragging_Prefix(object __instance, bool mouseOver, bool ____available)
         {
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             Research.DrawAssignments(rect);
-            if (Widgets.ButtonInvisible(rect)) //Not 'Event.current.type == EventType.MouseDown' or it would overlap the assignments click boxes.
+            if (mouseOver && Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
                 bool completed = Research.IsFinished;
                 if (Event.current.button == 0) Research.SelectMenu(completed);
