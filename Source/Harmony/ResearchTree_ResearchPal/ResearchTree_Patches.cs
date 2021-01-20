@@ -129,15 +129,11 @@ namespace HumanResources
             //ResearchNode
             if (altRPal)
             {
-                HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
-                instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
-                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Postfix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging", new Type[] { typeof(bool) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "LeftClick"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
-                instance.Patch(HighlightInfo,
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Highlight_Prefix))));
+                HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
             }
@@ -244,8 +240,6 @@ namespace HumanResources
                 HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
-
-
             Harmony.DEBUG = false;
         }
 
@@ -359,7 +353,7 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 //attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree"; //CUSTOM: tooltip adjust  
+                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
                 TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
                 if (!BuildingPresentProxy(Research))
                 {
@@ -408,7 +402,7 @@ namespace HumanResources
 
                 if (mouseOver)
                 {
-                    if (interest != null && interest != Research) DeInterest(); //CUSTOM: clear linked ftom techTab
+                    if (interest != null && interest != Research) DeInterest();
 
                     //highlight prerequisites if research available
                     if (available)
@@ -426,11 +420,11 @@ namespace HumanResources
                 }
             }
 
-            Research.DrawAssignments(rect); //CUSTOM: triggers draw assignments
+            Research.DrawAssignments(rect);
 
             if (Widgets.ButtonInvisible(rect))
             {
-                //CUSTOM: replace queue operations for assignment menu
+                //CUSTOM: replaced queue operations for assignment menu
                 if (Event.current.button == 0) Research.SelectMenu(completed);
                 if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
                 {
@@ -643,37 +637,28 @@ namespace HumanResources
             return BuildingPresent(research);
         }
 
-        public static void Draw_Postfix(object __instance)
-        {
-            Rect rect = (Rect)RectInfo.GetValue(__instance);
-            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
-            Research.DrawAssignments(rect);
-        }
+        //public static void Draw_Alt_Prefix(object __instance)
+        //{
+        //    Rect rect = (Rect)RectInfo.GetValue(__instance);
+        //    ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+        //    Research.DrawAssignments(rect);
+        //}
 
         public static bool HandleDragging_Prefix(object __instance, bool mouseOver, bool ____available)
         {
-            if (mouseOver)
+            ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+            Rect rect = (Rect)RectInfo.GetValue(__instance);
+            Research.DrawAssignments(rect);
+            if (Widgets.ButtonInvisible(rect)) //Not 'Event.current.type == EventType.MouseDown' or it would overlap the assignments click boxes.
             {
-                ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
-                if (Event.current.type == EventType.MouseDown)
+                bool completed = Research.IsFinished;
+                if (Event.current.button == 0) Research.SelectMenu(completed);
+                if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !completed)
                 {
-                    bool completed = Research.IsFinished;
-                    if (Event.current.button == 0) Research.SelectMenu(completed);
-                    if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !completed)
-                    {
-                        Find.ResearchManager.FinishProject(Research);
-                    }
+                    Find.ResearchManager.FinishProject(Research);
                 }
             }
             return false;
-        }
-
-        public static void Highlight_Prefix(object __instance)
-        {
-            if (interest != null && interest != (ResearchProjectDef)ResearchInfo.GetValue(__instance))
-            {
-                DeInterest();
-            }
         }
 
         public static bool Highlighted() { throw stubMsg; }
