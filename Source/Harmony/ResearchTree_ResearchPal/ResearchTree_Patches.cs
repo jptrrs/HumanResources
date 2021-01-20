@@ -16,7 +16,7 @@ namespace HumanResources
         public static object MainTabInstance;
         public static ResearchProjectDef interest;
         private static Color BrightColor = new Color(1f, 0.85f, 0.2f); //yellow
-        private static Color ShadedColor = new Color(0.72f, 0.57f, 0.13f); //burnt yellow
+        private static Color ShadedColor = new Color(0.72f, 0.57f, 0.13f); //mustard
         private static Color VariantColor = new Color(1f, 0.6f, 0.08f); //light orange
         private static string ModName = "";
         private static bool
@@ -63,7 +63,10 @@ namespace HumanResources
             GetResearchTooltipStringInfo,
         //Node:
             IsVisibleInfo,
-            MainTabCenterOnInfo;
+            MainTabCenterOnInfo,
+        //Tree:
+            HandleFixedHighlightInfo,
+            StopFixedHighlightsInfo;
 
         private static FieldInfo
         //Node:
@@ -136,7 +139,6 @@ namespace HumanResources
                 instance.Patch(HighlightInfo,
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Highlight_Prefix))));
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
-                UnhighlightInfo = AccessTools.Method(ResearchNodeType(), "Unhighlight");
                 isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
             }
             else
@@ -204,6 +206,11 @@ namespace HumanResources
                 string initializer = AltRPal ? "InitializeLayout" : "Initialize";
                 instance.Patch(AccessTools.Method(TreeType(), initializer),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
+                if (AltRPal)
+                {
+                    HandleFixedHighlightInfo = AccessTools.Method(TreeType(), "HandleFixedHighlight");
+                    StopFixedHighlightsInfo = AccessTools.Method(TreeType(), "StopFixedHighlights");
+                }
             }
             NodesInfo = AccessTools.Property(TreeType(), "Nodes");
 
@@ -233,9 +240,9 @@ namespace HumanResources
                 NormalHighlightColorInfo = AccessTools.Field(AssetsType(), "NormalHighlightColor"); //default blue
                 HoverPrimaryColorInfo = AccessTools.Field(AssetsType(), "HoverPrimaryColor"); //violet
                 FixedPrimaryColorInfo = AccessTools.Field(AssetsType(), "FixedPrimaryColor"); //cyan
-                NormalHighlightColorInfo.SetValue(instance, ShadedColor);
-                HoverPrimaryColorInfo.SetValue(instance, BrightColor);
-                FixedPrimaryColorInfo.SetValue(instance, VariantColor);
+                NormalHighlightColorInfo.SetValue(instance, ShadedColor); //mustard
+                HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
+                FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
 
 
@@ -265,20 +272,22 @@ namespace HumanResources
 
         private static void DeInterest()
         {
-            if (interest != null)
-            {
-                if (AltRPal) UnhighlightInfo.Invoke(ResearchNodesCache[interest], new object[] { interestHighlightReason });
-                interest = null;
-            }
+            if (AltRPal) StopFixedHighlightsInfo.Invoke(MainTabInstance, new object[] { });
+            if (interest != null) interest = null;
         }
 
         public static void DoWindowContents_Postfix(object __instance)
         {
             if (MainTabInstance == null) MainTabInstance = __instance;
-            if (interest != null && treeReady)
+            if (interest != null)
             {
-                MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
-                HighlightedProxy(ResearchNodesCache[interest], true);
+                if (treeReady)
+                {
+                    MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
+                    if (AltRPal) HandleFixedHighlightInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
+                    else HighlightedProxy(ResearchNodesCache[interest], true);
+                }
+                else Log.Warning("[HumanResources] Locate tech on the Research Tab failed: the tree isn't ready");
             }
         }
 
@@ -302,7 +311,7 @@ namespace HumanResources
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
-                GUI.color = mouseOver ? BrightColor : (Color)ColorInfo.GetValue(__instance); //CUSTOM: HighlightColor substitui GenUI.MouseoverColor
+                GUI.color = mouseOver ? BrightColor : (Color)ColorInfo.GetValue(__instance);
                 if (mouseOver || HighlightedProxy(__instance)) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
                 else GUI.DrawTexture(rect, ResearchTree_Assets.Button);
 
@@ -314,7 +323,7 @@ namespace HumanResources
                     progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
-                HighlightedProxy(__instance, interest == Research); //CUSTOM: link with tech tab
+                HighlightedProxy(__instance, interest == Research);
 
                 //draw the research label
                 if (!completed && !available)
@@ -588,23 +597,18 @@ namespace HumanResources
         }
         #endregion
 
-
-
         #region "VinaLx.ResearchPalForked adaptation"
 
         public static bool 
             AltRPal = false,
             expertiseDisplayed = false;
 
-        private static int interestHighlightReason = 4;
-
         private static MethodInfo
         //ResearchProjectDef_Extensions:
             ResearchNodeInfo,
         //ResearchNode:
             BuildingPresentInfo,
-            HighlightInfo,
-            UnhighlightInfo;
+            HighlightInfo;
 
         private static bool searchActive
         {
@@ -674,10 +678,10 @@ namespace HumanResources
 
         public static bool Highlighted() { throw stubMsg; }
 
-        public static void HighlightedProxy(object node, bool setting)
+        public static void HighlightedProxy(object node, bool setting, int reason = 7 )
         {
             //Set
-            if (AltRPal) HighlightInfo.Invoke(node, new object[] { interestHighlightReason });
+            if (AltRPal) HighlightInfo.Invoke(node, new object[] { reason });
             else if (HighlightedInfo != null)
             {
                 HighlightedInfo.SetValue(node, setting);
