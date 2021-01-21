@@ -15,14 +15,14 @@ namespace HumanResources
         #region "variables"
         public static object MainTabInstance;
         public static ResearchProjectDef interest;
-        private static Color BrightColor = new Color(1f, 0.85f, 0.2f); //yellow
-        private static Color ShadedColor = new Color(0.72f, 0.57f, 0.13f); //mustard
-        private static Color VariantColor = new Color(1f, 0.6f, 0.08f); //light orange
+        private static Color 
+            BrightColor = new Color(1f, 0.85f, 0.2f), //yellow
+            ShadedColor = new Color(0.72f, 0.57f, 0.13f), //mustard
+            VariantColor = new Color(1f, 0.6f, 0.08f); //light orange
         private static string ModName = "";
         private static bool
             populating = false,
             treeReady = false;
-
         private static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
         #endregion

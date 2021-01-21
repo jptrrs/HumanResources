@@ -11,7 +11,6 @@ namespace HumanResources
     {
         public static Harmony instance = null;
 
-        public static Type ResearchProjectDef_Extensions_Type = AccessTools.TypeByName("FluffyResearchTree.ResearchProjectDef_Extensions");
         public static bool
             ResearchPal = false,
             PrisonLabor = false,

@@ -186,6 +186,7 @@ namespace HumanResources
                 unlocked.libraryFreeSpace = 0;
                 unlocked.RegisterStartingResources();
                 unlocked.RecacheUnlockedWeapons();
+                Extension_Research.currentPawnsCache = null;
                 GameJustLoaded = false;
             }
         }
