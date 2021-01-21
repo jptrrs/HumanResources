@@ -34,18 +34,18 @@ namespace HumanResources
             Instance.PatchAll();
 
             //ResearchTree/ResearchPal integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "fluffy.researchtree"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchTree.");
                 ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
             }
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "notfood.ResearchPal"))
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal.");
                 ResearchTree_Patches.Execute(Instance, "ResearchPal");
                 ResearchPal = true;
             }
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "VinaLx.ResearchPalForked"))
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
                 ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
@@ -57,56 +57,56 @@ namespace HumanResources
             }
 
             //Go Explore! integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Albion.GoExplore"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Albion.GoExplore")))
             {
                 Log.Message("[HumanResources] Go Explore detected! Integrating...");
                 GoExplore_Patches.Execute(Instance);
             }
 
             //Material Filter patch - OBSOLETE?
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "KamiKatze.MaterialFilter"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("KamiKatze.MaterialFilter")))
             {
                 Log.Message("[HumanResources] Material Filter detected! Adapting...");
                 MaterialFilter_Patch.Execute(Instance);
             }
 
             //Recipe icons patch - OBSOLETE?
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "automatic.recipeicons"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("automatic.recipeicons")))
             {
                 Log.Message("[HumanResources] Recipe Icons detected! Adapting...");
                 RecipeIcons_Patch.Execute(Instance);
             }
 
             //Simple Sidearms integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "PeteTimesSix.SimpleSidearms"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("PeteTimesSix.SimpleSidearms")))
             {
                 Log.Message("[HumanResources] Simple Sidearms detected! Integrating...");
                 SimpleSidearms_Patches.Execute(Instance);
             }
 
             //Prison Labor integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "avius.prisonlabor"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("avius.prisonlabor")))
             {
                 Log.Message("[HumanResources] Prison Labor detected! Integrating...");
                 PrisonLabor = true;
             }
 
             //Children, School and Learning integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Dylan.CSL"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Dylan.CSL")))
             {
                 Log.Message("[HumanResources] Children, School and Learning detected! Integrating...");
                 ChildrenSchoolLearning_Patch.Execute(Instance);
             }
 
             //Dual Wield integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "Roolo.DualWield"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Roolo.DualWield")))
             {
                 Log.Message("[HumanResources] Dual Wield detected! Integrating...");
                 DualWield_Patch.Execute(Instance);
             }
 
             //Hospitality integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing == "orion.hospitality"))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("orion.hospitality")))
             {
                 Log.Message("[HumanResources] Hospitality detected! Integrating...");
                 Hospitality_Patches.Execute(Instance);
@@ -114,10 +114,10 @@ namespace HumanResources
 
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x => 
-            x.PackageIdPlayerFacing == "loconeko.roadsoftherim" || 
-            x.PackageIdPlayerFacing == "mlie.roadsoftherim" ||
-            x.PackageIdPlayerFacing == "fluffy.backuppower" || 
-            x.PackageIdPlayerFacing == "fluffy.fluffybreakdowns"))
+            x.PackageIdPlayerFacing.StartsWith("loconeko.roadsoftherim") || 
+            x.PackageIdPlayerFacing.StartsWith("mlie.roadsoftherim") ||
+            x.PackageIdPlayerFacing.StartsWith("fluffy.backuppower") || 
+            x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns")))
             {
                 RunSpecialCases = true;
             }
