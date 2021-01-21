@@ -553,9 +553,9 @@ namespace HumanResources
                 {
                     Vector2 position = new Vector2(startPos, rect.y + (height / 3));
                     Rect box = new Rect(position, size);
+                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
                     TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
                     startPos += height / 2;

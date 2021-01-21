@@ -230,7 +230,7 @@ namespace HumanResources
 
         public bool BuildingPresent()
         {
-            return ResearchTree_Patches.BuildingPresent(Tech);
+            return ResearchTree_Patches.BuildingPresentProxy(Tech);
         }
 
         public bool TechprintAvailable()
@@ -357,7 +357,7 @@ namespace HumanResources
                 if (Event.current.button == 1)
                 {
                     MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                    ResearchTree_Patches.subjectToShow = Tech;
+                    ResearchTree_Patches.interest = Tech;
                 }
             }
         }
