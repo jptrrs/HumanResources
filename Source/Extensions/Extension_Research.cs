@@ -346,7 +346,6 @@ namespace HumanResources
             }
             if (researcher != null && researcher.Faction != null)
             {
-                //amount /= tech.CostFactor(researcher.Faction.def.techLevel);
                 amount /= tech.CostFactor(techComp.techLevel);
             }
             if (DebugSettings.fastResearch)
@@ -359,7 +358,6 @@ namespace HumanResources
             }
             float num = tech.GetProgress(expertise);
             num += amount / total;
-            //Log.Warning(tech + " research performed by " + researcher + ": " + amount + "/" + total);
             expertise[tech] = num;
         }
 
