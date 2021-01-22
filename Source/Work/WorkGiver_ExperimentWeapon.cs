@@ -73,12 +73,6 @@ namespace HumanResources
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> feared = techComp.fearedWeapons;
             IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
-            //if (!unavailable.EnumerableNullOrEmpty())
-            //{
-            //    string thoseWeapons = "ThoseWeapons".Translate();
-            //    string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
-            //    JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
-            //}
             var result = feared.EnumerableNullOrEmpty() ? chosen.Intersect(unavailable) : chosen.Intersect(unavailable).Except(feared);
             return result;
         }

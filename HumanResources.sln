@@ -486,9 +486,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{5FDE203C
 		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{CA35F2FC-D337-4AE7-84A9-8432474AD0BE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{3371D14E-3D2F-4229-9809-B0594F29FF8D}"
 	ProjectSection(SolutionItems) = preProject
 		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_AdeptusMechanicus.xml = Patches\Patches_AdeptusMechanicus.xml
 		Patches\Patches_BabyAndChildren.xml = Patches\Patches_BabyAndChildren.xml
 		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
 		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
