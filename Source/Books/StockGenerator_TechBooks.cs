@@ -7,7 +7,9 @@ namespace HumanResources
 {
 	public class StockGenerator_TechBooks : StockGenerator_MiscItems
 	{
+#pragma warning disable 0649
 		private List<ThingCategoryDef> excludedCategories;
+#pragma warning restore
 
 		private TechLevel defaultLevel = TechLevel.Undefined;
 

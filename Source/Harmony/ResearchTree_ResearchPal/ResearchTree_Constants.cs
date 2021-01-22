@@ -4,8 +4,9 @@ namespace HumanResources
 {
     public static class ResearchTree_Constants
     {
+#pragma warning disable 0649
         private static object instance;
-
+#pragma warning restore
         public static double Epsilon => (double)ResearchTree_Patches.EpsilonInfo.GetValue(instance);
         public static float DetailedModeZoomLevelCutoff => (float)ResearchTree_Patches.DetailedModeZoomLevelCutoffInfo.GetValue(instance);
         public static float Margin => (float)ResearchTree_Patches.MarginInfo.GetValue(instance);
