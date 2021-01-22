@@ -13,14 +13,77 @@ namespace HumanResources
 {
     public static class Extension_Research
     {
+        public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
         public static SkillDef Bias = new SkillDef();
+        public static List<Pawn> currentPawnsCache;
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
+        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
         public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
-        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
-        public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
         private const float MarketValueOffset = 200f;
+
+        private static List<string>
+            AnimalHints = new List<string>() { "animal" },
+            CraftingHints = new List<string>() { "tool", "armor", "armour", "cloth" },
+            IntellectualHints = new List<string>() { "manage" },
+            MiningHints = new List<string>() { "scanner", "terraform" },
+            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
+            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" };
+
+        private static bool
+            animalsTag = false,
+            artisticTag = false,
+            constructionTag = false,
+            cookingTag = false,
+            craftingTag = false,
+            intellectualTag = false,
+            medicineTag = false,
+            meleeTag = false,
+            miningTag = false,
+            plantsTag = false,
+            shootingTag = false,
+            socialTag = false;
+
+        private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
+        {
+            string status = "error";
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (techComp != null && !techComp.homework.NullOrEmpty())
+            {
+                if (tech.IsKnownBy(pawn)) status = "AssignedToDocument".Translate(pawn);
+                else status = tech.IsFinished ? "AssignedToStudy".Translate(pawn) : "AssignedToResearch".Translate(pawn);
+            }
+            return status + " (" + "ClickToRemove".Translate() + ")";
+        };
+
+        private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (techComp != null && !techComp.homework.NullOrEmpty())
+            {
+                return techComp.homework.Contains(tech);
+            }
+            return false;
+        };
+
         private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
+
+        private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
+        {
+            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
+            bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
+            bool exempted = x.IsExempted();
+            return !basic && !tool && !exempted;
+        };
+
+        private static IEnumerable<Pawn> currentPawns
+        {
+            get
+            {
+                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor ? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.TechBound()).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
+                return currentPawnsCache;
+            }
+        }
 
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
         { 
@@ -49,28 +112,6 @@ namespace HumanResources
                 return ModBaseHumanResources.StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
-
-        private static List<string>
-            AnimalHints = new List<string>() { "animal" },
-            CraftingHints = new List<string>() { "tool", "armor", "armour", "cloth" },
-            IntellectualHints = new List<string>() { "manage" },
-            MiningHints = new List<string>() { "scanner", "terraform" },
-            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
-            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" };
-
-        private static bool
-            animalsTag = false,
-            artisticTag = false,
-            constructionTag = false,
-            cookingTag = false,
-            craftingTag = false,
-            intellectualTag = false,
-            medicineTag = false,
-            meleeTag = false,
-            miningTag = false,
-            plantsTag = false,
-            shootingTag = false,
-            socialTag = false;
 
         public static void CarefullyFinishProject(this ResearchProjectDef project, Thing place)
         {
@@ -145,6 +186,28 @@ namespace HumanResources
             filter.SetAllow(techStuff, true);
             unlocked.stuffByTech.Add(tech, techStuff);
             unlocked.techByStuff.Add(techStuff, tech);
+        }
+
+        public static void DrawAssignments(this ResearchProjectDef tech, Rect rect)
+        {
+            float height = rect.height;
+            float frameOffset = height / 4;
+            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+            Vector2 size = new Vector2(height, height);
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+                    Rect box = new Rect(position, size);
+                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
+                    startPos += height / 2;
+                }
+            }
         }
 
         public static void EjectTech(this ResearchProjectDef tech, Thing place)
@@ -351,7 +414,7 @@ namespace HumanResources
                 }
 
                 //4. Telling humans what's going on, depending on settings
-                if (ModBaseHumanResources.FullStartupReport)
+                if (ModBaseHumanResources.FullStartupReport && Prefs.LogVerbose)
                 {
                     StringBuilder report = new StringBuilder();
                     if (matchesCount > 0) { report.Append("keyword" + (matchesCount > 1 ? "s" : "") + ": " + keywords.ToStringSafeEnumerable()); }
@@ -400,6 +463,14 @@ namespace HumanResources
             return found;
         }
 
+        public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            var expertise = techComp.expertise;
+            if (expertise != null) return expertise.ContainsKey(tech) && techComp.expertise[tech] >= 1f;
+            return false;
+        }
+
         public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
         {
             float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
@@ -442,68 +513,6 @@ namespace HumanResources
                 tech.description.ToLower(culture).Contains(query);
         }
 
-        public static float StuffCostFactor(this ResearchProjectDef tech)
-        {
-            return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
-        }
-
-        public static List<ThingDef> UnlockedPlants(this ResearchProjectDef tech)
-        {
-            List<ThingDef> result = new List<ThingDef>();
-            foreach (ThingDef plant in tech.GetPlantsUnlocked()) //Cacau shouldn't be a Tree!
-            {
-                result.Add(plant);
-            }
-            return result;
-        }
-
-        private static void RegisterWeapon(this ResearchProjectDef tech, ThingDef weapon)
-        {
-            if (ShouldLockWeapon(weapon))
-            {
-                if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
-                if (WeaponsByTech.ContainsKey(tech)) WeaponsByTech[tech].Add(weapon);
-                else WeaponsByTech.Add(tech, new List<ThingDef>() { weapon });
-            }
-        }
-
-        public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
-        {
-            return WeaponsByTech.ContainsKey(tech) ? WeaponsByTech[tech] : new List<ThingDef>();
-        }
-
-        private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
-        {
-            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
-            bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
-            bool exempted = x.IsExempted();
-            return !basic && !tool && !exempted;
-        };
-
-        private static float StuffMarketValueFactor(this ResearchProjectDef tech)
-		{
-			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
-		}
-
-        public static List<Pawn> currentPawnsCache;
-
-        private static IEnumerable<Pawn> currentPawns
-        {
-            get
-            {
-                if (currentPawnsCache.NullOrEmpty()) currentPawnsCache = HarmonyPatches.PrisonLabor? PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive.Where(x => x.TechBound()).ToList() : PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists.Where(x => x.TryGetComp<CompKnowledge>() != null).ToList();
-                return currentPawnsCache;
-            }  
-        }            
-
-        public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
-        {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            var expertise = techComp.expertise;
-            if (expertise != null) return expertise.ContainsKey(tech) && techComp.expertise[tech] >= 1f;
-            return false;
-        }
-
         public static bool RequisitesKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
@@ -519,10 +528,44 @@ namespace HumanResources
             return tech.prerequisites.NullOrEmpty();
         }
 
-        private static IEnumerable<Pawn> SortedPawns(this ResearchProjectDef tech)
+        public static void SelectMenu(this ResearchProjectDef tech, bool completed)
         {
-            if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
-            else return currentPawns.OrderBy(x => tech.IsKnownBy(x))/*.ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level)*/;
+            Find.WindowStack.FloatMenu?.Close(false);
+            List<FloatMenuOption> options = new List<FloatMenuOption>();
+            if (tech.TechprintRequirementMet)
+            {
+                options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
+                           select opt.option).ToList<FloatMenuOption>();
+            }
+            else
+            {
+                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.TechprintCount), null)
+                {
+                    Disabled = true,
+                });
+            }
+            if (!options.Any()) options.Add(new FloatMenuOption("NoOptionsFound".Translate(), null));
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        public static float StuffCostFactor(this ResearchProjectDef tech)
+        {
+            return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
+        }
+
+        public static List<ThingDef> UnlockedPlants(this ResearchProjectDef tech)
+        {
+            List<ThingDef> result = new List<ThingDef>();
+            foreach (ThingDef plant in tech.GetPlantsUnlocked()) //Cacau shouldn't be a Tree!
+            {
+                result.Add(plant);
+            }
+            return result;
+        }
+
+        public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
+        {
+            return WeaponsByTech.ContainsKey(tech) ? WeaponsByTech[tech] : new List<ThingDef>();
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
@@ -537,7 +580,7 @@ namespace HumanResources
                     bool known = tech.IsKnownBy(pawn);
                     WorkTypeDef workGiver = (completed || known) ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
                     string header = TechStrings.GetTask(pawn, tech);
-                    if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech))) 
+                    if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech)))
                     {
                         if (pawn.WorkTypeIsDisabled(workGiver))
                         {
@@ -580,68 +623,25 @@ namespace HumanResources
             yield break;
         }
 
-        public static void SelectMenu(this ResearchProjectDef tech, bool completed)
+        private static void RegisterWeapon(this ResearchProjectDef tech, ThingDef weapon)
         {
-            Find.WindowStack.FloatMenu?.Close(false);
-            List<FloatMenuOption> options = new List<FloatMenuOption>();
-            if (tech.TechprintRequirementMet)
+            if (ShouldLockWeapon(weapon))
             {
-                options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
-                           select opt.option).ToList<FloatMenuOption>();
-            }
-            else
-            {
-                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.TechprintCount), null)
-                {
-                    Disabled = true,
-                });
-            }
-            if (!options.Any()) options.Add(new FloatMenuOption("NoOptionsFound".Translate(), null));
-            Find.WindowStack.Add(new FloatMenu(options));
-        }
-
-        public static void DrawAssignments(this ResearchProjectDef tech, Rect rect)
-        {
-            float height = rect.height;
-            float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
-            Vector2 size = new Vector2(height, height);
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p,tech)).GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
-                    Rect box = new Rect(position, size);
-                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
-                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
-                    startPos += height / 2;
-                }
+                if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
+                if (WeaponsByTech.ContainsKey(tech)) WeaponsByTech[tech].Add(weapon);
+                else WeaponsByTech.Add(tech, new List<ThingDef>() { weapon });
             }
         }
 
-        private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
+        private static IEnumerable<Pawn> SortedPawns(this ResearchProjectDef tech)
         {
-            string status = "error";
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            if (techComp != null && !techComp.homework.NullOrEmpty())
-            {
-                if (tech.IsKnownBy(pawn)) status = "AssignedToDocument".Translate(pawn);
-                else status = tech.IsFinished ? "AssignedToStudy".Translate(pawn) : "AssignedToResearch".Translate(pawn);
-            }
-            return status + " (" + "ClickToRemove".Translate() + ")";
-        };
+            if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
+            else return currentPawns.OrderBy(x => tech.IsKnownBy(x))/*.ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level)*/;
+        }
 
-        private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
+        private static float StuffMarketValueFactor(this ResearchProjectDef tech)
         {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            if (techComp != null && !techComp.homework.NullOrEmpty())
-            {
-                return techComp.homework.Contains(tech);
-            }
-            return false;
-        };
+			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+		}
     }
 }

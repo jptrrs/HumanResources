@@ -94,7 +94,7 @@ namespace HumanResources
 
         public static void Execute(Harmony instance, string modName, bool altRPal = false)
         {
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
             ModName = modName;
             AltRPal = altRPal;
 
@@ -240,7 +240,7 @@ namespace HumanResources
                 HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
-            Harmony.DEBUG = false;
+            //Harmony.DEBUG = false;
         }
 
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }

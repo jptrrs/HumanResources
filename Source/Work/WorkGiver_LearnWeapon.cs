@@ -25,13 +25,11 @@ namespace HumanResources
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            //Log.Message(pawn + " is looking for a training job...");
             Building_WorkTable Target = t as Building_WorkTable;
             if (Target != null)
             {
                 if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t, pawn).Any())
                 {
-                    //Log.Message("...no job on target.");
                     return false;
                 }
                 foreach (Bill bill in RelevantBills(Target, pawn))
@@ -79,20 +77,20 @@ namespace HumanResources
 
         protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();  
             IEnumerable<ThingDef> known = techComp.knownWeapons;
             IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
-            IEnumerable<ThingDef> available = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
+            IEnumerable<ThingDef> allowed = ModBaseHumanResources.unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
+            IEnumerable<ThingDef> viable = chosen.Intersect(allowed).Except(known);
+            IEnumerable<ThingDef> unavailable = chosen.Except(viable);
             if (!unavailable.EnumerableNullOrEmpty())
             {
                 string thoseWeapons = "ThoseWeapons".Translate();
                 string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
                 JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
             }
-            var result = chosen.Intersect(available).Except(known);
-            return result;
+            return viable;
         }
 
         protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)

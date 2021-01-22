@@ -26,7 +26,9 @@ namespace HumanResources
             EnableJoyGiver,
             ResearchSpeedTiedToDifficulty,
             StudySpeedTiedToDifficulty,
-            FullStartupReport;
+            FullStartupReport,
+            IndividualTechsReport;
+
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
         public static List<ThingDef> UniversalCrops = new List<ThingDef>();
@@ -109,7 +111,7 @@ namespace HumanResources
             //d. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
-            if (Prefs.LogVerbose)
+            if (Prefs.LogVerbose || FullStartupReport)
             {
                 Log.Message("[HumanResources] Codified technologies: " + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
                 Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
@@ -240,8 +242,9 @@ namespace HumanResources
             EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
-            FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "Print full startup report", null, false);
-            FullStartupReport.NeverVisible = !Prefs.LogVerbose;
+            FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
+            IndividualTechsReport = Settings.GetHandle<bool>("IndividualTechsReport", "DEV: Report technologies individually", null, false);
+            FullStartupReport.NeverVisible = (IndividualTechsReport.NeverVisible = !Prefs.DevMode);
         }
 
         public void ValidateTechPoolSettings(bool value)
@@ -250,9 +253,14 @@ namespace HumanResources
             {
                 Messages.Message("TechPoolMinimumDefaultMsg".Translate(), MessageTypeDefOf.CautionInput);
                 TechPoolIncludesStarting.ResetToDefault();
-                MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
-                ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { TechPoolIncludesStarting } );
+                ResetControl(TechPoolIncludesStarting);
             }
+        }
+
+        public void ResetControl ( SettingHandle hanlde)
+        {
+            MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
+            ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
         }
 
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
