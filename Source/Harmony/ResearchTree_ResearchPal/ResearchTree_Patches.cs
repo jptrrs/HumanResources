@@ -568,7 +568,7 @@ namespace HumanResources
 
         private static void ResearchNode_Postfix(object __instance, ResearchProjectDef research)
         {
-            if (populating) ResearchNodesCache.Add(research, __instance);
+            if (populating && !ResearchNodesCache.ContainsKey(research)) ResearchNodesCache.Add(research, __instance);
         }
 
         private static void Set_Rects_Postfix(object __instance)
