@@ -16,6 +16,14 @@
     <casualInterruptible>true</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
+  
+  <JobDef>
+    <defName>DocumentTechDigital</defName>
+    <driverClass>HumanResources.JobDriver_DocumentTechDigital</driverClass>
+    <reportString>documenting</reportString>
+    <casualInterruptible>true</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
 
   <JobDef>
     <defName>ResearchTech</defName>

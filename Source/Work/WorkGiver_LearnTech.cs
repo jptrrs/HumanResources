@@ -12,7 +12,7 @@ namespace HumanResources
         {
 			if (!base.ShouldSkip(pawn, forced))
 			{
-				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished)/*.Except(pawn.TryGetComp<CompKnowledge>().partiallyKnownTechs)*/;
+				IEnumerable<ResearchProjectDef> available = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => x.IsFinished);
 				return !available.Any();
 			}
 			return true;

@@ -9,6 +9,7 @@ namespace HumanResources
         public static RecipeDef
             LearnTech,
             DocumentTech,
+            DocumentTechDigital,
             TrainWeaponShooting,
             TrainWeaponMelee,
             PracticeWeaponShooting,

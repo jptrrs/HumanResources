@@ -12,6 +12,7 @@
     <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
     <recipeUsers>
       <li>StudyDesk</li>
+      <li>NetworkTerminal</li>
     </recipeUsers>
   </RecipeDef>
 
@@ -31,6 +32,21 @@
     <products>
       <TechBook>1</TechBook>
     </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DocumentTechDigital</defName>
+    <label>Document technology</label>
+    <description>Consolidate knowledge into a network learning resource and upload it to the colony database.</description>
+    <jobString>Documenting a technology.</jobString>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <workAmount>600</workAmount>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+    <recipeUsers>
+      <li>NetworkTerminal</li>
+    </recipeUsers>
   </RecipeDef>
 
   <RecipeDef>

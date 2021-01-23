@@ -27,6 +27,9 @@ namespace HumanResources
 			if (Desk != null && ModBaseHumanResources.unlocked.libraryFreeSpace > 0)
 			{
 				var relevantBills = RelevantBills(Desk, pawn);
+				//string test1 = CheckJobOnThing(pawn, t, forced) ? "true" : "false";
+				//string test2 = relevantBills.EnumerableNullOrEmpty() ? "true" : "false";
+				//Log.Message("... test1=" + test1 + ", test2=" + test2);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
 					//Log.Message("... no job on thing");
@@ -40,6 +43,11 @@ namespace HumanResources
 			if (ModBaseHumanResources.unlocked.libraryFreeSpace <= 0) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			return false;
 		}
+
+		//private bool CheckLibrarySpace()
+  //      {
+			
+  //      }
 
 		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
@@ -65,7 +73,7 @@ namespace HumanResources
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
-				if (bill.recipe == TechDefOf.DocumentTech && bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+				if ((bill.recipe == TechDefOf.DocumentTech || bill.recipe == TechDefOf.DocumentTechDigital) && bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 				{
 					SkillRequirement skillRequirement = bill.recipe.FirstSkillRequirementPawnDoesntSatisfy(pawn);
 					if (skillRequirement != null)
@@ -74,35 +82,44 @@ namespace HumanResources
 					}
 					else
 					{
-						Bill_ProductionWithUft bill_ProductionWithUft = bill as Bill_ProductionWithUft;
-						if (bill_ProductionWithUft != null)
+						if (bill.recipe.UsesUnfinishedThing)
 						{
-							if (bill_ProductionWithUft.BoundUft != null)
+							Bill_ProductionWithUft bill_ProductionWithUft = bill as Bill_ProductionWithUft;
+							if (bill_ProductionWithUft != null)
 							{
-								bool BoundWorker = bill_ProductionWithUft.BoundWorker == pawn;
-								bool canReach = pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false);
-								bool isforbidden = bill_ProductionWithUft.BoundUft.IsForbidden(pawn);
-								if (bill_ProductionWithUft.BoundWorker == pawn && pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false) && !bill_ProductionWithUft.BoundUft.IsForbidden(pawn))
+								if (bill_ProductionWithUft.BoundUft != null)
 								{
-									return FinishUftJob(pawn, bill_ProductionWithUft.BoundUft, bill_ProductionWithUft);
+									bool BoundWorker = bill_ProductionWithUft.BoundWorker == pawn;
+									bool canReach = pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false);
+									bool isforbidden = bill_ProductionWithUft.BoundUft.IsForbidden(pawn);
+									if (BoundWorker && canReach && isforbidden)
+									{
+										return FinishUftJob(pawn, bill_ProductionWithUft.BoundUft, bill_ProductionWithUft);
+									}
+									return null;
 								}
-								return null;
+								else
+								{
+									MethodInfo ClosestUftInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "ClosestUnfinishedThingForBill");
+									UnfinishedThing unfinishedThing = (UnfinishedThing)ClosestUftInfo.Invoke(this, new object[] { pawn, bill_ProductionWithUft });
+									if (unfinishedThing != null)
+									{
+										return FinishUftJob(pawn, unfinishedThing, bill_ProductionWithUft);
+									}
+								}
 							}
-							else
+							return new Job(TechJobDefOf.DocumentTech, target)
 							{
-								MethodInfo ClosestUftInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "ClosestUnfinishedThingForBill");
-								UnfinishedThing unfinishedThing = (UnfinishedThing)ClosestUftInfo.Invoke(this, new object[] { pawn, bill_ProductionWithUft });
-								if (unfinishedThing != null)
-								{
-									return FinishUftJob(pawn, unfinishedThing, bill_ProductionWithUft);
-								}
-							}
+								bill = bill
+							};
 						}
-						Job result = new Job(TechJobDefOf.DocumentTech, target)
-						{
-							bill = bill
-						};
-						return result;
+						else
+                        {
+							return new Job(TechJobDefOf.DocumentTechDigital, target)
+							{
+								bill = bill
+							};
+						}
 					}
 				}
 

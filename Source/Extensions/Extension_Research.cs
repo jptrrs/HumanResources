@@ -66,7 +66,9 @@ namespace HumanResources
             return false;
         };
 
-        private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
+        private static FieldInfo 
+            ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick"),
+            progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
 
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
@@ -526,6 +528,23 @@ namespace HumanResources
             }
             //3. test if there are any ancestors
             return tech.prerequisites.NullOrEmpty();
+        }
+
+        public static void Uploaded(this ResearchProjectDef tech, float amount, Pawn user)
+        {
+            if (tech == null)
+            {
+                Log.Error("Tryed to upload a null tech.", false);
+                return;
+            }
+            float num = Find.ResearchManager.GetProgress(tech);
+            num += amount;
+            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+            progress[tech] = num;
+            if (tech.IsFinished)
+            {
+                Find.ResearchManager.FinishProject(tech, true, user);
+            }
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)

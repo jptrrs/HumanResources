@@ -5,7 +5,7 @@
     <defName>StudyDesk</defName>
     <label>Study Desk</label>
     <thingClass>Building_WorkTable</thingClass>
-    <description>A desk to study and research technologies. Comes with all your faction's starting research.</description>
+    <description>A desk to study and document technologies. Comes with all your faction's starting research.</description>
     <graphicData>
       <texPath>Things/Building/StudyDesk</texPath>
       <shaderType>CutoutComplex</shaderType>
@@ -32,12 +32,12 @@
       <WorkToBuild>2500</WorkToBuild>
       <MaxHitPoints>180</MaxHitPoints>
       <Flammability>1.0</Flammability>
-      <ResearchSpeedFactor>1.0</ResearchSpeedFactor>
+      <ResearchSpeedFactor>0.75</ResearchSpeedFactor>
     </statBases>
     <size>(3,1)</size>
     <passability>PassThroughOnly</passability>
     <designationCategory>Production</designationCategory>
-    <pathCost>70</pathCost>
+    <pathCost>50</pathCost>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <surfaceType>Item</surfaceType>
@@ -60,6 +60,75 @@
       <li>PlaceWorker_ShowFacilitiesConnections</li>
     </placeWorkers>
   </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>NetworkTerminal</defName>
+    <label>Network Terminal</label>
+    <thingClass>Building_WorkTable</thingClass>
+    <description>An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed.</description>
+    <graphicData>
+      <texPath>Things/Building/NetworkTerminal</texPath>
+      <shaderType>CutoutComplex</shaderType>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>100</costStuffCount>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>3200</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <ResearchSpeedFactor>1.0</ResearchSpeedFactor>
+    </statBases>
+    <size>(2,1)</size>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Production</designationCategory>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <tickerType>Normal</tickerType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <comps>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>BookShelf</li>
+        </linkableFacilities>
+      </li>
+        <li Class="CompProperties_Power">
+          <compClass>CompPowerTrader</compClass>
+          <basePowerConsumption>100</basePowerConsumption>
+          <shortCircuitInRain>true</shortCircuitInRain>
+        </li>
+        <li Class="CompProperties_Flickable"/>
+      </comps>
+    <designationHotKey />
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+  </ThingDef>
+
 
   <!--Borrowed from Jecrell's RimWriter-->
   <ThingDef ParentName="FurnitureBase">
@@ -122,6 +191,102 @@
         <countSparseThreshhold>1</countSparseThreshhold>
         <countFullCapacity>10</countFullCapacity>
       </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+    <building>
+      <preventDeteriorationInside>true</preventDeteriorationInside>
+      <haulToContainerDuration>120</haulToContainerDuration>
+      <fixedStorageSettings>
+        <priority>Critical</priority>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Critical</priority>
+        <filter>
+          <categories>
+            <li>Knowledge</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+      <li>HumanResources.ITab_Inventory</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="FurnitureBase">
+    <defName>NetworkServer</defName>
+    <label>Network Server</label>
+    <thingClass>HumanResources.Building_BookStore</thingClass>
+    <description>The ultimate cloud storage unit to host your research database. All library space you'll ever need.</description>
+    <graphicData>
+      <texPath>Things/Building/NetworkServer</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <uiIconPath>Things/Building/NetworkServer</uiIconPath>
+    <uiIconScale>1</uiIconScale>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <rotatable>false</rotatable>
+    <socialPropernessMatters>false</socialPropernessMatters>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <WorkToBuild>5000</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>30</Steel>
+      <Plasteel>20</Plasteel>
+      <Gold>10</Gold>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <pathCost>70</pathCost>
+    <passability>PassThroughOnly</passability>
+    <designationCategory>Furniture</designationCategory>
+    <designationHotKey>Misc10</designationHotKey>
+    <comps>
+      <li Class="CompProperties_Facility">
+        <maxSimultaneous>20</maxSimultaneous>
+        <maxDistance>7.0</maxDistance>
+      </li>
+      <li Class="HumanResources.CompProperties_StorageGraphic">
+        <graphicEmpty>
+          <texPath>Things/Building/NetworkServerEmpty</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(2,2)</drawSize>
+        </graphicEmpty>
+        <graphicSparse>
+          <texPath>Things/Building/NetworkServerSparse</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(2,2)</drawSize>
+        </graphicSparse>
+        <graphicFull>
+          <texPath>Things/Building/NetworkServer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>(2,2)</drawSize>
+        </graphicFull>
+        <countSparseThreshhold>1</countSparseThreshhold>
+        <countFullCapacity>10</countFullCapacity>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
     </comps>
     <placeWorkers>
       <li>PlaceWorker_ShowFacilitiesConnections</li>

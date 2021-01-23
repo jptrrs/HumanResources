@@ -6,7 +6,6 @@ using Verse.AI;
 using System.Reflection;
 using HarmonyLib;
 using System;
-using System.Security.Cryptography;
 
 namespace HumanResources
 {
@@ -22,11 +21,12 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
+			Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
 			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
+
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
@@ -89,11 +89,9 @@ namespace HumanResources
 			yield return MakeUnfinishedThingIfNeeded();
 			yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return FinishRecipeAndStartStoringProduct();
-
 			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
 			{
 				yield return Toils_Reserve.Reserve(TargetIndex.B);
-				//yield return Toils_Reserve.Reserve(TargetIndex.A);
 				yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
 				findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
 				yield return findPlaceTarget; 

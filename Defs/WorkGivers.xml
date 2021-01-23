@@ -11,6 +11,7 @@
     <priorityInType>10</priorityInType>
     <fixedBillGiverDefs>
       <li>StudyDesk</li>
+      <li>NetworkTerminal</li>
     </fixedBillGiverDefs>
   </WorkGiverDef>
 

@@ -9,6 +9,7 @@ namespace HumanResources
         public static JobDef
             LearnTech,
             DocumentTech,
+            DocumentTechDigital,
             ResearchTech,
             TrainWeapon,
             PlayAtDummy,

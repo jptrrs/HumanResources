@@ -381,6 +381,7 @@
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books\ITab_Inventory.cs" />
+    <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\LearningUtility.cs" />
     <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />

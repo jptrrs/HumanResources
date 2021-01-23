@@ -25,6 +25,7 @@ namespace HumanResources
 				return pawn.TryGetComp<CompKnowledge>();
 			}
 		}
+
 		public override void ExposeData()
 		{
 			Scribe_Defs.Look<ResearchProjectDef>(ref project, "project");
