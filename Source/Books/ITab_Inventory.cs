@@ -48,7 +48,7 @@ namespace HumanResources
         {
             get
             {
-                if (SelThing != null && base.SelThing is Building_BookStore bld)
+                if (SelThing != null && SelThing is Building_BookStore bld)
                 {
                     return bld;
                 }
@@ -90,7 +90,7 @@ namespace HumanResources
                 ITab_Inventory.workingInvList.AddRange(t);
                 for (int i = 0; i < ITab_Inventory.workingInvList.Count; i++)
                 {
-                    DrawThingRow(ref num, viewRect.width, ITab_Inventory.workingInvList[i], true);
+                    DrawThingRow(ref num, viewRect.width, ITab_Inventory.workingInvList[i], selStorage.retrievable);
                 }
             }
             if (Event.current.type == EventType.Layout)
@@ -103,7 +103,7 @@ namespace HumanResources
             Text.Anchor = TextAnchor.UpperLeft;
         }
 
-        private void DrawThingRow(ref float y, float width, Thing thing, bool inventory = false)
+        private void DrawThingRow(ref float y, float width, Thing thing, bool canRetrieve = false)
         {
             Rect rect = new Rect(0f, y, width, 28f);
             Widgets.InfoCardButton(rect.width - 24f, y, thing);
@@ -112,7 +112,7 @@ namespace HumanResources
             {
                 Rect rect2 = new Rect(rect.width - 24f, y, 24f, 24f);
                 TooltipHandler.TipRegion(rect2, "DropThing".Translate());
-                if (Widgets.ButtonImage(rect2, ITabButton.Drop))
+                if (canRetrieve && Widgets.ButtonImage(rect2, ITabButton.Drop))
                 {
                     SoundDefOf.Tick_High.PlayOneShotOnCamera(null);
                     InterfaceDrop(thing);

@@ -12,10 +12,12 @@ namespace HumanResources
     public class Building_BookStore : Building, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
         public ThingOwner innerContainer;
+        public bool retrievable = true;
         protected StorageSettings storageSettings;
-        private CompStorageGraphic compStorageGraphic = null;
-        private static int dynamicCapacityInt;
-        public int dynamicCapacity
+        protected CompStorageGraphic compStorageGraphic = null;
+        protected static int dynamicCapacityInt;
+
+        public virtual int dynamicCapacity
         {
             get
             {
@@ -26,6 +28,7 @@ namespace HumanResources
                 return dynamicCapacityInt;
             }
         }
+
         public CompStorageGraphic CompStorageGraphic
         {
             get
@@ -56,7 +59,7 @@ namespace HumanResources
             innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
         }
         
-        public bool Accepts(Thing thing)
+        public virtual bool Accepts(Thing thing)
         {
             if (thing.def == TechDefOf.TechBook && thing.Stuff != null && thing.Stuff.IsWithinCategory(TechDefOf.Knowledge))
             {
@@ -161,7 +164,7 @@ namespace HumanResources
         {
             foreach (Gizmo g in base.GetGizmos())
                 yield return g;
-            if (innerContainer.Count > 0)
+            if (retrievable && innerContainer.Count > 0)
             {
                 yield return new Command_Action()
                 {

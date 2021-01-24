@@ -224,7 +224,7 @@
   <ThingDef ParentName="FurnitureBase">
     <defName>NetworkServer</defName>
     <label>Network Server</label>
-    <thingClass>HumanResources.Building_BookStore</thingClass>
+    <thingClass>HumanResources.Building_NetworkServer</thingClass>
     <description>The ultimate cloud storage unit to host your research database. All library space you'll ever need.</description>
     <graphicData>
       <texPath>Things/Building/NetworkServer</texPath>
