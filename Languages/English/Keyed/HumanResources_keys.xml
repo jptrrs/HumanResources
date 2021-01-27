@@ -94,6 +94,7 @@
   <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
   <NoBooksLeftToScan>No books left to scan.</NoBooksLeftToScan>
   <NoBooksFoundToScan>No books were found to scan.</NoBooksFoundToScan>
+  <NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
   
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>

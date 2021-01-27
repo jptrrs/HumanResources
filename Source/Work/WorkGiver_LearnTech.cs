@@ -27,7 +27,7 @@ namespace HumanResources
 				var relevantBills = RelevantBills(Desk, pawn);
 				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
 				{
-					//Log.Message("...no job on desk.");
+					//Log.Message("...no job on desk. CheckJobOnThing is "+ CheckJobOnThing(pawn, t, forced)+", relevantbills is "+ relevantBills.EnumerableNullOrEmpty());
 					return false;
 				}
 				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any();

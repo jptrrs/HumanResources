@@ -25,6 +25,7 @@
     <priorityInType>9</priorityInType>
     <fixedBillGiverDefs>
 			<li>StudyDesk</li>
+      <li>NetworkTerminal</li>
 		</fixedBillGiverDefs>
 	</WorkGiverDef>
 
@@ -89,36 +90,4 @@
     </fixedBillGiverDefs>
   </WorkGiverDef>
   
-  <!--<WorkGiverDef>
-    <defName>PracticeShooting</defName>
-    <label>shooting practice</label>
-    <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
-    <workType>HR_Learn</workType>
-    <verb>train</verb>
-    <gerund>training</gerund>
-    <priorityInType>2</priorityInType>
-    <requiredCapacities>
-      <li>Manipulation</li>
-    </requiredCapacities>
-    <fixedBillGiverDefs>
-      <li>Target</li>
-    </fixedBillGiverDefs>
-  </WorkGiverDef>
-
-  <WorkGiverDef>
-    <defName>PracticeMelee</defName>
-    <label>melee practice</label>
-    <giverClass>HumanResources.WorkGiver_PracticeWeapon</giverClass>
-    <workType>HR_Learn</workType>
-    <verb>train</verb>
-    <gerund>training</gerund>
-    <priorityInType>1</priorityInType>
-    <requiredCapacities>
-      <li>Manipulation</li>
-    </requiredCapacities>
-    <fixedBillGiverDefs>
-      <li>MrDummy</li>
-    </fixedBillGiverDefs>
-  </WorkGiverDef>-->
-
 </Defs>

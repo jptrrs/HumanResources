@@ -23,7 +23,7 @@ namespace HumanResources
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			//Log.Message(pawn + " is looking for a scan job...");
-			Building_WorkTable Desk = t as Building_WorkTable;
+			Building_WorkTable Desk = t as Building_WorkTable;	
 			if (Desk != null)
 			{
 				var relevantBills = RelevantBills(Desk, pawn);
@@ -46,20 +46,24 @@ namespace HumanResources
 		{
 			//Log.Message(pawn + " looking for a job at " + thing);
 			IBillGiver billGiver = thing as IBillGiver;
-			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling() && billGiver.Map.ServerAvailable())
+			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 			{
-				LocalTargetInfo target = thing;
-				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+				if (billGiver.Map.ServerAvailable())
 				{
-					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing, pawn))
+					LocalTargetInfo target = thing;
+					if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 					{
-						if (ValidateChosenTechs(bill, pawn, billGiver))
+						billGiver.BillStack.RemoveIncompletableBills();
+						foreach (Bill bill in RelevantBills(thing, pawn))
 						{
-							return StartBillJob(pawn, billGiver, bill);
+							if (ValidateChosenTechs(bill, pawn, billGiver))
+							{
+								return StartBillJob(pawn, billGiver, bill);
+							}
 						}
 					}
 				}
+				else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAvailableServer".Translate());
 			}
 			return null;
 		}
