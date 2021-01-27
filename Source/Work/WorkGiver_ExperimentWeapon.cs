@@ -10,48 +10,6 @@ namespace HumanResources
 {
     internal class WorkGiver_ExperimentWeapon : WorkGiver_LearnWeapon
     {
-        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-        {
-            //Log.Message(pawn + " is looking for an experimenting job...");
-            Building_WorkTable Target = t as Building_WorkTable;
-            if (Target != null)
-            {
-                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t, pawn).Any())
-                {
-                    //Log.Message("...no job on target.");
-                    return false;
-                }
-                foreach (Bill bill in RelevantBills(Target, pawn))
-                {
-                    return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
-                }
-                return false;
-            }
-            return false;
-        }
-
-        public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
-        {
-            //Log.Message(pawn + " looking for a job at " + thing);
-            IBillGiver billGiver = thing as IBillGiver;
-            if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
-            {
-                LocalTargetInfo target = thing;
-                if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
-                {
-                    billGiver.BillStack.RemoveIncompletableBills();
-                    foreach (Bill bill in RelevantBills(thing, pawn))
-                    {
-                        if (ValidateChosenWeapons(bill, pawn, billGiver))
-                        {
-                            return StartBillJob(pawn, billGiver, bill);
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
@@ -77,7 +35,7 @@ namespace HumanResources
             return result;
         }
 
-        private bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
+        protected override bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
             {

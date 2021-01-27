@@ -37,7 +37,6 @@ namespace HumanResources
 
 		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
-			//Log.Message(pawn + " is looking for a research job, t is "+t.GetType());
 			Building_ResearchBench Desk = t as Building_ResearchBench;
 			if (Desk != null && pawn.CanReserve(t, 1, -1, null, forced))
 			{

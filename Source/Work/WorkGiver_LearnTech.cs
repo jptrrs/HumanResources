@@ -18,25 +18,6 @@ namespace HumanResources
 			return true;
 		}
 
-		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-		{
-			//Log.Message(pawn + " is looking for a study job...");
-			Building_WorkTable Desk = t as Building_WorkTable;
-			if (Desk != null)
-			{
-				var relevantBills = RelevantBills(Desk, pawn);
-				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
-				{
-					//Log.Message("...no job on desk. CheckJobOnThing is "+ CheckJobOnThing(pawn, t, forced)+", relevantbills is "+ relevantBills.EnumerableNullOrEmpty());
-					return false;
-				}
-				return pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any();
-			}
-            //Log.Message("case 4");
-            return false;
-
-		}
-
 		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
 			IBillGiver billGiver = thing as IBillGiver;
@@ -45,15 +26,18 @@ namespace HumanResources
 				LocalTargetInfo target = thing;
 				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 				{
-					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing, pawn))
+					if (pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any())
 					{
-						if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn)/*&& bill.SelectedTech().Intersect(availableTechs).Any()*/)
+						billGiver.BillStack.RemoveIncompletableBills();
+						foreach (Bill bill in RelevantBills(thing, pawn))
 						{
-							return new Job(TechJobDefOf.LearnTech, target)
+							if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 							{
-								bill = bill
-							};
+								return new Job(TechJobDefOf.LearnTech, target)
+								{
+									bill = bill
+								};
+							}
 						}
 					}
 				}

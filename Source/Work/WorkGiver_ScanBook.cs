@@ -20,31 +20,8 @@ namespace HumanResources
 			return ModBaseHumanResources.unlocked.networkDatabase.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
 		}
 
-		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-		{
-			//Log.Message(pawn + " is looking for a scan job...");
-			Building_WorkTable Desk = t as Building_WorkTable;	
-			if (Desk != null)
-			{
-				var relevantBills = RelevantBills(Desk, pawn);
-				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
-				{
-					//Log.Message("... no job on thing");
-					return false;
-				}
-				var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-				if (ModBaseHumanResources.unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount())
-                {
-					return JobOnThing(pawn, t, forced) != null;
-                }
-				if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate());
-			}
-			return false;
-		}
-
 		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
-			//Log.Message(pawn + " looking for a job at " + thing);
 			IBillGiver billGiver = thing as IBillGiver;
 			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 			{
@@ -53,14 +30,19 @@ namespace HumanResources
 					LocalTargetInfo target = thing;
 					if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 					{
-						billGiver.BillStack.RemoveIncompletableBills();
-						foreach (Bill bill in RelevantBills(thing, pawn))
+						var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
+						if (ModBaseHumanResources.unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount())
 						{
-							if (ValidateChosenTechs(bill, pawn, billGiver))
+							billGiver.BillStack.RemoveIncompletableBills();
+							foreach (Bill bill in RelevantBills(thing, pawn))
 							{
-								return StartBillJob(pawn, billGiver, bill);
+								if (ValidateChosenTechs(bill, pawn, billGiver))
+								{
+									return StartBillJob(pawn, billGiver, bill);
+								}
 							}
 						}
+						else if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate());
 					}
 				}
 				else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAvailableServer".Translate());

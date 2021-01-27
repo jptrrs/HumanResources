@@ -20,29 +20,7 @@ namespace HumanResources
 			return true;
 		}
 
-		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-		{
-			//Log.Message(pawn + " is looking for a document job...");
-			Building_WorkTable Desk = t as Building_WorkTable;
-			if (Desk != null)
-			{
-				if (CheckLibrarySpace(Desk))
-				{
-					var relevantBills = RelevantBills(Desk, pawn);
-					if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
-					{
-						//Log.Message("... no job on thing");
-						return false;
-					}
-					CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-					return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
-				}
-				else JobFailReason.Is("NoSpaceInLibrary".Translate());
-			}
-			return false;
-		}
-
-        private bool CheckLibrarySpace(Building_WorkTable Desk)
+        private bool CheckLibrarySpace(Thing Desk)
         {
 			if (Desk.def == TechDefOf.NetworkTerminal)
 			{
@@ -56,15 +34,23 @@ namespace HumanResources
 			IBillGiver billGiver = thing as IBillGiver;
 			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 			{
-				LocalTargetInfo target = thing;
-				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+				if (CheckLibrarySpace(thing))
 				{
-					billGiver.BillStack.RemoveIncompletableBills();
-					foreach (Bill bill in RelevantBills(thing, pawn))
+					CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+					if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any())
 					{
-						return StartOrResumeBillJob(pawn, billGiver, target);
+						LocalTargetInfo target = thing;
+						if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+						{
+							billGiver.BillStack.RemoveIncompletableBills();
+							foreach (Bill bill in RelevantBills(thing, pawn))
+							{
+								return StartOrResumeBillJob(pawn, billGiver, target);
+							}
+						}
 					}
 				}
+				else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			}
 			return null;
 		}

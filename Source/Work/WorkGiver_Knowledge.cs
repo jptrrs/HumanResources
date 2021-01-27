@@ -26,19 +26,27 @@ namespace HumanResources
 			IBillGiver billGiver = t as IBillGiver;
 			if (billGiver != null && ThingIsUsableBillGiver(t) && billGiver.CurrentlyUsableForBills() && billGiver.BillStack.AnyShouldDoNow && pawn.CanReserve(t, 1, -1, null, forced) && !t.IsBurning() && !t.IsForbidden(pawn))
 			{
-				if (!pawn.CanReach(t, PathEndMode.OnCell, Danger.Some, false, TraverseMode.ByPawn))
-				{
-					return false;
-				}
+				if (!pawn.CanReach(t, PathEndMode.OnCell, Danger.Some, false, TraverseMode.ByPawn)) return false;
 				billGiver.BillStack.RemoveIncompletableBills();
 				return true;
 			}
 			return false;
 		}
 
+		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+		{
+			Building_WorkTable desk = t as Building_WorkTable;
+			if (desk != null)
+			{
+				var relevantBills = RelevantBills(desk, pawn);
+				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty()) return false;
+				return JobOnThing(pawn, t, forced) != null;
+			}
+			return false;
+		}
+
 		protected IEnumerable<Bill_Production> RelevantBills(Thing thing, Pawn pawn)
 		{
-			//Log.Warning("DEBUG: looking for relevant bills for workgiver " + def.defName+"...");
 			Building_WorkTable desk = thing as Building_WorkTable;	
 			if (desk != null)
 			{

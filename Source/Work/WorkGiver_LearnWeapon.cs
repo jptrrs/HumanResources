@@ -23,24 +23,6 @@ namespace HumanResources
             return p.CanReserve(target, maxPawns, stackCount, layer, ignoreOtherReservations);
         }
 
-        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-        {
-            Building_WorkTable Target = t as Building_WorkTable;
-            if (Target != null)
-            {
-                if (!CheckJobOnThing(pawn, t, forced) && RelevantBills(t, pawn).Any())
-                {
-                    return false;
-                }
-                foreach (Bill bill in RelevantBills(Target, pawn))
-                {
-                    return ValidateChosenWeapons(bill, pawn, t as IBillGiver);
-                }
-                return false;
-            }
-            return false;
-        }
-
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
         {
             //Log.Message(pawn + " looking for a job at " + thing);
@@ -130,7 +112,7 @@ namespace HumanResources
             return job2;
         }
 
-        private bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
+        protected virtual bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
             if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
             {
