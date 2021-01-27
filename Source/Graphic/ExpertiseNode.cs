@@ -359,6 +359,7 @@ namespace HumanResources
                     MainButtonDefOf.Research.Worker.InterfaceTryActivate();
                     ResearchTree_Patches.interest = Tech;
                 }
+                Event.current.Use();
             }
         }
 

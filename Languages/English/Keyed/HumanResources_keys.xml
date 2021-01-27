@@ -36,7 +36,7 @@
   <TechPoolIncludesBackgroundDesc>If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!</TechPoolIncludesBackgroundDesc>
   <TechPoolIncludesScenarioTitle>...the scenario starting research</TechPoolIncludesScenarioTitle>
   <TechPoolIncludesScenarioDesc>If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.</TechPoolIncludesScenarioDesc>
-  <!--NEW--><TechPoolMinimumDefaultMsg>They must know something!</TechPoolMinimumDefaultMsg>
+  <TechPoolMinimumDefaultMsg>They must know something!</TechPoolMinimumDefaultMsg>
   <WeaponPoolModeTitle>Combat specialists start with weapons from...</WeaponPoolModeTitle>
   <WeaponPoolModeDesc>Defines the pool from which to draw weapons proficiency for the player's colonists who are expert shooters or brawlers when they are created.</WeaponPoolModeDesc>
   <WeaponPoolMode_Both>both weapon lists</WeaponPoolMode_Both>
@@ -92,6 +92,8 @@
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
   <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
+  <NoBooksLeftToScan>No books left to scan.</NoBooksLeftToScan>
+  <NoBooksFoundToScan>No books were found to scan.</NoBooksFoundToScan>
   
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>

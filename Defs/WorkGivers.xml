@@ -29,6 +29,19 @@
 	</WorkGiverDef>
 
   <WorkGiverDef>
+		<defName>ScanBook</defName>
+		<label>Scan Books</label>
+		<giverClass>HumanResources.WorkGiver_ScanBook</giverClass>
+		<workType>BasicWorker</workType>
+		<verb>scan</verb>
+		<gerund>scanning at</gerund>
+    <priorityInType>400</priorityInType>
+    <fixedBillGiverDefs>
+			<li>NetworkTerminal</li>
+		</fixedBillGiverDefs>
+	</WorkGiverDef>  
+
+  <WorkGiverDef>
     <defName>TrainWeapon</defName>
     <label>Learn weapon use</label>
     <giverClass>HumanResources.WorkGiver_LearnWeapon</giverClass>

@@ -75,7 +75,7 @@ namespace HumanResources
 				{
 					num *= 30f;
 				}
-				project.Uploaded(num, actor);
+				project.Uploaded(num, TargetThingA);
 				actor.GainComfortFromCellIfPossible(true);
 				if (project.IsFinished)
 				{

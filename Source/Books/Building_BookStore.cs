@@ -90,10 +90,13 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
-            ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
-            if (innerContainer.Count > 0)
+            if (retrievable)
             {
-                innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this); });
+                ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
+                if (innerContainer.Count > 0)
+                {
+                    innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this); });
+                }
             }
             base.DeSpawn(mode);
         }
@@ -152,11 +155,10 @@ namespace HumanResources
         {
             StringBuilder s = new StringBuilder();
             string baseStr = base.GetInspectString();
-            if (baseStr != "")
-                s.AppendLine(baseStr);
+            if (baseStr != "") s.AppendLine(baseStr);
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
-            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
+            if (retrievable && Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
             return s.ToString().TrimEndNewlines();
         }
 
@@ -173,13 +175,13 @@ namespace HumanResources
                     defaultDesc = "BookStoreRetrieveBookDesc".Translate(),
                     action = delegate
                     {
-                        ProcessInput();
+                        ContentsMenu();
                     }
                 };
             }
         }
 
-        public void ProcessInput()
+        public void ContentsMenu()
         {
             List<FloatMenuOption> list = new List<FloatMenuOption>();
             Map map = Map;
@@ -198,9 +200,16 @@ namespace HumanResources
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            if (retrievable) ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
             this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
+        }
+
+        public virtual void CheckTechIn(ResearchProjectDef tech)
+        {
+            if (!tech.IsFinished) tech.CarefullyFinishProject(this);
+            CompStorageGraphic.UpdateGraphics();
+            ModBaseHumanResources.unlocked.libraryFreeSpace--;
         }
     }
 }

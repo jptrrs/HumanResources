@@ -24,32 +24,34 @@ namespace HumanResources
 		{
 			//Log.Message(pawn + " is looking for a document job...");
 			Building_WorkTable Desk = t as Building_WorkTable;
-			if (Desk != null && ModBaseHumanResources.unlocked.libraryFreeSpace > 0)
+			if (Desk != null)
 			{
-				var relevantBills = RelevantBills(Desk, pawn);
-				//string test1 = CheckJobOnThing(pawn, t, forced) ? "true" : "false";
-				//string test2 = relevantBills.EnumerableNullOrEmpty() ? "true" : "false";
-				//Log.Message("... test1=" + test1 + ", test2=" + test2);
-				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
+				if (CheckLibrarySpace(Desk))
 				{
-					//Log.Message("... no job on thing");
-					return false;
+					var relevantBills = RelevantBills(Desk, pawn);
+					if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty())
+					{
+						//Log.Message("... no job on thing");
+						return false;
+					}
+					CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+					return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
 				}
-				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-				return techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any();
-
+				else JobFailReason.Is("NoSpaceInLibrary".Translate());
 			}
-			//Log.Message("... no free space");
-			if (ModBaseHumanResources.unlocked.libraryFreeSpace <= 0) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			return false;
 		}
 
-		//private bool CheckLibrarySpace()
-  //      {
-			
-  //      }
+        private bool CheckLibrarySpace(Building_WorkTable Desk)
+        {
+			if (Desk.def == TechDefOf.NetworkTerminal)
+			{
+				return Desk.Map.listerBuildings.ColonistsHaveBuildingWithPowerOn(TechDefOf.NetworkServer);
+			}
+			else return ModBaseHumanResources.unlocked.libraryFreeSpace <= 0;
+        }
 
-		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
+        public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
 			IBillGiver billGiver = thing as IBillGiver;
 			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())

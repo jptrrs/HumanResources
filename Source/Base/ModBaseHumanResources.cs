@@ -164,10 +164,14 @@ namespace HumanResources
             }
 
             //c. Populating knowledge recipes and book shelves
-            foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.fixedIngredientFilter.AnyAllowedDef == null))
-            {
-                r.fixedIngredientFilter.ResolveReferences();
-            }
+            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.IsIngredient(TechDefOf.TechBook) /*x.fixedIngredientFilter.AnyAllowedDef == null*/))
+            //{
+            //    Log.Message("DEBUG resolving recipe: " + r.label);
+            //    r.fixedIngredientFilter.ResolveReferences();
+            //    r.defaultIngredientFilter.ResolveReferences();
+            //}
+            //TechDefOf.ScanBook.fixedIngredientFilter.ResolveReferences();
+            //TechDefOf.ScanBook.defaultIngredientFilter.ResolveReferences();
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
                 t.building.fixedStorageSettings.filter.ResolveReferences();

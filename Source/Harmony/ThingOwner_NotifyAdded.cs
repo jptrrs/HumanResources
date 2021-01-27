@@ -15,9 +15,7 @@ namespace HumanResources
             if (Act && ___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(TechDefOf.Knowledge))
             {
                 ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];
-                project.CarefullyFinishProject(bookStore);
-                bookStore.CompStorageGraphic.UpdateGraphics();
-                ModBaseHumanResources.unlocked.libraryFreeSpace--;
+                bookStore.CheckTechIn(project);
                 Act = false;
             }
         }

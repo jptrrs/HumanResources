@@ -50,6 +50,40 @@
   </RecipeDef>
 
   <RecipeDef>
+    <defName>ScanBook</defName>
+    <label>Scan books</label>
+    <description>Scan existing books and upload its contents to the colony database.</description>
+    <jobString>Scanning a book.</jobString>
+    <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <workAmount>600</workAmount>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+    <recipeUsers>
+      <li>NetworkTerminal</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>TechBook</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Knowledge</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>Knowledge</li>
+      </categories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
     <defName>TrainWeaponShooting</defName>
     <label>Learn to shoot a weapon</label>
     <description>Train with a ranged weapon to acquire proficiency.</description>

@@ -21,7 +21,7 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-			Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
+			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
 			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
@@ -57,21 +57,21 @@ namespace HumanResources
 				return false;
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return new Toil
-			{
-				initAction = delegate ()
-				{
-					if (job.targetQueueB != null && job.targetQueueB.Count == 1)
-					{
-						UnfinishedThing unfinishedThing = job.targetQueueB[0].Thing as UnfinishedThing;
-						if (unfinishedThing != null)
-						{
-							unfinishedThing.BoundBill = (Bill_ProductionWithUft)job.bill;
-						}
-					}
-				}
-			};
-			yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
+            yield return new Toil
+            {
+                initAction = delegate ()
+                {
+                    if (job.targetQueueB != null && job.targetQueueB.Count == 1)
+                    {
+                        UnfinishedThing unfinishedThing = job.targetQueueB[0].Thing as UnfinishedThing;
+                        if (unfinishedThing != null)
+                        {
+                            unfinishedThing.BoundBill = (Bill_ProductionWithUft)job.bill;
+                        }
+                    }
+                }
+            };
+            yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
 			Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
 			yield return extract;
 			Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
@@ -86,54 +86,54 @@ namespace HumanResources
 			getToHaulTarget = null;
 			findPlaceTarget = null;
 			yield return gotoBillGiver;
-			yield return MakeUnfinishedThingIfNeeded();
-			yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
+            yield return MakeUnfinishedThingIfNeeded();
+            yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return FinishRecipeAndStartStoringProduct();
-			if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
-			{
-				yield return Toils_Reserve.Reserve(TargetIndex.B);
-				yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
-				findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
-				yield return findPlaceTarget; 
-				Toil prepare = Toils_General.Wait(250);
-				prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
-				yield return prepare;
-				yield return new Toil
-				{
-					initAction = delegate
-					{
-						Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
-						CurToil.FailOn(() => shelf == null);
-						Thing book = pawn.carryTracker.CarriedThing;
-						if (pawn.carryTracker.CarriedThing == null)
-						{
-							Log.Error(pawn + " tried to place a book on shelf but is not hauling anything.");
-							return;
-						}
-						if (shelf.Accepts(book))
-						{
-							bool flag = false;
-							if (book.holdingOwner != null)
-							{
-								book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
-								flag = true;
-							}
-							else
-							{
-								flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
-							}
-							pawn.carryTracker.innerContainer.Remove(book);
-						}
-						else
-						{
-							Log.Error(pawn + " tried to place a book in " + shelf + ", but won't accept it.");
-							return;
-						}
-						pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
-					}
-				};
-			}
-			yield break;
+            if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
+            {
+                yield return Toils_Reserve.Reserve(TargetIndex.B);
+                yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
+                findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
+                yield return findPlaceTarget;
+                Toil prepare = Toils_General.Wait(250);
+                prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
+                yield return prepare;
+                yield return new Toil
+                {
+                    initAction = delegate
+                    {
+                        Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
+                        CurToil.FailOn(() => shelf == null);
+                        Thing book = pawn.carryTracker.CarriedThing;
+                        if (pawn.carryTracker.CarriedThing == null)
+                        {
+                            Log.Error(pawn + " tried to place a book on shelf but is not hauling anything.");
+                            return;
+                        }
+                        if (shelf.Accepts(book))
+                        {
+                            bool flag = false;
+                            if (book.holdingOwner != null)
+                            {
+                                book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
+                                flag = true;
+                            }
+                            else
+                            {
+                                flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
+                            }
+                            pawn.carryTracker.innerContainer.Remove(book);
+                        }
+                        else
+                        {
+                            Log.Error(pawn + " tried to place a book in " + shelf + ", but won't accept it.");
+                            return;
+                        }
+                        pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+                    }
+                };
+            }
+            yield break;
 		}
 
         private Toil FinishRecipeAndStartStoringProduct()

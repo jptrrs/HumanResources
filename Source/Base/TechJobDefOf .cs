@@ -11,6 +11,7 @@ namespace HumanResources
             DocumentTech,
             DocumentTechDigital,
             ResearchTech,
+            ScanBook,
             TrainWeapon,
             PlayAtDummy,
             PlayAtTarget;

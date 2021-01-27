@@ -10,6 +10,7 @@ namespace HumanResources
             LearnTech,
             DocumentTech,
             DocumentTechDigital,
+            ScanBook,
             TrainWeaponShooting,
             TrainWeaponMelee,
             PracticeWeaponShooting,
@@ -22,7 +23,9 @@ namespace HumanResources
             TechBook,
             UnfinishedTechBook,
             WeaponsNotBasic,
-            WeaponsAlwaysBasic;
+            WeaponsAlwaysBasic,
+            NetworkTerminal,
+            NetworkServer;
         public static WorkTypeDef HR_Learn;
         public static JoyGiverDef
             Play_Shooting,

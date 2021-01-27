@@ -32,7 +32,7 @@
       <WorkToBuild>2500</WorkToBuild>
       <MaxHitPoints>180</MaxHitPoints>
       <Flammability>1.0</Flammability>
-      <ResearchSpeedFactor>0.75</ResearchSpeedFactor>
+      <ResearchSpeedFactor>1.0</ResearchSpeedFactor>
     </statBases>
     <size>(3,1)</size>
     <passability>PassThroughOnly</passability>
@@ -288,9 +288,9 @@
       </li>
       <li Class="CompProperties_Flickable"/>
     </comps>
-    <placeWorkers>
+    <!--<placeWorkers>
       <li>PlaceWorker_ShowFacilitiesConnections</li>
-    </placeWorkers>
+    </placeWorkers>-->
     <building>
       <preventDeteriorationInside>true</preventDeteriorationInside>
       <haulToContainerDuration>120</haulToContainerDuration>
@@ -312,7 +312,7 @@
       </defaultStorageSettings>
     </building>
     <inspectorTabs>
-      <li>ITab_Storage</li>
+      <!--<li>ITab_Storage</li>-->
       <li>HumanResources.ITab_Inventory</li>
     </inspectorTabs>
   </ThingDef>

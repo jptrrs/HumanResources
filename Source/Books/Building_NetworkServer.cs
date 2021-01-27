@@ -8,7 +8,6 @@ using Verse;
 
 namespace HumanResources
 {
-    //Borrowed from Jecrell's RimWriter
     public class Building_NetworkServer : Building_BookStore, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
         public new bool retrievable = false;
@@ -30,9 +29,15 @@ namespace HumanResources
             return false;
         }
 
+        public override void CheckTechIn(ResearchProjectDef tech)
+        {
+            if (!tech.IsFinished) tech.CarefullyFinishProject(this);
+            CompStorageGraphic.UpdateGraphics();
+            ModBaseHumanResources.unlocked.networkDatabase.AddDistinct(tech);
+        }
+
         public override void DeSpawn(DestroyMode mode)
         {
-            ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
             if (innerContainer.Count > 0)
             {
                 foreach (Thing t in innerContainer)

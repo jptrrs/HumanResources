@@ -34,6 +34,14 @@
   </JobDef>
 
   <JobDef>
+    <defName>ScanBook</defName>
+    <driverClass>HumanResources.JobDriver_ScanBook</driverClass>
+    <reportString>scanning</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
     <defName>TrainWeapon</defName>
     <driverClass>HumanResources.JobDriver_LearnWeapon</driverClass>
     <reportString>training weapon</reportString>

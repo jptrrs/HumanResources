@@ -16,6 +16,7 @@ namespace HumanResources
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
         public static SkillDef Bias = new SkillDef();
         public static List<Pawn> currentPawnsCache;
+        public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
         public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
@@ -66,9 +67,7 @@ namespace HumanResources
             return false;
         };
 
-        private static FieldInfo 
-            ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick"),
-            progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
+        private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
 
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
@@ -214,9 +213,9 @@ namespace HumanResources
 
         public static void EjectTech(this ResearchProjectDef tech, Thing place)
         {
-            FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
             Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
             progress[tech] = 0f;
+            ModBaseHumanResources.unlocked.networkDatabase.Remove(tech);
             Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
         }
 
@@ -530,7 +529,7 @@ namespace HumanResources
             return tech.prerequisites.NullOrEmpty();
         }
 
-        public static void Uploaded(this ResearchProjectDef tech, float amount, Pawn user)
+        public static void Uploaded(this ResearchProjectDef tech, float amount, Thing location)
         {
             if (tech == null)
             {
@@ -541,10 +540,13 @@ namespace HumanResources
             num += amount;
             Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
             progress[tech] = num;
-            if (tech.IsFinished)
-            {
-                Find.ResearchManager.FinishProject(tech, true, user);
-            }
+            if (tech.IsFinished) tech.CompleteUpload(location);
+        }
+
+        public static void CompleteUpload(this ResearchProjectDef tech, Thing location)
+        {
+            tech.CarefullyFinishProject(location);
+            ModBaseHumanResources.unlocked.networkDatabase.Add(tech);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)
