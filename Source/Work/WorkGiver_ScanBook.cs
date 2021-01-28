@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -11,8 +13,15 @@ namespace HumanResources
     class WorkGiver_ScanBook : WorkGiver_Knowledge
 	{
 		public List<ThingCount> chosenIngThings = new List<ThingCount>();
-		protected MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-		protected FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
+		protected static MethodInfo
+			GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell"),
+			MakeIngredientsListInProcessingOrderInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "MakeIngredientsListInProcessingOrder"),
+			//end test
+			BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+		protected static FieldInfo
+			ingredientsOrderedInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ingredientsOrdered"),
+			//end test
+			rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -22,32 +31,37 @@ namespace HumanResources
 
 		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
-			IBillGiver billGiver = thing as IBillGiver;
-			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
+			int tick = Find.TickManager.TicksGame;
+			if (actualJob == null || lastVerifiedJobTick != tick)
 			{
-				if (billGiver.Map.ServerAvailable())
+				IBillGiver billGiver = thing as IBillGiver;
+				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
-					LocalTargetInfo target = thing;
-					if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+					if (billGiver.Map.ServerAvailable())
 					{
-						var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-						if (ModBaseHumanResources.unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount())
+						LocalTargetInfo target = thing;
+						if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 						{
-							billGiver.BillStack.RemoveIncompletableBills();
-							foreach (Bill bill in RelevantBills(thing, pawn))
+							var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
+							if (ModBaseHumanResources.unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount())
 							{
-								if (ValidateChosenTechs(bill, pawn, billGiver))
+								billGiver.BillStack.RemoveIncompletableBills();
+								foreach (Bill bill in RelevantBills(thing, pawn))
 								{
-									return StartBillJob(pawn, billGiver, bill);
+									if (ValidateChosenTechs(bill, pawn, billGiver))
+									{
+										actualJob = StartBillJob(pawn, billGiver, bill);
+										lastVerifiedJobTick = tick;
+									}
 								}
 							}
+							else if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate());
 						}
-						else if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate());
 					}
+					else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAvailableServer".Translate());
 				}
-				else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAvailableServer".Translate());
 			}
-			return null;
+			return actualJob;
 		}
 
 		protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
@@ -69,6 +83,7 @@ namespace HumanResources
 
 		protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
 		{
+			Log.Message("DEBUG TryStartNewDoBillJob");
 			Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
 			if (job != null)
 			{
@@ -89,17 +104,157 @@ namespace HumanResources
 
 		private bool ValidateChosenTechs(Bill bill, Pawn pawn, IBillGiver giver)
 		{
-			if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+			//if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings })) //Replace with something capable of dealing with BookStores.
+			if (TryFindBestBillIngredients(bill, pawn, (Thing)giver, chosenIngThings))
 			{
-				//Log.Warning("DEBUG chosenInThings: " + chosenIngThings.ToStringSafeEnumerable());
-                chosenIngThings.RemoveAll(x => x.Thing.Stuff == null || ModBaseHumanResources.unlocked.networkDatabase.Contains(ModBaseHumanResources.unlocked.techByStuff[x.Thing.Stuff]));
 				if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate(pawn), null);
 				return chosenIngThings.Any();
 			}
 			if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksFoundToScan".Translate(pawn), null);
 			if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+			Log.Message("DEBUG validating techs on tick " + Find.TickManager.TicksGame);
 			return false;
 		}
 
+		private static List<Thing>
+			relevantThings = new List<Thing>(),
+			newRelevantThings = new List<Thing>();
+		//private static HashSet<Thing> processedThings;
+
+		private static bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen)
+		{
+			chosen.Clear();
+			newRelevantThings.Clear();
+			IntVec3 rootCell = (IntVec3)GetBillGiverRootCellInfo.Invoke(bill, new object[] { billGiver, pawn });
+			Region rootReg = rootCell.GetRegion(pawn.Map, RegionType.Set_Passable);
+			if (rootReg == null)
+			{
+				return false;
+			}
+			//MakeIngredientsListInProcessingOrderInfo.Invoke(bill, new object[] { (List<IngredientCount>)ingredientsOrderedInfo.GetValue(bill), bill }); //just a list of ingredients.
+			relevantThings.Clear();
+			//processedThings.Clear();
+			bool foundAll = false;
+			Predicate<Thing> baseValidator = (Thing t) => t.Spawned && !t.IsForbidden(pawn) && (t.Position - billGiver.Position).LengthHorizontalSquared < bill.ingredientSearchRadius * bill.ingredientSearchRadius && (t.def == TechDefOf.TechBook || t is Building_BookStore) /*bill.IsFixedOrAllowedIngredient(t) && bill.recipe.ingredients.Any((IngredientCount ingNeed) => ingNeed.filter.Allows(t))*/ && pawn.CanReserve(t, 1, -1, null, false);
+
+			//region selecting, doesn't change			
+			TraverseParms traverseParams = TraverseParms.For(pawn, Danger.Deadly, TraverseMode.ByPawn, false);
+			RegionEntryPredicate entryCondition = null;
+			if (Math.Abs(999f - bill.ingredientSearchRadius) >= 1f)
+			{
+				float radiusSq = bill.ingredientSearchRadius * bill.ingredientSearchRadius;
+				entryCondition = delegate (Region from, Region r)
+				{
+					if (!r.Allows(traverseParams, false))
+					{
+						return false;
+					}
+					CellRect extentsClose = r.extentsClose;
+					int num = Math.Abs(billGiver.Position.x - Math.Max(extentsClose.minX, Math.Min(billGiver.Position.x, extentsClose.maxX)));
+					if (num > bill.ingredientSearchRadius)
+					{
+						return false;
+					}
+					int num2 = Math.Abs(billGiver.Position.z - Math.Max(extentsClose.minZ, Math.Min(billGiver.Position.z, extentsClose.maxZ)));
+					return num2 <= bill.ingredientSearchRadius && (num * num + num2 * num2) <= radiusSq;
+				};
+			}
+			else
+			{
+				entryCondition = ((Region from, Region r) => r.Allows(traverseParams, false));
+			}
+			int adjacentRegionsAvailable = rootReg.Neighbors.Count((Region region) => entryCondition(rootReg, region));
+			int regionsProcessed = 0;
+			//processedThings.AddRange(relevantThings);
+
+			RegionProcessor regionProcessor = delegate (Region r)
+			{
+				int haulableCount = 0;
+				int buildingCount = 0;
+
+				//actually looking for the things.
+				List<Thing> list = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.HaulableEver));
+				haulableCount += list.Count();
+				for (int i = 0; i < list.Count; i++)
+				{
+					Thing thing = list[i];
+					if (ReachabilityWithinRegion.ThingFromRegionListerReachable(thing, r, PathEndMode.ClosestTouch, pawn) && baseValidator(thing) && IsSelected(thing, bill))
+					{
+						newRelevantThings.Add(thing);
+						//processedThings.Add(thing);
+					}
+				}
+				list.Clear();
+				list.AddRange(r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial)));
+				buildingCount += list.Count();
+				for (int i = 0; i < list.Count; i++)
+				{
+					Thing thing = list[i];
+					if (ReachabilityWithinRegion.ThingFromRegionListerReachable(thing, r, PathEndMode.ClosestTouch, pawn) && baseValidator(thing))
+					{
+						List<Thing> innerList = ContainsSelected(thing, bill);
+						if (!innerList.NullOrEmpty())
+						{
+							newRelevantThings.AddRange(innerList);
+							//processedThings.AddRange(innerList);
+						}
+					}
+				}
+				list.Clear();
+				//int regionsProcessed;
+				regionsProcessed++;
+				//regionsProcessed = regionsProcessed;
+				//Log.Message("DEBUG: HaulableEver: " + haulableCount + " BuildingArtificial: " + buildingCount);
+				if (newRelevantThings.Count > 0 && regionsProcessed > adjacentRegionsAvailable)
+				{
+					relevantThings.AddRange(newRelevantThings);
+					newRelevantThings.Clear();
+                    Log.Message("DEBUG found things: " + relevantThings.ToStringSafeEnumerable());
+                    ThingCountUtility.AddToList(chosen, FindNearest(relevantThings, rootCell), 1);
+					foundAll = true;
+					return true;
+				}
+                Log.Message("DEBUG nothing was found.");
+                return false;
+			};
+			RegionTraverser.BreadthFirstTraverse(rootReg, entryCondition, regionProcessor, 99999, RegionType.Set_Passable);
+			relevantThings.Clear();
+			newRelevantThings.Clear();
+			//processedThings.Clear();
+			return foundAll;
+		}
+
+		private static Func<Thing, Bill, List<Thing>> ContainsSelected = (thing, bill) =>
+		{
+			List<Thing> results = new List<Thing>();
+			if (thing is Building_BookStore && thing is IThingHolder holder)
+			{
+				results.AddRange(ThingOwnerUtility.GetAllThingsRecursively(holder, false).Where(t => IsSelected(t, bill)));
+			}
+			return results;
+		};
+
+		private static Func<Thing, Bill, bool> IsSelected = (thing, bill) =>
+		{
+			if (thing.Stuff != null)
+            {
+				bool chosen = bill.ingredientFilter.AllowedThingDefs.Contains(thing.Stuff);
+				bool relevant = !ModBaseHumanResources.unlocked.networkDatabase.Contains(ModBaseHumanResources.unlocked.techByStuff[thing.Stuff]);
+				return chosen && relevant;
+            }
+			return false;
+		};
+
+		private static Thing FindNearest(List<Thing> availableThings, IntVec3 rootCell)
+        {
+			Comparison<Thing> comparison = delegate (Thing t1, Thing t2)
+			{
+				float num5 = (t1.Position - rootCell).LengthHorizontalSquared;
+				float value = (t2.Position - rootCell).LengthHorizontalSquared;
+				return num5.CompareTo(value);
+			};
+			availableThings.Sort(comparison);
+			return availableThings.FirstOrDefault();
+		}
 	}
 }

@@ -31,28 +31,33 @@ namespace HumanResources
 
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
-			IBillGiver billGiver = thing as IBillGiver;
-			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
+			int tick = Find.TickManager.TicksGame;
+			if (actualJob == null || lastVerifiedJobTick != tick)
 			{
-				if (CheckLibrarySpace(thing))
+				IBillGiver billGiver = thing as IBillGiver;
+				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
-					CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-					if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any())
+					if (CheckLibrarySpace(thing))
 					{
-						LocalTargetInfo target = thing;
-						if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+						CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+						if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any())
 						{
-							billGiver.BillStack.RemoveIncompletableBills();
-							foreach (Bill bill in RelevantBills(thing, pawn))
+							LocalTargetInfo target = thing;
+							if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 							{
-								return StartOrResumeBillJob(pawn, billGiver, target);
+								billGiver.BillStack.RemoveIncompletableBills();
+								foreach (Bill bill in RelevantBills(thing, pawn))
+								{
+									actualJob = StartOrResumeBillJob(pawn, billGiver, target);
+									lastVerifiedJobTick = tick;
+								}
 							}
 						}
 					}
+					else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());
 				}
-				else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());
 			}
-			return null;
+			return actualJob;
 		}
 
 		private Job StartOrResumeBillJob(Pawn pawn, IBillGiver giver, LocalTargetInfo target)

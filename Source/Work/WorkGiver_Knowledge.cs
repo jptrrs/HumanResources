@@ -8,6 +8,9 @@ namespace HumanResources
 {
 	class WorkGiver_Knowledge : WorkGiver_DoBill
 	{
+		protected Job actualJob = null;
+		protected int lastVerifiedJobTick = 0;
+
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
 			if (!pawn.IsGuest())

@@ -12,26 +12,20 @@ namespace HumanResources
 	public class JobDriver_ScanBook : JobDriver_Knowledge
 	{
         protected Building_NetworkServer server;
+        private bool inShelf = false;
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            if (job.targetQueueB != null && job.targetQueueB.Count == 1)
+            if (job.targetQueueB != null && job.targetQueueB.Count == 1 && job.targetQueueB[0].Thing != null)
             {
-                var techStuff = job.targetQueueB[0].Thing?.Stuff;
+                Thing book = job.targetQueueB[0].Thing;
+                inShelf = ThingOwnerUtility.AnyParentIs<Building_BookStore>(book);
+                ThingDef techStuff = book.Stuff;
                 if (techStuff != null)
                 {
                     project = ModBaseHumanResources.unlocked.techByStuff[techStuff];
                 }
             }
-            //Building_WorkTable terminal = TargetA.Thing as Building_WorkTable;
-            //if (terminal != null)
-            //{
-            //    var linked = terminal.TryGetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading;
-            //    if (!linked.NullOrEmpty())
-            //    {
-            //        server = linked.Where(x => x is Building_NetworkServer)?.FirstOrDefault() as Building_NetworkServer;
-            //    }
-            //}
             Log.Warning("starting Scanning Job: target A is " + TargetA.Thing + ", project is " + project + ", bill is " + job.bill.Label);
             return base.TryMakePreToilReservations(errorOnFailed);
 		}

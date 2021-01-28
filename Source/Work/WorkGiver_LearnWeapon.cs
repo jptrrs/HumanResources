@@ -25,24 +25,28 @@ namespace HumanResources
 
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
         {
-            //Log.Message(pawn + " looking for a job at " + thing);
-            IBillGiver billGiver = thing as IBillGiver;
-            if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
+            int tick = Find.TickManager.TicksGame;
+            if (actualJob == null || lastVerifiedJobTick != tick)
             {
-                LocalTargetInfo target = thing;
-                if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+                IBillGiver billGiver = thing as IBillGiver;
+                if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
                 {
-                    billGiver.BillStack.RemoveIncompletableBills();
-                    foreach (Bill bill in RelevantBills(thing, pawn))
+                    LocalTargetInfo target = thing;
+                    if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
                     {
-                        if (ValidateChosenWeapons(bill, pawn, billGiver))
+                        billGiver.BillStack.RemoveIncompletableBills();
+                        foreach (Bill bill in RelevantBills(thing, pawn))
                         {
-                            return StartBillJob(pawn, billGiver, bill);
+                            if (ValidateChosenWeapons(bill, pawn, billGiver))
+                            {
+                                actualJob = StartBillJob(pawn, billGiver, bill);
+                                lastVerifiedJobTick = tick;
+                            }
                         }
                     }
                 }
             }
-            return null;
+            return actualJob;
         }
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)

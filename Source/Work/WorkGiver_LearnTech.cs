@@ -20,29 +20,31 @@ namespace HumanResources
 
 		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
-			IBillGiver billGiver = thing as IBillGiver;
-			if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
+			int tick = Find.TickManager.TicksGame;
+			if (actualJob == null || lastVerifiedJobTick != tick)
 			{
-				LocalTargetInfo target = thing;
-				if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+				IBillGiver billGiver = thing as IBillGiver;
+				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
-					if (pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any())
+					LocalTargetInfo target = thing;
+					if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 					{
-						billGiver.BillStack.RemoveIncompletableBills();
-						foreach (Bill bill in RelevantBills(thing, pawn))
+						if (pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any())
 						{
-							if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+							billGiver.BillStack.RemoveIncompletableBills();
+							foreach (Bill bill in RelevantBills(thing, pawn))
 							{
-								return new Job(TechJobDefOf.LearnTech, target)
+								if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
 								{
-									bill = bill
-								};
+									actualJob = new Job(TechJobDefOf.LearnTech, target) { bill = bill };
+									lastVerifiedJobTick = tick;
+								}
 							}
 						}
 					}
 				}
 			}
-			return null;
+			return actualJob;
 		}
 	}
 }

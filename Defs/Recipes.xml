@@ -63,11 +63,7 @@
     </recipeUsers>
     <ingredients>
       <li>
-        <filter>
-          <thingDefs>
-            <li>TechBook</li>
-          </thingDefs>
-        </filter>
+        <!--no filter on purpose-->
         <count>1</count>
       </li>
     </ingredients>

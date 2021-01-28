@@ -28,14 +28,15 @@ namespace HumanResources
             StudySpeedTiedToDifficulty,
             FullStartupReport,
             IndividualTechsReport;
-
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
-        public static List<ThingDef> SimpleWeapons = new List<ThingDef>();
-        public static List<ThingDef> UniversalCrops = new List<ThingDef>();
-        public static List<ThingDef> UniversalWeapons = new List<ThingDef>();
+        public static List<ThingDef> 
+            SimpleWeapons = new List<ThingDef>(),
+            UniversalCrops = new List<ThingDef>(),
+            UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
         private static bool GameJustLoaded = false;
+        private static List<RecipeDef> knowledgeRecipes = new List<RecipeDef>() { TechDefOf.ScanBook };
 
         public ModBaseHumanResources()
         {
@@ -164,14 +165,11 @@ namespace HumanResources
             }
 
             //c. Populating knowledge recipes and book shelves
-            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.IsIngredient(TechDefOf.TechBook) /*x.fixedIngredientFilter.AnyAllowedDef == null*/))
-            //{
-            //    Log.Message("DEBUG resolving recipe: " + r.label);
-            //    r.fixedIngredientFilter.ResolveReferences();
-            //    r.defaultIngredientFilter.ResolveReferences();
-            //}
-            //TechDefOf.ScanBook.fixedIngredientFilter.ResolveReferences();
-            //TechDefOf.ScanBook.defaultIngredientFilter.ResolveReferences();
+            foreach (RecipeDef r in knowledgeRecipes)
+            {
+                r.fixedIngredientFilter.ResolveReferences();
+                r.defaultIngredientFilter.ResolveReferences();
+            }
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
                 t.building.fixedStorageSettings.filter.ResolveReferences();

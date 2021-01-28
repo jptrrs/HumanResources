@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using System;
 using Verse;
 
 namespace HumanResources
@@ -9,7 +8,6 @@ namespace HumanResources
     public static class ThingOwner_NotifyAdded
     {
         private static bool Act = false;
-
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
             if (Act && ___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(TechDefOf.Knowledge))
