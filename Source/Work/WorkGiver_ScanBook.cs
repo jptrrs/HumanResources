@@ -83,7 +83,6 @@ namespace HumanResources
 
 		protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
 		{
-			Log.Message("DEBUG TryStartNewDoBillJob");
 			Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
 			if (job != null)
 			{
@@ -112,7 +111,6 @@ namespace HumanResources
 			}
 			if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksFoundToScan".Translate(pawn), null);
 			if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-			Log.Message("DEBUG validating techs on tick " + Find.TickManager.TicksGame);
 			return false;
 		}
 
@@ -209,12 +207,12 @@ namespace HumanResources
 				{
 					relevantThings.AddRange(newRelevantThings);
 					newRelevantThings.Clear();
-                    Log.Message("DEBUG found things: " + relevantThings.ToStringSafeEnumerable());
+                    //Log.Message("DEBUG found things: " + relevantThings.ToStringSafeEnumerable());
                     ThingCountUtility.AddToList(chosen, FindNearest(relevantThings, rootCell), 1);
 					foundAll = true;
 					return true;
 				}
-                Log.Message("DEBUG nothing was found.");
+                //Log.Message("DEBUG nothing was found.");
                 return false;
 			};
 			RegionTraverser.BreadthFirstTraverse(rootReg, entryCondition, regionProcessor, 99999, RegionType.Set_Passable);
