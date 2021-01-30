@@ -29,7 +29,6 @@ namespace HumanResources
                     Thing shelf = ThingOwnerUtility.GetFirstSpawnedParentThing(book);
                     job.AddQueuedTarget(TargetIndex.B, shelf);
                     job.AddQueuedTarget(TargetIndex.B, book);
-                    //job.AddQueuedTarget(TargetIndex.A, shelf);
                 }
                 ThingDef techStuff = book.Stuff;
                 if (techStuff != null)
@@ -37,7 +36,6 @@ namespace HumanResources
                     project = ModBaseHumanResources.unlocked.techByStuff[techStuff];
                 }
             }
-            Log.Warning("starting Scanning Job: target A is " + TargetA.Thing + ", book is "+ book + ", targetQueueA count = " + job.targetQueueA.Count() + ", project is " + project + ", bill is " + job.bill.Label);
             return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
@@ -81,7 +79,6 @@ namespace HumanResources
             Toil findPlaceTarget = Toils_JobTransforms.SetTargetToIngredientPlaceCell(TargetIndex.A, TargetIndex.B, TargetIndex.C);
             yield return findPlaceTarget;
             yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.C, findPlaceTarget, false, false);
-            //yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
             extract = null;
             getToHaulTarget = null;
             findPlaceTarget = null;
@@ -108,15 +105,10 @@ namespace HumanResources
             if (inShelf)
             {
                 yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
-                yield return extract;
+                yield return Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
                 yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch).FailOnDestroyedOrNull(TargetIndex.B);
-                yield return Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.A, false);
                 yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.A);
             }
-            //else
-            //{
-            //    yield return Toils_Haul.CarryHauledThingToContainer();
-            //}
             yield return new Toil()
             {
                 initAction = delegate ()
@@ -124,53 +116,6 @@ namespace HumanResources
                     pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
                 }
             };
-
-
-            //yield return FinishRecipeAndStartStoringProduct();
-            //if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
-            //{
-            //	yield return Toils_Reserve.Reserve(TargetIndex.B);
-            //	yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
-            //	findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
-            //	yield return findPlaceTarget; 
-            //	Toil prepare = Toils_General.Wait(250);
-            //	prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
-            //	yield return prepare;
-            //	yield return new Toil
-            //	{
-            //		initAction = delegate
-            //		{
-            //			Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
-            //			CurToil.FailOn(() => shelf == null);
-            //			Thing book = pawn.carryTracker.CarriedThing;
-            //			if (pawn.carryTracker.CarriedThing == null)
-            //			{
-            //				Log.Error(pawn + " tried to place a book on shelf but is not hauling anything.");
-            //				return;
-            //			}
-            //			if (shelf.Accepts(book))
-            //			{
-            //				bool flag = false;
-            //				if (book.holdingOwner != null)
-            //				{
-            //					book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
-            //					flag = true;
-            //				}
-            //				else
-            //				{
-            //					flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
-            //				}
-            //				pawn.carryTracker.innerContainer.Remove(book);
-            //			}
-            //			else
-            //			{
-            //				Log.Error(pawn + " tried to place a book in " + shelf + ", but won't accept it.");
-            //				return;
-            //			}
-            //			pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
-            //		}
-            //	};
-            //}
             yield break;
         }
 
