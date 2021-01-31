@@ -34,6 +34,7 @@ namespace HumanResources
 			int tick = Find.TickManager.TicksGame;
 			if (actualJob == null || lastVerifiedJobTick != tick)
 			{
+				actualJob = null;
 				IBillGiver billGiver = thing as IBillGiver;
 				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
@@ -46,16 +47,16 @@ namespace HumanResources
 							if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
 							{
 								billGiver.BillStack.RemoveIncompletableBills();
-								foreach (Bill bill in RelevantBills(thing, pawn))
-								{
-									if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
-									{
-										actualJob = StartOrResumeBillJob(pawn, billGiver, target);
-										lastVerifiedJobTick = tick;
-									}
-									else actualJob = null;
-								}
-							}
+                                foreach (Bill bill in RelevantBills(thing, pawn))
+                                {
+                                    if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+                                    {
+                                        actualJob = StartOrResumeBillJob(pawn, billGiver, target);
+                                        lastVerifiedJobTick = tick;
+										break;
+                                    }
+                                }
+                            }
 						}
 					}
 					else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());

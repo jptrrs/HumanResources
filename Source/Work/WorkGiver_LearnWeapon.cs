@@ -28,6 +28,7 @@ namespace HumanResources
             int tick = Find.TickManager.TicksGame;
             if (actualJob == null || lastVerifiedJobTick != tick)
             {
+                actualJob = null;
                 IBillGiver billGiver = thing as IBillGiver;
                 if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
                 {
@@ -41,8 +42,8 @@ namespace HumanResources
                             {
                                 actualJob = StartBillJob(pawn, billGiver, bill);
                                 lastVerifiedJobTick = tick;
+                                break;
                             }
-                            else actualJob = null;
                         }
                     }
                 }

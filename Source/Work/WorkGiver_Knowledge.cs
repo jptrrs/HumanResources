@@ -42,7 +42,7 @@ namespace HumanResources
 			if (desk != null)
 			{
 				var relevantBills = RelevantBills(desk, pawn);
-				if (!CheckJobOnThing(pawn, t, forced) | relevantBills.EnumerableNullOrEmpty()) return false;
+				if (!CheckJobOnThing(pawn, t, forced) || relevantBills.EnumerableNullOrEmpty()) return false;
 				return JobOnThing(pawn, t, forced) != null;
 			}
 			return false;

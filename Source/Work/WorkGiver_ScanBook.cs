@@ -47,6 +47,7 @@ namespace HumanResources
             int tick = Find.TickManager.TicksGame;
             if (actualJob == null || lastVerifiedJobTick != tick)
             {
+                actualJob = null;
                 IBillGiver billGiver = thing as IBillGiver;
                 if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
                 {
@@ -65,8 +66,8 @@ namespace HumanResources
                                     {
                                         actualJob = StartBillJob(pawn, billGiver, bill);
                                         lastVerifiedJobTick = tick;
+                                        break;
                                     }
-                                    else actualJob = null;
                                 }
                             }
                             else if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksLeftToScan".Translate());
@@ -83,6 +84,7 @@ namespace HumanResources
 			var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
 			return ModBaseHumanResources.unlocked.networkDatabase.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
 		}
+
 		protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
 		{
 			IntRange range = (IntRange)rangeInfo.GetValue(this);
@@ -210,6 +212,8 @@ namespace HumanResources
                 return false;
             };
             RegionTraverser.BreadthFirstTraverse(rootReg, entryCondition, regionProcessor, 99999, RegionType.Set_Passable);
+            //string test = foundAll ? ": " + chosen.ToStringSafeEnumerable() : " nothing";
+            //Log.Warning("DEBUG "+bill+" searching for ingredients found" + test);
             relevantThings.Clear();
             newRelevantThings.Clear();
             return foundAll;

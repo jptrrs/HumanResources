@@ -23,6 +23,7 @@ namespace HumanResources
 			int tick = Find.TickManager.TicksGame;
 			if (actualJob == null || lastVerifiedJobTick != tick)
 			{
+				actualJob = null;
 				IBillGiver billGiver = thing as IBillGiver;
 				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
@@ -32,16 +33,16 @@ namespace HumanResources
 						if (pawn.TryGetComp<CompKnowledge>().homework.Where(x => x.IsFinished && x.RequisitesKnownBy(pawn)).Any())
 						{
 							billGiver.BillStack.RemoveIncompletableBills();
-							foreach (Bill bill in RelevantBills(thing, pawn))
-							{
-								if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
-								{
-									actualJob = new Job(TechJobDefOf.LearnTech, target) { bill = bill };
-									lastVerifiedJobTick = tick;
-								}
-								else actualJob = null;
-							}
-						}
+                            foreach (Bill bill in RelevantBills(thing, pawn))
+                            {
+                                if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+                                {
+                                    actualJob = new Job(TechJobDefOf.LearnTech, target) { bill = bill };
+                                    lastVerifiedJobTick = tick;
+									break;
+                                }
+                            }
+                        }
 					}
 				}
 			}
