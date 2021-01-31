@@ -38,7 +38,7 @@ namespace HumanResources
                     else if (parent.def == TechDefOf.NetworkServer)
                     {
                         count = ModBaseHumanResources.unlocked.networkDatabase.Count;
-                        capacity = ModBaseHumanResources.unlocked.discoveredCount;
+                        capacity = (int)(ModBaseHumanResources.unlocked.total * 0.80f); //discoveredCount;
                         sparseThreshold = count / 4;
                     }
                     if (count >= capacity)

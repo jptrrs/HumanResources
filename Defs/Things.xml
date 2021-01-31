@@ -224,7 +224,6 @@
   <ThingDef ParentName="FurnitureBase">
     <defName>NetworkServer</defName>
     <label>Network Server</label>
-    <!--<thingClass>Building</thingClass>-->
     <thingClass>HumanResources.Building_NetworkServer</thingClass>
     <description>The ultimate cloud storage unit to host your research database. All library space you'll ever need.</description>
     <graphicData>
@@ -253,7 +252,7 @@
     </costList>
     <pathCost>70</pathCost>
     <passability>PassThroughOnly</passability>
-    <designationCategory>Furniture</designationCategory>
+    <designationCategory>Misc</designationCategory>
     <designationHotKey>Misc10</designationHotKey>
     <comps>
       <li Class="HumanResources.CompProperties_StorageGraphic">
@@ -275,8 +274,6 @@
           <shaderType>CutoutComplex</shaderType>
           <drawSize>(2,2)</drawSize>
         </graphicFull>
-        <!--<countSparseThreshold>1</countSparseThreshold>
-        <countFullCapacity>10</countFullCapacity>-->
       </li>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
@@ -285,33 +282,6 @@
       </li>
       <li Class="CompProperties_Flickable"/>
     </comps>
-    <!--<placeWorkers>
-      <li>PlaceWorker_ShowFacilitiesConnections</li>
-    </placeWorkers>-->
-    <!--<building>
-      <preventDeteriorationInside>true</preventDeteriorationInside>
-      <haulToContainerDuration>120</haulToContainerDuration>
-      <fixedStorageSettings>
-        <priority>Critical</priority>
-        <filter>
-          <categories>
-            <li>Knowledge</li>
-          </categories>
-        </filter>
-      </fixedStorageSettings>
-      <defaultStorageSettings>
-        <priority>Critical</priority>
-        <filter>
-          <categories>
-            <li>Knowledge</li>
-          </categories>
-        </filter>
-      </defaultStorageSettings>
-    </building>
-    <inspectorTabs>
-      --><!--<li>ITab_Storage</li>--><!--
-      <li>HumanResources.ITab_Inventory</li>
-    </inspectorTabs>-->
   </ThingDef>
 
   <!--Technical Book-->

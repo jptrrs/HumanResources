@@ -146,7 +146,7 @@ namespace HumanResources
             }
             relevantThings.Clear();
             bool foundAll = false;
-            Predicate<Thing> baseValidator = (Thing t) => t.Spawned && !t.IsForbidden(pawn) && (t.Position - billGiver.Position).LengthHorizontalSquared < bill.ingredientSearchRadius * bill.ingredientSearchRadius && (t.def == TechDefOf.TechBook || t is Building_BookStore) /*bill.IsFixedOrAllowedIngredient(t) && bill.recipe.ingredients.Any((IngredientCount ingNeed) => ingNeed.filter.Allows(t))*/ && pawn.CanReserve(t, 1, -1, null, false);
+            Predicate<Thing> baseValidator = (Thing t) => t.Spawned && !t.IsForbidden(pawn) && (t.Position - billGiver.Position).LengthHorizontalSquared < bill.ingredientSearchRadius * bill.ingredientSearchRadius && (t.def == TechDefOf.TechBook || t is Building_BookStore) && pawn.CanReserve(t, 1, -1, null, false);
             TraverseParms traverseParams = TraverseParms.For(pawn, Danger.Deadly, TraverseMode.ByPawn, false);
             RegionEntryPredicate entryCondition = null;
             if (Math.Abs(999f - bill.ingredientSearchRadius) >= 1f)
@@ -176,20 +176,19 @@ namespace HumanResources
             int regionsProcessed = 0;
             RegionProcessor regionProcessor = delegate (Region r)
             {
-                List<Thing> list = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.HaulableEver));
-                for (int i = 0; i < list.Count; i++)
+                List<Thing> items = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.HaulableEver));
+                for (int i = 0; i < items.Count; i++)
                 {
-                    Thing thing = list[i];
+                    Thing thing = items[i];
                     if (ReachabilityWithinRegion.ThingFromRegionListerReachable(thing, r, PathEndMode.ClosestTouch, pawn) && baseValidator(thing) && IsSelected(thing, bill))
                     {
                         newRelevantThings.Add(thing);
                     }
                 }
-                list.Clear();
-                list.AddRange(r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial)));
-                for (int i = 0; i < list.Count; i++)
+                List<Thing> buildings = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial));
+                for (int i = 0; i < buildings.Count; i++)
                 {
-                    Thing thing = list[i];
+                    Thing thing = buildings[i];
                     if (ReachabilityWithinRegion.ThingFromRegionListerReachable(thing, r, PathEndMode.ClosestTouch, pawn) && baseValidator(thing))
                     {
                         List<Thing> innerList = ContainsSelected(thing, bill);
@@ -199,7 +198,6 @@ namespace HumanResources
                         }
                     }
                 }
-                list.Clear();
                 regionsProcessed++;
                 if (newRelevantThings.Count > 0 && regionsProcessed > adjacentRegionsAvailable)
                 {
@@ -212,8 +210,6 @@ namespace HumanResources
                 return false;
             };
             RegionTraverser.BreadthFirstTraverse(rootReg, entryCondition, regionProcessor, 99999, RegionType.Set_Passable);
-            //string test = foundAll ? ": " + chosen.ToStringSafeEnumerable() : " nothing";
-            //Log.Warning("DEBUG "+bill+" searching for ingredients found" + test);
             relevantThings.Clear();
             newRelevantThings.Clear();
             return foundAll;

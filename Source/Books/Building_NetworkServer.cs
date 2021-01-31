@@ -1,6 +1,4 @@
-﻿using RimWorld;
-using System;
-using System.Text;
+﻿using System.Text;
 using Verse;
 
 namespace HumanResources
