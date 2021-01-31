@@ -1,7 +1,6 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 using Verse;
@@ -12,7 +11,7 @@ namespace HumanResources
     public class Building_BookStore : Building, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
         public ThingOwner innerContainer;
-        public bool retrievable = true;
+        public List<Thing> borrowed = new List<Thing>();
         protected StorageSettings storageSettings;
         protected CompStorageGraphic compStorageGraphic = null;
         protected static int dynamicCapacityInt;
@@ -40,7 +39,7 @@ namespace HumanResources
                 return compStorageGraphic;
             }
         }
-        
+
         public override Graphic Graphic
         {
             get
@@ -58,14 +57,14 @@ namespace HumanResources
         {
             innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
         }
-        
+
         public virtual bool Accepts(Thing thing)
         {
             if (thing.def == TechDefOf.TechBook && thing.Stuff != null && thing.Stuff.IsWithinCategory(TechDefOf.Knowledge))
             {
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool fits = innerContainer.Count < dynamicCapacity;
-                bool duplicate = ModBaseHumanResources.unlocked.techByStuff[thing.Stuff].IsFinished;
+                bool duplicate = thing.TryGetTech().IsFinished;
                 return allowed && fits && !duplicate;
             }
             return false;
@@ -90,21 +89,18 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
-            if (retrievable)
+            ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
+            if (innerContainer.Count > 0)
             {
-                ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
-                if (innerContainer.Count > 0)
-                {
-                    innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this); });
-                }
+                innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { t.TryGetTech().Ejected(this); });
             }
             base.DeSpawn(mode);
         }
 
         public bool TryDropRandom(out Thing droppedThing, bool forbid = false)
         {
-        Thing outThing;
-        droppedThing = null;
+            Thing outThing;
+            droppedThing = null;
             if (innerContainer.Count > 0)
             {
                 innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
@@ -121,10 +117,10 @@ namespace HumanResources
             {
                 Thing outThing;
                 innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
-                ResearchProjectDef tech = ModBaseHumanResources.unlocked.techByStuff[outThing.Stuff];
-                tech.EjectTech(this);
+                ResearchProjectDef tech = outThing.TryGetTech();
+                //tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
-                ModBaseHumanResources.unlocked.libraryFreeSpace++;
+                //ModBaseHumanResources.unlocked.libraryFreeSpace++;
                 CompStorageGraphic.UpdateGraphics();
                 return true;
             }
@@ -158,7 +154,7 @@ namespace HumanResources
             if (baseStr != "") s.AppendLine(baseStr);
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
-            if (retrievable && Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
+            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
             return s.ToString().TrimEndNewlines();
         }
 
@@ -166,7 +162,7 @@ namespace HumanResources
         {
             foreach (Gizmo g in base.GetGizmos())
                 yield return g;
-            if (retrievable && innerContainer.Count > 0)
+            if (innerContainer.Count > 0)
             {
                 yield return new Command_Action()
                 {
@@ -200,16 +196,53 @@ namespace HumanResources
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            if (retrievable) ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
             this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
         }
 
-        public virtual void CheckTechIn(ResearchProjectDef tech)
+        public virtual void CheckBookIn(Thing book)
         {
-            if (!tech.IsFinished) tech.CarefullyFinishProject(this);
+            var tech = book.TryGetTech();
+            if (tech != null)
+            {
+                if (!tech.IsFinished) tech.CarefullyFinishProject(this);
+            }
+            if (!borrowed.Contains(book)) ModBaseHumanResources.unlocked.libraryFreeSpace--;
+            else borrowed.Remove(book);
             CompStorageGraphic.UpdateGraphics();
-            ModBaseHumanResources.unlocked.libraryFreeSpace--;
+        }
+
+        public virtual void CheckBookOut(Thing book, bool misplaced = false)
+        {
+            // This was fun!
+            // 0. normal use                            -> eject,       release     -> not leased,  not misplaced,  ?,        update.
+            // 1. book taken, ongoing scan              -> don't eject, keep        -> leased,      not misplaced,  offline,  update.
+            // 2. failed scan finish, book missing      -> eject,       release     -> leased,      misplaced,      offline,  no update.
+            // 3. failed scan finish, book returned     -> eject,       keep        -> not leased,  misplaced,      offline,  no update.
+            // 4. sucessful scan finish, book missing   -> don't eject, release     -> leased,      misplaced,      online,   no update. 
+            // 5. sucessful scan finish, book returned  -> don't eject, keep        -> not leased,  misplaced,      online,   no update.
+
+            var tech = book.TryGetTech();
+            bool leased = borrowed.Contains(book);
+            bool online = ModBaseHumanResources.unlocked.networkDatabase.Contains(tech);
+            bool release = leased == misplaced;
+            bool eject = misplaced != online;
+            if (release)
+            {
+                ModBaseHumanResources.unlocked.libraryFreeSpace++;
+                borrowed.Remove(book);
+            }
+            if (eject)
+            {
+                tech.Ejected(this);
+            }
+            if (!misplaced) CompStorageGraphic.UpdateGraphics();
+        }
+
+        public virtual void SignOff(Thing book)
+        {
+
         }
     }
 }

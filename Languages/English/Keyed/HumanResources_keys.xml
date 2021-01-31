@@ -92,8 +92,7 @@
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
   <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
-  <NoBooksLeftToScan>No books left to scan.</NoBooksLeftToScan>
-  <NoBooksFoundToScan>No books were found to scan.</NoBooksFoundToScan>
+  <NoBooksToScan>No books to scan.</NoBooksToScan>
   <NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
   
   <!--weapon testing -->

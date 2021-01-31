@@ -1,51 +1,53 @@
 ﻿using RimWorld;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using UnityEngine;
 using Verse;
 
 namespace HumanResources
 {
-    public class Building_NetworkServer : Building_BookStore, IStoreSettingsParent, IHaulDestination, IThingHolder
+    public class Building_NetworkServer : Building
     {
-        public new bool retrievable = false;
+        protected CompStorageGraphic compStorageGraphic = null;
 
-        public override int dynamicCapacity
+        public CompStorageGraphic CompStorageGraphic
         {
             get
             {
-                if (dynamicCapacityInt == 0)
+                if (compStorageGraphic == null)
                 {
-                    dynamicCapacityInt = ModBaseHumanResources.unlocked.total;
+                    compStorageGraphic = this.TryGetComp<CompStorageGraphic>();
                 }
-                return dynamicCapacityInt;
+                return compStorageGraphic;
             }
         }
-       
-        public override bool Accepts(Thing thing)
-        {
-            return false;
-        }
 
-        public override void CheckTechIn(ResearchProjectDef tech)
+        public override Graphic Graphic
         {
-            if (!tech.IsFinished) tech.CarefullyFinishProject(this);
-            CompStorageGraphic.UpdateGraphics();
-            ModBaseHumanResources.unlocked.networkDatabase.AddDistinct(tech);
-        }
-
-        public override void DeSpawn(DestroyMode mode)
-        {
-            if (innerContainer.Count > 0)
+            get
             {
-                foreach (Thing t in innerContainer)
+                if (CompStorageGraphic?.CurStorageGraphic != null)
                 {
-                    ModBaseHumanResources.unlocked.techByStuff[t.Stuff].EjectTech(this);
+                    return CompStorageGraphic.CurStorageGraphic;
                 }
+                return base.Graphic;
             }
-            base.DeSpawn(mode);
+        }
+
+        public override string GetInspectString()
+        {
+            int count = ModBaseHumanResources.unlocked.networkDatabase.Count;
+            StringBuilder s = new StringBuilder();
+            string baseStr = base.GetInspectString();
+            if (baseStr != "") s.AppendLine(baseStr);
+            if (count == 0) s.AppendLine("BookStoreEmpty".Translate());
+            else s.AppendLine("BookStoreCapacity".Translate(count, ModBaseHumanResources.unlocked.discoveredCount ));
+            return s.ToString().TrimEndNewlines();
+        }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            CompStorageGraphic?.UpdateGraphics();
+            base.SpawnSetup(map, respawningAfterLoad);
         }
     }
 }

@@ -39,6 +39,7 @@ namespace HumanResources
 									actualJob = new Job(TechJobDefOf.LearnTech, target) { bill = bill };
 									lastVerifiedJobTick = tick;
 								}
+								else actualJob = null;
 							}
 						}
 					}

@@ -19,7 +19,7 @@ namespace HumanResources
             ExperimentWeaponMelee;
         public static ThingCategoryDef Knowledge;
         public static StuffCategoryDef Technic;
-        public static ThingDef 
+        public static ThingDef
             TechBook,
             UnfinishedTechBook,
             WeaponsNotBasic,

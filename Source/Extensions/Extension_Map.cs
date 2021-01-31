@@ -9,7 +9,7 @@ namespace HumanResources
 	{
 		public static bool ServerAvailable(this Map map)
         {
-            var servers = map.listerBuildings.AllBuildingsColonistOfClass<Building_NetworkServer>();
+            var servers = map.listerBuildings.AllBuildingsColonistOfDef(TechDefOf.NetworkServer);
             if (!servers.EnumerableNullOrEmpty())
                 return servers.Where(x => x.TryGetComp<CompPowerTrader>().PowerOn).Any();
             return false;

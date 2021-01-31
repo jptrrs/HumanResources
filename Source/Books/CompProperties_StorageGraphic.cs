@@ -9,7 +9,7 @@ namespace HumanResources
         public GraphicData graphicSparse = null;
         public GraphicData graphicFull = null;
 
-        public int countSparseThreshhold = 5;
+        public int countSparseThreshold = 5;
         public int countFullCapacity = 10;
 
         public CompProperties_StorageGraphic()

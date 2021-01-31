@@ -42,6 +42,7 @@ namespace HumanResources
                                 actualJob = StartBillJob(pawn, billGiver, bill);
                                 lastVerifiedJobTick = tick;
                             }
+                            else actualJob = null;
                         }
                     }
                 }

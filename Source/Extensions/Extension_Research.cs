@@ -211,7 +211,7 @@ namespace HumanResources
             }
         }
 
-        public static void EjectTech(this ResearchProjectDef tech, Thing place)
+        public static void Ejected(this ResearchProjectDef tech, Thing place)
         {
             Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
             progress[tech] = 0f;
@@ -545,7 +545,7 @@ namespace HumanResources
 
         public static void CompleteUpload(this ResearchProjectDef tech, Thing location)
         {
-            tech.CarefullyFinishProject(location);
+            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
             ModBaseHumanResources.unlocked.networkDatabase.Add(tech);
         }
 

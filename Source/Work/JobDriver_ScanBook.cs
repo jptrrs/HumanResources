@@ -1,41 +1,35 @@
 ﻿using System.Collections.Generic;
 using Verse;
 using RimWorld;
-using System.Linq;
 using Verse.AI;
-using System.Reflection;
-using HarmonyLib;
 using System;
 
 namespace HumanResources
 {
 	public class JobDriver_ScanBook : JobDriver_Knowledge
 	{
-        protected Building_NetworkServer server;
-        private bool
-            inShelf = false,
-            bookOut = false;
+        private bool bookOut = false;
+        private Building_BookStore shelf;
+        private Thing book;
+        private bool inShelf => shelf != null;
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            Thing book = null;
+            //string test = job.targetQueueB != null ? "ok" : "bad";
+            //Log.Warning("starting Scanning Job: test is "+test);
             if (job.targetQueueB != null && job.targetQueueB.Count == 1 && job.targetQueueB[0].Thing != null)
             {
                 book = job.targetQueueB[0].Thing;
-                inShelf = ThingOwnerUtility.AnyParentIs<Building_BookStore>(book);
-                if (inShelf) //insert bookstore in queue
+                shelf = ThingOwnerUtility.GetFirstSpawnedParentThing(book) as Building_BookStore;
+                if (shelf != null) //insert bookstore in queue
                 {
                     job.targetQueueB.Clear();
-                    Thing shelf = ThingOwnerUtility.GetFirstSpawnedParentThing(book);
                     job.AddQueuedTarget(TargetIndex.B, shelf);
                     job.AddQueuedTarget(TargetIndex.B, book);
                 }
-                ThingDef techStuff = book.Stuff;
-                if (techStuff != null)
-                {
-                    project = ModBaseHumanResources.unlocked.techByStuff[techStuff];
-                }
+                project = book.TryGetTech();
             }
+            else return false;
             return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
@@ -59,14 +53,12 @@ namespace HumanResources
                     if (job.bill.DeletedOrDereferenced) return true;
                     if (!billGiver.CurrentlyUsableForBills()) return true;
                 }
+                if (inShelf && !bookOut && !shelf.innerContainer.Contains(book)) return true;
                 return false;
             });
             AddFinishAction(delegate
             {
-                if (inShelf && bookOut && !ModBaseHumanResources.unlocked.networkDatabase.Contains(project))
-                {
-                    project.EjectTech(job.GetTarget(TargetIndex.A).Thing);
-                }
+                if (inShelf && bookOut) shelf.CheckBookOut(book, true);
             });
             Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
             yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
@@ -97,10 +89,8 @@ namespace HumanResources
                 }
                 project.CompleteUpload(TargetThingA);
                 curJob.bill.Notify_IterationCompleted(actor, new List<Thing>());
-                if (!inShelf) actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
             };
             yield return upload;
-
             //Put it back!
             if (inShelf)
             {
@@ -127,20 +117,20 @@ namespace HumanResources
 				Pawn actor = toil.actor;
 				Job curJob = actor.jobs.curJob;
                 List<LocalTargetInfo> targetQueue = curJob.GetTargetQueue(index);
-                if (curJob.GetTarget(index).Thing is Building_BookStore shelf)
+                if (curJob.GetTarget(index).Thing == shelf)
                 {
-                    Thing book = curJob.targetQueueB[0].Thing;
                     int availableSpace = actor.carryTracker.AvailableStackSpace(book.def);
                     if (availableSpace == 0)
                     {
                         throw new Exception(string.Concat(new object[]
                         {"StartCarryThing got availableStackSpace ", availableSpace, " for haulTarg ", book, ". Job: ", curJob }));
                     }
-                    shelf.innerContainer.TryTransferToContainer(book, actor.carryTracker.innerContainer, false);
+                    shelf.borrowed.Add(book);
+                    bookOut = shelf.innerContainer.TryTransferToContainer(book, actor.carryTracker.innerContainer, false);
+                    if (!bookOut && shelf.borrowed.Contains(book)) shelf.borrowed.Remove(book); //just in case.
                     curJob.SetTarget(index, actor.carryTracker.CarriedThing);
                     targetQueue.RemoveAt(0);
                     targetQueue.Add(shelf);
-                    if (!shelf.innerContainer.Contains(book)) bookOut = true;
                     actor.records.Increment(RecordDefOf.ThingsHauled);
                 }
                 else

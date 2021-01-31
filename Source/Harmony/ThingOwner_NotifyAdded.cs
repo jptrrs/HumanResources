@@ -3,23 +3,22 @@ using Verse;
 
 namespace HumanResources
 {
-    //If a book is added to book shelf, discover corresponding tech.
+    //If a book is added to a book shelf, discover corresponding tech.
     [HarmonyPatch(typeof(ThingOwner), "NotifyAdded")]
     public static class ThingOwner_NotifyAdded
     {
-        private static bool Act = false;
+        private static bool Act = false; //Only way I found to prevent the game from notifying twice for the same event.
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            if (Act && ___owner is Building_BookStore bookStore && item.Stuff != null && item.Stuff.IsWithinCategory(TechDefOf.Knowledge))
+            if (Act && ___owner is Building_BookStore bookStore)
             {
-                ResearchProjectDef project = ModBaseHumanResources.unlocked.techByStuff[item.Stuff];
-                bookStore.CheckTechIn(project);
+                bookStore.CheckBookIn(item);
                 Act = false;
             }
         }
-        public static void Prefix(Thing item, IThingHolder ___owner)
+        public static void Prefix(IThingHolder ___owner)
         {
-            if (___owner is Building_BookStore) Act = true;
+            Act = ___owner is Building_BookStore;
         }
     }
 }

@@ -333,8 +333,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Books\Building_NetworkServer.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\Extension_Map.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
+    <Compile Include="Harmony\ThingOwner_NotifyRemoved.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />

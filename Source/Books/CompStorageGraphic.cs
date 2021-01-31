@@ -25,23 +25,34 @@ namespace HumanResources
             {
                 if (cachedGraphic == null)
                 {
-                    if (parent.TryGetInnerInteractableThingOwner() is ThingOwner thingOwner &&
-                        thingOwner.Count is int count)
+                    int capacity = 0;
+                    int sparseThreshold = 0;
+                    int count = 0;
+
+                    if (parent.TryGetInnerInteractableThingOwner() is ThingOwner thingOwner && parent is Building_BookStore shelf)
                     {
-                        Building_BookStore shelf = parent as Building_BookStore;
-                        if (count >= shelf.dynamicCapacity)
-                        {
-                            cachedGraphic = Props.graphicFull.GraphicColoredFor(parent);
-                        }
-                        else if (count >= Props.countSparseThreshhold)
-                        {
-                            cachedGraphic = Props.graphicSparse.GraphicColoredFor(parent);
-                        }
-                        else
-                        {
-                            cachedGraphic = Props.graphicEmpty.GraphicColoredFor(parent);
-                        }
+                        count = thingOwner.Count;
+                        capacity = shelf.dynamicCapacity;
+                        sparseThreshold = Props.countSparseThreshold;
                     }
+                    else if (parent.def == TechDefOf.NetworkServer)
+                    {
+                        count = ModBaseHumanResources.unlocked.networkDatabase.Count;
+                        capacity = ModBaseHumanResources.unlocked.discoveredCount;
+                        sparseThreshold = count / 4;
+                    }
+                    if (count >= capacity)
+                    {
+                        cachedGraphic = Props.graphicFull.GraphicColoredFor(parent);
+                    }
+                    else if (count >= sparseThreshold)
+                    {
+                        cachedGraphic = Props.graphicSparse.GraphicColoredFor(parent);
+                    }
+                    else
+                    {
+                        cachedGraphic = Props.graphicEmpty.GraphicColoredFor(parent);
+                    }                    
                 }
                 return cachedGraphic;
             }

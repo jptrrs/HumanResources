@@ -90,7 +90,7 @@ namespace HumanResources
                 ITab_Inventory.workingInvList.AddRange(t);
                 for (int i = 0; i < ITab_Inventory.workingInvList.Count; i++)
                 {
-                    DrawThingRow(ref num, viewRect.width, ITab_Inventory.workingInvList[i], selStorage.retrievable);
+                    DrawThingRow(ref num, viewRect.width, ITab_Inventory.workingInvList[i], true);
                 }
             }
             if (Event.current.type == EventType.Layout)
