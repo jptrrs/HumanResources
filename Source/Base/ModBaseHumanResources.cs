@@ -82,6 +82,7 @@ namespace HumanResources
                 t.comps.Add(new CompProperties_Knowledge());
                 registered.Add(t.defName);
             }
+            InspectPaneUtility.Reset();
 
             //3. Preparing knowledge support infrastructure
 

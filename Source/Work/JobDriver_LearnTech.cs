@@ -19,7 +19,7 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
-			IsResearch = job.bill == null;
+			IsResearch = (job.bill == null && desk is Building_ResearchBench);
 			var valid = techComp.homework?.Where(x => IsResearch ? (!x.IsFinished && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn)) : x.IsFinished).Reverse();
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
@@ -29,7 +29,6 @@ namespace HumanResources
 
 		protected override IEnumerable<Toil> MakeNewToils()	
 		{
-            //Log.Message("Toil start:" + pawn + " is trying to learn " + project + ", globalFailConditions count:" + globalFailConditions.Count);
             Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
 			AddEndCondition(delegate
 			{
@@ -42,21 +41,24 @@ namespace HumanResources
 			this.FailOnBurningImmobile(TargetIndex.A);
 			this.FailOn(delegate ()
 			{
-				IBillGiver billGiver = desk as IBillGiver;
-				if (billGiver != null)
+				if (project == null)
 				{
-					if (job.bill.DeletedOrDereferenced) return true;
-					if (!billGiver.CurrentlyUsableForBills()) return true;
-					if (project == null)
-                    {
-						Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
-						TryMakePreToilReservations(true);
-						return true;
-                    }
-					bool flag = IsResearch ? project.IsKnownBy(pawn) : !techComp.homework.Contains(project);
-					if (flag) return true;
+					Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
+					TryMakePreToilReservations(true);
+					return true;
 				}
-				return false;
+                if (desk is IBillGiver billGiver)
+                {
+                    if (job.bill.DeletedOrDereferenced) return true;
+                    if (!billGiver.CurrentlyUsableForBills()) return true;
+                    if (!techComp.homework.Contains(project)) return true;
+                }
+                if (IsResearch)
+                {
+					if (project.IsKnownBy(pawn)) return true;
+					if (!project.CanBeResearchedAt(desk as Building_ResearchBench, false)) return true;
+				}
+                return false;
 			});
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return gotoBillGiver;
@@ -126,5 +128,47 @@ namespace HumanResources
 			yield break;
 		}
 
+		public bool CanBeResearchedHere(ResearchProjectDef tech, Building_ResearchBench bench, bool ignoreResearchBenchPowerStatus)
+		{
+			Log.Message("CanBeResearchedHere starting...");
+			if (tech.requiredResearchBuilding != null && bench.def != tech.requiredResearchBuilding)
+			{
+				return false;
+			}
+			Log.Message("step1");
+			if (!ignoreResearchBenchPowerStatus)
+			{
+				CompPowerTrader comp = bench.GetComp<CompPowerTrader>();
+				if (comp != null && !comp.PowerOn)
+				{
+					return false;
+				}
+			}
+			Log.Message("step2");
+			if (!tech.requiredResearchFacilities.NullOrEmpty<ThingDef>())
+			{
+				var affectedByFacilities = bench.TryGetComp<CompAffectedByFacilities>();
+				if (affectedByFacilities == null)
+				{
+					return false;
+				}
+				Log.Message("step3");
+
+				List<Thing> linkedFacilitiesListForReading = affectedByFacilities.LinkedFacilitiesListForReading;
+				int j;
+				int i;
+				for (i = 0; i < tech.requiredResearchFacilities.Count; i = j + 1)
+				{
+					if (linkedFacilitiesListForReading.Find((Thing x) => x.def == tech.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
+					{
+						return false;
+					}
+					j = i;
+				}
+				Log.Message("step4");
+
+			}
+			return true;
+		}
 	}
 }
