@@ -11,6 +11,8 @@ using System.Text;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     public static class Extension_Research
     {
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
@@ -215,7 +217,7 @@ namespace HumanResources
         {
             Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
             progress[tech] = 0f;
-            ModBaseHumanResources.unlocked.networkDatabase.Remove(tech);
+            unlocked.networkDatabase.Remove(tech);
             Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
         }
 
@@ -546,7 +548,7 @@ namespace HumanResources
         public static void CompleteUpload(this ResearchProjectDef tech, Thing location)
         {
             if (!tech.IsFinished) tech.CarefullyFinishProject(location);
-            ModBaseHumanResources.unlocked.networkDatabase.Add(tech);
+            unlocked.networkDatabase.Add(tech);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)

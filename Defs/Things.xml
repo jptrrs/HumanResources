@@ -94,7 +94,7 @@
       <WorkToBuild>3200</WorkToBuild>
       <MaxHitPoints>100</MaxHitPoints>
       <Flammability>1.0</Flammability>
-      <ResearchSpeedFactor>1.0</ResearchSpeedFactor>
+      <ResearchSpeedFactor>1.1</ResearchSpeedFactor>
     </statBases>
     <size>(2,1)</size>
     <passability>PassThroughOnly</passability>

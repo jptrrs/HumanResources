@@ -36,7 +36,7 @@ namespace HumanResources
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
         private static bool GameJustLoaded = false;
-        private static List<RecipeDef> knowledgeRecipes = new List<RecipeDef>() { TechDefOf.ScanBook };
+        //private static List<RecipeDef> knowledgeRecipes  = new List<RecipeDef>() { TechDefOf.ScanBook, TechDefOf.LearnTech, TechDefOf.DocumentTech, TechDefOf.DocumentTechDigital };//=> 
 
         public ModBaseHumanResources()
         {
@@ -166,7 +166,7 @@ namespace HumanResources
             }
 
             //c. Populating knowledge recipes and book shelves
-            foreach (RecipeDef r in knowledgeRecipes)
+            foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.ingredients.Count == 1 && x.fixedIngredientFilter.AnyAllowedDef == null))
             {
                 r.fixedIngredientFilter.ResolveReferences();
                 r.defaultIngredientFilter.ResolveReferences();

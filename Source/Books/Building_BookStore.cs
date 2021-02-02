@@ -7,6 +7,8 @@ using Verse;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     //Borrowed from Jecrell's RimWriter
     public class Building_BookStore : Building, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
@@ -22,7 +24,7 @@ namespace HumanResources
             {
                 if (dynamicCapacityInt == 0)
                 {
-                    dynamicCapacityInt = Math.Max(ModBaseHumanResources.unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
+                    dynamicCapacityInt = Math.Max(unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
                 }
                 return dynamicCapacityInt;
             }
@@ -89,7 +91,7 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
-            ModBaseHumanResources.unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
+            unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
             if (innerContainer.Count > 0)
             {
                 innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { t.TryGetTech().Ejected(this); });
@@ -120,7 +122,7 @@ namespace HumanResources
                 ResearchProjectDef tech = outThing.TryGetTech();
                 //tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
-                //ModBaseHumanResources.unlocked.libraryFreeSpace++;
+                //unlocked.libraryFreeSpace++;
                 CompStorageGraphic.UpdateGraphics();
                 return true;
             }
@@ -154,7 +156,7 @@ namespace HumanResources
             if (baseStr != "") s.AppendLine(baseStr);
             if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
             else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
-            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + ModBaseHumanResources.unlocked.libraryFreeSpace);
+            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + unlocked.libraryFreeSpace);
             return s.ToString().TrimEndNewlines();
         }
 
@@ -196,7 +198,7 @@ namespace HumanResources
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            ModBaseHumanResources.unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
             this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
         }
@@ -208,7 +210,7 @@ namespace HumanResources
             {
                 if (!tech.IsFinished) tech.CarefullyFinishProject(this);
             }
-            if (!borrowed.Contains(book)) ModBaseHumanResources.unlocked.libraryFreeSpace--;
+            if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;
             else borrowed.Remove(book);
             CompStorageGraphic.UpdateGraphics();
         }
@@ -225,12 +227,12 @@ namespace HumanResources
 
             var tech = book.TryGetTech();
             bool leased = borrowed.Contains(book);
-            bool online = ModBaseHumanResources.unlocked.networkDatabase.Contains(tech);
+            bool online = unlocked.networkDatabase.Contains(tech);
             bool release = leased == misplaced;
             bool eject = misplaced != online;
             if (release)
             {
-                ModBaseHumanResources.unlocked.libraryFreeSpace++;
+                unlocked.libraryFreeSpace++;
                 borrowed.Remove(book);
             }
             if (eject)
@@ -238,11 +240,6 @@ namespace HumanResources
                 tech.Ejected(this);
             }
             if (!misplaced) CompStorageGraphic.UpdateGraphics();
-        }
-
-        public virtual void SignOff(Thing book)
-        {
-
         }
     }
 }

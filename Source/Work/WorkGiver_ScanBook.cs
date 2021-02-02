@@ -9,6 +9,8 @@ using Verse.AI;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     class WorkGiver_ScanBook : WorkGiver_Knowledge
 	{
 		public List<ThingCount> chosenIngThings = new List<ThingCount>();
@@ -32,7 +34,7 @@ namespace HumanResources
             if (thing.Stuff != null)
             {
                 bool chosen = bill.ingredientFilter.AllowedThingDefs.Contains(thing.Stuff);
-                bool relevant = !ModBaseHumanResources.unlocked.networkDatabase.Contains(thing.TryGetTech());
+                bool relevant = !unlocked.networkDatabase.Contains(thing.TryGetTech());
                 return chosen && relevant;
             }
             return false;
@@ -51,18 +53,18 @@ namespace HumanResources
                 IBillGiver billGiver = thing as IBillGiver;
                 if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
                 {
-                    if (billGiver.Map.ServerAvailable())
+                    if (billGiver.Map.ServerAvailable()) //check servers
                     {
                         LocalTargetInfo target = thing;
-                        if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+                        if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn)) //basic desk availabilty
                         {
                             var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-                            if (ModBaseHumanResources.unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount())
+                            if (unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount()) //check database
                             {
                                 billGiver.BillStack.RemoveIncompletableBills();
                                 foreach (Bill bill in RelevantBills(thing, pawn))
                                 {
-                                    if (ValidateChosenTechs(bill, pawn, billGiver))
+                                    if (ValidateChosenTechs(bill, pawn, billGiver)) //check bill filter
                                     {
                                         actualJob = StartBillJob(pawn, billGiver, bill);
                                         lastVerifiedJobTick = tick;
@@ -82,7 +84,7 @@ namespace HumanResources
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
 			var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-			return ModBaseHumanResources.unlocked.networkDatabase.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
+			return unlocked.networkDatabase.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
 		}
 
 		protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
@@ -184,7 +186,7 @@ namespace HumanResources
                     {
                         newRelevantThings.Add(thing);
                     }
-                }
+                  }
                 List<Thing> buildings = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial));
                 for (int i = 0; i < buildings.Count; i++)
                 {

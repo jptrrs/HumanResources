@@ -2,6 +2,8 @@
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     //Borrowed from Jecrell's RimWriter
     public class CompStorageGraphic : ThingComp
     {
@@ -37,8 +39,8 @@ namespace HumanResources
                     }
                     else if (parent.def == TechDefOf.NetworkServer)
                     {
-                        count = ModBaseHumanResources.unlocked.networkDatabase.Count;
-                        capacity = (int)(ModBaseHumanResources.unlocked.total * 0.80f); //discoveredCount;
+                        count = unlocked.networkDatabase.Count;
+                        capacity = (int)(unlocked.total * 0.80f); //discoveredCount;
                         sparseThreshold = count / 4;
                     }
                     if (count >= capacity)

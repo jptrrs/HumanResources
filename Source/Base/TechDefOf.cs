@@ -8,6 +8,7 @@ namespace HumanResources
     {
         public static RecipeDef
             LearnTech,
+            LearnTechDigital,
             DocumentTech,
             DocumentTechDigital,
             ScanBook,

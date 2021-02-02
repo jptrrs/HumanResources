@@ -3,6 +3,7 @@ using Verse;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
     public class Building_NetworkServer : Building
     {
         protected CompStorageGraphic compStorageGraphic = null;
@@ -33,12 +34,12 @@ namespace HumanResources
 
         public override string GetInspectString()
         {
-            int count = ModBaseHumanResources.unlocked.networkDatabase.Count;
+            int count = unlocked.networkDatabase.Count;
             StringBuilder s = new StringBuilder();
             string baseStr = base.GetInspectString();
             if (baseStr != "") s.AppendLine(baseStr);
             if (count == 0) s.AppendLine("BookStoreEmpty".Translate());
-            else s.AppendLine("BookStoreCapacity".Translate(count, ModBaseHumanResources.unlocked.discoveredCount ));
+            else s.AppendLine("BookStoreCapacity".Translate(count, unlocked.discoveredCount ));
             return s.ToString().TrimEndNewlines();
         }
 

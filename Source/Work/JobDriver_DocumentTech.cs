@@ -21,8 +21,7 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-			//Log.Warning("starting Document Job: target A is " + TargetA.Thing + ", target B is " + TargetB+", bill is "+job.bill.Label);
-			project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
+			project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}

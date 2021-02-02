@@ -1,66 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <RecipeDef>
-    <defName>LearnTech</defName>
-    <label>Study technology</label>
-    <description>Study to acquire knowledge about a new technology.</description>
-    <jobString>Studying a new technology.</jobString>
-    <workAmount>240</workAmount>
-    <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
-    <recipeUsers>
-      <li>StudyDesk</li>
-      <li>NetworkTerminal</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef>
-    <defName>DocumentTech</defName>
-    <label>Document technology</label>
-    <description>Consolidate knowledge into a technical book.</description>
-    <jobString>Documenting a technology.</jobString>
-    <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
-    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
-    <recipeUsers>
-      <li>StudyDesk</li>
-    </recipeUsers>
-    <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
-    <products>
-      <TechBook>1</TechBook>
-    </products>
-  </RecipeDef>
-
-  <RecipeDef>
-    <defName>DocumentTechDigital</defName>
-    <label>Document technology</label>
-    <description>Consolidate knowledge into a network learning resource and upload it to the colony database.</description>
-    <jobString>Documenting a technology.</jobString>
-    <workSpeedStat>ResearchSpeed</workSpeedStat>
-    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
-    <workAmount>600</workAmount>
-    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
-    <recipeUsers>
-      <li>NetworkTerminal</li>
-    </recipeUsers>
-  </RecipeDef>
-
-  <RecipeDef>
-    <defName>ScanBook</defName>
-    <label>Scan books</label>
-    <description>Scan existing books and upload its contents to the colony database.</description>
-    <jobString>Scanning a book.</jobString>
-    <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
-    <workAmount>600</workAmount>
-    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
-    <recipeUsers>
-      <li>NetworkTerminal</li>
-    </recipeUsers>
+  <RecipeDef Name="KnowledgeTransferBase" Abstract="True">
     <ingredients>
       <li>
         <!--no filter on purpose-->
@@ -79,14 +20,108 @@
     </defaultIngredientFilter>
   </RecipeDef>
 
-  <RecipeDef>
-    <defName>TrainWeaponShooting</defName>
-    <label>Learn to shoot a weapon</label>
-    <description>Train with a ranged weapon to acquire proficiency.</description>
-    <jobString>Training to use a ranged weapon.</jobString>
-    <workAmount>3000</workAmount>
+  <!--Studying-->
+  <RecipeDef Name="LearnTechBase" ParentName="KnowledgeTransferBase" Abstract="True">
+    <label>Study technology</label>
+    <description>Study to acquire knowledge about a new technology.</description>
+    <jobString>Studying a new technology.</jobString>
+    <workAmount>240</workAmount>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Shooting</workSkill>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+  </RecipeDef>
+  
+  <RecipeDef ParentName="LearnTechBase">
+    <defName>LearnTech</defName>
+    <description>Study to acquire knowledge about a new technology. (Limited to industrial technologies at this desk.)</description>
+    <recipeUsers>
+      <li>StudyDesk</li>
+    </recipeUsers>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>Spacer</li>
+        <li>Ultra</li>
+        <li>Archotech</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <disallowedCategories>
+        <li>Spacer</li>
+        <li>Ultra</li>
+        <li>Archotech</li>
+      </disallowedCategories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+  
+  <RecipeDef ParentName="LearnTechBase">
+    <defName>LearnTechDigital</defName>
+    <recipeUsers>
+      <li>NetworkTerminal</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!--Documenting-->
+  <RecipeDef Name="DocumentTechBase" ParentName="KnowledgeTransferBase" Abstract="True">
+    <label>Document technology</label>
+    <jobString>Documenting a technology.</jobString>
+    <workSpeedStat>ResearchSpeed</workSpeedStat>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+  </RecipeDef>
+
+  <RecipeDef ParentName="DocumentTechBase">
+    <defName>DocumentTech</defName>
+    <description>Consolidate knowledge into a technical book. (Limited to industrial technologies at this desk.)</description>
+    <recipeUsers>
+      <li>StudyDesk</li>
+    </recipeUsers>
+    <unfinishedThingDef>UnfinishedTechBook</unfinishedThingDef>
+    <products>
+      <TechBook>1</TechBook>
+    </products>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>Spacer</li>
+        <li>Ultra</li>
+        <li>Archotech</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <disallowedCategories>
+        <li>Spacer</li>
+        <li>Ultra</li>
+        <li>Archotech</li>
+      </disallowedCategories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef ParentName="DocumentTechBase">
+    <defName>DocumentTechDigital</defName>
+    <description>Consolidate knowledge into a network learning resource and upload it to the colony database.</description>
+    <workAmount>600</workAmount>
+    <recipeUsers>
+      <li>NetworkTerminal</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!--Scanning-->
+  <RecipeDef ParentName="KnowledgeTransferBase">
+    <defName>ScanBook</defName>
+    <label>Scan books &amp; upload</label>
+    <description>Scan existing books or hard-drives and upload its contents to the colony database.</description>
+    <jobString>Scanning a book or disk.</jobString>
+    <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
+    <workSkill>Intellectual</workSkill>
+    <workAmount>600</workAmount>
+    <efficiencyStat>WorkTableEfficiencyFactor</efficiencyStat>
+    <recipeUsers>
+      <li>NetworkTerminal</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!--Weapon training-->
+  <RecipeDef Name="FireWeaponsBase" Abstract="True">
     <recipeUsers>
       <li>Target</li>
     </recipeUsers>
@@ -107,7 +142,40 @@
     </fixedIngredientFilter>
   </RecipeDef>
 
-  <RecipeDef>
+  <RecipeDef Name="MeleeWeaponsBase" Abstract="True">
+    <recipeUsers>
+      <li>MrDummy</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>WeaponsMelee</li>
+            <li>WeaponsMeleeBladelink</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>WeaponsMelee</li>
+        <li>WeaponsMeleeBladelink</li>
+      </categories>
+    </fixedIngredientFilter>
+  </RecipeDef>>
+    
+  <RecipeDef ParentName="FireWeaponsBase">
+    <defName>TrainWeaponShooting</defName>
+    <label>Learn to shoot a weapon</label>
+    <description>Train with a ranged weapon to acquire proficiency.</description>
+    <jobString>Training to use a ranged weapon.</jobString>
+    <workAmount>3000</workAmount>
+    <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
+    <workSkill>Shooting</workSkill>
+  </RecipeDef>
+
+  <RecipeDef ParentName="MeleeWeaponsBase">
     <defName>TrainWeaponMelee</defName>
     <label>Learn to wield a weapon</label>
     <description>Train with a melee weapon to acquire proficiency.</description>
@@ -117,29 +185,9 @@
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
     <workSkill>Melee</workSkill>
-    <recipeUsers>
-      <li>MrDummy</li>
-    </recipeUsers>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>WeaponsMelee</li>
-            <li>WeaponsMeleeBladelink</li>
-          </categories>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li>WeaponsMelee</li>
-        <li>WeaponsMeleeBladelink</li>
-      </categories>
-    </fixedIngredientFilter>
   </RecipeDef>
   
-  <RecipeDef>
+  <RecipeDef ParentName="FireWeaponsBase">
     <defName>ExperimentWeaponShooting</defName>
     <label>Experiment with unknown weapon</label>
     <description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
@@ -147,27 +195,9 @@
     <workAmount>5000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
-    <recipeUsers>
-      <li>Target</li>
-    </recipeUsers>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>WeaponsRanged</li>
-          </categories>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li>WeaponsRanged</li>
-      </categories>
-    </fixedIngredientFilter>
   </RecipeDef>
-  
-  <RecipeDef>
+
+  <RecipeDef ParentName="MeleeWeaponsBase">
     <defName>ExperimentWeaponMelee</defName>
     <label>Experiment with unknown weapon</label>
     <description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</description>
@@ -175,30 +205,10 @@
     <workAmount>5000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
-    <recipeUsers>
-      <li>MrDummy</li>
-    </recipeUsers>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>WeaponsMelee</li>
-            <li>WeaponsMeleeBladelink</li>
-          </categories>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-            <li>WeaponsMelee</li>
-            <li>WeaponsMeleeBladelink</li>
-      </categories>
-    </fixedIngredientFilter>
   </RecipeDef>
 
   <!--From ItchyFlea's Practise Target-->
-  <RecipeDef>
+  <RecipeDef ParentName="FireWeaponsBase">
     <defName>PracticeWeaponShooting</defName>
     <label>Practice shooting</label>
     <description>Shoots at a target to practice shooting accuracy.</description>
@@ -208,27 +218,9 @@
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Shot_Revolver</soundWorking>
     <workSkill>Shooting</workSkill>
-    <recipeUsers>
-      <li>Target</li>
-    </recipeUsers>
-      <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>WeaponsRanged</li>
-          </categories>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li>WeaponsRanged</li>
-      </categories>
-    </fixedIngredientFilter>
   </RecipeDef>
 
-  <RecipeDef>
+  <RecipeDef ParentName="MeleeWeaponsBase">
     <defName>PracticeWeaponMelee</defName>
     <label>Practice melee</label>
     <description>Practices close quarters combat against a straw dummy.</description>
@@ -238,26 +230,6 @@
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
     <workSkill>Melee</workSkill>
-    <recipeUsers>
-      <li>MrDummy</li>
-    </recipeUsers>
-    <ingredients>
-      <li>
-        <filter>
-          <categories>
-            <li>WeaponsMelee</li>
-            <li>WeaponsMeleeBladelink</li>
-          </categories>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <categories>
-        <li>WeaponsMelee</li>
-        <li>WeaponsMeleeBladelink</li>
-      </categories>
-    </fixedIngredientFilter>
   </RecipeDef>
   
 </Defs>

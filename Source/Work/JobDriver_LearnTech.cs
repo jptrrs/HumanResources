@@ -20,7 +20,7 @@ namespace HumanResources
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
 			IsResearch = (job.bill == null && desk is Building_ResearchBench);
-			var valid = techComp.homework?.Where(x => IsResearch ? (!x.IsFinished && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn)) : x.IsFinished).Reverse();
+			var valid = techComp.homework?.Where(x => job.bill.Allows(x) && (IsResearch ? (!x.IsFinished && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn)) : x.IsFinished)).Reverse();
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			else if (valid.Any()) project = valid.FirstOrDefault();

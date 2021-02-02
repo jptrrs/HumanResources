@@ -38,22 +38,28 @@ namespace HumanResources
 				IBillGiver billGiver = thing as IBillGiver;
 				if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
 				{
-					if (CheckLibrarySpace(thing))
+					if (CheckLibrarySpace(thing)) //check library space
 					{
-						CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-						if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(techComp.homework).Any())
+						LocalTargetInfo target = thing;
+						if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn)) //basic desk availabilty
 						{
-							LocalTargetInfo target = thing;
-							if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
+							CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+							IEnumerable<ResearchProjectDef> homework = techComp.homework;
+							if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(homework).Any()) //check homework 
 							{
 								billGiver.BillStack.RemoveIncompletableBills();
                                 foreach (Bill bill in RelevantBills(thing, pawn))
                                 {
-                                    actualJob = StartOrResumeBillJob(pawn, billGiver, target);
-                                    lastVerifiedJobTick = tick;
-									break;
-                                }
-                            }
+									if (bill.Allows(homework)) //check bill filter vs. homework
+									{
+										actualJob = StartOrResumeBillJob(pawn, billGiver, target);
+										lastVerifiedJobTick = tick;
+										break;
+									}
+									else if (!JobFailReason.HaveReason) JobFailReason.Is("ForbiddenAssignment".Translate());
+								}
+							}
+							else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAssignment".Translate());
 						}
 					}
 					else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());

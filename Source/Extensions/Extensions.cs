@@ -1,11 +1,27 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     public static class Extensions
 	{
+        //Bill
+        public static bool Allows(this Bill bill, IEnumerable<ResearchProjectDef> homework)
+        {
+            var textBooks = homework.Select(x => unlocked.stuffByTech[x]);
+            bool result = bill.ingredientFilter.AllowedThingDefs.Intersect(textBooks).Any();
+            return result;
+        }
+
+        public static bool Allows(this Bill bill, ResearchProjectDef tech)
+        {
+            return bill.ingredientFilter.Allows(unlocked.stuffByTech[tech]);
+        }
+
         //Map
         public static bool ServerAvailable(this Map map)
         {
@@ -29,7 +45,7 @@ namespace HumanResources
         //Thing
         public static ResearchProjectDef TryGetTech(this Thing book)
         {
-            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? ModBaseHumanResources.unlocked.techByStuff[book.Stuff] : null;
+            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? unlocked.techByStuff[book.Stuff] : null;
         }
 
         //ThingDef

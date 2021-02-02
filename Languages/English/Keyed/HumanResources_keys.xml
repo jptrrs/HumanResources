@@ -92,8 +92,10 @@
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
   <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
-  <NoBooksToScan>No books to scan.</NoBooksToScan>
-  <NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
+  <!--NEW--><NoBooksToScan>No books to scan.</NoBooksToScan>
+  <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
+  <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
+  <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
   
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>

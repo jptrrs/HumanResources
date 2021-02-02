@@ -8,11 +8,11 @@ namespace HumanResources
     [HarmonyPatch(typeof(Listing_TreeThingFilter), "Visible", new Type[] { typeof(ThingDef) })]
     public static class Listing_TreeThingFilter_Visible
     {
-        public static void Postfix(ThingDef td, ref bool __result)
+        public static void Postfix(ThingDef td, ThingFilter ___parentFilter, ref bool __result)
         {
             if (HarmonyPatches.VisibleBooksCategory)
             {
-                __result = td.IsWithinCategory(TechDefOf.Knowledge);
+                __result = td.IsWithinCategory(TechDefOf.Knowledge) && ___parentFilter.Allows(td);
             }
         }
     }
