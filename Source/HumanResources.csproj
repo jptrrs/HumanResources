@@ -333,6 +333,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
+    <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />

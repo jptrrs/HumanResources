@@ -250,7 +250,7 @@ namespace HumanResources
             Vector2 margins = new Vector2(17f, 17f) * 2f;
             Vector2 defaultSize = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) - new Vector2(tabSizeAdjust, 0f);
             Vector2 expandedSize = new Vector2(ResearchTree_Tree.RelevantTechLevels.Count() * (/*nodeSize.x*/extendedNodeLength + margin) - margin, defaultSize.y) ;
-            size = expandTab ? expandedSize+ margins : defaultSize+ margins;
+            size = expandTab ? expandedSize + margins : defaultSize + margins;
         }
 
         private void DrawBase(int row, float w, int col, int shift)
