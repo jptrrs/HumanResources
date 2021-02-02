@@ -49,12 +49,9 @@ namespace HumanResources
 								billGiver.BillStack.RemoveIncompletableBills();
                                 foreach (Bill bill in RelevantBills(thing, pawn))
                                 {
-                                    if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
-                                    {
-                                        actualJob = StartOrResumeBillJob(pawn, billGiver, target);
-                                        lastVerifiedJobTick = tick;
-										break;
-                                    }
+                                    actualJob = StartOrResumeBillJob(pawn, billGiver, target);
+                                    lastVerifiedJobTick = tick;
+									break;
                                 }
                             }
 						}
