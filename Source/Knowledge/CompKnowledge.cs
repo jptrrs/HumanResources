@@ -24,7 +24,7 @@ namespace HumanResources
         {
             get
             {
-                return proficientWeapons.Concat(ModBaseHumanResources.UniversalWeapons).Concat(ModBaseHumanResources.SimpleWeapons.Where(x => x.techLevel <= techLevel)).ToList();
+                return proficientWeapons.Concat(UniversalWeapons).Concat(SimpleWeapons.Where(x => x.techLevel <= techLevel)).ToList();
             }
         }
 
@@ -32,7 +32,7 @@ namespace HumanResources
         {
             get
             {
-                return proficientPlants.Concat(ModBaseHumanResources.UniversalCrops).ToList();
+                return proficientPlants.Concat(UniversalCrops).ToList();
             }
         }
 
@@ -65,11 +65,11 @@ namespace HumanResources
             if (!isPlayer) return tech.techLevel == TechLevel;
             else
             {
-                if ((ModBaseHumanResources.TechPoolIncludesTechLevel || strict) && tech.techLevel == TechLevel) return true;
+                if ((TechPoolIncludesTechLevel || strict) && tech.techLevel == TechLevel) return true;
                 if (!strict)
                 {
-                    if (ModBaseHumanResources.TechPoolIncludesScenario && !ModBaseHumanResources.unlocked.startingTechs.EnumerableNullOrEmpty() && ModBaseHumanResources.unlocked.startingTechs.Contains(tech)) return true;
-                    if (ModBaseHumanResources.TechPoolIncludesStarting && !faction.startingResearchTags.NullOrEmpty() && faction.startingResearchTags.Any())
+                    if (TechPoolIncludesScenario && !unlocked.startingTechs.EnumerableNullOrEmpty() && unlocked.startingTechs.Contains(tech)) return true;
+                    if (TechPoolIncludesStarting && !faction.startingResearchTags.NullOrEmpty() && faction.startingResearchTags.Any())
                     {
                         foreach (ResearchProjectTagDef tag in faction.startingResearchTags)
                         {
@@ -89,17 +89,17 @@ namespace HumanResources
                 bool flag = false;
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.Append("... Including technologies from");
-                if (ModBaseHumanResources.TechPoolIncludesTechLevel)
+                if (TechPoolIncludesTechLevel)
                 {
                     stringBuilder.Append(" the faction tech level,");
                     flag = true;
                 }
-                if (ModBaseHumanResources.TechPoolIncludesScenario)
+                if (TechPoolIncludesScenario)
                 {
                     stringBuilder.Append(" the scenario,");
                     flag = true;
                 }
-                if (ModBaseHumanResources.TechPoolIncludesStarting)
+                if (TechPoolIncludesStarting)
                 {
                     stringBuilder.Append(" the starting techs");
                     flag = true;
@@ -115,7 +115,7 @@ namespace HumanResources
             TechLevel childhoodLevel = 0;
             SkillDef childhoodSkill = null;
             bool isPlayer = pawn.Faction?.IsPlayer ?? false;
-            techLevel = ModBaseHumanResources.TechPoolIncludesBackground || !isPlayer ? FindBGTechLevel(pawn, out childhoodLevel, out childhoodSkill) : factionTechLevel;
+            techLevel = TechPoolIncludesBackground || !isPlayer ? FindBGTechLevel(pawn, out childhoodLevel, out childhoodSkill) : factionTechLevel;
             TechLevel workingTechLevel = techLevel;
 
             //b. higest skills
@@ -144,13 +144,13 @@ namespace HumanResources
             if (Prefs.LogVerbose)
             {
                 string guruNote = guru ? " (with intellectual bounus)" : "";
-                string techlevelText = ModBaseHumanResources.TechPoolIncludesBackground ? 
+                string techlevelText = TechPoolIncludesBackground ? 
                     ("techLevels: " + factionTechLevel + " faction, " + childhoodLevel + " childhood, " + techLevel + " background") :
                     "techLevel is " + techLevel;
                 Log.Message("... " + slots + " calculated slots ("+ techlevelText + guruNote + "; highest relevant skills: " + highestSkill.label + " & " + secondSkill.label + ")");
             }
             bool strict = false;
-            bool useChildhood = childhoodSkill != null && ModBaseHumanResources.TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
+            bool useChildhood = childhoodSkill != null && TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, faction, strict));
             int pass = 0;
             List<ResearchProjectDef> result = new List<ResearchProjectDef>();
@@ -290,7 +290,7 @@ namespace HumanResources
                     if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " can craft some weapons. ");
                 }
                 bool isPlayer = pawn.Faction?.IsPlayer ?? false;
-                if (isPlayer && (ModBaseHumanResources.FreeScenarioWeapons || ModBaseHumanResources.unlocked.knowAllStartingWeapons))
+                if (isPlayer && (FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
                 {
                     proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons);
                     if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " gets the scenario starting weapons. ");
@@ -302,7 +302,7 @@ namespace HumanResources
                         string[] role = isFighter ? new [] {"fighter","melee"} : new [] { "shooter","ranged"};
                         stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is a " + role[0] + " and gets extra " + role[1] + " weapons from ");
                     }
-                    if (ModBaseHumanResources.WeaponPoolIncludesTechLevel || !isPlayer)
+                    if (WeaponPoolIncludesTechLevel || !isPlayer)
                     {
                         foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, faction)))
                         {
@@ -311,10 +311,10 @@ namespace HumanResources
                         }
                         if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
                     }
-                    if (isPlayer && ModBaseHumanResources.WeaponPoolIncludesScenario && !(ModBaseHumanResources.FreeScenarioWeapons || ModBaseHumanResources.unlocked.knowAllStartingWeapons))
+                    if (isPlayer && WeaponPoolIncludesScenario && !(FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
                     {
-                        proficientWeapons.AddRange(ModBaseHumanResources.unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
-                        string connector = ModBaseHumanResources.WeaponPoolIncludesTechLevel ? " and " : "";
+                        proficientWeapons.AddRange(unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
+                        string connector = WeaponPoolIncludesTechLevel ? " and " : "";
                         if (Prefs.LogVerbose) stringBuilder.Append(connector + "the starting scenario");
                     }
                     if(Prefs.LogVerbose) stringBuilder.Append(". ");
