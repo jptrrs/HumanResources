@@ -84,7 +84,7 @@ namespace HumanResources
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> viable = chosen.Intersect(allowed).Except(known);
             IEnumerable<ThingDef> unavailable = chosen.Except(viable);
-            if (!unavailable.EnumerableNullOrEmpty())
+            if (viable.EnumerableNullOrEmpty() && !unavailable.EnumerableNullOrEmpty())
             {
                 string thoseWeapons = "ThoseWeapons".Translate();
                 string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;

@@ -239,6 +239,7 @@
     <costStuffCount>25</costStuffCount>
     <statBases>
       <WorkToBuild>250</WorkToBuild>
+      <MaxHitPoints>50</MaxHitPoints>
       <Flammability>1.0</Flammability>
       <Mass>3</Mass>
     </statBases>
