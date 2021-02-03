@@ -239,7 +239,7 @@
     <costStuffCount>25</costStuffCount>
     <statBases>
       <WorkToBuild>250</WorkToBuild>
-      <Flammability>0</Flammability>
+      <Flammability>1.0</Flammability>
       <Mass>3</Mass>
     </statBases>
     <passability>PassThroughOnly</passability>
