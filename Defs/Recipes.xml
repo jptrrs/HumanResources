@@ -108,9 +108,9 @@
   <!--Scanning-->
   <RecipeDef ParentName="KnowledgeTransferBase">
     <defName>ScanBook</defName>
-    <label>Scan books &amp; upload</label>
-    <description>Scan existing books or hard-drives and upload its contents to the colony database.</description>
-    <jobString>Scanning a book or disk.</jobString>
+    <label>Scan books &amp; drives</label>
+    <description>Scan existing books or drives and upload its contents to the colony database.</description>
+    <jobString>Scanning a book or drive.</jobString>
     <requiredGiverWorkType>BasicWorker</requiredGiverWorkType>
     <workSkill>Intellectual</workSkill>
     <workAmount>600</workAmount>
