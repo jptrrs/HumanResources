@@ -8,7 +8,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    using static ModBaseHumanResources
+    using static ModBaseHumanResources;
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
         public List<ThingCount> chosenIngThings = new List<ThingCount>();

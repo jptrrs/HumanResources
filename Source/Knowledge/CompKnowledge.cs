@@ -27,7 +27,7 @@ namespace HumanResources
             if (a == b) return (A.passion >= B.passion) ? A : B;
             return (a > b) ? A : B;
         };
-        private List<ThingDef>
+        public List<ThingDef>
             _craftableWeapons,
             fearedWeapons,
             proficientPlants,
