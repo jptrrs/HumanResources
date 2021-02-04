@@ -27,11 +27,11 @@ namespace HumanResources
             if (a == b) return (A.passion >= B.passion) ? A : B;
             return (a > b) ? A : B;
         };
-        private List<ThingDef>
-            _craftableWeapons,
+        public List<ThingDef>
             fearedWeapons,
             proficientPlants,
             proficientWeapons;
+        private List<ThingDef> _craftableWeapons = new List<ThingDef>();
         private List<ResearchProjectDef> _knownTechs;
 
         public IEnumerable<ThingDef> craftableWeapons
