@@ -8,12 +8,13 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    using static ModBaseHumanResources;
+    using static ModBaseHumanResources
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
         public List<ThingCount> chosenIngThings = new List<ThingCount>();
         protected MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
         protected FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
+        protected int LastIngCount;
 
         public static bool ShouldReserve(Pawn p, LocalTargetInfo target, int maxPawns = 1, int stackCount = -1, ReservationLayerDef layer = null, bool ignoreOtherReservations = false)
         {
@@ -68,12 +69,12 @@ namespace HumanResources
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();  
             IEnumerable<ThingDef> known = techComp.knownWeapons;
-            IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
+            IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
             IEnumerable<ThingDef> allowed = unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> viable = chosen.Intersect(allowed).Except(known);
             IEnumerable<ThingDef> unavailable = chosen.Except(viable);
-            if (!unavailable.EnumerableNullOrEmpty())
+            if (viable.EnumerableNullOrEmpty() && !unavailable.EnumerableNullOrEmpty())
             {
                 string thoseWeapons = "ThoseWeapons".Translate();
                 string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;

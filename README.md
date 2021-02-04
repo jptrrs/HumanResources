@@ -12,7 +12,7 @@ This experimental mod with far-reaching consequences completely changes the way 
 #### Warning #1: Not suited to be added mid-game. 
 Please, start a new one.
 
-#### Warning #2: This mod relies on [ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759) (or its branch, [ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822)). 
+#### Warning #2: This mod relies on [ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759) (or one of its branches, [ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822) or [ResearchPal - Forked](https://steamcommunity.com/sharedfiles/filedetails/?id=2351393394])). 
 If you don't use one of them yet, what are you doing with your life? They're pretty much mandatory mods. Please, choose one and install it. We could have incorporated Fluffy's code into ours, but we'd rather mantain a lean mod and give you an incentive to get to know and support his work.
 
 #### Warning #3: This is a public test phase for an unifinished mod. 
@@ -49,7 +49,7 @@ research tech > | document it into a book > | add book to library > | study tech
 This was not designed to be added to an ongoing game, please only enable it if you're planning on starting a new one. About other mods, **we simply cannot test it with every one out there**. All we can do is design for maximum compatibility and hope for the best. If you're unsure, please give it a shot. If you stumble on any problem, let us know and we'll do what we can to fix it. 
 
 #### Depends on:
-* **[ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759)** or its branch, **[ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822)**. Please pick one. 
+* **[ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759)** or its branches, **[ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822) or [ResearchPal - Forked](https://steamcommunity.com/sharedfiles/filedetails/?id=2351393394])**. Please pick one. 
 * **[HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=818773962)**
 
 #### Integrates with:
