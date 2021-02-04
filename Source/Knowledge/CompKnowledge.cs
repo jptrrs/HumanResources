@@ -28,10 +28,10 @@ namespace HumanResources
             return (a > b) ? A : B;
         };
         public List<ThingDef>
-            _craftableWeapons,
             fearedWeapons,
             proficientPlants,
             proficientWeapons;
+        private List<ThingDef> _craftableWeapons = new List<ThingDef>();
         private List<ResearchProjectDef> _knownTechs;
 
         public IEnumerable<ThingDef> craftableWeapons

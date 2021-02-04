@@ -232,16 +232,15 @@
     <altitudeLayer>Building</altitudeLayer>
     <minifiedDef>MinifiedThing</minifiedDef>
     <size>(1,1)</size>
-    <useHitPoints>False</useHitPoints>
     <stuffCategories>
       <li>Woody</li>
     </stuffCategories>
     <costStuffCount>25</costStuffCount>
     <statBases>
-      <WorkToBuild>250</WorkToBuild>
       <MaxHitPoints>50</MaxHitPoints>
-      <Flammability>1.0</Flammability>
       <Mass>3</Mass>
+      <Flammability>1.0</Flammability>
+      <WorkToBuild>250</WorkToBuild>
     </statBases>
     <passability>PassThroughOnly</passability>
     <pathCost>60</pathCost>
