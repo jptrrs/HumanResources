@@ -26,7 +26,7 @@ namespace HumanResources
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
             IEnumerable<ThingDef> known = techComp.knownWeapons;
-            IEnumerable<ThingDef> craftable = techComp.knownTechs.SelectMany(x => x.UnlockedWeapons());
+            IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
             IEnumerable<ThingDef> available = unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> feared = techComp.fearedWeapons;

@@ -109,12 +109,9 @@ namespace HumanResources
             }
             Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
             job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
-            job2.countQueue = new List<int>(chosenIngThings.Count);
-            for (int i = 0; i < chosenIngThings.Count; i++)
-            {
-                job2.targetQueueB.Add(chosenIngThings[i].Thing);
-                job2.countQueue.Add(chosenIngThings[i].Count);
-            }
+            job2.countQueue = new List<int>(chosenIngThings. Count);
+            job2.targetQueueB.Add(chosenIngThings[0].Thing); 
+            job2.countQueue.Add(chosenIngThings[0].Count);
             job2.haulMode = HaulMode.ToCellNonStorage;
             job2.bill = bill;
             return job2;
