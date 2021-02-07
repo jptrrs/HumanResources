@@ -70,7 +70,6 @@ namespace HumanResources
 
 		private Job StartOrResumeBillJob(Pawn pawn, IBillGiver giver, LocalTargetInfo target)
 		{
-			//Log.Message("...StartOrResumeBillJob for "+pawn);
 			for (int i = 0; i < giver.BillStack.Count; i++)
 			{
 				Bill bill = giver.BillStack[i];
@@ -93,7 +92,7 @@ namespace HumanResources
 									bool BoundWorker = bill_ProductionWithUft.BoundWorker == pawn;
 									bool canReach = pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false);
 									bool isforbidden = bill_ProductionWithUft.BoundUft.IsForbidden(pawn);
-									if (BoundWorker && canReach && isforbidden)
+									if (BoundWorker && canReach && !isforbidden)
 									{
 										return FinishUftJob(pawn, bill_ProductionWithUft.BoundUft, bill_ProductionWithUft);
 									}
