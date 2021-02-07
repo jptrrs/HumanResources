@@ -332,7 +332,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Books\Building_NetworkServer.cs" />
+    <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
+    <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
+    <Compile Include="Books+Buildings\CompProperties_ShootingArea.cs" />
+    <Compile Include="Books+Buildings\CompShootingArea.cs" />
+    <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyRemoved.cs" />
@@ -343,13 +347,13 @@
     <Compile Include="Base\TechStrings.cs" />
     <Compile Include="Base\TechWorkDefOf.cs" />
     <Compile Include="Base\TechDefOf.cs" />
-    <Compile Include="Books\Building_BookStore.cs" />
-    <Compile Include="Books\StockGenerator_TechBooks.cs" />
-    <Compile Include="Books\CompTitleMaker.cs" />
-    <Compile Include="Books\CompProperties_TitleMaker.cs" />
-    <Compile Include="Books\CompProperties_StorageGraphic.cs" />
-    <Compile Include="Books\CompStorageGraphic.cs" />
-    <Compile Include="CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Books+Buildings\Building_BookStore.cs" />
+    <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
+    <Compile Include="Books+Buildings\CompTitleMaker.cs" />
+    <Compile Include="Books+Buildings\CompProperties_TitleMaker.cs" />
+    <Compile Include="Books+Buildings\CompProperties_StorageGraphic.cs" />
+    <Compile Include="Books+Buildings\CompStorageGraphic.cs" />
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <None Include="Extensions\Extension_Research_RW1.1.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
@@ -382,7 +386,7 @@
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
-    <Compile Include="Books\ITab_Inventory.cs" />
+    <Compile Include="Books+Buildings\ITab_Inventory.cs" />
     <Compile Include="Work\JobDriver_ScanBook.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\LearningUtility.cs" />
@@ -391,8 +395,8 @@
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
-    <Compile Include="Books\RoomRoleWorker_Library.cs" />
-    <Compile Include="Books\StatPart_AvailableBooks.cs" />
+    <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
+    <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />

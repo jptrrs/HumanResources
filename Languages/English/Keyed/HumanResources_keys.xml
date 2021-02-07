@@ -96,6 +96,7 @@
   <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
   <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
   <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
+  <!--NEW--><ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
   
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>

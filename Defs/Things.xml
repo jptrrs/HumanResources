@@ -58,6 +58,7 @@
     <designationHotKey />
     <placeWorkers>
       <li>PlaceWorker_ShowFacilitiesConnections</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
     </placeWorkers>
   </ThingDef>
 
@@ -126,7 +127,11 @@
     <designationHotKey />
     <placeWorkers>
       <li>PlaceWorker_ShowFacilitiesConnections</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
     </placeWorkers>
+    <researchPrerequisites>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
   </ThingDef>
 
 
@@ -282,6 +287,9 @@
       </li>
       <li Class="CompProperties_Flickable"/>
     </comps>
+    <researchPrerequisites>
+      <li>MicroelectronicsBasics</li>
+    </researchPrerequisites>
   </ThingDef>
 
   <!--Technical Book-->
@@ -380,6 +388,12 @@
     <designationCategory>Security</designationCategory>
     <hasInteractionCell>True</hasInteractionCell>
     <interactionCellOffset>(0,0,-10)</interactionCellOffset>
+    <comps>
+      <li Class="HumanResources.CompProperties_ShootingArea" />
+    </comps>
+    <placeWorkers>
+      <li>HumanResources.PlaceWorker_ShootingRange</li>
+    </placeWorkers>
     <inspectorTabs>
       <li>ITab_Bills</li>
     </inspectorTabs>

@@ -1,6 +1,4 @@
 ﻿using Verse;
-using HarmonyLib;
-using System.Reflection;
 using RimWorld;
 
 namespace HumanResources

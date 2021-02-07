@@ -37,20 +37,33 @@ namespace HumanResources
                     LocalTargetInfo target = thing;
                     if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn)) //basic desk availabilty
                     {
-                        billGiver.BillStack.RemoveIncompletableBills();
-                        foreach (Bill bill in RelevantBills(thing, pawn))
+                        if (IsRangeClear(thing)) //check is shooting area is clear if it exists.
                         {
-                            if (ValidateChosenWeapons(bill, pawn, billGiver)) //check bill filter
+                            billGiver.BillStack.RemoveIncompletableBills();
+                            foreach (Bill bill in RelevantBills(thing, pawn))
                             {
-                                actualJob = StartBillJob(pawn, billGiver, bill);
-                                lastVerifiedJobTick = tick;
-                                break;
+                                if (ValidateChosenWeapons(bill, pawn, billGiver)) //check bill filter
+                                {
+                                    actualJob = StartBillJob(pawn, billGiver, bill);
+                                    lastVerifiedJobTick = tick;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
             return actualJob;
+        }
+
+        protected virtual bool IsRangeClear(Thing target)
+        {
+            CompShootingArea comp = target.TryGetComp<CompShootingArea>();
+            if (comp == null) return true;
+            var check = ShootingRangeUtility.AreaClear(comp.RangeArea, target.Map);
+            if (check.Accepted) return true;
+            if (!JobFailReason.HaveReason) JobFailReason.Is(check.Reason);
+            return false;
         }
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
@@ -108,10 +121,13 @@ namespace HumanResources
                 return job;
             }
             Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
-            job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
-            job2.countQueue = new List<int>(chosenIngThings. Count);
-            job2.targetQueueB.Add(chosenIngThings[0].Thing); 
-            job2.countQueue.Add(chosenIngThings[0].Count);
+            if (chosenIngThings.Any()) //to acomodate PractiseWeapon, which uses no ingredient.
+            {
+                job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
+                job2.countQueue = new List<int>(chosenIngThings.Count);
+                job2.targetQueueB.Add(chosenIngThings[0].Thing);
+                job2.countQueue.Add(chosenIngThings[0].Count);
+            }
             job2.haulMode = HaulMode.ToCellNonStorage;
             job2.bill = bill;
             return job2;
