@@ -89,10 +89,7 @@ namespace HumanResources
 							{
 								if (bill_ProductionWithUft.BoundUft != null)
 								{
-									bool BoundWorker = bill_ProductionWithUft.BoundWorker == pawn;
-									bool canReach = pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false);
-									bool isforbidden = bill_ProductionWithUft.BoundUft.IsForbidden(pawn);
-									if (BoundWorker && canReach && !isforbidden)
+									if (bill_ProductionWithUft.BoundWorker == pawn && pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly, 1, -1, null, false) && !bill_ProductionWithUft.BoundUft.IsForbidden(pawn))
 									{
 										return FinishUftJob(pawn, bill_ProductionWithUft.BoundUft, bill_ProductionWithUft);
 									}
