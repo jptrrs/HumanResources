@@ -26,7 +26,7 @@ namespace HumanResources
 			{
 				return Desk.Map.listerBuildings.ColonistsHaveBuildingWithPowerOn(TechDefOf.NetworkServer);
 			}
-			else return ModBaseHumanResources.unlocked.libraryFreeSpace <= 0;
+			return ModBaseHumanResources.unlocked.libraryFreeSpace > 0;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
