@@ -244,7 +244,7 @@ namespace HumanResources
                     {
                         Equip(TargetIndex.B, true);
                     },
-                    defaultCompleteMode = ToilCompleteMode.Instant
+                    defaultCompleteMode = ToilCompleteMode.Instant 
                 };
 
                 yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);

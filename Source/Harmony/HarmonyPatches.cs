@@ -62,14 +62,14 @@ namespace HumanResources
                 GoExplore_Patches.Execute(Instance);
             }
 
-            //Material Filter patch - OBSOLETE?
+            //Material Filter patch
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("KamiKatze.MaterialFilter")))
             {
                 Log.Message("[HumanResources] Material Filter detected! Adapting...");
                 MaterialFilter_Patch.Execute(Instance);
             }
 
-            //Recipe icons patch - OBSOLETE?
+            //Recipe icons patch
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("automatic.recipeicons")))
             {
                 Log.Message("[HumanResources] Recipe Icons detected! Adapting...");

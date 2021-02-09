@@ -28,7 +28,7 @@ namespace HumanResources
         public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
         {
             int tick = Find.TickManager.TicksGame;
-            if (actualJob == null || lastVerifiedJobTick != tick)
+            if (actualJob == null || lastVerifiedJobTick != tick || Find.TickManager.Paused)
             {
                 actualJob = null;
                 IBillGiver billGiver = thing as IBillGiver;
