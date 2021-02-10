@@ -103,7 +103,7 @@ namespace HumanResources
             get
             {
                 float baseValue = (float)ResearchPointsPerWorkTickInfo.GetValue(new ResearchManager());
-                return ModBaseHumanResources.ResearchSpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue * 0.9f;
+                return ResearchSpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue * 0.9f;
             }
         }
 
@@ -112,7 +112,7 @@ namespace HumanResources
             get
             {
                 float baseValue = 1.1f;
-                return ModBaseHumanResources.StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
+                return StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
 
@@ -478,6 +478,7 @@ namespace HumanResources
         {
             float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
             amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
+            amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true); //Because, why not?
             CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
             Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
             foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
