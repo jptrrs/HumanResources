@@ -290,7 +290,7 @@ namespace HumanResources
             {
                 pass++;
                 filtered.ExecuteEnumerable();
-                if (filtered.EnumerableNullOrEmpty()) Log.Warning($"[HumanResources] Empty technology pool!");
+                if (filtered.EnumerableNullOrEmpty()) Log.Warning("[HumanResources] Empty technology pool!");
                 var remaining = filtered.Where(x => !result.Contains(x.Key));
                 if (remaining.EnumerableNullOrEmpty()) break;
                 SkillDef skill = null;

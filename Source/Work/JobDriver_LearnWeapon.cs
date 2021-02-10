@@ -222,12 +222,12 @@ namespace HumanResources
             {
                 if (pawn.equipment.Primary != null && !practice)
                 {
-                    if (job.GetTarget(TargetIndex.C).IsValid) Equip(TargetIndex.C, false);
-                    else
+                    if (pawn.equipment.Primary == (ThingWithComps)job.targetB.Thing)
                     {
                         ThingWithComps thingWithComps = (ThingWithComps)job.targetB.Thing;
                         pawn.equipment.TryDropEquipment(thingWithComps, out thingWithComps, pawn.Position, false);
                     }
+                    if (job.GetTarget(TargetIndex.C).IsValid) Equip(TargetIndex.C, false);
                 }
             });
             Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
