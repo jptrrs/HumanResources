@@ -417,7 +417,7 @@ namespace HumanResources
                 }
 
                 //4. Telling humans what's going on, depending on settings
-                if (ModBaseHumanResources.FullStartupReport && Prefs.LogVerbose)
+                if (FullStartupReport && Prefs.LogVerbose)
                 {
                     StringBuilder report = new StringBuilder();
                     if (matchesCount > 0) { report.Append("keyword" + (matchesCount > 1 ? "s" : "") + ": " + keywords.ToStringSafeEnumerable()); }

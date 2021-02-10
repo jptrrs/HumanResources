@@ -78,7 +78,7 @@ namespace HumanResources
                 }
                 else
                 {
-                    Log.Error("[HumanResources] " + parent.Label.CapitalizeFirst() + " is trying to pose as human, but his disguise can't fool us!");
+                    Log.Error($"[HumanResources] {parent.Label.CapitalizeFirst()} is trying to pose as human, but his disguise can't fool us!");
                     return null;
                 }
             }
@@ -86,23 +86,23 @@ namespace HumanResources
 
         public void AcquireExpertise()
         {
-            if (Prefs.LogVerbose) Log.Warning("[HumanResources] Acquiring expertise for " + pawn + "...");
+            if (Prefs.LogVerbose) Log.Warning($"[HumanResources] Acquiring expertise for {pawn}...");
             expertise = new Dictionary<ResearchProjectDef, float>();
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
             var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
             if (!acquiredExpertise.EnumerableNullOrEmpty())
             {
                 expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
-                if (Prefs.LogVerbose) Log.Message("... " + pawn.gender.GetPossessive().CapitalizeFirst() + " knowledge is going to be " + expertise.Keys.ToStringSafeEnumerable() + ".");
+                if (Prefs.LogVerbose) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} knowledge is going to be {expertise.Keys.ToStringSafeEnumerable()}.");
             }
             else
             {
-                Log.Warning("[HumanResources] " + pawn + " spawned without acquiring any expertise.");
+                Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
             }
             AcquireWeaponKnowledge(faction);
-            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message("... " + pawn.gender.GetPossessive().CapitalizeFirst() + " weapon proficiency is going to be: " + proficientWeapons.ToStringSafeEnumerable());
+            if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} weapon proficiency is going to be: {proficientWeapons.ToStringSafeEnumerable()}");
             AcquirePlantKnowledge();
-            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message("... " + pawn.gender.GetPronoun().CapitalizeFirst() + " will be able to cultivate the following plants: " + proficientPlants.ToStringSafeEnumerable());
+            if (Prefs.LogVerbose && proficientPlants.Any()) Log.Message($"... {pawn.gender.GetPronoun().CapitalizeFirst()} will be able to cultivate the following plants: {proficientPlants.ToStringSafeEnumerable()}");
         }
 
         public void AcquirePlantKnowledge()
@@ -124,35 +124,35 @@ namespace HumanResources
                 if (!expertise.EnumerableNullOrEmpty())
                 {
                     foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
-                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " can craft some weapons. ");
+                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} can craft some weapons. ");
                 }
                 bool isPlayer = pawn.Faction?.IsPlayer ?? false;
                 if (isPlayer && (FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
                 {
                     proficientWeapons.AddRange(unlocked.startingWeapons);
-                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " gets the scenario starting weapons. ");
+                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} gets the scenario starting weapons. ");
                 }
                 if (isFighter || isShooter)
                 {
                     if (Prefs.LogVerbose)
                     {
                         string[] role = isFighter ? new[] { "fighter", "melee" } : new[] { "shooter", "ranged" };
-                        stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is a " + role[0] + " and gets extra " + role[1] + " weapons from ");
+                        stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is a {role[0]} and gets extra {role[1]} weapons from ");
                     }
                     if (WeaponPoolIncludesTechLevel || !isPlayer)
                     {
-                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, faction)))
+                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, faction, true)))
                         {
                             var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
                             if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
                         }
-                        if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPossessive().ToLower() + " faction's tech level");
+                        if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPossessive().ToLower()} faction's tech level");
                     }
                     if (isPlayer && WeaponPoolIncludesScenario && !(FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
                     {
                         proficientWeapons.AddRange(unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
                         string connector = WeaponPoolIncludesTechLevel ? " and " : "";
-                        if (Prefs.LogVerbose) stringBuilder.Append(connector + "the starting scenario");
+                        if (Prefs.LogVerbose) stringBuilder.Append($"{connector}the starting scenario");
                     }
                     if (Prefs.LogVerbose) stringBuilder.Append(". ");
                 }
@@ -162,7 +162,7 @@ namespace HumanResources
                     if (!knownWeapons.Contains(weapon.def))
                     {
                         proficientWeapons.Add(weapon.def);
-                        if (Prefs.LogVerbose) stringBuilder.Append(pawn.gender.GetPronoun().CapitalizeFirst() + " is using a " + weapon.def.label + ".");
+                        if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is using a {weapon.def.label}.");
                     }
                 }
                 proficientWeapons.RemoveDuplicates();
@@ -205,31 +205,6 @@ namespace HumanResources
 
         public IEnumerable<ResearchProjectDef> GetExpertiseDefsFor(Pawn pawn, FactionDef faction)
         {
-            //0. Info for debugging.
-            if (Prefs.LogVerbose)
-            {
-                bool flag = false;
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("... Including technologies from");
-                if (TechPoolIncludesTechLevel)
-                {
-                    stringBuilder.Append(" the faction tech level,");
-                    flag = true;
-                }
-                if (TechPoolIncludesScenario)
-                {
-                    stringBuilder.Append(" the scenario,");
-                    flag = true;
-                }
-                if (TechPoolIncludesStarting)
-                {
-                    stringBuilder.Append(" the starting techs");
-                    flag = true;
-                }
-                if (flag) Log.Message(stringBuilder.ToString().TrimEnd(new char[] { ',' }) + ".");
-                else Log.Warning("[HumanResources] Empty technology pool!");
-            }
-
             //1. Gather info on that pawn
 
             //a. tech level
@@ -246,31 +221,65 @@ namespace HumanResources
             IEnumerable<SkillRecord> secondCandidates = pawn.skills.skills.Except(highestSkillRecord).Where(x => SkillIsRelevant(x.def, techLevel));
             SkillDef secondSkill = secondCandidates.Aggregate(AccessHighestSkill).def;
 
-            //c. special cases
+            //c. age
+            float middleAge = pawn.RaceProps.lifeExpectancy / 2;
+            int matureAge = pawn.RaceProps.lifeStageAges.FindLastIndex(x => x.minAge < middleAge); //not always the last possible age because there are mods with an "eldery" stage
+            int growthAdjust = 0;
+            int oldBonus = 0;
+            if (pawn.ageTracker.CurLifeStageIndex < matureAge)
+            {
+                growthAdjust = matureAge - pawn.ageTracker.CurLifeStageIndex;
+            }
+            else if (pawn.ageTracker.AgeBiologicalYears > middleAge)
+            {
+                oldBonus = 1;
+            }
+
+            //d. special cases
             isFighter = highestSkill == SkillDefOf.Melee;
             isShooter = highestSkill == SkillDefOf.Shooting;
             int fighterHandicap = (isFighter | isShooter) ? 1 : 0;
-            int oldBonus = pawn.ageTracker.AgeBiologicalYears > pawn.RaceProps.lifeExpectancy / 2 ? 1 : 0;
             bool guru = techLevel < TechLevel.Archotech && highestSkill == SkillDefOf.Intellectual && highestSkillRecord.Level >= Rand.Range(7, 10);
 
             //2. Calculate how many techs he should know
             int minSlots = techLevel > TechLevel.Medieval ? 1 : oldBonus;
-            int slots = Mathf.Max(minSlots, FactionExpertiseRange(techLevel) - (4 - pawn.ageTracker.CurLifeStageIndex) + oldBonus - fighterHandicap);
+            int slots = Mathf.Max(minSlots, FactionExpertiseRange(techLevel) - growthAdjust + oldBonus - fighterHandicap);
             if (slots == 0)
             {
-                if (Prefs.LogVerbose) Log.Warning("... No slots for " + pawn.gender.GetObjective() + ", returning null. (StartingTechLevel is " + techLevel + ", CurLifeStageIndex is " + pawn.ageTracker.CurLifeStageIndex + ", fighterHandicap is " + fighterHandicap + ")");
+                if (Prefs.LogVerbose) Log.Warning($"... No slots for {pawn.gender.GetObjective()}, returning null. (StartingTechLevel is {techLevel}, CurLifeStageIndex is {pawn.ageTracker.CurLifeStageIndex}, fighterHandicap is {fighterHandicap})");
                 return null;
             }
 
-            //3. Distribute knowledge
+            //3. Info for debugging.
+
             if (Prefs.LogVerbose)
             {
-                string guruNote = guru ? " (with intellectual bounus)" : "";
-                string techlevelText = TechPoolIncludesBackground ?
-                    ("techLevels: " + factionTechLevel + " faction, " + childhoodLevel + " childhood, " + techLevel + " background") :
-                    "techLevel is " + techLevel;
-                Log.Message("... " + slots + " calculated slots (" + techlevelText + guruNote + "; highest relevant skills: " + highestSkill.label + " & " + secondSkill.label + ")");
+                StringBuilder stringBuilder = new StringBuilder();
+                string factionName = faction.label.ToLower() ?? pawn.Possessive().ToLower() + faction;
+                if (TechPoolIncludesStarting) 
+                {
+                    stringBuilder.Append($"default for {factionName}");
+                }
+                if (TechPoolIncludesTechLevel)
+                {
+                    stringBuilder.AppendWithComma($"{factionTechLevel.ToString().ToLower()} age");
+                }
+                if (TechPoolIncludesScenario)
+                {
+                    stringBuilder.AppendWithComma($"{Find.Scenario.name.ToLower()} scenario");
+                }
+                if (TechPoolIncludesBackground)
+                {
+                    stringBuilder.AppendWithComma($"{childhoodLevel.ToString().ToLower()} childhood & {techLevel.ToString().ToLower()} background");
+                }
+                Log.Message($"... Including technologies from: "+stringBuilder.ToString()+ ".");
+                stringBuilder.Clear();
+                string guruText = guru ? " (allowing advanced knowledge)" : "";
+                stringBuilder.Append($"... As {pawn.ageTracker.CurLifeStage.label}, {pawn.ProSubj()} gets {slots} slots. {pawn.Possessive().CapitalizeFirst()} highest relevant skills are {highestSkill.label}{guruText} & {secondSkill.label}.");
+                Log.Message(stringBuilder.ToString());
             }
+            
+            //4. Finally, Distribute knowledge
             bool strict = false;
             bool useChildhood = childhoodSkill != null && TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
             var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, faction, strict));
@@ -280,11 +289,9 @@ namespace HumanResources
             while (result.Count() < slots)
             {
                 pass++;
-                //Log.Message("DEBUG pass = " + pass + ", techLevel = " + workingTechLevel);
                 filtered.ExecuteEnumerable();
+                if (filtered.EnumerableNullOrEmpty()) Log.Warning($"[HumanResources] Empty technology pool!");
                 var remaining = filtered.Where(x => !result.Contains(x.Key));
-                var test = remaining.Select(x => x.Key).Select(x => x.techLevel).Distinct();
-                //Log.Message("DEBUG considered techs are " + test.ToStringSafeEnumerable());
                 if (remaining.EnumerableNullOrEmpty()) break;
                 SkillDef skill = null;
                 if (pass == 1 && remaining.Any(e => e.Value.Contains(highestSkill)))
@@ -296,7 +303,6 @@ namespace HumanResources
                     skill = useChildhood ? childhoodSkill : secondSkill;
                 }
                 ResearchProjectDef selected = remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, slots, pass, skill), 1f).Key ?? remaining.RandomElement().Key;
-                //Log.Message("DEBUG selected: " + selected);
                 result.Add(selected);
 
                 //prepare next pass:
@@ -317,7 +323,7 @@ namespace HumanResources
             {
                 return result;
             }
-            Log.Error("[HumanResources] Couldn't calculate any expertise for " + pawn);
+            Log.Error($"[HumanResources] Couldn't calculate any expertise for {pawn}");
             return null;
         }
 
@@ -351,7 +357,7 @@ namespace HumanResources
             }
             else
             {
-                Log.Warning("[HumanResources] " + pawn + " tried to learn a technology without being able to.");
+                Log.Warning($"[HumanResources] {pawn} tried to learn a technology without being able to.");
                 return false;
             }
         }
@@ -443,7 +449,7 @@ namespace HumanResources
             }
             catch (Exception e) // if you are catching err's you might as well explain them.
             {
-                Log.Warning("[HumanResources] Error determining tech level from " + pawn + "'s background: " + e.Message);
+                Log.Warning($"[HumanResources] Error determining tech level from {pawn}'s background: {e.Message}");
             }
             childhoodLevel = asChild;
             return asAdult;
@@ -457,7 +463,7 @@ namespace HumanResources
                 return Extension_Research.TechsBySkill[skill].Any(x => x.techLevel == level);
             }
             //string test = result ? "is":"is NOT";
-            //if (!result) Log.Message("DEBUG " + skill + " is NOT relevant for " + level);
+            //if (!result) Log.Message($"DEBUG {skill} is NOT relevant for {level);
             return false;
         }
 
@@ -480,7 +486,7 @@ namespace HumanResources
             if (!isPlayer) return tech.techLevel == TechLevel;
             else
             {
-                if ((TechPoolIncludesTechLevel || strict) && tech.techLevel == TechLevel) return true;
+                if ((strict || TechPoolIncludesTechLevel || TechPoolIncludesBackground) && tech.techLevel == TechLevel) return true;
                 if (!strict)
                 {
                     if (TechPoolIncludesScenario && !unlocked.startingTechs.EnumerableNullOrEmpty() && unlocked.startingTechs.Contains(tech)) return true;
@@ -495,6 +501,7 @@ namespace HumanResources
             }
             return false;
         }
+
         private bool TestIfWeapon(ThingDef weapon, bool close)
         {
             return close ? weapon.IsMeleeWeapon : weapon.IsRangedWeapon;
