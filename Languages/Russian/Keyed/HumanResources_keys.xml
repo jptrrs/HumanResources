@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
 	<!--UI-->
@@ -43,7 +43,7 @@
 	<WeaponPoolMode_TechLevel>списка вашего технического уровня</WeaponPoolMode_TechLevel>
 	<WeaponPoolMode_Scenario>списка оружия, указанного в сценарии</WeaponPoolMode_Scenario>
 	<FreeScenarioWeaponsTitle>Стартовое оружие уже изучено</FreeScenarioWeaponsTitle>
-	<FreeScenarioWeaponsDesc>Если включено, любое оружие, которое вы добавите в редакторе сценариев, также будет включено в список оружия, которое могут использовать поселенцы.\n(Для сценария "Богатый исследователь" эта настройка всегда включена)</FreeScenarioWeaponsDesc>
+	<FreeScenarioWeaponsDesc>Если включено, любое оружие, которое вы добавите в редакторе сценариев, также будет включено в список оружия, которое могут использовать поселенцы.\n(Для сценария «Богатый исследователь» эта настройка всегда включена)</FreeScenarioWeaponsDesc>
 	<LearnMeleeWeaponsByGroupTitle>Изучать оружие ближнего боя группами</LearnMeleeWeaponsByGroupTitle>
 	<LearnMeleeWeaponsByGroupDesc>При обучении пользованию оружием ближнего боя изучать все виды оружия, разблокированные с помощью этой технологии.</LearnMeleeWeaponsByGroupDesc>
 	<LearnRangedWeaponsByGroupTitle>Изучать оружие дальнего боя группами</LearnRangedWeaponsByGroupTitle>
@@ -64,17 +64,17 @@
 	<BookStoreRetrieveBookDesc>Найти и извлечь конкретную книгу с полки книжного шкафа.</BookStoreRetrieveBookDesc>
 	<BookStoreNoInternalStorage>{0} не помещается ни на одной полке книжного шкафа.</BookStoreNoInternalStorage>
 	<KnowledgeLabel>{0}</KnowledgeLabel>
-	<Book>манускрипт "{0}"</Book>
-	<BookCompendium>компендиум "{0}"</BookCompendium>
-	<BookManual>монография "{0}"</BookManual>
-	<BookTheory>справочник "{0}"</BookTheory>
-	<BookDatabase>руководство "{0}"</BookDatabase>
+	<Book>манускрипт «{0}»</Book>
+	<BookCompendium>компендиум «{0}»</BookCompendium>
+	<BookManual>монография «{0}»</BookManual>
+	<BookTheory>справочник «{0}»</BookTheory>
+	<BookDatabase>руководство «{0}»</BookDatabase>
 
 	<!--Feedback-->
-	<MessageStudyComplete>{0_nameDef} {0_gender ? овладел : овладела } знаниями по теме "{1}".</MessageStudyComplete>
-	<MessageDocumentComplete>{0_nameDef} {0_gender ? написал : написала } книгу на тему "{1}".</MessageDocumentComplete>
-	<MessageFiledTech>Знания по теме "{0}" были добавлены в нашу библиотеку.</MessageFiledTech>
-	<MessageEjectedTech>Знания по теме "{0}" были изъяты из нашей библиотеки.</MessageEjectedTech>
+	<MessageStudyComplete>{0_nameDef} {0_gender ? овладел : овладела } знаниями по теме «{1}».</MessageStudyComplete>
+	<MessageDocumentComplete>{0_nameDef} {0_gender ? написал : написала } книгу на тему «{1}».</MessageDocumentComplete>
+	<MessageFiledTech>Знания по теме «{0}» были добавлены в нашу библиотеку.</MessageFiledTech>
+	<MessageEjectedTech>Знания по теме «{0}» были изъяты из нашей библиотеки.</MessageEjectedTech>
 	<MessageTrainingComplete>{0_nameDef} {0_gender ? освоил : освоила } новый вид оружия: {1_definite}.</MessageTrainingComplete>
 	<NothingToAddToLibrary>Вы ничего не знаете, {0_nameFull}.</NothingToAddToLibrary>
 	<AlreadyKnowsTheWholeLibrary>{0_nameDef} прочитал все книги.</AlreadyKnowsTheWholeLibrary>
@@ -84,16 +84,22 @@
 	<MissingRequirementToLearnWeapon>{0_nameDef} не владеет соответствующими знаниями или книгами, чтобы узнать о {1}.</MissingRequirementToLearnWeapon>
 	<ThoseWeapons>данном оружии</ThoseWeapons>
 	<NoWeaponToLearn>{0_nameDef} уже знает, как пользоваться этим оружием.</NoWeaponToLearn>
-	<DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется "{2}").</DoesntKnowHowToBuild>
-	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется "{2}").</DoesntKnowHowToRepair>
-	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется "{2}").</DoesntKnowHowToCraft>
-	<DoesntKnowThisPlant>{0_nameDef} не знает, как выращивать {1} (требуется "{2}").</DoesntKnowThisPlant>
+	<DoesntKnowHowToBuild>{0_nameDef} не знает, как построить {1} (требуется «{2}»).</DoesntKnowHowToBuild>
+	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется «{2}»).</DoesntKnowHowToRepair>
+	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется «{2}»).</DoesntKnowHowToCraft>
+	<DoesntKnowThisPlant>{0_nameDef} не знает, как выращивать {1} (требуется «{2}»).</DoesntKnowThisPlant>
 	<!-- Pawn has not been trained to use this weapon -->
 	<UnknownWeapon>необходимо сперва обучиться владению этим оружием</UnknownWeapon>
 	<!-- Pawn cannot comprehend this weapon and is scared of it -->
 	<EvilWeapon>необходимо сперва изучить соответствующую технологию</EvilWeapon>
-	<TechAlreadyKnown>Технология "{0_label}" уже известна.</TechAlreadyKnown>
+	<TechAlreadyKnown>Технология «{0_label}» уже известна.</TechAlreadyKnown>
 	<NoWeaponEquipped>Неподходящий тип оружия.</NoWeaponEquipped>
+	<NoBooksToScan>Нет книг для сканирования.</NoBooksToScan>
+	<NoAvailableServer>В сети нет доступных серверов.</NoAvailableServer>
+	<ForbiddenAssignment>Назначенный проект слишком сложный, чтобы работать над ним за этим столом.</ForbiddenAssignment>
+	<!-- {0_nameDef} was not assigned any projects. Use the main Research tab. -->
+	<NoAssignment>У поселенца нет назначенных проектов. Используйте вкладку «Технологии».</NoAssignment>
+	<ShootingRangeObstructed>Требуется свободная линия обзора.</ShootingRangeObstructed>
 
 	<!--weapon testing -->
 	<WeaponTestFail>{0_nameDef} не {0_gender ? смог : смогла } понять, как работает {1_definite}.</WeaponTestFail>
@@ -101,15 +107,15 @@
 
 	<LetterLabelWeaponTestFailed>Инцидент ({WEAPON})</LetterLabelWeaponTestFailed>
 	<!-- {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}). -->
-	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } оружие "{WEAPON_definite}", пока {TESTER_gender ? пытался : пыталась } с ним экспериментировать.</MessageWeaponTestFailureMinor> 
+	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } оружие «{WEAPON_definite}», пока {TESTER_gender ? пытался : пыталась } с ним экспериментировать.</MessageWeaponTestFailureMinor> 
 	<!-- {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}). -->
-	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, произошедшего во время экспериментирования с оружием "{WEAPON_definite}".</MessageWeaponTestFailureCatastrophic>
+	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, произошедшего во время экспериментирования с оружием «{WEAPON_definite}».</MessageWeaponTestFailureCatastrophic>
 	<!-- {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}). -->
 	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} {TESTER_gender ? допустил : допустила } серьёзную оплошность во время экспериментирования с оружием.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
 
 	<!--Go Explore-->
-	<LetterResearchRequest_SuccessHR>Исследование прошло успешно. Совместными усилиями вы продвинулись в понимании технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
-	<LetterResearchRequest_TriumphHR>Исследование завершилось великим триумфом! Совместными усилиями вы совершили прорыв и раскрыли секреты технологии "{2}".\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>
-	<ResearchRequestXPGainHR>{0}, {0_gender ? ваш исследователь, приобрёл : ваша исследовательница, приобрела } ценные знания по теме "{1}" и {0_gender ? поднял : подняла } свой навык умственного труда на {2}.</ResearchRequestXPGainHR>
+	<LetterResearchRequest_SuccessHR>Исследование прошло успешно. Совместными усилиями вы продвинулись в понимании технологии «{2}».\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_SuccessHR>
+	<LetterResearchRequest_TriumphHR>Исследование завершилось великим триумфом! Совместными усилиями вы совершили прорыв и раскрыли секреты технологии «{2}».\n\nОтношения с фракцией {0} улучшились на {1}.</LetterResearchRequest_TriumphHR>
+	<ResearchRequestXPGainHR>{0}, {0_gender ? ваш исследователь, приобрёл : ваша исследовательница, приобрела } ценные знания по теме «{1}» и {0_gender ? поднял : подняла } свой навык умственного труда на {2}.</ResearchRequestXPGainHR>
 
 </LanguageData> 

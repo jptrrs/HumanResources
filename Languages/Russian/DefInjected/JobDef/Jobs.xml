@@ -3,7 +3,10 @@
 
 	<LearnTech.reportString>изучает</LearnTech.reportString>
 	<DocumentTech.reportString>документирует</DocumentTech.reportString>
+	<DocumentTechDigital.reportString>документирует</DocumentTechDigital.reportString>
 	<ResearchTech.reportString>исследует</ResearchTech.reportString>
+	<ScanBook.reportString>сканирует</ScanBook.reportString>
+
 	<TrainWeapon.reportString>тренируется с оружием</TrainWeapon.reportString>
 	<PlayAtDummy.reportString>практикуется в рукопашном бою</PlayAtDummy.reportString>
 	<PlayAtTarget.reportString>практикуется в стрельбе</PlayAtTarget.reportString>
