@@ -21,7 +21,7 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-			project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
+            project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
 			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
@@ -47,7 +47,7 @@ namespace HumanResources
 					if (!billGiver.CurrentlyUsableForBills()) return true;
 					if (project == null)
 					{
-						Log.Warning("[HumanResources] " + pawn + " tried to document a null project.");
+						Log.Error("[HumanResources] Tried to document a null project.");
 						TryMakePreToilReservations(true);
 						return true;
 					}

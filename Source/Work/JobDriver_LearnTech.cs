@@ -73,6 +73,7 @@ namespace HumanResources
 				Pawn actor = acquireKnowledge.actor;
 				if (expertise.ContainsKey(project) && expertise[project] > 1f)
 				{
+					Log.Message("ending learn job...");
 					if (techComp.LearnTech(project))
 					{
 						if (!IsResearch)
@@ -99,6 +100,7 @@ namespace HumanResources
 			};
 			acquireKnowledge.AddFinishAction(delegate
 			{
+				Log.Message($"Test at finishAction: project logged = {expertise.ContainsKey(project)} amount: {expertise[project]}");
 				Pawn actor = acquireKnowledge.actor;
 				if (job.bill != null && job.RecipeDef.workSkill != null)
 				{
