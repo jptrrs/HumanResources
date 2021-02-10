@@ -346,10 +346,8 @@ namespace HumanResources
         {
             if (expertise != null)
             {
-                Log.Message($"Trying to learn {tech}...");
                 if (!expertise.ContainsKey(tech)) expertise.Add(tech, 1f);
                 else expertise[tech] = 1f;
-                Log.Message($"...registered: {expertise[tech]}");
                 _knownTechs.AddDistinct(tech);
                 _craftableWeapons.AddRange(tech.UnlockedWeapons());
                 techLevel = (TechLevel)Mathf.Max((int)tech.techLevel, (int)techLevel);
