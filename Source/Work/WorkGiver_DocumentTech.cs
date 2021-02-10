@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -8,7 +8,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
-    class WorkGiver_DocumentTech : WorkGiver_Knowledge
+	class WorkGiver_DocumentTech : WorkGiver_Knowledge
 	{
 		public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
@@ -20,16 +20,16 @@ namespace HumanResources
 			return true;
 		}
 
-        private bool CheckLibrarySpace(Thing Desk)
-        {
+		private bool CheckLibrarySpace(Thing Desk)
+		{
 			if (Desk.def == TechDefOf.NetworkTerminal)
 			{
 				return Desk.Map.listerBuildings.ColonistsHaveBuildingWithPowerOn(TechDefOf.NetworkServer);
 			}
 			return ModBaseHumanResources.unlocked.libraryFreeSpace > 0;
-        }
+		}
 
-        public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
+		public override Job JobOnThing(Pawn pawn, Thing thing, bool forced = false)
 		{
 			int tick = Find.TickManager.TicksGame;
 			if (actualJob == null || lastVerifiedJobTick != tick || Find.TickManager.Paused)
@@ -48,8 +48,8 @@ namespace HumanResources
 							if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(homework).Any()) //check homework 
 							{
 								billGiver.BillStack.RemoveIncompletableBills();
-                                foreach (Bill bill in RelevantBills(thing, pawn))
-                                {
+								foreach (Bill bill in RelevantBills(thing, pawn))
+								{
 									if (bill.Allows(homework)) //check bill filter vs. homework
 									{
 										actualJob = StartOrResumeBillJob(pawn, billGiver, target);
@@ -111,7 +111,7 @@ namespace HumanResources
 							};
 						}
 						else
-                        {
+						{
 							return new Job(TechJobDefOf.DocumentTechDigital, target)
 							{
 								bill = bill

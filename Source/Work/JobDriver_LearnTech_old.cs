@@ -39,23 +39,46 @@ namespace HumanResources
 				return JobCondition.Ongoing;
 			});
 			this.FailOnBurningImmobile(TargetIndex.A);
+			//this.FailOn(delegate ()
+			//{
+			//	if (project == null)
+			//	{
+			//		Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
+			//		TryMakePreToilReservations(true);
+			//		return true;
+			//	}
+			//             if (desk is IBillGiver billGiver)
+			//             {
+			//                 if (job.bill.DeletedOrDereferenced) return true;
+			//                 if (!billGiver.CurrentlyUsableForBills()) return true;
+			//                 if (!techComp.homework.Contains(project)) return true;
+			//             }
+			//             if (IsResearch)
+			//             {
+			//		if (project.IsKnownBy(pawn)) return true;
+			//		if (!project.CanBeResearchedAt(desk as Building_ResearchBench, false)) return true;
+			//	}
+			//             return false;
+			//});
 			this.FailOn(delegate ()
 			{
-                if (project == null)
-                {
-                    Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
-                    TryMakePreToilReservations(true);
-                    return true;
-                }
-				if (desk is IBillGiver billGiver0)
+				IBillGiver billGiver = desk as IBillGiver;
+				if (billGiver != null)
 				{
 					if (job.bill.DeletedOrDereferenced) return true;
-					if (!billGiver0.CurrentlyUsableForBills()) return true;
-					if (!techComp.homework.Contains(project)) return true;
+					if (!billGiver.CurrentlyUsableForBills()) return true;
+					if (project == null)
+					{
+						Log.Warning("[HumanResources] " + pawn + " tried to learn a null project.");
+						TryMakePreToilReservations(true);
+						return true;
+					}
+					bool flag = IsResearch ? project.IsKnownBy(pawn) : !techComp.homework.Contains(project);
+					if (flag) return true;
 				}
-                if (IsResearch && !project.CanBeResearchedAt(desk as Building_ResearchBench, false)) return true;
-                return false;
+				return false;
 			});
+
 			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
 			yield return gotoBillGiver;
 
@@ -124,47 +147,47 @@ namespace HumanResources
 			yield break;
 		}
 
-		//public bool CanBeResearchedHere(ResearchProjectDef tech, Building_ResearchBench bench, bool ignoreResearchBenchPowerStatus)
-		//{
-		//	Log.Message("CanBeResearchedHere starting...");
-		//	if (tech.requiredResearchBuilding != null && bench.def != tech.requiredResearchBuilding)
-		//	{
-		//		return false;
-		//	}
-		//	Log.Message("step1");
-		//	if (!ignoreResearchBenchPowerStatus)
-		//	{
-		//		CompPowerTrader comp = bench.GetComp<CompPowerTrader>();
-		//		if (comp != null && !comp.PowerOn)
-		//		{
-		//			return false;
-		//		}
-		//	}
-		//	Log.Message("step2");
-		//	if (!tech.requiredResearchFacilities.NullOrEmpty<ThingDef>())
-		//	{
-		//		var affectedByFacilities = bench.TryGetComp<CompAffectedByFacilities>();
-		//		if (affectedByFacilities == null)
-		//		{
-		//			return false;
-		//		}
-		//		Log.Message("step3");
+		public bool CanBeResearchedHere(ResearchProjectDef tech, Building_ResearchBench bench, bool ignoreResearchBenchPowerStatus)
+		{
+			Log.Message("CanBeResearchedHere starting...");
+			if (tech.requiredResearchBuilding != null && bench.def != tech.requiredResearchBuilding)
+			{
+				return false;
+			}
+			Log.Message("step1");
+			if (!ignoreResearchBenchPowerStatus)
+			{
+				CompPowerTrader comp = bench.GetComp<CompPowerTrader>();
+				if (comp != null && !comp.PowerOn)
+				{
+					return false;
+				}
+			}
+			Log.Message("step2");
+			if (!tech.requiredResearchFacilities.NullOrEmpty<ThingDef>())
+			{
+				var affectedByFacilities = bench.TryGetComp<CompAffectedByFacilities>();
+				if (affectedByFacilities == null)
+				{
+					return false;
+				}
+				Log.Message("step3");
 
-		//		List<Thing> linkedFacilitiesListForReading = affectedByFacilities.LinkedFacilitiesListForReading;
-		//		int j;
-		//		int i;
-		//		for (i = 0; i < tech.requiredResearchFacilities.Count; i = j + 1)
-		//		{
-		//			if (linkedFacilitiesListForReading.Find((Thing x) => x.def == tech.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
-		//			{
-		//				return false;
-		//			}
-		//			j = i;
-		//		}
-		//		Log.Message("step4");
+				List<Thing> linkedFacilitiesListForReading = affectedByFacilities.LinkedFacilitiesListForReading;
+				int j;
+				int i;
+				for (i = 0; i < tech.requiredResearchFacilities.Count; i = j + 1)
+				{
+					if (linkedFacilitiesListForReading.Find((Thing x) => x.def == tech.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
+					{
+						return false;
+					}
+					j = i;
+				}
+				Log.Message("step4");
 
-		//	}
-		//	return true;
-		//}
+			}
+			return true;
+		}
 	}
 }
