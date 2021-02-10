@@ -9,9 +9,9 @@
 	<LearnTech.verb>обучиться</LearnTech.verb>
 	<LearnTech.gerund>обучаться, используя</LearnTech.gerund>
 
-	<ScanBook.label>сканировать книги</ScanBook.label>
-	<ScanBook.verb>сканировать книги</ScanBook.verb>
-	<ScanBook.gerund>сканировать книги, используя</ScanBook.gerund>
+	<ScanBook.label>сканировать книгу</ScanBook.label>
+	<ScanBook.verb>сканировать книгу, используя</ScanBook.verb>
+	<ScanBook.gerund>сканировать книгу, используя</ScanBook.gerund>
 
 	<TrainWeapon.label>обучаться владению оружием</TrainWeapon.label>
 	<TrainWeapon.verb>тренироваться, используя</TrainWeapon.verb>
