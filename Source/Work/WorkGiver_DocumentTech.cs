@@ -59,7 +59,7 @@ namespace HumanResources
 									else if (!JobFailReason.HaveReason) JobFailReason.Is("ForbiddenAssignment".Translate());
 								}
 							}
-							else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAssignment".Translate());
+							else if (!JobFailReason.HaveReason) JobFailReason.Is("NoAssignment".Translate(pawn));
 						}
 					}
 					else if (!JobFailReason.HaveReason) JobFailReason.Is("NoSpaceInLibrary".Translate());

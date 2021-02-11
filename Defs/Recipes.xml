@@ -141,6 +141,7 @@
         <li>WeaponsRanged</li>
       </categories>
     </fixedIngredientFilter>
+    <workSkill>Shooting</workSkill>
   </RecipeDef>
 
   <RecipeDef Name="MeleeWeaponsBase" Abstract="True">
@@ -165,6 +166,7 @@
         <li>WeaponsMeleeBladelink</li>
       </categories>
     </fixedIngredientFilter>
+    <workSkill>Melee</workSkill>
   </RecipeDef>>
     
   <RecipeDef ParentName="FireWeaponsBase">
@@ -174,7 +176,6 @@
     <jobString>Training to use a ranged weapon.</jobString>
     <workAmount>3000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Shooting</workSkill>
   </RecipeDef>
 
   <RecipeDef ParentName="MeleeWeaponsBase">
@@ -186,7 +187,6 @@
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
-    <workSkill>Melee</workSkill>
   </RecipeDef>
   
   <RecipeDef ParentName="FireWeaponsBase">
@@ -196,7 +196,6 @@
     <jobString>Experimenting with a ranged weapon.</jobString>
     <workAmount>5000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
   </RecipeDef>
 
   <RecipeDef ParentName="MeleeWeaponsBase">
@@ -206,7 +205,6 @@
     <jobString>Experimenting with a melee weapon.</jobString>
     <workAmount>5000</workAmount>
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
-    <workSkill>Intellectual</workSkill>
   </RecipeDef>
 
   <!--From ItchyFlea's Practise Target-->
@@ -219,7 +217,6 @@
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Shot_Revolver</soundWorking>
-    <workSkill>Shooting</workSkill>
   </RecipeDef>
 
   <RecipeDef ParentName="MeleeWeaponsBase">
@@ -231,7 +228,6 @@
     <requiredGiverWorkType>HR_Learn</requiredGiverWorkType>
     <effectWorking>CutStone</effectWorking>
     <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
-    <workSkill>Melee</workSkill>
   </RecipeDef>
   
 </Defs>

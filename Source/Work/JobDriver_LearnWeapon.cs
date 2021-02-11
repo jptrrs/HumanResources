@@ -73,21 +73,22 @@ namespace HumanResources
         {
             float num = 1f;
             float delta = 1f;
-            if (tester.Faction?.def.techLevel != null) //Look for pawn's own actual techlevel?
+            CompKnowledge techComp = tester.TryGetComp<CompKnowledge>();
+            if (techComp != null)
             {
-                delta = (int)tester.Faction.def.techLevel / (int)weapon.def.techLevel;
+                delta = (int)techComp.techLevel / (int)weapon.def.techLevel;
             }
             float factor = WeaponExperimentChanceFactor.Evaluate(delta);
             num *= factor;
             num = Mathf.Min(num, 0.98f);
-            if (Prefs.LogVerbose) Log.Message("[HumanResources] Experiment weapon calculation for " + tester + " vs. " + weapon.def + ": techLevel diff is " + delta + " -> chance factor is " + num);
+            if (Prefs.LogVerbose) Log.Message($"[HumanResources] Experiment weapon calculation for {tester} vs. {weapon.def}: techLevel diff is {delta} -> chance factor is {num}");
             Job job = this.job;
             RecipeDef recipe = job.bill.recipe;
             if (!Rand.Chance(num)) //Determined by the tech level difference according to curve.
             {
                 if (Rand.Chance(0.5f)) //50% chance the failure is harmless;
                 {
-                    tester.TryGetComp<CompKnowledge>()?.AddWeaponTrauma(weapon.def);
+                    techComp?.AddWeaponTrauma(weapon.def);
                     if (Rand.Chance(0.5f)) //25% chance the weapon just takes some damage;
                     {
                         if (Rand.Chance(0.2f)) //5% chance the weapon is destroyed;
