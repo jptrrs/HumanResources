@@ -652,7 +652,7 @@ namespace HumanResources
             }
 
             //CUSTOM: a bunch of things on top
-            Research.DrawExtras(rect, ref highlighted);
+            Research.DrawExtras(rect, mouseOver || highlighted);
 
             if (Widgets.ButtonInvisible(rect))
             {
@@ -749,8 +749,7 @@ namespace HumanResources
         {
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             Rect rect = (Rect)RectInfo.GetValue(__instance);
-            bool highLight = HighlightedProxy(__instance);
-            Research.DrawExtras(rect, ref highLight);
+            Research.DrawExtras(rect, mouseOver || HighlightedProxy(__instance));
             if (mouseOver && Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
                 bool completed = Research.IsFinished;

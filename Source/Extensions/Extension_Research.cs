@@ -191,7 +191,7 @@ namespace HumanResources
             unlocked.techByStuff.Add(techStuff, tech);
         }
 
-        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, ref bool highlighted) 
+        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted) 
         {
             //storage marker insertion
             float height = rect.height;
@@ -211,15 +211,22 @@ namespace HumanResources
                 if (unlocked.networkDatabase.Contains(tech))
                 {
                     GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
+                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
                 }
                 else
                 {
                     var material = TechDefOf.TechBook.graphic.MatSingle;
                     material.color = techColor;
                     Graphics.DrawTexture(inner, ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
+                    bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+                    bool fromFaction = unlocked.factionTechs.Contains(tech);
+                    bool startingTech = fromScenario || fromFaction;
+                    string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+                    string text = startingTech ? "bookFromStart".Translate(source) : "bookInLibrary".Translate();
+                    TooltipHandler.TipRegionByKey(inner, text);
                 }
-                TooltipHandler.TipRegionByKey(box, "stored");
             }
+            GUI.color = backup;
 
             //Pawn assignments
             Vector2 size = new Vector2(height, height);

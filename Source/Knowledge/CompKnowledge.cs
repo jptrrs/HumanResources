@@ -141,7 +141,7 @@ namespace HumanResources
                     }
                     if (WeaponPoolIncludesTechLevel || !isPlayer)
                     {
-                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, faction, true)))
+                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, true)))
                         {
                             var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
                             if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
@@ -282,7 +282,7 @@ namespace HumanResources
             //4. Finally, Distribute knowledge
             bool strict = false;
             bool useChildhood = childhoodSkill != null && TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
-            var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, faction, strict));
+            var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, strict));
             int pass = 0;
             List<ResearchProjectDef> result = new List<ResearchProjectDef>();
             if (guru) workingTechLevel++;
@@ -481,7 +481,7 @@ namespace HumanResources
             return 100f - chance;
         }
 
-        private static bool TechPool(bool isPlayer, ResearchProjectDef tech, TechLevel TechLevel, FactionDef faction, bool strict = false)
+        private static bool TechPool(bool isPlayer, ResearchProjectDef tech, TechLevel TechLevel, bool strict = false)
         {
             if (!isPlayer) return tech.techLevel == TechLevel;
             else
@@ -489,14 +489,8 @@ namespace HumanResources
                 if ((strict || TechPoolIncludesTechLevel || TechPoolIncludesBackground) && tech.techLevel == TechLevel) return true;
                 if (!strict)
                 {
-                    if (TechPoolIncludesScenario && !unlocked.startingTechs.EnumerableNullOrEmpty() && unlocked.startingTechs.Contains(tech)) return true;
-                    if (TechPoolIncludesStarting && !faction.startingResearchTags.NullOrEmpty() && faction.startingResearchTags.Any())
-                    {
-                        foreach (ResearchProjectTagDef tag in faction.startingResearchTags)
-                        {
-                            return tech.tags?.Contains(tag) ?? false;
-                        }
-                    }
+                    if (TechPoolIncludesScenario && !unlocked.scenarioTechs.EnumerableNullOrEmpty() && unlocked.scenarioTechs.Contains(tech)) return true;
+                    if (TechPoolIncludesStarting && !unlocked.factionTechs.EnumerableNullOrEmpty() && unlocked.scenarioTechs.Contains(tech)) return true;
                 }
             }
             return false;

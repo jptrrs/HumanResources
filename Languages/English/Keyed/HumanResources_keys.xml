@@ -24,6 +24,9 @@
   <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
   <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
   <ClickToRemove>click to remove</ClickToRemove>
+  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
+  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
+  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
                     
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>

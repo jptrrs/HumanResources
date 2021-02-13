@@ -13,12 +13,15 @@ namespace HumanResources
         public List<ThingDef> weapons = new List<ThingDef>();
         public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
-        public IEnumerable<ResearchProjectDef> startingTechs;
+        public IEnumerable<ResearchProjectDef>
+            scenarioTechs,
+            factionTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>(); //use only one of them?
         public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
-        private static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
-        private static FieldInfo ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
+        private static FieldInfo 
+            ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
+            ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
         public int libraryFreeSpace;
         public int discoveredCount => techByStuff.Values.Where(x => x.IsFinished).EnumerableCount();
 
@@ -52,10 +55,21 @@ namespace HumanResources
         {
             knowAllStartingWeapons = Find.Scenario.AllParts.Where(x => x.def.defName == "Rule_knowAllStartingWeapons").Any();
             startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
-            if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingWeapons.Count() + " starting scenario weapons: " + startingWeapons.Select(x => x.label).ToStringSafeEnumerable());
-            startingTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
-            if (Prefs.LogVerbose) Log.Message("[HumanResources] Found " + startingTechs.Count() + " starting scenario techs: " + startingTechs.Select(x => x.label).ToStringSafeEnumerable());
-            else Log.Message("[HumanResources] Found " + startingWeapons.Count() + " weapons and " + startingTechs.Count() + " techs on the starting scenario.");
+            scenarioTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
+            Faction playerFaction = Find.FactionManager.OfPlayer;
+                //Find.Scenario.AllParts.Where(x => typeof(ScenPart_PlayerFaction).IsAssignableFrom(x.GetType())).Cast<ScenPart_PlayerFaction>().Select(x => x.fac)
+            if (playerFaction != null && !playerFaction.def.startingResearchTags.NullOrEmpty())
+            {
+                var tags = playerFaction.def.startingResearchTags;
+                factionTechs = DefDatabase<ResearchProjectDef>.AllDefsListForReading.Where(x => !x.tags.NullOrEmpty() && tags.Intersect(x.tags).Any());
+            }
+            if (Prefs.LogVerbose)
+            {
+                Log.Message($"[HumanResources] Found {startingWeapons.Count()} starting scenario weapons: {startingWeapons.Select(x => x.label).ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Found {scenarioTechs.Count()} starting scenario techs: {scenarioTechs.Select(x => x.label).ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Found {factionTechs.Count()} starting techs for player faction ({playerFaction}): {factionTechs.Select(x => x.label).ToStringSafeEnumerable()}");
+            }
+            else Log.Message($"[HumanResources] Found {startingWeapons.Count()} weapons, {scenarioTechs.Count()} starting techs from the scenario and {factionTechs} from the player faction.");
         }
 
         private const float decay = 0.02f;
