@@ -10,21 +10,26 @@ using Verse;
 
 namespace HumanResources
 {
+    using static ResearchTree_Constants;
     public static class ResearchTree_Patches
     {
         #region "variables"
         public static object MainTabInstance;
         public static ResearchProjectDef interest;
-        private static Color 
+        public static Color
             BrightColor = new Color(1f, 0.85f, 0.2f), //yellow
             ShadedColor = new Color(0.72f, 0.57f, 0.13f), //mustard
             VariantColor = new Color(1f, 0.6f, 0.08f); //light orange
         private static string ModName = "";
         private static bool
             populating = false,
+            nodeSizeHacked = false,
             treeReady = false;
         private static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
+        private static Vector2
+            oldNodeSize,
+            newNodeSize;
         #endregion
 
         #region "reflection info"
@@ -43,19 +48,26 @@ namespace HumanResources
         public static PropertyInfo NodesInfo;
 
         private static PropertyInfo
+        //Node
+            RectInfo,
+            RightInfo,
+            LabelRectInfo,
+            CostLabelRectInfo,
+            CostIconRectInfo,
         //ResearchNode:
             ChildrenInfo,
             ColorInfo,
             AvailableInfo,
             HighlightedInfo,
-            RectInfo,
-            LabelRectInfo,
-            CostLabelRectInfo,
-            CostIconRectInfo,
             IconsRectInfo,
+            EdgeColorInfo,
         //MainWindow:
             InstanceInfo,
-            ZoomLevelInfo;
+            ZoomLevelInfo,
+        //Edge:
+            InInfo,
+            OutInfo,
+            IsDummyInfo;
 
         private static MethodInfo
         //ResearchNode:
@@ -72,6 +84,7 @@ namespace HumanResources
         //Node:
             largeLabelInfo,
             ResearchInfo,
+            _rightInfo,
         //ResearchNode:
             isMatchedInfo,
         //MainTabWindow_ResearchTree
@@ -82,16 +95,32 @@ namespace HumanResources
             FixedPrimaryColorInfo;
 
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
+        public static Type LinesType() => AccessTools.Inner(AssetsType(), "Lines");
         public static Type ConstantsType() => AccessTools.TypeByName(ModName + ".Constants");
         public static Type MainTabType() => AccessTools.TypeByName(ModName + ".MainTabWindow_ResearchTree");
         public static Type NodeType() => AccessTools.TypeByName(ModName + ".Node");
+        public static Type DummyNodeType() => AccessTools.TypeByName(ModName + ".DummyNode");
         public static Type QueueType() => AccessTools.TypeByName(ModName + ".Queue");
         public static Type ResearchNodeType() => AccessTools.TypeByName(ModName + ".ResearchNode");
         public static Type TreeType() => AccessTools.TypeByName(ModName + ".Tree");
+        public static Type EdgeType<T1, T2>() => AccessTools.TypeByName(ModName + ".Edge`2").MakeGenericType(new Type[] { NodeType(), NodeType() });
+
+
+        private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (techComp != null && !techComp.homework.NullOrEmpty())
+            {
+                return techComp.homework.Contains(tech);
+            }
+            return false;
+        };
+
+
+        //public static Type EdgeTypeSpec() => EdgeType<Type, Type>().MakeGenericType(new Type[] { NodeType(), NodeType() });
         #endregion
 
-        #region "main patches"
-
+        #region "patchworks"
         public static void Execute(Harmony instance, string modName, bool altRPal = false)
         {
             //Harmony.DEBUG = true;
@@ -113,18 +142,24 @@ namespace HumanResources
 
             //Node
             IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
+            RectInfo = AccessTools.Property(NodeType(), "Rect");
+            RightInfo = AccessTools.Property(NodeType(), "Right");
+            _rightInfo = AccessTools.Field(NodeType(), "_right");
+            largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
+            LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
+            CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
+            CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
+            IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
+
             if (altRPal)
             {
                 instance.CreateReversePatcher(AccessTools.Method(modName + ".Node:Highlighted"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Highlighted)))).Patch();
             }
             else HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted");
-            RectInfo = AccessTools.Property(NodeType(), "Rect");
-            largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
-            LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
-            CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
-            CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
-            IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
+            instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
 
             //ResearchNode
             if (altRPal)
@@ -142,7 +177,7 @@ namespace HumanResources
                 instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Draw_Prefix))));
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Draw_Prefix))));
                 instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
                 GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
@@ -160,12 +195,20 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
             ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
             ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
+            EdgeColorInfo = AccessTools.Property(ResearchNodeType(), "EdgeColor");
             ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
             GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
 
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
+
+            //Edge
+            instance.Patch(AccessTools.Method(EdgeType<Type, Type>(), "Draw"), null,
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Edge_Draw_Postfix))));
+            InInfo = AccessTools.Property(EdgeType<Type, Type>(), "In");
+            OutInfo = AccessTools.Property(EdgeType<Type, Type>(), "Out");
+            IsDummyInfo = AccessTools.Property(EdgeType<Type, Type>(), "IsDummy");
 
             //MainTabWindow_ResearchTree
             if (AltRPal)
@@ -178,7 +221,7 @@ namespace HumanResources
 
                 //fix for tree overlapping search bar on higher UI scales
                 instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
-                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Set_Rects_Postfix))));
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MainTabWindow_SetRects_Postfix))));
             };
             if (modName != "ResearchPal")
             {
@@ -186,7 +229,7 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
             instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
@@ -228,7 +271,8 @@ namespace HumanResources
             NodeMarginsInfo = AccessTools.Field(ConstantsType(), "NodeMargins");
             NodeSizeInfo = AccessTools.Field(ConstantsType(), "NodeSize");
             TopBarHeightInfo = AccessTools.Field(ConstantsType(), "TopBarHeight");
-            if (altRPal) TopBarHeightInfo.SetValue(instance, ResearchTree_Constants.NodeSize.y * 0.6f + 2 * ResearchTree_Constants.Margin);
+            if (altRPal) TopBarHeightInfo.SetValue(instance, NodeSize.y * 0.6f + 2 * Margin);
+            //NodeMarginsInfo.SetValue(instance, (Vector2)NodeMarginsInfo.GetValue(instance) + pushMargin);
 
             //Assets
             if (altRPal)
@@ -240,8 +284,13 @@ namespace HumanResources
                 HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
+
             //Harmony.DEBUG = false;
         }
+
+        #endregion
+
+        #region "main patches"
 
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
@@ -250,6 +299,11 @@ namespace HumanResources
         public static void Close_Postfix(object __instance)
         {
             if (__instance.GetType() == MainTabType()) Extension_Research.currentPawnsCache?.Clear();
+            if (nodeSizeHacked)
+            {
+                NodeSizeInfo.SetValue(__instance, oldNodeSize);
+                nodeSizeHacked = false;
+            }
             MainTabInstance = null;
         }
 
@@ -285,28 +339,220 @@ namespace HumanResources
             }
         }
 
-        public static bool Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
+        public static void DrawColouredIcon(this Def def, Rect canvas) { throw stubMsg; }
+
+        public static bool EdgeColor_Prefix(object __instance, ref Color __result)
+        {
+            bool flag = HighlightedProxy(__instance);
+            if (flag)
+            {
+                __result = BrightColor;
+                return false;
+            }
+            return true;
+        }
+
+        public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
+
+        public static IEnumerable<RecipeDef> GetRecipesUnlocked(this ResearchProjectDef research) { throw stubMsg; }
+
+        public static IEnumerable<ThingDef> GetThingsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
+
+        public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
+
+        public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
+
+        public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
+
+        public static void TreeInitialized_Postfix(object __instance)
+        {
+            treeReady = !ResearchNodesCache.EnumerableNullOrEmpty();
+        }
+
+        private static bool DrawQueue_Prefix(object __instance, Rect canvas)
+        {
+            if (AltRPal)
+            {
+                canvas.xMax += 130f + 2 * Margin; //keep an eye on his MainTabWindow_ResearchTree.DrawTopBar method for changes to this number
+                canvas = canvas.ExpandedBy(Margin);
+            }
+            float padding = 12f;
+            float spacing = Find.ColonistBar.SpaceBetweenColonistsHorizontal;
+            float height = canvas.height;
+            float startPos = canvas.xMax - height - padding;
+            Vector2 size = new Vector2(height + spacing, height - padding);
+            Vector2 innerSize = new Vector2(height - padding, height - padding);
+            IEnumerable<object> expertiseDisplay = new object[] { };
+            bool displayActive = false;
+            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    Vector2 position = new Vector2(startPos, canvas.y);
+                    Rect box = new Rect(position, size);
+                    Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+                    if (Mouse.IsOver(innerBox))
+                    {
+                        DeInterest();
+                        ReflectKnowledge(__instance, techComp, out expertiseDisplay);
+                        displayActive = true;
+                    }
+                    if (!techComp.homework.NullOrEmpty())
+                    {
+                        StringBuilder homeworkSummary = new StringBuilder();
+                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                        foreach (var tech in techComp.homework)
+                        {
+                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                        }
+                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
+                    }
+                    Vector2 pos = new Vector2(box.center.x, box.yMax);
+                    GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
+                    startPos -= height;
+                }
+            }
+            if (AltRPal)
+            {
+                if (displayActive)
+                {
+                    UpdateMatches(expertiseDisplay);
+                    expertiseDisplayed = true;
+                }
+                else if (expertiseDisplayed)
+                {
+                    ToggleSearch(false);
+                    expertiseDisplayed = false;
+                }
+            }
+            return false;
+        }
+
+        public static void Edge_Draw_Postfix(object __instance)
+        {
+            object origin = InInfo.GetValue(__instance);
+            object next = OutInfo.GetValue(__instance);
+            if (origin != null && !(bool)IsDummyInfo.GetValue(__instance) && next != null)
+            {
+                Vector2 fauxPos = (Vector2)RightInfo.GetValue(origin);
+                fauxPos.y -= 2;
+                fauxPos -= push;
+                Vector2 size = new Vector2(push.x, 4f);
+                var line = new Rect(fauxPos, size);
+                Color backup = GUI.color;
+                GUI.color = (Color)EdgeColorInfo.GetValue(next);
+                GUI.DrawTexture(line, ResearchTree_Assets.EW);
+                GUI.color = backup;
+            }
+        }
+
+        private static bool GetResearchTooltipString_Prefix(ResearchProjectDef ___Research, ref string __result)
+        {
+            var text = new StringBuilder();
+            text.AppendLine(___Research.description);
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchPal) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
+            __result = text.ToString();
+            return false;
+        }
+
+        private static void MainTabWindow_SetRects_Postfix(object __instance)
+        {
+            FieldInfo baseViewRectInfo = AccessTools.Field(MainTabType(), "_baseViewRect");
+            baseViewRectInfo.SetValue(__instance, new Rect(
+                Window.StandardMargin / Prefs.UIScale,
+                TopBarHeight + Margin + Window.StandardMargin,
+                (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
+                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - TopBarHeight - Margin * 2)
+                );
+        }
+
+        private static void Node_SetRects_Prefix(object __instance, ref bool __state)
+        {
+            if (nodeSizeHacked)
+            {
+                NodeSizeInfo.SetValue(__instance, oldNodeSize);
+                __state = true;
+            }
+        }
+
+        private static void Node_SetRects_Postfix(object __instance, bool __state)
+        {
+            if (nodeSizeHacked) 
+            {
+                NodeSizeInfo.SetValue(__instance, newNodeSize);
+                if (__instance.GetType() != DummyNodeType())
+                {
+                    Vector2 rightedge = (Vector2)_rightInfo.GetValue(__instance);
+                    rightedge += push;
+                    _rightInfo.SetValue(__instance, rightedge);
+                }
+            }
+        }
+
+        private static void PopulateNodes_Postfix()
+        {
+            populating = false;
+        }
+
+        private static void PopulateNodes_Prefix(object __instance)
+        {
+            if (!nodeSizeHacked)
+            {
+                oldNodeSize = (Vector2)NodeSizeInfo.GetValue(__instance);
+                newNodeSize = oldNodeSize + push;
+                NodeSizeInfo.SetValue(__instance, newNodeSize);
+                nodeSizeHacked = true;
+            }
+            populating = true;
+        }
+
+        private static void ReflectKnowledge(object instance, CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
+        {
+            Find.WindowStack.FloatMenu?.Close(false);
+            bool valid = !techComp.expertise.EnumerableNullOrEmpty();
+            expertiseDisplay = new object[] { };
+            if (AltRPal)
+            {
+                ToggleSearch(true);
+                if (valid) expertiseDisplay = from e in ResearchNodesCache
+                                              where techComp.expertise.Keys.Contains(e.Key)
+                                              select e.Value;
+            }
+            else if (valid)
+            {
+                foreach (ResearchProjectDef tech in techComp.expertise.Keys)
+                {
+                    HighlightedProxy(ResearchNodesCache[tech], true);
+                }
+            }
+        }
+
+        public static bool ResearchNode_Draw_Prefix(object __instance, Rect visibleRect, bool forceDetailedMode = false)
         {
             //Reflected objects
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
-            bool completed = Research.IsFinished; //(bool)CompletedInfo.GetValue(__instance); //simplified
-            //End of reflection info.
+            bool completed = Research.IsFinished; //simplified
+                                                  //
 
             if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect }))
             {
                 HighlightedProxy(__instance, false);
                 return false;
             }
-            var detailedMode = forceDetailedMode || (float)ZoomLevelInfo.GetValue(InstanceInfo.GetValue(__instance)) < ResearchTree_Constants.DetailedModeZoomLevelCutoff;
-            var mouseOver = Mouse.IsOver(rect);
+            bool detailedMode = forceDetailedMode || (float)ZoomLevelInfo.GetValue(InstanceInfo.GetValue(__instance)) < DetailedModeZoomLevelCutoff;
+            bool mouseOver = Mouse.IsOver(rect);
+            bool highlighted = HighlightedProxy(__instance);
 
             if (Event.current.type == EventType.Repaint)
             {
                 //researches that are completed or could be started immediately, and that have the required building(s) available
                 GUI.color = mouseOver ? BrightColor : (Color)ColorInfo.GetValue(__instance);
-                if (mouseOver || HighlightedProxy(__instance)) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
+                if (mouseOver || highlighted) GUI.DrawTexture(rect, ResearchTree_Assets.ButtonActive);
                 else GUI.DrawTexture(rect, ResearchTree_Assets.Button);
 
                 //grey out center to create a progress bar effect, completely greying out research not started.
@@ -360,27 +606,26 @@ namespace HumanResources
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
                 }
-                else if (!ResearchTree_Patches.TechprintAvailable(Research))
+                else if (!TechprintAvailable(Research))
                 {
                     string languageKey = root + ".MissingTechprints";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(Research.TechprintsApplied, Research.techprintCount));
                 }
 
-
                 //draw unlock icons
                 if (detailedMode)
                 {
                     Rect IconsRect = (Rect)IconsRectInfo.GetValue(__instance);
-                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Research);
+                    var unlocks = GetUnlockDefsAndDescs(Research);
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(
-                            IconsRect.xMax - (i + 1) * (ResearchTree_Constants.IconSize.x + 4f),
-                            IconsRect.yMin + (IconsRect.height - ResearchTree_Constants.IconSize.y) / 2f,
-                            ResearchTree_Constants.IconSize.x,
-                            ResearchTree_Constants.IconSize.y);
+                            IconsRect.xMax - (i + 1) * (IconSize.x + 4f),
+                            IconsRect.yMin + (IconsRect.height - IconSize.y) / 2f,
+                            IconSize.x,
+                            IconSize.y);
 
-                        if (iconRect.xMin - ResearchTree_Constants.IconSize.x < IconsRect.xMin &&
+                        if (iconRect.xMin - IconSize.x < IconsRect.xMin &&
                                 i + 1 < unlocks.Count)
                         {
                             //stop the loop if we're about to overflow and have 2 or more unlocks yet to print.
@@ -420,7 +665,8 @@ namespace HumanResources
                 }
             }
 
-            Research.DrawAssignments(rect);
+            //CUSTOM: a bunch of thing on top
+            Research.DrawExtras(rect, ref highlighted);
 
             if (Widgets.ButtonInvisible(rect))
             {
@@ -431,155 +677,13 @@ namespace HumanResources
                     Find.ResearchManager.FinishProject(Research);
                 }
             }
+
             return false;
-        }
-
-        public static void DrawColouredIcon(this Def def, Rect canvas) { throw stubMsg; }
-
-        public static bool EdgeColor_Prefix(object __instance, ref Color __result)
-        {
-            bool flag = HighlightedProxy(__instance);
-            if (flag)
-            {
-                __result = BrightColor;
-                return false;
-            }
-            return true;
-        }
-
-        public static IEnumerable<ThingDef> GetPlantsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
-
-        public static IEnumerable<RecipeDef> GetRecipesUnlocked(this ResearchProjectDef research) { throw stubMsg; }
-
-        public static IEnumerable<ThingDef> GetThingsUnlocked(this ResearchProjectDef research) { throw stubMsg; }
-
-        public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
-
-        public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
-
-        public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
-
-        public static void TreeInitialized_Postfix(object __instance)
-        {
-            treeReady = !ResearchNodesCache.EnumerableNullOrEmpty();
-        }
-
-        private static bool DrawQueue_Prefix(object __instance, Rect canvas)
-        {
-            if (AltRPal)
-            {
-                canvas.xMax += 130f + 2 * ResearchTree_Constants.Margin; //keep an eye on his MainTabWindow_ResearchTree.DrawTopBar method for changes to this number
-                canvas = canvas.ExpandedBy(ResearchTree_Constants.Margin);
-            }
-            float padding = 12f;
-            float spacing = Find.ColonistBar.SpaceBetweenColonistsHorizontal;
-            float height = canvas.height;
-            float startPos = canvas.xMax - height - padding;
-            Vector2 size = new Vector2(height + spacing, height - padding);
-            Vector2 innerSize = new Vector2(height - padding, height - padding);
-            IEnumerable<object> expertiseDisplay = new object[] { };
-            bool displayActive = false;
-            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Vector2 position = new Vector2(startPos, canvas.y);
-                    Rect box = new Rect(position, size);
-                    Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
-                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (Mouse.IsOver(innerBox))
-                    {
-                        DeInterest();
-                        ReflectKnowledge(__instance, techComp, out expertiseDisplay);
-                        displayActive = true;
-                    }
-                    if (!techComp.homework.NullOrEmpty())
-                    {
-                        StringBuilder homeworkSummary = new StringBuilder();
-                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
-                        foreach (var tech in techComp.homework)
-                        {
-                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
-                        }
-                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
-                    }
-                    Vector2 pos = new Vector2(box.center.x, box.yMax);
-                    GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
-                    startPos -= height;
-                }
-            }
-            if (AltRPal)
-            {
-                if (displayActive)
-                { 
-                    UpdateMatches(expertiseDisplay);
-                    expertiseDisplayed = true;
-                }
-                else if (expertiseDisplayed)
-                {
-                    ToggleSearch(false);
-                    expertiseDisplayed = false;
-                }
-            }
-            return false;
-        }
-
-        private static bool GetResearchTooltipString_Prefix(ResearchProjectDef ___Research, ref string __result)
-        {
-            var text = new StringBuilder();
-            text.AppendLine(___Research.description);
-            if (DebugSettings.godMode && !HarmonyPatches.ResearchPal) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
-            __result = text.ToString();
-            return false;
-        }
-
-        private static void PopulateNodes_Postfix()
-        {
-            populating = false;
-        }
-
-        private static void PopulateNodes_Prefix()
-        {
-            populating = true;
-        }
-
-        private static void ReflectKnowledge(object instance, CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
-        {
-            Find.WindowStack.FloatMenu?.Close(false);
-            bool valid = !techComp.expertise.EnumerableNullOrEmpty();
-            expertiseDisplay = new object[] { };
-            if (AltRPal)
-            {
-                ToggleSearch(true);
-                if (valid) expertiseDisplay = from e in ResearchNodesCache
-                                              where techComp.expertise.Keys.Contains(e.Key)
-                                              select e.Value;
-            }
-            else if (valid)
-            {
-                foreach (ResearchProjectDef tech in techComp.expertise.Keys)
-                {
-                    HighlightedProxy(ResearchNodesCache[tech], true);
-                }
-            }
         }
 
         private static void ResearchNode_Postfix(object __instance, ResearchProjectDef research)
         {
             if (populating && !ResearchNodesCache.ContainsKey(research)) ResearchNodesCache.Add(research, __instance);
-        }
-
-        private static void Set_Rects_Postfix(object __instance)
-        {
-            FieldInfo baseViewRectInfo = AccessTools.Field(MainTabType(), "_baseViewRect");
-            baseViewRectInfo.SetValue(__instance, new Rect(
-                Window.StandardMargin / Prefs.UIScale,
-                (ResearchTree_Constants.TopBarHeight + ResearchTree_Constants.Margin + Window.StandardMargin),
-                (Screen.width - Window.StandardMargin * 2f) / Prefs.UIScale,
-                ((Screen.height - MainButtonDef.ButtonHeight - Window.StandardMargin * 3) / Prefs.UIScale) - ResearchTree_Constants.TopBarHeight - ResearchTree_Constants.Margin * 2)
-                );
         }
 
         private static void UpdateMatches(IEnumerable<object> expertiseDisplay)
@@ -591,16 +695,16 @@ namespace HumanResources
         }
         #endregion
 
-        #region "VinaLx.ResearchPalForked adaptation"
+            #region "VinaLx.ResearchPalForked adaptation"
 
         public static bool 
             AltRPal = false,
             expertiseDisplayed = false;
 
         private static MethodInfo
-        //ResearchProjectDef_Extensions:
+            //ResearchProjectDef_Extensions:
             ResearchNodeInfo,
-        //ResearchNode:
+            //ResearchNode:
             BuildingPresentInfo,
             HighlightInfo;
 
@@ -641,7 +745,8 @@ namespace HumanResources
         {
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             Rect rect = (Rect)RectInfo.GetValue(__instance);
-            Research.DrawAssignments(rect);
+            bool highLight = HighlightedProxy(__instance);
+            Research.DrawExtras(rect, ref highLight);
             if (mouseOver && Event.current.type == EventType.MouseDown && Event.current.button == 0)
             {
                 bool completed = Research.IsFinished;

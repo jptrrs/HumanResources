@@ -15,5 +15,6 @@ namespace HumanResources
         public static Vector2 NodeMargins => (Vector2)ResearchTree_Patches.NodeMarginsInfo.GetValue(instance);
         public static Vector2 NodeSize => (Vector2)ResearchTree_Patches.NodeSizeInfo.GetValue(instance);
         public static float TopBarHeight => (float)ResearchTree_Patches.TopBarHeightInfo.GetValue(instance);
+        public static Vector2 push => new Vector2(NodeSize.y * 0.618f, 0);
     }
 }

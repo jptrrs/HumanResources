@@ -191,17 +191,45 @@ namespace HumanResources
             unlocked.techByStuff.Add(techStuff, tech);
         }
 
-        public static void DrawAssignments(this ResearchProjectDef tech, Rect rect)
+        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, ref bool highlighted) 
         {
+            //storage marker insertion
             float height = rect.height;
-            float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+            float ribbon = ResearchTree_Constants.push.x;
+            Vector2 position = new Vector2(rect.xMax, rect.y);
+            Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
+            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
+            Color backup = GUI.color;
+            if (tech.IsFinished)
+            {
+                Vector2 markerSize = new Vector2(ribbon, height);
+                Rect box = new Rect(position, markerSize);
+                Rect inner = box;
+                inner.height = ribbon;
+                inner.y += (height - ribbon) / 2;
+                Widgets.DrawBoxSolid(box, shadedColor);
+                if (unlocked.networkDatabase.Contains(tech))
+                {
+                    GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
+                }
+                else
+                {
+                    var material = TechDefOf.TechBook.graphic.MatSingle;
+                    material.color = techColor;
+                    Graphics.DrawTexture(inner, ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
+                }
+                TooltipHandler.TipRegionByKey(box, "stored");
+            }
+
+            //Pawn assignments
             Vector2 size = new Vector2(height, height);
+            float frameOffset = height / 4;
+            float startPos = rect.x - frameOffset; //rect.xMax - height/2
             using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
-                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+                    position = new Vector2(startPos, rect.y + (height / 3));
                     Rect box = new Rect(position, size);
                     Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     Pawn pawn = enumerator.Current;

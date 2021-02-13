@@ -179,8 +179,6 @@ namespace HumanResources
 
         private Pawn Pawn;
 
-        //private object pseudoParent;
-
         private static Type pseudoParentType = ResearchTree_Patches.ResearchNodeType();
 
         private MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(pseudoParentType, "GetResearchTooltipString");
@@ -192,7 +190,6 @@ namespace HumanResources
             Pawn = pawn;
             Tech = research;
             _pos = new Vector2(0, research.researchViewY + 1);
-            //pseudoParent = Activator.CreateInstance(pseudoParentType, research);
         }
 
         public Color Color

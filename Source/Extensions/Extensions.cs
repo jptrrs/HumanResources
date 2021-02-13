@@ -58,5 +58,15 @@ namespace HumanResources
         {
             return weapon.weaponTags.NullOrEmpty() || weapon.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
         }
+
+        //Dictionary
+        public static TKey ReverseLookup<TKey, TValue>(this IDictionary<TKey, TValue> source, TValue sample)
+        {
+            if (source.Values.Contains(sample))
+            {
+                return source.FirstOrDefault(x => x.Value.Equals(sample)).Key;
+            }
+            return default(TKey);
+        }
     }
 } 
