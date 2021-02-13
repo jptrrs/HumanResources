@@ -45,7 +45,7 @@ namespace HumanResources
         //Thing
         public static ResearchProjectDef TryGetTech(this Thing book)
         {
-            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? unlocked.techByStuff[book.Stuff] : null;
+            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? unlocked.stuffByTech.ReverseLookup(book.Stuff) : null;
         }
 
         //ThingDef

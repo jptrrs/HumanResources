@@ -17,13 +17,12 @@ namespace HumanResources
             scenarioTechs,
             factionTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
-        public Dictionary<ThingDef, ResearchProjectDef> techByStuff = new Dictionary<ThingDef, ResearchProjectDef>(); //use only one of them?
         public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
         private static FieldInfo 
             ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
             ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
         public int libraryFreeSpace;
-        public int discoveredCount => techByStuff.Values.Where(x => x.IsFinished).EnumerableCount();
+        public int discoveredCount => stuffByTech.Keys.Where(x => x.IsFinished).EnumerableCount();
 
         public void ExposeData()
         {
@@ -75,7 +74,7 @@ namespace HumanResources
         private const float decay = 0.02f;
         private static float ratio = 1 / (1 + decay);
         private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
-        public int total => techByStuff.Count;
+        public int total => stuffByTech.Count;
         private float geoSum => (float) (Math.Pow(ratio, total)-1) / (ratio - 1);
         private float quota => semiMaxBuff / geoSum;
         private float linear => semiMaxBuff / total;

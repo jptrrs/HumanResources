@@ -188,7 +188,6 @@ namespace HumanResources
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             unlocked.stuffByTech.Add(tech, techStuff);
-            unlocked.techByStuff.Add(techStuff, tech);
         }
 
         public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted) 
