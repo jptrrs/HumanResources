@@ -341,6 +341,7 @@
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
+    <Compile Include="Harmony\StatsToDraw_Patch.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyRemoved.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />

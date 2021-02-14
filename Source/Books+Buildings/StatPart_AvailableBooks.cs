@@ -27,7 +27,6 @@ namespace HumanResources
         {
             int result = unlocked.networkDatabase.Count();
             databasePower = unlocked.BookResearchIncrement(result);
-            Log.Message($"DEBUG DatabaseCount {result}");
             return result;
         }
 
@@ -59,7 +58,6 @@ namespace HumanResources
         {
             if (req.HasThing)
             {
-                Log.Message("DEBUG StatPart_AvailableBooks TransformValue");
                 float libraryPower = 0f;
                 int libraryCount = 0;
                 CompAffectedByFacilities compBooks = req.Thing.TryGetComp<CompAffectedByFacilities>();

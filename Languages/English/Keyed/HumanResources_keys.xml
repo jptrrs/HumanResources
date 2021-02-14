@@ -73,6 +73,12 @@
   <BookManual>{0} Manual</BookManual>
   <BookTheory>{0} Theory</BookTheory>
   <BookDatabase>{0} Database</BookDatabase>
+  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
+  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
+  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
+  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
+  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
+  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
 
   <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
