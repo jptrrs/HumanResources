@@ -338,7 +338,3 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/Source/SlotGroup_BookStore.cs
-/Source/Harmony/Test/Alert_NeedResearchProject_GetReport.cs
-/Textures/Things/Item/drive_m.png
-/Textures/Things/Item/drive.png
