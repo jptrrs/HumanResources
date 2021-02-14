@@ -102,10 +102,9 @@ namespace HumanResources
 
             //b. Also removing atipical weapons
             List<string> ForbiddenWeaponTags = TechDefOf.WeaponsNotBasic.weaponTags;
-            //Log.Warning("DEBUG weapons to be removed from universal: " + UniversalWeapons.Where(x => SplitSimpleWeapons(x, ForbiddenWeaponTags)).ToStringSafeEnumerable());
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
-            //Log.Warning("DEBUG universal weapons after removing: " + UniversalWeapons.ToStringSafeEnumerable());
-            AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { TechDefOf.WeaponsNotBasic });
+            List<ThingDef> garbage = new List<ThingDef>();
+            garbage.Add(TechDefOf.WeaponsNotBasic);
 
             //c. Classifying pawn backstories
             PawnBackgroundUtility.BuildCache();
@@ -147,10 +146,10 @@ namespace HumanResources
             //4. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
-            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading.Where(x => x == TechDefOf.TechBook || x == TechDefOf.UnfinishedTechBook))
-            {
-                t.stuffCategories.Add(TechDefOf.Technic);
-            }
+            TechDefOf.TechBook.stuffCategories = TechDefOf.UnfinishedTechBook.stuffCategories = TechDefOf.LowTechCategories.stuffCategories;
+            TechDefOf.TechDrive.stuffCategories = TechDefOf.HiTechCategories.stuffCategories;
+            garbage.Add(TechDefOf.LowTechCategories);
+            garbage.Add(TechDefOf.HiTechCategories);
 
             //b. Filling main tech category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
@@ -175,6 +174,12 @@ namespace HumanResources
             {
                 t.building.fixedStorageSettings.filter.ResolveReferences();
                 t.building.defaultStorageSettings.filter.ResolveReferences();
+            }
+
+            //d. Removing temporary defs from database.
+            foreach (ThingDef def in garbage)
+            {
+                AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { def });
             }
         }
 

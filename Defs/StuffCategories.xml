@@ -1,9 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <StuffCategoryDef>
+  <!--<StuffCategoryDef>
     <defName>Technic</defName>
     <label>technic</label>
-  </StuffCategoryDef>  
+  </StuffCategoryDef>-->
+
+  <StuffCategoryDef>
+    <defName>Neolithic</defName>
+    <label>neolithic</label>
+  </StuffCategoryDef>
+
+  <StuffCategoryDef>
+    <defName>Medieval</defName>
+    <label>medieval</label>
+  </StuffCategoryDef>
+
+  <StuffCategoryDef>
+    <defName>Industrial</defName>
+    <label>industrial</label>
+  </StuffCategoryDef>
+
+  <StuffCategoryDef>
+    <defName>Spacer</defName>
+    <label>spacer</label>
+  </StuffCategoryDef>
+
+  <StuffCategoryDef>
+    <defName>Ultra</defName>
+    <label>ultra</label>
+  </StuffCategoryDef>
+
+  <StuffCategoryDef>
+    <defName>Archotech</defName>
+    <label>archotech</label>
+  </StuffCategoryDef>
 
 </Defs>

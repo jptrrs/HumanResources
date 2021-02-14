@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+   
+  <!--This is just to determine what technologies can be written in books-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>LowTechCategories</defName>
+    <label>LowTechCategories</label>
+    <uiIconPath>Things/Item/book</uiIconPath>
+    <stuffCategories>
+      <li>Neolithic</li>
+      <li>Medieval</li>
+      <li>Industrial</li>
+    </stuffCategories>
+  </ThingDef>
+
+  <!--This is just to determine what technologies should be restricetd to digital databases-->
+  <ThingDef>
+    <thingClass>Thing</thingClass>
+    <defName>HiTechCategories</defName>
+    <label>HiTechCategories</label>
+    <uiIconPath>Things/Item/drive</uiIconPath>
+    <stuffCategories>
+      <li>Spacer</li>
+      <li>Ultra</li>
+      <li>Archotech</li>
+    </stuffCategories>
+  </ThingDef>
+  
+</Defs>

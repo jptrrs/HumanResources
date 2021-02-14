@@ -143,6 +143,7 @@ namespace HumanResources
         {
             string name = "Tech_" + tech.defName;
             ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
+            StuffCategoryDef sCat = DefDatabase<StuffCategoryDef>.GetNamed(tech.techLevel.ToString());
             string label = "KnowledgeLabel".Translate(tech.label);
             ThingDef techStuff = new ThingDef
             {
@@ -156,7 +157,7 @@ namespace HumanResources
                 menuHidden = true,
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { TechDefOf.Technic },
+                    categories = new List<StuffCategoryDef>() { sCat/*TechDefOf.Technic*/ },
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()

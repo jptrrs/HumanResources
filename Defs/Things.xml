@@ -301,32 +301,16 @@
     <stuffCategories Inherit="false" />
     <rotatable>true</rotatable>
   </ThingDef>
-
-  <ThingDef>
+  
+  <ThingDef Name="TechBookBase" Abstract="True">
     <thingClass>ThingWithComps</thingClass>
-    <defName>TechBook</defName>
-    <label>Technical Book</label>
-    <description>A book filled with knowledge.</description>
     <category>Item</category>
     <selectable>true</selectable> 
-    <graphicData>
-      <texPath>Things/Item/book</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shaderType>CutoutComplex</shaderType>
-    </graphicData>
     <costStuffCount>0</costStuffCount>
     <stuffCategories/>
     <pathCost>10</pathCost>
     <useHitPoints>true</useHitPoints>
     <drawGUIOverlay>true</drawGUIOverlay>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <Mass>1</Mass>
-      <DeteriorationRate>2</DeteriorationRate>
-      <Flammability>1.2</Flammability>
-      <MarketValue>1000</MarketValue>
-      <WorkToMake>600</WorkToMake>
-    </statBases>
     <comps>
       <li Class="CompProperties_Forbiddable" />
       <li Class="HumanResources.CompProperties_TitleMaker"/>
@@ -349,6 +333,44 @@
     <stackLimit>1</stackLimit>
     <tradeNeverStack>true</tradeNeverStack>
     <forceDebugSpawnable>true</forceDebugSpawnable>
+  </ThingDef>
+
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechBook</defName>
+    <label>Technical Book</label>
+    <description>A book filled with knowledge.</description>
+    <graphicData>
+      <texPath>Things/Item/book</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>1</Mass>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Flammability>1.2</Flammability>
+      <MarketValue>1000</MarketValue>
+      <WorkToMake>600</WorkToMake>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="TechBookBase">
+    <defName>TechDrive</defName>
+    <label>Technology Database</label>
+    <description>A hard drive filled with knowledge.</description>
+    <graphicData>
+      <texPath>Things/Item/drive</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>1</Mass>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Flammability>1.0</Flammability>
+      <MarketValue>2000</MarketValue>
+      <WorkToMake>1000</WorkToMake>
+    </statBases>
   </ThingDef>
 
   <!--Borrewed from ItchyFlea's Practise Target-->

@@ -19,12 +19,22 @@ namespace HumanResources
             ExperimentWeaponShooting,
             ExperimentWeaponMelee;
         public static ThingCategoryDef Knowledge;
-        public static StuffCategoryDef Technic;
+        public static StuffCategoryDef
+            //Technic,
+            Neolithic,
+            Medieval,
+            Industrial,
+            Spacer,
+            Ultra,
+            Archotech;
         public static ThingDef
             TechBook,
+            TechDrive,
             UnfinishedTechBook,
             WeaponsNotBasic,
             WeaponsAlwaysBasic,
+            LowTechCategories,
+            HiTechCategories,
             NetworkTerminal,
             NetworkServer;
         public static WorkTypeDef HR_Learn;

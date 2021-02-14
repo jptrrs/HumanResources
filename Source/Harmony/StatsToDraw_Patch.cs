@@ -37,7 +37,7 @@ namespace HumanResources
                 {
                     tech = TechByWeapon[thing.def].LabelCap;
                 }
-                yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "WeaponAssociatedTech".Translate(), tech, "WeaponAssociatedTechDesc".Translate(), 10000, null, infocards, false);
+                yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "WeaponAssociatedTech".Translate(), tech, "WeaponAssociatedTechDesc".Translate(), 10000, null, null, false);
                 bool known = unlocked.weapons.Contains(thing.def);
                 yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "WeaponKnown".Translate(), known.ToStringYesNo(), "WeaponKnownDesc".Translate(), 9999, null, null, false);
                 bool free = SimpleWeapons.Contains(thing.def) || UniversalWeapons.Contains(thing.def);
