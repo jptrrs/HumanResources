@@ -41,7 +41,7 @@ namespace HumanResources
                     {
                         count = unlocked.networkDatabase.Count;
                         capacity = (int)(unlocked.total * 0.80f); //discoveredCount;
-                        sparseThreshold = count / 4;
+                        sparseThreshold = capacity / 4;
                     }
                     if (count >= capacity)
                     {

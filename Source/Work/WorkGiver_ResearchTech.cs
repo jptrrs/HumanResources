@@ -28,7 +28,7 @@ namespace HumanResources
 			CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 			if (techComp != null && !techComp.homework.NullOrEmpty())
             {
-				bool result = !techComp.homework.Where(x => !x.IsFinished && !x.IsKnownBy(pawn)).Any();
+				bool result = !techComp.homework.Any(x => !x.IsFinished && !x.IsKnownBy(pawn));
 				return result;
             }
 			return true;
@@ -40,7 +40,7 @@ namespace HumanResources
 			if (Desk != null && pawn.CanReserve(t, 1, -1, null, forced))
 			{
 				CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-				bool result = techComp.homework.Where(x => !x.IsFinished && x.CanBeResearchedAt(Desk, false) && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn)).Any();
+				bool result = techComp.homework.Any(x => !x.IsFinished && x.CanBeResearchedAt(Desk, false) && !x.IsKnownBy(pawn) && x.RequisitesKnownBy(pawn));
 				return result;
 			}
 			return false;

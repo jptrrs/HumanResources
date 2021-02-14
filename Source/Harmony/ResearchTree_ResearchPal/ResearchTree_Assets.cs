@@ -25,7 +25,6 @@ namespace HumanResources
             Lock = (Texture2D)AccessTools.Field(AssetsType, "Lock").GetValue(Assets);
 
         private static Type LinesType = ResearchTree_Patches.LinesType();
-        //public static object Lines;
         public static Texture2D EW = (Texture2D)AccessTools.Field(LinesType, "EW").GetValue(Assets);
     }
 }

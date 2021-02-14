@@ -95,7 +95,7 @@
       <WorkToBuild>3200</WorkToBuild>
       <MaxHitPoints>100</MaxHitPoints>
       <Flammability>1.0</Flammability>
-      <ResearchSpeedFactor>1.1</ResearchSpeedFactor>
+      <ResearchSpeedFactor>1.0</ResearchSpeedFactor>
     </statBases>
     <size>(2,1)</size>
     <passability>PassThroughOnly</passability>
@@ -112,28 +112,22 @@
       <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
     </building>
     <comps>
-      <li Class="CompProperties_AffectedByFacilities">
-        <linkableFacilities>
-          <li>BookShelf</li>
-        </linkableFacilities>
+      <li Class="HumanResources.CompProperties_NetworkAccess"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+        <shortCircuitInRain>true</shortCircuitInRain>
       </li>
-        <li Class="CompProperties_Power">
-          <compClass>CompPowerTrader</compClass>
-          <basePowerConsumption>100</basePowerConsumption>
-          <shortCircuitInRain>true</shortCircuitInRain>
-        </li>
-        <li Class="CompProperties_Flickable"/>
-      </comps>
+      <li Class="CompProperties_Flickable"/>
+    </comps>
     <designationHotKey />
     <placeWorkers>
-      <li>PlaceWorker_ShowFacilitiesConnections</li>
       <li>PlaceWorker_PreventInteractionSpotOverlap</li>
     </placeWorkers>
     <researchPrerequisites>
       <li>MicroelectronicsBasics</li>
     </researchPrerequisites>
   </ThingDef>
-
 
   <!--Borrowed from Jecrell's RimWriter-->
   <ThingDef ParentName="FurnitureBase">

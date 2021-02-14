@@ -6,6 +6,7 @@ using Verse;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
     public class StatPart_AvailableBooks : StatPart
     {
         private int LibraryCount(List<Thing> library, out float libraryPower)
@@ -18,7 +19,15 @@ namespace HumanResources
                     result += shelf.innerContainer.Count;
                 }
             }
-            libraryPower = ModBaseHumanResources.unlocked.BookResearchIncrement(result);
+            libraryPower = unlocked.BookResearchIncrement(result);
+            return result;
+        }
+
+        private int DatabaseCount(out float databasePower)
+        {
+            int result = unlocked.networkDatabase.Count();
+            databasePower = unlocked.BookResearchIncrement(result);
+            Log.Message($"DEBUG DatabaseCount {result}");
             return result;
         }
 
@@ -26,14 +35,22 @@ namespace HumanResources
         {
             if (req.HasThing)
             {
+                StringBuilder stringBuilder = new StringBuilder();
+                float libraryContribution;
                 CompAffectedByFacilities comp = req.Thing.TryGetComp<CompAffectedByFacilities>();
                 if (comp != null && comp.LinkedFacilitiesListForReading.Any(x => x is Building_BookStore))
                 {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    float libraryContribution;
                     stringBuilder.AppendLine("AvailableBooksReport".Translate(LibraryCount(comp.LinkedFacilitiesListForReading, out libraryContribution), comp.LinkedFacilitiesListForReading.Where(x => x is Building_BookStore).Count()) + ": +" + libraryContribution.ToStringPercent());
-                    return stringBuilder.ToString().TrimEndNewlines();
                 }
+                else
+                {
+                    CompNetworkAccess compCloud = req.Thing.TryGetComp<CompNetworkAccess>();
+                    if (compCloud != null)
+                    {
+                        stringBuilder.AppendLine("AvailableOnNetwork".Translate(DatabaseCount(out libraryContribution)) + ": +" + libraryContribution.ToStringPercent());
+                    }
+                }
+                return stringBuilder.ToString().TrimEndNewlines();
             }
             return null;
         }
@@ -42,15 +59,25 @@ namespace HumanResources
         {
             if (req.HasThing)
             {
-                CompAffectedByFacilities comp = req.Thing.TryGetComp<CompAffectedByFacilities>();
-                if (comp != null && !comp.LinkedFacilitiesListForReading.NullOrEmpty())
+                Log.Message("DEBUG StatPart_AvailableBooks TransformValue");
+                float libraryPower = 0f;
+                int libraryCount = 0;
+                CompAffectedByFacilities compBooks = req.Thing.TryGetComp<CompAffectedByFacilities>();
+                if (compBooks != null && !compBooks.LinkedFacilitiesListForReading.NullOrEmpty())
                 {
-                    float libraryPower;
-                    int libraryCount = LibraryCount(comp.LinkedFacilitiesListForReading, out libraryPower);
-                    if (libraryCount > 0)
+                    libraryCount += LibraryCount(compBooks.LinkedFacilitiesListForReading, out libraryPower);
+                }
+                else
+                {
+                    CompNetworkAccess compCloud = req.Thing.TryGetComp<CompNetworkAccess>();
+                    if (compCloud != null)
                     {
-                        value += libraryPower;
+                        libraryCount += DatabaseCount(out libraryPower);
                     }
+                }
+                if (libraryCount > 0)
+                {
+                    value += libraryPower;
                 }
             }
         }

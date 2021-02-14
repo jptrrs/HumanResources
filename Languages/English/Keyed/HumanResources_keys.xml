@@ -15,6 +15,7 @@
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
+  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
   <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
   <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
   <ClickToUnassign>Left-click to unassign.</ClickToUnassign>

@@ -515,7 +515,7 @@ namespace HumanResources
             if (expertise != null)
             {
                 //1. test if any descendent is known
-                if (expertise.Where(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)).Any()) return true;
+                if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)) return true;
                 //2. test if all ancestors are known
                 if (!tech.prerequisites.NullOrEmpty()) return tech.prerequisites.All(x => x.IsKnownBy(pawn));
             }

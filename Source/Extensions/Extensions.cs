@@ -27,7 +27,7 @@ namespace HumanResources
         {
             var servers = map.listerBuildings.AllBuildingsColonistOfDef(TechDefOf.NetworkServer);
             if (!servers.EnumerableNullOrEmpty())
-                return servers.Where(x => x.TryGetComp<CompPowerTrader>().PowerOn).Any();
+                return servers.Any(x => x.TryGetComp<CompPowerTrader>().PowerOn);
             return false;
         }
 

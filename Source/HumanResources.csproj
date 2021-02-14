@@ -333,6 +333,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
+    <Compile Include="Books+Buildings\CompProperties_NetworkAccess.cs" />
+    <Compile Include="Books+Buildings\CompNetworkAccess.cs" />
     <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
     <Compile Include="Books+Buildings\CompProperties_ShootingArea.cs" />
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
