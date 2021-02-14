@@ -12,32 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "About", "About", "{4A36335D
 		About\PublishedFileId.txt = About\PublishedFileId.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{6A809623-353B-411E-BDB4-7C4428221C02}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{433382EE-88BC-4265-97D3-BD88C6A45CBC}"
-	ProjectSection(SolutionItems) = preProject
-		Textures\Things\Building\ManagerStation_east.png = Textures\Things\Building\ManagerStation_east.png
-		Textures\Things\Building\ManagerStation_eastm.png = Textures\Things\Building\ManagerStation_eastm.png
-		Textures\Things\Building\ManagerStation_front.png = Textures\Things\Building\ManagerStation_front.png
-		Textures\Things\Building\ManagerStation_north.png = Textures\Things\Building\ManagerStation_north.png
-		Textures\Things\Building\ManagerStation_northm.png = Textures\Things\Building\ManagerStation_northm.png
-		Textures\Things\Building\ManagerStation_south.png = Textures\Things\Building\ManagerStation_south.png
-		Textures\Things\Building\ManagerStation_southm.png = Textures\Things\Building\ManagerStation_southm.png
-		Textures\Things\Building\MrDummy_east.png = Textures\Things\Building\MrDummy_east.png
-		Textures\Things\Building\MrDummy_north.png = Textures\Things\Building\MrDummy_north.png
-		Textures\Things\Building\MrDummy_south.png = Textures\Things\Building\MrDummy_south.png
-		Textures\Things\Building\Target_north.png = Textures\Things\Building\Target_north.png
-		Textures\Things\Building\Target_northm.png = Textures\Things\Building\Target_northm.png
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1}"
-	ProjectSection(SolutionItems) = preProject
-		Textures\Things\Item\book.png = Textures\Things\Item\book.png
-		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{FB43E893-944D-41CA-854B-49B12159459C}"
 	ProjectSection(SolutionItems) = preProject
 		News\HumanResources_UpdateFeatures.xml = News\HumanResources_UpdateFeatures.xml
@@ -508,6 +482,101 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{3BA239D3-1
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{7EADB1E7-7D64-45E4-B72A-7E3695ED7590}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{68AE6DB6-7C05-4712-9F72-A8F7118CB704}"
+	ProjectSection(SolutionItems) = preProject
+		Textures\Things\Building\BookShelf_east.png = Textures\Things\Building\BookShelf_east.png
+		Textures\Things\Building\BookShelf_eastm.png = Textures\Things\Building\BookShelf_eastm.png
+		Textures\Things\Building\BookShelf_north.png = Textures\Things\Building\BookShelf_north.png
+		Textures\Things\Building\BookShelf_northm.png = Textures\Things\Building\BookShelf_northm.png
+		Textures\Things\Building\BookShelf_south.png = Textures\Things\Building\BookShelf_south.png
+		Textures\Things\Building\BookShelf_southm.png = Textures\Things\Building\BookShelf_southm.png
+		Textures\Things\Building\BookShelfEmpty_east.png = Textures\Things\Building\BookShelfEmpty_east.png
+		Textures\Things\Building\BookShelfEmpty_eastm.png = Textures\Things\Building\BookShelfEmpty_eastm.png
+		Textures\Things\Building\BookShelfEmpty_north.png = Textures\Things\Building\BookShelfEmpty_north.png
+		Textures\Things\Building\BookShelfEmpty_northm.png = Textures\Things\Building\BookShelfEmpty_northm.png
+		Textures\Things\Building\BookShelfEmpty_south.png = Textures\Things\Building\BookShelfEmpty_south.png
+		Textures\Things\Building\BookShelfEmpty_southm.png = Textures\Things\Building\BookShelfEmpty_southm.png
+		Textures\Things\Building\BookShelfSparse_east.png = Textures\Things\Building\BookShelfSparse_east.png
+		Textures\Things\Building\BookShelfSparse_eastm.png = Textures\Things\Building\BookShelfSparse_eastm.png
+		Textures\Things\Building\BookShelfSparse_north.png = Textures\Things\Building\BookShelfSparse_north.png
+		Textures\Things\Building\BookShelfSparse_northm.png = Textures\Things\Building\BookShelfSparse_northm.png
+		Textures\Things\Building\BookShelfSparse_south.png = Textures\Things\Building\BookShelfSparse_south.png
+		Textures\Things\Building\BookShelfSparse_southm.png = Textures\Things\Building\BookShelfSparse_southm.png
+		Textures\Things\Building\MrDummy_east.png = Textures\Things\Building\MrDummy_east.png
+		Textures\Things\Building\MrDummy_north.png = Textures\Things\Building\MrDummy_north.png
+		Textures\Things\Building\MrDummy_south.png = Textures\Things\Building\MrDummy_south.png
+		Textures\Things\Building\NetworkServer.png = Textures\Things\Building\NetworkServer.png
+		Textures\Things\Building\NetworkServerEmpty.png = Textures\Things\Building\NetworkServerEmpty.png
+		Textures\Things\Building\NetworkServerEmptym.png = Textures\Things\Building\NetworkServerEmptym.png
+		Textures\Things\Building\NetworkServerm.png = Textures\Things\Building\NetworkServerm.png
+		Textures\Things\Building\NetworkServerSparse.png = Textures\Things\Building\NetworkServerSparse.png
+		Textures\Things\Building\NetworkServerSparsem.png = Textures\Things\Building\NetworkServerSparsem.png
+		Textures\Things\Building\NetworkTerminal_east.png = Textures\Things\Building\NetworkTerminal_east.png
+		Textures\Things\Building\NetworkTerminal_eastm.png = Textures\Things\Building\NetworkTerminal_eastm.png
+		Textures\Things\Building\NetworkTerminal_north.png = Textures\Things\Building\NetworkTerminal_north.png
+		Textures\Things\Building\NetworkTerminal_northm.png = Textures\Things\Building\NetworkTerminal_northm.png
+		Textures\Things\Building\NetworkTerminal_south.png = Textures\Things\Building\NetworkTerminal_south.png
+		Textures\Things\Building\NetworkTerminal_southm.png = Textures\Things\Building\NetworkTerminal_southm.png
+		Textures\Things\Building\NetworkTerminal_west.png = Textures\Things\Building\NetworkTerminal_west.png
+		Textures\Things\Building\NetworkTerminal_westm.png = Textures\Things\Building\NetworkTerminal_westm.png
+		Textures\Things\Building\ResearchBenchHiTech_east.png = Textures\Things\Building\ResearchBenchHiTech_east.png
+		Textures\Things\Building\ResearchBenchHiTech_eastm.png = Textures\Things\Building\ResearchBenchHiTech_eastm.png
+		Textures\Things\Building\ResearchBenchHiTech_north.png = Textures\Things\Building\ResearchBenchHiTech_north.png
+		Textures\Things\Building\ResearchBenchHiTech_northm.png = Textures\Things\Building\ResearchBenchHiTech_northm.png
+		Textures\Things\Building\ResearchBenchHiTech_south.png = Textures\Things\Building\ResearchBenchHiTech_south.png
+		Textures\Things\Building\ResearchBenchHiTech_southm.png = Textures\Things\Building\ResearchBenchHiTech_southm.png
+		Textures\Things\Building\ResearchBenchSimple_east.png = Textures\Things\Building\ResearchBenchSimple_east.png
+		Textures\Things\Building\ResearchBenchSimple_eastm.png = Textures\Things\Building\ResearchBenchSimple_eastm.png
+		Textures\Things\Building\ResearchBenchSimple_north.png = Textures\Things\Building\ResearchBenchSimple_north.png
+		Textures\Things\Building\ResearchBenchSimple_northm.png = Textures\Things\Building\ResearchBenchSimple_northm.png
+		Textures\Things\Building\ResearchBenchSimple_south.png = Textures\Things\Building\ResearchBenchSimple_south.png
+		Textures\Things\Building\ResearchBenchSimple_southm.png = Textures\Things\Building\ResearchBenchSimple_southm.png
+		Textures\Things\Building\StudyDesk_east.png = Textures\Things\Building\StudyDesk_east.png
+		Textures\Things\Building\StudyDesk_eastm.png = Textures\Things\Building\StudyDesk_eastm.png
+		Textures\Things\Building\StudyDesk_north.png = Textures\Things\Building\StudyDesk_north.png
+		Textures\Things\Building\StudyDesk_northm.png = Textures\Things\Building\StudyDesk_northm.png
+		Textures\Things\Building\StudyDesk_south.png = Textures\Things\Building\StudyDesk_south.png
+		Textures\Things\Building\StudyDesk_southm.png = Textures\Things\Building\StudyDesk_southm.png
+		Textures\Things\Building\Target_east.png = Textures\Things\Building\Target_east.png
+		Textures\Things\Building\Target_eastm.png = Textures\Things\Building\Target_eastm.png
+		Textures\Things\Building\Target_MenuIcon.png = Textures\Things\Building\Target_MenuIcon.png
+		Textures\Things\Building\Target_north.png = Textures\Things\Building\Target_north.png
+		Textures\Things\Building\Target_northm.png = Textures\Things\Building\Target_northm.png
+		Textures\Things\Building\Target_south.png = Textures\Things\Building\Target_south.png
+		Textures\Things\Building\Target_southm.png = Textures\Things\Building\Target_southm.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{E5EF9623-6EC8-4BE5-9304-1E8432010982}"
+	ProjectSection(SolutionItems) = preProject
+		Textures\Things\Item\book.png = Textures\Things\Item\book.png
+		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
+		Textures\Things\Item\drive.png = Textures\Things\Item\drive.png
+		Textures\Things\Item\drive_m.png = Textures\Things\Item\drive_m.png
+		Textures\Things\Item\unfinishedBook.png = Textures\Things\Item\unfinishedBook.png
+		Textures\Things\Item\unfinishedBook_m.png = Textures\Things\Item\unfinishedBook_m.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{067516B0-C368-4E73-98D0-C837582B5D27}"
+	ProjectSection(SolutionItems) = preProject
+		Textures\UI\assignment.png = Textures\UI\assignment.png
+		Textures\UI\available.png = Textures\UI\available.png
+		Textures\UI\cloud.png = Textures\UI\cloud.png
+		Textures\UI\commomWeapons.png = Textures\UI\commomWeapons.png
+		Textures\UI\compact.png = Textures\UI\compact.png
+		Textures\UI\dot.png = Textures\UI\dot.png
+		Textures\UI\expand_left.png = Textures\UI\expand_left.png
+		Textures\UI\expand_right.png = Textures\UI\expand_right.png
+		Textures\UI\melee.png = Textures\UI\melee.png
+		Textures\UI\ranged.png = Textures\UI\ranged.png
+		Textures\UI\read.png = Textures\UI\read.png
+		Textures\UI\research.png = Textures\UI\research.png
+		Textures\UI\write.png = Textures\UI\write.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1.1|Any CPU = 1.1|Any CPU
@@ -526,9 +595,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB} = {6A809623-353B-411E-BDB4-7C4428221C02}
-		{433382EE-88BC-4265-97D3-BD88C6A45CBC} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
-		{C1DD231C-4869-46B9-9BC9-D8EF4B691BC1} = {1DCFBE9B-8D2D-434D-BB7D-D4027C7903DB}
 		{E3F5BEEB-213E-46D8-9C6A-5B75D2C132CD} = {85441F37-161D-46B6-9A2D-7950A3262593}
 		{669EDEB4-B3B8-43C0-B4B2-14BE51FE89AF} = {E3F5BEEB-213E-46D8-9C6A-5B75D2C132CD}
 		{0548AFF0-ED44-48E8-BDF1-F58519193A15} = {669EDEB4-B3B8-43C0-B4B2-14BE51FE89AF}
@@ -622,6 +688,10 @@ Global
 		{B665B8C7-600D-44A7-884A-FDE7E1069B97} = {A5746C9E-E364-43F6-8963-9150A791657B}
 		{F5CB9120-564E-464C-B11A-891A5BD9CC29} = {A5746C9E-E364-43F6-8963-9150A791657B}
 		{5FDE203C-D8D4-409C-87C9-03D4C7173788} = {70A40F66-0D3F-4BA2-B37A-AA019993295E}
+		{7EADB1E7-7D64-45E4-B72A-7E3695ED7590} = {28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}
+		{68AE6DB6-7C05-4712-9F72-A8F7118CB704} = {7EADB1E7-7D64-45E4-B72A-7E3695ED7590}
+		{E5EF9623-6EC8-4BE5-9304-1E8432010982} = {7EADB1E7-7D64-45E4-B72A-7E3695ED7590}
+		{067516B0-C368-4E73-98D0-C837582B5D27} = {28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}
