@@ -13,9 +13,7 @@ namespace HumanResources
         public List<ThingDef> weapons = new List<ThingDef>();
         public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
-        public IEnumerable<ResearchProjectDef>
-            scenarioTechs,
-            factionTechs;
+        public IEnumerable<ResearchProjectDef> scenarioTechs, factionTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
         public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
         private static FieldInfo 

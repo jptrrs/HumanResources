@@ -48,22 +48,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "News", "News", "{FB43E893-9
 		News\TechButton.png = News\TechButton.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{5B913D14-8BD4-40BD-B084-DD9C727DE3A1}"
-	ProjectSection(SolutionItems) = preProject
-		Defs\Jobs.xml = Defs\Jobs.xml
-		Defs\JoyGivers.xml = Defs\JoyGivers.xml
-		Defs\Recipes.xml = Defs\Recipes.xml
-		Defs\Rooms.xml = Defs\Rooms.xml
-		Defs\ScenParts.xml = Defs\ScenParts.xml
-		Defs\StuffCategories.xml = Defs\StuffCategories.xml
-		Defs\ThingCategories.xml = Defs\ThingCategories.xml
-		Defs\Things.xml = Defs\Things.xml
-		Defs\Things_WeaponExemptions.xml = Defs\Things_WeaponExemptions.xml
-		Defs\TraderKinds.xml = Defs\TraderKinds.xml
-		Defs\WorkGivers.xml = Defs\WorkGivers.xml
-		Defs\WorkTypes.xml = Defs\WorkTypes.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Languages", "Languages", "{85441F37-161D-46B6-9A2D-7950A3262593}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChineseSimplified", "ChineseSimplified", "{E3F5BEEB-213E-46D8-9C6A-5B75D2C132CD}"
@@ -505,6 +489,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{3371
 		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
 		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
 		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{3BA239D3-13FE-4E73-8CCC-70F14E17C611}"
+	ProjectSection(SolutionItems) = preProject
+		Defs\Jobs.xml = Defs\Jobs.xml
+		Defs\JoyGivers.xml = Defs\JoyGivers.xml
+		Defs\Recipes.xml = Defs\Recipes.xml
+		Defs\Rooms.xml = Defs\Rooms.xml
+		Defs\ScenParts.xml = Defs\ScenParts.xml
+		Defs\StuffCategories.xml = Defs\StuffCategories.xml
+		Defs\ThingCategories.xml = Defs\ThingCategories.xml
+		Defs\Things.xml = Defs\Things.xml
+		Defs\Things_WeaponExemptions.xml = Defs\Things_WeaponExemptions.xml
+		Defs\TraderKinds.xml = Defs\TraderKinds.xml
+		Defs\WorkGivers.xml = Defs\WorkGivers.xml
+		Defs\WorkTypes.xml = Defs\WorkTypes.xml
 	EndProjectSection
 EndProject
 Global
