@@ -11,11 +11,11 @@ namespace HumanResources
     public class UnlockManager : IExposable
     {       
         public List<ThingDef> weapons = new List<ThingDef>();
+        public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
         public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
         public IEnumerable<ResearchProjectDef> scenarioTechs, factionTechs;
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
-        public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
         private static FieldInfo 
             ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
             ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
@@ -25,6 +25,7 @@ namespace HumanResources
         public void ExposeData()
         {
             Scribe_Collections.Look<ThingDef>(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
+            Scribe_Collections.Look<ResearchProjectDef>(ref networkDatabase, "networkDatabase", LookMode.Deep, new object[0]);
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 RecacheUnlockedWeapons();
