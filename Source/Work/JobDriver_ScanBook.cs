@@ -88,6 +88,7 @@ namespace HumanResources
                     actor.skills.GetSkill(curJob.RecipeDef.workSkill).Learn(xp, false);
                 }
                 project.CompleteUpload(TargetThingA);
+                Toils_Recipe_Patch.ConsumeIngredients(new List<Thing> { TargetB.Thing }, curJob.RecipeDef, actor.Map);
                 curJob.bill.Notify_IterationCompleted(actor, new List<Thing>());
             };
             yield return upload;

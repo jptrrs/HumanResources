@@ -148,7 +148,7 @@ namespace HumanResources
             }
             relevantThings.Clear();
             bool foundAll = false;
-            Predicate<Thing> baseValidator = (Thing t) => t.Spawned && !t.IsForbidden(pawn) && (t.Position - billGiver.Position).LengthHorizontalSquared < bill.ingredientSearchRadius * bill.ingredientSearchRadius && (t.def == TechDefOf.TechBook || t is Building_BookStore) && pawn.CanReserve(t, 1, -1, null, false);
+            Predicate<Thing> baseValidator = (Thing t) => t.Spawned && !t.IsForbidden(pawn) && (t.Position - billGiver.Position).LengthHorizontalSquared < bill.ingredientSearchRadius * bill.ingredientSearchRadius && ((!t.def.tradeTags.NullOrEmpty() && t.def.tradeTags.Contains(TechStrings.bookTraderTag)) || t is Building_BookStore) && pawn.CanReserve(t, 1, -1, null, false);
             TraverseParms traverseParams = TraverseParms.For(pawn, Danger.Deadly, TraverseMode.ByPawn, false);
             RegionEntryPredicate entryCondition = null;
             if (Math.Abs(999f - bill.ingredientSearchRadius) >= 1f)

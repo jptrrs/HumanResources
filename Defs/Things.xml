@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
  
+  <!--Workstations-->
   <ThingDef ParentName="BenchBase">
     <defName>StudyDesk</defName>
     <label>Study Desk</label>
@@ -129,6 +130,85 @@
     </researchPrerequisites>
   </ThingDef>
 
+  <!--Borrewed from ItchyFlea's Practise Target-->
+  <ThingDef ParentName="FurnitureBase">
+    <defName>Target</defName>
+    <label>Target Stand</label>
+    <description>A target for your sharpshooters to hone their skills with.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <uiIconPath>Things/Building/Target_MenuIcon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/Target</texPath>
+      <shaderType>CutoutComplex</shaderType>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <size>(1,1)</size>
+    <stuffCategories>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>3</Mass>
+      <Flammability>1.0</Flammability>
+      <WorkToBuild>250</WorkToBuild>
+    </statBases>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.8</fillPercent>
+    <designationCategory>Security</designationCategory>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-10)</interactionCellOffset>
+    <comps>
+      <li Class="HumanResources.CompProperties_ShootingArea" />
+    </comps>
+    <placeWorkers>
+      <li>HumanResources.PlaceWorker_ShootingRange</li>
+    </placeWorkers>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <ThingDef ParentName="FurnitureBase">
+    <defName>MrDummy</defName>
+    <label>Training Dummy</label>
+    <thingClass>Building_WorkTable</thingClass>
+    <description>A straw dummy for training melee skill.</description>
+    <uiIconPath>Things/Building/MrDummy_north</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/MrDummy</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>35</costStuffCount>
+    <altitudeLayer>Building</altitudeLayer>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <size>(1,1)</size>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>1</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <statBases>
+      <WorkToBuild>200</WorkToBuild>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Mass>7</Mass>
+    </statBases>
+    <designationCategory>Security</designationCategory>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!--"Storage"-->
   <!--Borrowed from Jecrell's RimWriter-->
   <ThingDef ParentName="FurnitureBase">
     <defName>BookShelf</defName>
@@ -296,7 +376,7 @@
     </researchPrerequisites>
   </ThingDef>
 
-  <!--Technical Book-->
+  <!--Items-->
   <ThingDef ParentName="UnfinishedBase">
     <defName>UnfinishedTechBook</defName>
     <label>Unfinished technical book</label>
@@ -381,84 +461,6 @@
       <MarketValue>2000</MarketValue>
       <WorkToMake>1000</WorkToMake>
     </statBases>
-  </ThingDef>
-
-  <!--Borrewed from ItchyFlea's Practise Target-->
-  <ThingDef ParentName="FurnitureBase">
-    <defName>Target</defName>
-    <label>Target Stand</label>
-    <description>A target for your sharpshooters to hone their skills with.</description>
-    <thingClass>Building_WorkTable</thingClass>
-    <uiIconPath>Things/Building/Target_MenuIcon</uiIconPath>
-    <graphicData>
-      <texPath>Things/Building/Target</texPath>
-      <shaderType>CutoutComplex</shaderType>
-      <graphicClass>Graphic_Multi</graphicClass>
-    </graphicData>
-    <altitudeLayer>Building</altitudeLayer>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <size>(1,1)</size>
-    <stuffCategories>
-      <li>Woody</li>
-    </stuffCategories>
-    <costStuffCount>25</costStuffCount>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <Mass>3</Mass>
-      <Flammability>1.0</Flammability>
-      <WorkToBuild>250</WorkToBuild>
-    </statBases>
-    <passability>PassThroughOnly</passability>
-    <pathCost>60</pathCost>
-    <fillPercent>0.8</fillPercent>
-    <designationCategory>Security</designationCategory>
-    <hasInteractionCell>True</hasInteractionCell>
-    <interactionCellOffset>(0,0,-10)</interactionCellOffset>
-    <comps>
-      <li Class="HumanResources.CompProperties_ShootingArea" />
-    </comps>
-    <placeWorkers>
-      <li>HumanResources.PlaceWorker_ShootingRange</li>
-    </placeWorkers>
-    <inspectorTabs>
-      <li>ITab_Bills</li>
-    </inspectorTabs>
-  </ThingDef>
-
-  <ThingDef ParentName="FurnitureBase">
-    <defName>MrDummy</defName>
-    <label>Training Dummy</label>
-    <thingClass>Building_WorkTable</thingClass>
-    <description>A straw dummy for training melee skill.</description>
-    <uiIconPath>Things/Building/MrDummy_north</uiIconPath>
-    <graphicData>
-      <texPath>Things/Building/MrDummy</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(2,2)</drawSize>
-    </graphicData>
-    <stuffCategories>
-      <li>Fabric</li>
-      <li>Leathery</li>
-    </stuffCategories>
-    <costStuffCount>35</costStuffCount>
-    <altitudeLayer>Building</altitudeLayer>
-    <minifiedDef>MinifiedThing</minifiedDef>
-    <size>(1,1)</size>
-    <passability>PassThroughOnly</passability>
-    <fillPercent>1</fillPercent>
-    <useHitPoints>True</useHitPoints>
-    <statBases>
-      <WorkToBuild>200</WorkToBuild>
-      <MaxHitPoints>350</MaxHitPoints>
-      <Flammability>1.0</Flammability>
-      <Mass>7</Mass>
-    </statBases>
-    <designationCategory>Security</designationCategory>
-    <hasInteractionCell>True</hasInteractionCell>
-    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
-    <inspectorTabs>
-      <li>ITab_Bills</li>
-    </inspectorTabs>
   </ThingDef>
 
 </Defs>
