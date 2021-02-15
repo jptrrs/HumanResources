@@ -4,7 +4,7 @@
   <HugsLib.UpdateFeatureDef Abstract="true" Name="HumanResources.UpdateFeatureBase">
     <modNameReadable>Human Resources</modNameReadable>
     <modIdentifier>JPT_HumanResources</modIdentifier>
-    <linkUrl>https://ko-fi.com/jptrrs</linkUrl>
+    <linkUrl>https://www.patreon.com/jptrrs</linkUrl>
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
@@ -103,8 +103,9 @@
       |1. Experimenting with unknown weapons on the Training Dummy and Target Stand will now require melee and shooting skills, respectively, instead of intellectual. Also, the test difficulty will take into account the pawn's own techlevel, instead of his faction's.
       |2. The recipe filters are re-enabled for all recipes, so if you want to limit what kind of knowledge your pawns will have access to, you can.
       |3. The Research Tree will now display a marker beside known techs to indicate whether they're stored in book or digital forms.
-      |Check the full change notes on our Steam page. Enjoy!
-      |img:Ko-fi|caption:Making mods is fun, mantaining them takes a lot of work! If you like what we did here, please consider supporting us with a cup of coffee. Follow the link above or go to ko-fi.com/jptrrs. Thank you!
+      |Full change notes on our Steam page. 
+      |Enjoy!
+      |img:Passion|caption:&lt;i&gt;Check out our Patreon page for more mods and add-ons that aren't on Steam!&lt;/i&gt; Follow the link above or go to https://www.patreon.com/jptrrs.
     </content>
   </HugsLib.UpdateFeatureDef>
 

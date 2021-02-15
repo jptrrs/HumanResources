@@ -11,14 +11,18 @@ using System.Text;
 
 namespace HumanResources
 {
+    using static ModBaseHumanResources;
+
     public static class Extension_Research
     {
+        public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
         public static SkillDef Bias = new SkillDef();
+        public static List<Pawn> currentPawnsCache;
+        public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
         public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
         public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
         public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
-        public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
         private const float MarketValueOffset = 200f;
         private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
 
@@ -90,6 +94,7 @@ namespace HumanResources
         {
             string name = "Tech_" + tech.defName;
             ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
+            StuffCategoryDef sCat = DefDatabase<StuffCategoryDef>.GetNamed(tech.techLevel.ToString());
             string label = "KnowledgeLabel".Translate(tech.label);
             ThingDef techStuff = new ThingDef
             {
@@ -103,7 +108,7 @@ namespace HumanResources
                 menuHidden = true,
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { TechDefOf.Technic },
+                    categories = new List<StuffCategoryDef>() { sCat/*TechDefOf.Technic*/ },
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()
@@ -135,16 +140,8 @@ namespace HumanResources
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             unlocked.stuffByTech.Add(tech, techStuff);
-            unlocked.techByStuff.Add(techStuff, tech);
         }
 
-        public static void EjectTech(this ResearchProjectDef tech, Thing place)
-        {
-            FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
-            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
-            progress[tech] = 0f;
-            Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
-        }
 
         public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
         {
@@ -489,8 +486,6 @@ namespace HumanResources
 			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
 		}
 
-        public static List<Pawn> currentPawnsCache;
-
         private static IEnumerable<Pawn> currentPawns
         {
             get
@@ -515,7 +510,7 @@ namespace HumanResources
             if (expertise != null)
             {
                 //1. test if any descendent is known
-                if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech)) return true;
+                if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech))) return true;
                 //2. test if all ancestors are known
                 if (!tech.prerequisites.NullOrEmpty()) return tech.prerequisites.All(x => x.IsKnownBy(pawn));
             }
@@ -604,26 +599,69 @@ namespace HumanResources
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        public static void DrawAssignments(this ResearchProjectDef tech, Rect rect)
+        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
+            //storage marker insertion
             float height = rect.height;
-            float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset; //rect.xMax - height/2;
+            float ribbon = ResearchTree_Constants.push.x;
+            Vector2 position = new Vector2(rect.xMax, rect.y);
+            Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
+            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
+            Color backup = GUI.color;
+            if (tech.IsFinished)
+            {
+                Vector2 markerSize = new Vector2(ribbon, height);
+                Rect box = new Rect(position, markerSize);
+                Rect inner = box;
+                inner.height = ribbon;
+                inner.y += (height - ribbon) / 2;
+                Widgets.DrawBoxSolid(box, shadedColor);
+                if (unlocked.networkDatabase.Contains(tech))
+                {
+                    GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
+                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
+                }
+                else
+                {
+                    var material = TechDefOf.TechBook.graphic.MatSingle;
+                    material.color = techColor;
+                    Graphics.DrawTexture(inner, ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
+                    bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+                    bool fromFaction = unlocked.factionTechs.Contains(tech);
+                    bool startingTech = fromScenario || fromFaction;
+                    string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+                    string text = startingTech ? "bookFromStart".Translate(source) : "bookInLibrary".Translate();
+                    TooltipHandler.TipRegionByKey(inner, text);
+                }
+            }
+            GUI.color = backup;
+
+            //Pawn assignments
             Vector2 size = new Vector2(height, height);
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p,tech)).GetEnumerator())
+            float frameOffset = height / 4;
+            float startPos = rect.x - frameOffset; //rect.xMax - height/2
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
-                    Vector2 position = new Vector2(startPos, rect.y + (height / 3));
+                    position = new Vector2(startPos, rect.y + (height / 3));
                     Rect box = new Rect(position, size);
+                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     Pawn pawn = enumerator.Current;
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
                     TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
                     startPos += height / 2;
                 }
             }
+        }
+
+        public static void Ejected(this ResearchProjectDef tech, Thing place)
+        {
+            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+            progress[tech] = 0f;
+            unlocked.networkDatabase.Remove(tech);
+            Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
         }
 
         private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
@@ -647,5 +685,26 @@ namespace HumanResources
             }
             return false;
         };
+
+        public static void Uploaded(this ResearchProjectDef tech, float amount, Thing location)
+        {
+            if (tech == null)
+            {
+                Log.Error("Tryed to upload a null tech.", false);
+                return;
+            }
+            float num = Find.ResearchManager.GetProgress(tech);
+            num += amount;
+            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+            progress[tech] = num;
+            if (tech.IsFinished) tech.CompleteUpload(location);
+        }
+
+        public static void CompleteUpload(this ResearchProjectDef tech, Thing location)
+        {
+            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
+            unlocked.networkDatabase.Add(tech);
+        }
+
     }
 }
