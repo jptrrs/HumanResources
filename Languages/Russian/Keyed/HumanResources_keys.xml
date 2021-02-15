@@ -15,6 +15,7 @@
 	<Collapse>Свернуть</Collapse>
 	<TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
+	<AvailableOnNetwork>^Number( {0} | '# технология' | '# технологии' | '# технологий')^ в облачном хранилище</AvailableOnNetwork>
 	<ClickToAssignForStudying>ЛКМ - назначить для изучения</ClickToAssignForStudying>
 	<ClickToAssignForDocumentation>ЛКМ - назначить для документирования</ClickToAssignForDocumentation>
 	<ClickToUnassign>ЛКМ - отменить назначение</ClickToUnassign>
@@ -24,6 +25,9 @@
 	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
 	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>
 	<ClickToRemove>нажмите, чтобы отменить</ClickToRemove>
+	<bookFromStart>Базовое знание ({0}).</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
+	<bookInLibrary>В архиве библиотеки.</bookInLibrary>
+	<bookInDatabase>В облачном хранилище.</bookInDatabase>
 
 	<!--Settings-->
 	<TechPoolModeTitle>Получать знания из следующих списков:</TechPoolModeTitle>
@@ -59,7 +63,7 @@
 
 	<!--Things-->
 	<BookStoreEmpty>Пусто</BookStoreEmpty>
-	<BookStoreCapacity>Архивированные знания: {0}/{1}</BookStoreCapacity>
+	<BookStoreCapacity>Технологий в архиве: {0}/{1}</BookStoreCapacity>
 	<BookStoreRetrieveBook>Извлечь книгу</BookStoreRetrieveBook>
 	<BookStoreRetrieveBookDesc>Найти и извлечь конкретную книгу с полки книжного шкафа.</BookStoreRetrieveBookDesc>
 	<BookStoreNoInternalStorage>{0} не помещается ни на одной полке книжного шкафа.</BookStoreNoInternalStorage>
@@ -69,6 +73,12 @@
 	<BookManual>монография «{0}»</BookManual>
 	<BookTheory>справочник «{0}»</BookTheory>
 	<BookDatabase>руководство «{0}»</BookDatabase>
+	<WeaponAssociatedTech>Требуемая технология</WeaponAssociatedTech>
+	<WeaponAssociatedTechDesc>Знания, необходимые поселению (или поселенцу), чтобы научиться владеть этим оружием.</WeaponAssociatedTechDesc>
+	<WeaponKnown>Компетентность</WeaponKnown>
+	<WeaponKnownDesc>Располагает ли поселение необходимыми знаниями для того, чтобы поселенцы могли изготовить и научиться владеть этим оружием.</WeaponKnownDesc>
+	<WeaponRequiresTraining>Надобность в обучении</WeaponRequiresTraining>
+	<WeaponRequiresTrainingDesc>Требуется ли обучение, чтобы использовать это оружие.</WeaponRequiresTrainingDesc>
 
 	<!--Feedback-->
 	<MessageStudyComplete>{0_nameDef} {0_gender ? овладел : овладела } знаниями по теме «{1}».</MessageStudyComplete>
