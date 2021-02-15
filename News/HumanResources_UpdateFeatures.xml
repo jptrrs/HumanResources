@@ -11,26 +11,26 @@
 	<defName>HumanResources_0_1</defName>
 	<assemblyVersion>0.1</assemblyVersion>
   <targetAudience>NewPlayers</targetAudience>
-	<content>
-&lt;b&gt;You've been recruited to test this out!&lt;/b&gt;
-|This is a work in progress, and we're thrilled you are giving it a shot! Bear in mind you might encounter some errors and incompatibilities. If you do, please let me know. Don't forget to hit Ctrl+F12 to upload the error log and send me that link. I'm also open to any suggestions you might have, so please keep in touch!
-|
-|&lt;b&gt;Here's a quick guide to get you started:&lt;/b&gt;
-|img:TechButton
-|Check out the new tab for your colonists. It displays the sum of their knowledge, and that represents the limit of what they are able to build, repair, craft, grow and also the weapons they are able to equip. A starting knowledge set is generated for every pawn based on background, age and faction. From there, its your task to educate them!
-|
-|img:Study+Shelf
-|Build a &lt;i&gt;study desk&lt;/i&gt; and a &lt;i&gt;bookshelf&lt;/i&gt; as soon as you can. This allows your colonists to &lt;i&gt;document&lt;/i&gt; their knowledge into books and then &lt;i&gt;study&lt;/i&gt; books to acquire new knowledge (when assigned to &lt;i&gt;study&lt;/i&gt;). 
-|
-|img:ResearchBenches
-|These are the new, more compact research benches. Their function hasn't changed, but you'll assign research projects individually to each colonist and what they learn will remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
-|
-|img:Target+Dummy
-|When you discover new weapons, your colonists will need to train at these facilities in order to learn how to use them (for that, they must also be assigned to &lt;i&gt;study&lt;/i&gt;). The &lt;i&gt;training dummy&lt;/i&gt; is for meleee weapons and the &lt;i&gt;target stand&lt;/i&gt; is for ranged ones. You can also task them with &lt;i&gt;practicing&lt;/i&gt; a weapon. This will allow them to sharpen their melee or shooting skills!
-|
-|img:Quarantine|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; 
-This is being made as I try to mantain myself as isolated as possible during the COVID-19 crisis. Like many people around the world, my living has been impacted by the global efforts to contain the pandemic, and this is my effort to remain productive. If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. 
-Many, many thanks for your support!
+    <content>
+      &lt;b&gt;You've been recruited to test this out!&lt;/b&gt;
+      |This is a work in progress, and we're thrilled you are giving it a shot! Bear in mind you might encounter some errors and incompatibilities. If you do, please let me know. Don't forget to hit Ctrl+F12 to upload the error log and send me that link. I'm also open to any suggestions you might have, so please keep in touch!
+      |
+      |&lt;b&gt;Here's a quick guide to get you started:&lt;/b&gt;
+      |img:TechButton
+      |Check out the new tab for your colonists. It displays the sum of their knowledge, and that represents the limit of what they are able to build, repair, craft, grow and also the weapons they are able to equip. A starting knowledge set is generated for every pawn based on background, age and faction. From there, its your task to educate them!
+      |
+      |img:Study+Shelf
+      |Build a &lt;i&gt;study desk&lt;/i&gt; and a &lt;i&gt;bookshelf&lt;/i&gt; as soon as you can. This allows your colonists to &lt;i&gt;document&lt;/i&gt; their knowledge into books and then &lt;i&gt;study&lt;/i&gt; books to acquire new knowledge (when assigned to &lt;i&gt;study&lt;/i&gt;).
+      |
+      |img:ResearchBenches
+      |These are the new, more compact research benches. Their function hasn't changed, but you'll assign research projects individually to each colonist and what they learn will remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
+      |
+      |img:Target+Dummy
+      |When you discover new weapons, your colonists will need to train at these facilities in order to learn how to use them (for that, they must also be assigned to &lt;i&gt;study&lt;/i&gt;). The &lt;i&gt;training dummy&lt;/i&gt; is for meleee weapons and the &lt;i&gt;target stand&lt;/i&gt; is for ranged ones. You can also task them with &lt;i&gt;practicing&lt;/i&gt; a weapon. This will allow them to sharpen their melee or shooting skills!
+      |
+      |img:Quarantine|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt;
+      This is being made as I try to mantain myself as isolated as possible during the COVID-19 crisis. Like many people around the world, my living has been impacted by the global efforts to contain the pandemic, and this is my effort to remain productive. If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above.
+      Many, many thanks for your support!
     </content>
 	</HugsLib.UpdateFeatureDef>
   
@@ -88,5 +88,25 @@ Many, many thanks for your support!
       |&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt; If you are able to contribute, you can buy me a coffee on https://ko-fi.com/jptrrs, or follow the link above. Many, many thanks!
     </content>
   </HugsLib.UpdateFeatureDef>
+
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_0_33</defName>
+    <assemblyVersion>0.33</assemblyVersion>
+    <content>
+      &lt;b&gt;Information Age Update&lt;/b&gt;
+      |These are the last big changes we're doing on this beta phase of &lt;i&gt;Human Resources&lt;/i&gt;. It's almost ready! Buckle up, they might impact your current game.
+      |img:..\Textures\Things\Building\NetworkServer|caption:The new &lt;i&gt;Network Server&lt;/i&gt; is the bookshelf evolution, available with Microeletronics (and found on the Misc menu). It's able to store your whole library into one unit. And it doesn't matter where you place it, it's all accessible via wi-fi. Your own cloud! But in order to use it you'll also need...
+      |img:..\Textures\Things\Building\NetworkTerminal_north|caption:The new &lt;i&gt;Network Terminal&lt;/i&gt;. This acts as a late-game study desk. It's slighlty faster, but also allows your colony to properly enter the digital age: you can scan your old books or write new ones and upload them directly to your network server, no physical copies needed! Of course, its speed is boosted by books on the cloud instead of the ones in shelves.
+      |You're going to need this new data infrastucture in order to deal with a crucial change to the way books work:
+      |img:..\Textures\Things\Item\drive|caption:From now on, technologies for the Space Age and beyond will only be found in the form of hard drives. And these can only be archived on network servers, via the terminal. Until you are able to build it, &lt;b&gt;it will be impossible for pawns with advanced knowledge to document what they know&lt;/b&gt;.
+      |Other important changes:
+      |1. Experimenting with unknown weapons on the Training Dummy and Target Stand will now require melee and shooting skills, respectively, instead of intellectual. Also, the test difficulty will take into account the pawn's own techlevel, instead of his faction's.
+      |2. The recipe filters are re-enabled for all recipes, so if you want to limit what kind of knowledge your pawns will have access to, you can.
+      |3. The Research Tree will now display a marker beside known techs to indicate whether they're stored in book or digital forms.
+      |Check the full change notes on our Steam page. Enjoy!
+      |img:Ko-fi|caption:Making mods is fun, mantaining them takes a lot of work! If you like what we did here, please consider supporting us with a cup of coffee. Follow the link above or go to ko-fi.com/jptrrs. Thank you!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+
   
 </Defs>
