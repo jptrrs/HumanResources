@@ -20,6 +20,9 @@
 	<TechBook.label>техническая книга</TechBook.label>
 	<TechBook.description>Книга, содержащая знания о технологии.</TechBook.description>
 
+	<TechDrive.label>Цифровой накопитель</TechDrive.label>
+	<TechDrive.description>Жёсткий диск, содержащий информацию о накопленных знаниях о конкретной технологии.</TechDrive.description>
+
 	<Target.label>мишень для стрельбы</Target.label>
 	<Target.description>Мишень для оттачивания своего мастерства в стрельбе.</Target.description>
 

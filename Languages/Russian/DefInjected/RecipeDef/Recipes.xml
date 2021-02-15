@@ -36,17 +36,17 @@
 
 	<TrainWeaponShooting.label>учиться стрелять из оружия</TrainWeaponShooting.label>
 	<TrainWeaponShooting.description>Научиться стрелять из нового для себя оружия дальнего боя.</TrainWeaponShooting.description>
-	<TrainWeaponShooting.jobString>Учится стрелять из себя оружия дальнего боя</TrainWeaponShooting.jobString>
+	<TrainWeaponShooting.jobString>Учится стрелять из оружия дальнего боя</TrainWeaponShooting.jobString>
 
 	<TrainWeaponMelee.label>учиться владеть оружием</TrainWeaponMelee.label>
 	<TrainWeaponMelee.description>Научиться владеть новым для себя оружием ближнего боя.</TrainWeaponMelee.description>
 	<TrainWeaponMelee.jobString>Учится владеть оружием ближнего боя</TrainWeaponMelee.jobString>
 
-	<ExperimentWeaponShooting.label>экспериментировать с неизвестным оружием</ExperimentWeaponShooting.label>
+	<ExperimentWeaponShooting.label>экспериментировать с оружием</ExperimentWeaponShooting.label>
 	<ExperimentWeaponShooting.description>Экспериментировать с неизвестным оружием дальнего боя, чтобы научиться с ним обращаться, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponShooting.description>
 	<ExperimentWeaponShooting.jobString>Экспериментирует с оружием дальнего боя</ExperimentWeaponShooting.jobString>
 
-	<ExperimentWeaponMelee.label>экспериментировать с неизвестным оружием</ExperimentWeaponMelee.label>
+	<ExperimentWeaponMelee.label>экспериментировать с оружием</ExperimentWeaponMelee.label>
 	<ExperimentWeaponMelee.description>Экспериментировать с неизвестным оружием ближнего боя, чтобы научиться с ним обращаться, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponMelee.description>
 	<ExperimentWeaponMelee.jobString>Экспериментирует с оружием ближнего боя</ExperimentWeaponMelee.jobString>
 
