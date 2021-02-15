@@ -2,20 +2,29 @@
 <LanguageData>
 
 	<StudyDesk.label>рабочий стол</StudyDesk.label>
-	<StudyDesk.description>Стол для изучения и конспектирования технологий.</StudyDesk.description>
+	<StudyDesk.description>Стол для изучения и документирования технологий.</StudyDesk.description>
 
-	<!-- Borrowed from Jecrell's RimWriter -->
+	<NetworkTerminal.label>сетевой терминал</NetworkTerminal.label>
+	<!-- An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed. -->
+	<NetworkTerminal.description>Позволяет получить доступ к исследовательской базе данных для ввода и вывода знаний о технологиях.</NetworkTerminal.description>
+
 	<BookShelf.label>книжный шкаф</BookShelf.label>
-	<BookShelf.description>Прочный шкаф для хранения знаний в виде книг.</BookShelf.description>
+	<BookShelf.description>Прочный шкаф для хранения книг, содержащих знания о различных технологиях.</BookShelf.description>
 
-	<!-- Technical Book -->
+	<NetworkServer.label>сетевой сервер</NetworkServer.label>
+	<!-- The ultimate cloud storage unit to host your research database. All library space you'll ever need. -->
+	<NetworkServer.description>Облачное хранилище для размещения вашей исследовательской базы данных. Не имеет ограничений по вместимости.</NetworkServer.description>
+
 	<UnfinishedTechBook.label>незавершённая техническая книга</UnfinishedTechBook.label>
-	<TechBook.label>техническая книга</TechBook.label>
-	<TechBook.description>Книга, полная знаний.</TechBook.description>
 
-	<!-- Borrewed from ItchyFlea's Practise Target -->
+	<TechBook.label>техническая книга</TechBook.label>
+	<TechBook.description>Книга, в которой отражены накопленные знания конкретной технологии.</TechBook.description>
+
+	<TechDrive.label>Цифровой накопитель</TechDrive.label>
+	<TechDrive.description>Жёсткий диск, содержащий информацию о накопленных знаниях конкретной технологии.</TechDrive.description>
+
 	<Target.label>мишень для стрельбы</Target.label>
-	<Target.description>Мишень для стрелков для оттачивания своего мастерства.</Target.description>
+	<Target.description>Мишень для оттачивания своего мастерства в стрельбе.</Target.description>
 
 	<MrDummy.label>тренировочный манекен</MrDummy.label>
 	<MrDummy.description>Соломенный манекен для тренировки навыков рукопашного боя.</MrDummy.description>
