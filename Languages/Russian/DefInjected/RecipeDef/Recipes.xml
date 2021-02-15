@@ -1,37 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+	<!-- Studying -->
+
 	<LearnTech.label>изучить технологию</LearnTech.label>
-	<LearnTech.description>Обучаться, чтобы получить знания о новой технологии.</LearnTech.description>
-	<LearnTech.jobString>изучает новую технологию</LearnTech.jobString>
+	<LearnTech.description>Освоить знания о новой для себя технологии.</LearnTech.description>
+	<LearnTech.jobString>Изучает технологию</LearnTech.jobString>
+
+	<LearnTechDigital.label>изучить технологию</LearnTechDigital.label>
+	<LearnTechDigital.description>Освоить знания о новой для себя технологии.</LearnTechDigital.description>
+	<LearnTechDigital.jobString>Изучает технологию</LearnTechDigital.jobString>
+
+
+	<!-- Documenting -->
 
 	<DocumentTech.label>документировать технологию</DocumentTech.label>
-	<DocumentTech.description>Задокументировать в технической книге накопившиеся знания по конкретной теме.</DocumentTech.description>
-	<DocumentTech.jobString>документирует технологию</DocumentTech.jobString>
+	<DocumentTech.description>Отразить в книге накопленные знания о конкретной (не выше индустриального уровня) технологии.</DocumentTech.description>
+	<DocumentTech.jobString>Документирует технологию</DocumentTech.jobString>
+
+	<DocumentTechDigital.label>документировать технологию</DocumentTechDigital.label>
+	<!-- Consolidate knowledge into a network learning resource and upload it to the colony database. -->
+	<DocumentTechDigital.description>Задокументировать в электронном виде накопленные знания о конкретной технологии и загрузить их в исследовательскую базу данных.</DocumentTechDigital.description>
+	<DocumentTechDigital.jobString>Документирует технологию</DocumentTechDigital.jobString>
+
+
+	<!-- Scanning -->
+
+	<ScanBook.label>сканировать книгу</ScanBook.label>
+	<!-- Scan existing books or drives and upload its contents to the colony database. -->
+	<ScanBook.description>Отсканировать имеющуюся книгу и загрузить оцифрованную информацию в исследовательскую базу данных.</ScanBook.description>
+	<ScanBook.jobString>Сканирует книгу</ScanBook.jobString>
+
+
+	<!-- Weapon training -->
 
 	<TrainWeaponShooting.label>учиться стрелять из оружия</TrainWeaponShooting.label>
-	<TrainWeaponShooting.description>Тренироваться с оружием дальнего боя, чтобы набраться мастерства.</TrainWeaponShooting.description>
-	<TrainWeaponShooting.jobString>тренируется с оружием дальнего боя</TrainWeaponShooting.jobString>
+	<TrainWeaponShooting.description>Научиться стрелять из нового для себя оружия дальнего боя.</TrainWeaponShooting.description>
+	<TrainWeaponShooting.jobString>Учится стрелять из оружия дальнего боя</TrainWeaponShooting.jobString>
 
 	<TrainWeaponMelee.label>учиться владеть оружием</TrainWeaponMelee.label>
-	<TrainWeaponMelee.description>Тренироваться с оружием ближнего боя, чтобы набраться мастерства.</TrainWeaponMelee.description>
-	<TrainWeaponMelee.jobString>тренируется с оружием ближнего боя</TrainWeaponMelee.jobString>
+	<TrainWeaponMelee.description>Научиться владеть новым для себя оружием ближнего боя.</TrainWeaponMelee.description>
+	<TrainWeaponMelee.jobString>Учится владеть оружием ближнего боя</TrainWeaponMelee.jobString>
 
-	<ExperimentWeaponShooting.label>экспериментировать с неизвестным оружием</ExperimentWeaponShooting.label>
-	<ExperimentWeaponShooting.description>Экспериментировать с неизвестным оружием дальнего боя, чтобы достичь мастерства, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponShooting.description>
-	<ExperimentWeaponShooting.jobString>экспериментирует с оружием дальнего боя</ExperimentWeaponShooting.jobString>
+	<ExperimentWeaponShooting.label>экспериментировать с оружием</ExperimentWeaponShooting.label>
+	<ExperimentWeaponShooting.description>Экспериментировать с неизвестным оружием дальнего боя, чтобы научиться с ним обращаться, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponShooting.description>
+	<ExperimentWeaponShooting.jobString>Экспериментирует с оружием дальнего боя</ExperimentWeaponShooting.jobString>
 
-	<ExperimentWeaponMelee.label>экспериментировать с неизвестным оружием</ExperimentWeaponMelee.label>
-	<ExperimentWeaponMelee.description>Экспериментировать с неизвестным оружием ближнего боя, чтобы достичь мастерства, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponMelee.description>
-	<ExperimentWeaponMelee.jobString>экспериментирует с оружием ближнего боя</ExperimentWeaponMelee.jobString>
+	<ExperimentWeaponMelee.label>экспериментировать с оружием</ExperimentWeaponMelee.label>
+	<ExperimentWeaponMelee.description>Экспериментировать с неизвестным оружием ближнего боя, чтобы научиться с ним обращаться, не понимая по-настоящему его принцип действия. Весьма рискованно.</ExperimentWeaponMelee.description>
+	<ExperimentWeaponMelee.jobString>Экспериментирует с оружием ближнего боя</ExperimentWeaponMelee.jobString>
 
-	<!-- From ItchyFlea's Practise Target -->
 	<PracticeWeaponShooting.label>практиковаться в стрельбе</PracticeWeaponShooting.label>
-	<PracticeWeaponShooting.description>Практиковаться в стрельбе, стреляя по мишени, чтобы отточить свой навык.</PracticeWeaponShooting.description>
-	<PracticeWeaponShooting.jobString>практикуется в стрельбе</PracticeWeaponShooting.jobString>
+	<PracticeWeaponShooting.description>Практиковаться в стрельбе, стреляя по мишени, чтобы отточить свой навык дальнего боя.</PracticeWeaponShooting.description>
+	<PracticeWeaponShooting.jobString>Практикуется в стрельбе</PracticeWeaponShooting.jobString>
 
 	<PracticeWeaponMelee.label>практиковаться в рукопашном бою</PracticeWeaponMelee.label>
-	<PracticeWeaponMelee.description>Практиковаться в рукопашном бою с соломенным манекеном.</PracticeWeaponMelee.description>
-	<PracticeWeaponMelee.jobString>практикуется в рукопашном бою</PracticeWeaponMelee.jobString>
+	<PracticeWeaponMelee.description>Практиковаться в рукопашном бою с соломенным манекеном, чтобы отточить свой навык ближнего боя.</PracticeWeaponMelee.description>
+	<PracticeWeaponMelee.jobString>Практикуется в рукопашном бою</PracticeWeaponMelee.jobString>
 
 </LanguageData>
