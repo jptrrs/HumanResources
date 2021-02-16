@@ -9,30 +9,38 @@ namespace HumanResources
 {
     public class ITab_PawnKnowledge : ITab
     {
-        private const int iconSize = 29;
+        private const int 
+            iconSize = 29,
+            rowHeight = 32;
         private static int margin = (int)ResearchTree_Constants.Margin;
-        private const int rowHeight = 32;
-        private const float scrollBarWidth = 17f;
-        private const float tabSizeAdjust = 12f;
-        private static bool commomWeapons = false;
-        private static bool fullTechs = false;
-        private static bool fullWeapons = false;
-        private static bool meleeWeapons = true;
-        private static bool rangedWeapons = true;
-        private static Vector2 scrollPosition = Vector2.zero;
-        private static Vector2 scrollPosition2 = Vector2.zero;
-        private static bool showAvailable = false;
-        private static bool showAssignment = false;
-        private static bool showCompact = false;
-        private Vector2 buttonSize = new Vector2(24f, 24f);
+        private const float 
+            scrollBarWidth = 17f,
+            tabSizeAdjust = 12f;
+        private static bool 
+            commomWeapons = false,
+            fullTechs = false,
+            fullWeapons = false,
+            meleeWeapons = true,
+            rangedWeapons = true,
+            showAvailable = false,
+            showAssignment = false,
+            showCompact = false;
+        private static Vector2 
+            scrollPosition = Vector2.zero,
+            scrollPosition2 = Vector2.zero,
+            buttonSize = new Vector2(24f, 24f),
+            baseNodeSize = ResearchTree_Constants.NodeSize;
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
 
         public ITab_PawnKnowledge()
         {
             labelKey = "TabKnowledge";
-            foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
+            if (TechLevelVisibility.EnumerableNullOrEmpty())
             {
-                TechLevelVisibility.Add(level, true);
+                foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
+                {
+                    TechLevelVisibility.Add(level, true);
+                }
             }
         }
 
@@ -46,7 +54,7 @@ namespace HumanResources
         }
 
         private static bool expandTab => fullTechs | fullWeapons;
-        private Vector2 nodeSize => new Vector2(ResearchTree_Constants.NodeSize.x, showCompact ? ResearchTree_Constants.NodeSize.y / 2 : ResearchTree_Constants.NodeSize.y);
+        private Vector2 nodeSize => new Vector2(baseNodeSize.x, showCompact ? baseNodeSize.y / 2 : baseNodeSize.y);
         private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private Pawn PawnToShowInfoAbout
         {
