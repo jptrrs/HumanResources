@@ -120,9 +120,7 @@ namespace HumanResources
                 Thing outThing;
                 innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
                 ResearchProjectDef tech = outThing.TryGetTech();
-                //tech.EjectTech(this);
                 if (forbid) outThing.SetForbidden(true);
-                //unlocked.libraryFreeSpace++;
                 CompStorageGraphic.UpdateGraphics();
                 return true;
             }

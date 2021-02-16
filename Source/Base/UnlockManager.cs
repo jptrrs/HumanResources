@@ -63,11 +63,17 @@ namespace HumanResources
             }
             if (Prefs.LogVerbose)
             {
-                Log.Message($"[HumanResources] Found {startingWeapons.Count()} starting scenario weapons: {startingWeapons.Select(x => x.label).ToStringSafeEnumerable()}");
-                Log.Message($"[HumanResources] Found {scenarioTechs.Count()} starting scenario techs: {scenarioTechs.Select(x => x.label).ToStringSafeEnumerable()}");
-                Log.Message($"[HumanResources] Found {factionTechs.Count()} starting techs for player faction ({playerFaction}): {factionTechs.Select(x => x.label).ToStringSafeEnumerable()}");
+                if (!startingWeapons.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {startingWeapons.Count()} starting scenario weapons: {startingWeapons.Select(x => x.label).ToStringSafeEnumerable()}");
+                if (!scenarioTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {scenarioTechs.Count()} starting scenario techs: {scenarioTechs.Select(x => x.label).ToStringSafeEnumerable()}");
+                if (!factionTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {factionTechs.Count()} starting techs for player faction ({playerFaction}): {factionTechs.Select(x => x.label).ToStringSafeEnumerable()}");
             }
-            else Log.Message($"[HumanResources] Found {startingWeapons.Count()} weapons, {scenarioTechs.Count()} starting techs from the scenario and {factionTechs.Count()} from the player faction.");
+            else
+            {
+                int startingWeaponsTxt = startingWeapons.EnumerableNullOrEmpty() ? 0 : startingWeapons.Count();
+                int scenarioTechsTxt = scenarioTechs.EnumerableNullOrEmpty() ? 0 : scenarioTechs.Count();
+                int factionTechsTxt = factionTechs.EnumerableNullOrEmpty() ? 0 : factionTechs.Count();
+                Log.Message($"[HumanResources] Found {startingWeaponsTxt} weapons, {scenarioTechsTxt} starting techs from the scenario and {factionTechsTxt} from the player faction.");
+            }
         }
 
         private const float decay = 0.02f;
