@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Verse;
 
 namespace HumanResources
@@ -51,6 +53,7 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
+            base.DeSpawn(mode);
             bool backup = false;
             foreach (Map m in Find.Maps)
             {
@@ -61,14 +64,13 @@ namespace HumanResources
                 }
             }
             if (!backup) AuditArchive();
-            base.DeSpawn(mode);
         }
 
         public void AuditArchive()
         {
-            foreach (ResearchProjectDef tech in unlocked.TechsArchived.Keys)
+            List<ResearchProjectDef> currentArchive = unlocked.TechsArchived.Keys.ToList();
+            foreach (ResearchProjectDef tech in currentArchive)
             {
-                Log.Message($"Auditing {tech}");
                 tech.Ejected(this, false);
             }
         }
