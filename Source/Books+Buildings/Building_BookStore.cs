@@ -12,22 +12,14 @@ namespace HumanResources
     //Borrowed from Jecrell's RimWriter
     public class Building_BookStore : Building, IStoreSettingsParent, IHaulDestination, IThingHolder
     {
-        public ThingOwner innerContainer;
         public List<Thing> borrowed = new List<Thing>();
-        protected StorageSettings storageSettings;
-        protected CompStorageGraphic compStorageGraphic = null;
+        public ThingOwner innerContainer;
         protected static int dynamicCapacityInt;
-
-        public virtual int dynamicCapacity
+        protected CompStorageGraphic compStorageGraphic = null;
+        protected StorageSettings storageSettings;
+        public Building_BookStore()
         {
-            get
-            {
-                if (dynamicCapacityInt == 0)
-                {
-                    dynamicCapacityInt = Math.Max(unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
-                }
-                return dynamicCapacityInt;
-            }
+            innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
         }
 
         public CompStorageGraphic CompStorageGraphic
@@ -42,6 +34,17 @@ namespace HumanResources
             }
         }
 
+        public virtual int dynamicCapacity
+        {
+            get
+            {
+                if (dynamicCapacityInt == 0)
+                {
+                    dynamicCapacityInt = Math.Max(unlocked.total / 20, CompStorageGraphic.Props.countFullCapacity);
+                }
+                return dynamicCapacityInt;
+            }
+        }
         public override Graphic Graphic
         {
             get
@@ -55,11 +58,6 @@ namespace HumanResources
         }
 
         public bool StorageTabVisible => true;
-        public Building_BookStore()
-        {
-            innerContainer = new ThingOwner<Thing>(this, false, LookMode.Deep);
-        }
-
         public virtual bool Accepts(Thing thing)
         {
             if (thing.def == TechDefOf.TechBook && thing.Stuff != null && thing.Stuff.IsWithinCategory(TechDefOf.Knowledge))
@@ -72,21 +70,57 @@ namespace HumanResources
             return false;
         }
 
-        public override void PostMake()
+        public virtual void CheckBookIn(Thing book)
         {
-            base.PostMake();
-            storageSettings = new StorageSettings(this);
-            if (def.building.defaultStorageSettings != null)
-            {
-                storageSettings.CopyFrom(this.def.building.defaultStorageSettings);
-            }
+            var tech = book.TryGetTech();
+            if (tech != null) tech.Unlock(this, true);
+            if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;
+            else borrowed.Remove(book);
+            CompStorageGraphic.UpdateGraphics();
         }
 
-        public override void ExposeData()
+        public virtual void CheckBookOut(Thing book, bool misplaced = false)
         {
-            base.ExposeData();
-            Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", new object[] { this });
-            Scribe_Deep.Look<StorageSettings>(ref storageSettings, "storageSettings", new object[] { this });
+            // This was fun!
+            // 0. normal use                            -> eject,       release     -> not leased,  not misplaced,  ?,        update.
+            // 1. book taken, ongoing scan              -> don't eject, keep        -> leased,      not misplaced,  offline,  update.
+            // 2. failed scan finish, book missing      -> eject,       release     -> leased,      misplaced,      offline,  no update.
+            // 3. failed scan finish, book returned     -> eject,       keep        -> not leased,  misplaced,      offline,  no update.
+            // 4. sucessful scan finish, book missing   -> don't eject, release     -> leased,      misplaced,      online,   no update. 
+            // 5. sucessful scan finish, book returned  -> don't eject, keep        -> not leased,  misplaced,      online,   no update.
+
+            var tech = book.TryGetTech();
+            bool leased = borrowed.Contains(book);
+            bool online = tech.IsOnline();
+            bool release = leased == misplaced;
+            bool eject = misplaced != online;
+            if (release)
+            {
+                unlocked.libraryFreeSpace++;
+                borrowed.Remove(book);
+            }
+            if (eject)
+            {
+                tech.Ejected(this, true);
+            }
+            if (!misplaced) CompStorageGraphic.UpdateGraphics();
+        }
+
+        public void ContentsMenu()
+        {
+            List<FloatMenuOption> list = new List<FloatMenuOption>();
+            Map map = Map;
+            if (innerContainer.Count != 0)
+            {
+                foreach (Thing current in innerContainer)
+                {
+                    string text = current.Label;
+                    List<FloatMenuOption> menu = list;
+                    Func<Rect, bool> extraPartOnGUI = (Rect rect) => Widgets.InfoCardButton(rect.x + 5f, rect.y + (rect.height - 24f) / 2f, current);
+                    menu.Add(new FloatMenuOption(text, delegate { TryDrop(current); }, MenuOptionPriority.Default, null, null, 29f, extraPartOnGUI, null));
+                }
+            }
+            Find.WindowStack.Add(new FloatMenu(list));
         }
 
         public override void DeSpawn(DestroyMode mode)
@@ -94,37 +128,16 @@ namespace HumanResources
             unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
             if (innerContainer.Count > 0)
             {
-                innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { t.TryGetTech().Ejected(this); });
+                innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { t.TryGetTech().Ejected(this, true); });
             }
             base.DeSpawn(mode);
         }
 
-        public bool TryDropRandom(out Thing droppedThing, bool forbid = false)
+        public override void ExposeData()
         {
-            Thing outThing;
-            droppedThing = null;
-            if (innerContainer.Count > 0)
-            {
-                innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
-                if (forbid) outThing.SetForbidden(true);
-                droppedThing = outThing as ThingWithComps;
-                return true;
-            }
-            return false;
-        }
-
-        public bool TryDrop(Thing item, bool forbid = true)
-        {
-            if (innerContainer.Contains(item))
-            {
-                Thing outThing;
-                innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
-                ResearchProjectDef tech = outThing.TryGetTech();
-                if (forbid) outThing.SetForbidden(true);
-                CompStorageGraphic.UpdateGraphics();
-                return true;
-            }
-            return false;
+            base.ExposeData();
+            Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", new object[] { this });
+            Scribe_Deep.Look<StorageSettings>(ref storageSettings, "storageSettings", new object[] { this });
         }
 
         public void GetChildHolders(List<IThingHolder> outChildren)
@@ -135,27 +148,6 @@ namespace HumanResources
         public ThingOwner GetDirectlyHeldThings()
         {
             return innerContainer;
-        }
-
-        public StorageSettings GetParentStoreSettings()
-        {
-            return def.building.fixedStorageSettings;
-        }
-
-        public StorageSettings GetStoreSettings()
-        {
-            return storageSettings;
-        }
-
-        public override string GetInspectString()
-        {
-            StringBuilder s = new StringBuilder();
-            string baseStr = base.GetInspectString();
-            if (baseStr != "") s.AppendLine(baseStr);
-            if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
-            else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
-            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + unlocked.libraryFreeSpace);
-            return s.ToString().TrimEndNewlines();
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
@@ -177,67 +169,73 @@ namespace HumanResources
             }
         }
 
-        public void ContentsMenu()
+        public override string GetInspectString()
         {
-            List<FloatMenuOption> list = new List<FloatMenuOption>();
-            Map map = Map;
-            if (innerContainer.Count != 0)
-            {
-                foreach (Thing current in innerContainer)
-                {
-                    string text = current.Label;
-                    List<FloatMenuOption> menu = list;
-                    Func<Rect, bool> extraPartOnGUI = (Rect rect) => Widgets.InfoCardButton(rect.x + 5f, rect.y + (rect.height - 24f) / 2f, current);
-                    menu.Add(new FloatMenuOption(text, delegate { TryDrop(current); }, MenuOptionPriority.Default, null, null, 29f, extraPartOnGUI, null));
-                }
-            }
-            Find.WindowStack.Add(new FloatMenu(list));
+            StringBuilder s = new StringBuilder();
+            string baseStr = base.GetInspectString();
+            if (baseStr != "") s.AppendLine(baseStr);
+            if (innerContainer.Count == 0) s.AppendLine("BookStoreEmpty".Translate());
+            else s.AppendLine("BookStoreCapacity".Translate(innerContainer.Count, dynamicCapacity.ToString()));
+            if (Prefs.DevMode) s.AppendLine("Free space remaining in library: " + unlocked.libraryFreeSpace);
+            return s.ToString().TrimEndNewlines();
         }
 
+        public StorageSettings GetParentStoreSettings()
+        {
+            return def.building.fixedStorageSettings;
+        }
+
+        public StorageSettings GetStoreSettings()
+        {
+            return storageSettings;
+        }
+
+        public override void PostMake()
+        {
+            base.PostMake();
+            storageSettings = new StorageSettings(this);
+            if (def.building.defaultStorageSettings != null)
+            {
+                storageSettings.CopyFrom(def.building.defaultStorageSettings);
+            }
+        }
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
-            this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
+            foreach (Thing book in innerContainer)
+            {
+                book.TryGetTech()?.Unlock(this, true);
+            }
+             this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
         }
 
-        public virtual void CheckBookIn(Thing book)
+        public bool TryDrop(Thing item, bool forbid = true)
         {
-            var tech = book.TryGetTech();
-            if (tech != null)
+            if (innerContainer.Contains(item))
             {
-                if (!tech.IsFinished) tech.CarefullyFinishProject(this);
+                Thing outThing;
+                innerContainer.TryDrop(item, ThingPlaceMode.Near, out outThing);
+                ResearchProjectDef tech = outThing.TryGetTech();
+                if (forbid) outThing.SetForbidden(true);
+                CompStorageGraphic.UpdateGraphics();
+                return true;
             }
-            if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;
-            else borrowed.Remove(book);
-            CompStorageGraphic.UpdateGraphics();
+            return false;
         }
 
-        public virtual void CheckBookOut(Thing book, bool misplaced = false)
+        public bool TryDropRandom(out Thing droppedThing, bool forbid = false)
         {
-            // This was fun!
-            // 0. normal use                            -> eject,       release     -> not leased,  not misplaced,  ?,        update.
-            // 1. book taken, ongoing scan              -> don't eject, keep        -> leased,      not misplaced,  offline,  update.
-            // 2. failed scan finish, book missing      -> eject,       release     -> leased,      misplaced,      offline,  no update.
-            // 3. failed scan finish, book returned     -> eject,       keep        -> not leased,  misplaced,      offline,  no update.
-            // 4. sucessful scan finish, book missing   -> don't eject, release     -> leased,      misplaced,      online,   no update. 
-            // 5. sucessful scan finish, book returned  -> don't eject, keep        -> not leased,  misplaced,      online,   no update.
-
-            var tech = book.TryGetTech();
-            bool leased = borrowed.Contains(book);
-            bool online = unlocked.networkDatabase.Contains(tech);
-            bool release = leased == misplaced;
-            bool eject = misplaced != online;
-            if (release)
+            Thing outThing;
+            droppedThing = null;
+            if (innerContainer.Count > 0)
             {
-                unlocked.libraryFreeSpace++;
-                borrowed.Remove(book);
+                innerContainer.TryDrop(innerContainer.RandomElement(), ThingPlaceMode.Near, out outThing);
+                if (forbid) outThing.SetForbidden(true);
+                droppedThing = outThing as ThingWithComps;
+                return true;
             }
-            if (eject)
-            {
-                tech.Ejected(this);
-            }
-            if (!misplaced) CompStorageGraphic.UpdateGraphics();
+            return false;
         }
     }
 }

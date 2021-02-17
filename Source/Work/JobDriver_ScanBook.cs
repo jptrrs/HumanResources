@@ -87,7 +87,7 @@ namespace HumanResources
                     float xp = (float)jobDriver_DoBill.ticksSpentDoingRecipeWork * 0.1f * curJob.RecipeDef.workSkillLearnFactor;
                     actor.skills.GetSkill(curJob.RecipeDef.workSkill).Learn(xp, false);
                 }
-                project.CompleteUpload(TargetThingA);
+                project.Unlock(TargetThingA, false);
                 Toils_Recipe_Patch.ConsumeIngredients(new List<Thing> { TargetB.Thing }, curJob.RecipeDef, actor.Map);
                 curJob.bill.Notify_IterationCompleted(actor, new List<Thing>());
             };

@@ -25,7 +25,7 @@ namespace HumanResources
 
         private int DatabaseCount(out float databasePower)
         {
-            int result = unlocked.networkDatabase.Count();
+            int result = unlocked.TechsArchived.Count();
             databasePower = unlocked.BookResearchIncrement(result);
             return result;
         }

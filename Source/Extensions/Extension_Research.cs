@@ -20,8 +20,8 @@ namespace HumanResources
         public static List<Pawn> currentPawnsCache;
         public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
         public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
-        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
+        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
         private const float MarketValueOffset = 200f;
 
@@ -200,32 +200,55 @@ namespace HumanResources
             Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
             Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
             Color backup = GUI.color;
-            if (tech.IsFinished)
+            if (unlocked.TechsArchived.ContainsKey(tech))
             {
+                bool cloud = tech.IsOnline();
+                bool book = tech.IsPhysicallyArchived();
+                bool twin = cloud && book;
                 Vector2 markerSize = new Vector2(ribbon, height);
                 Rect box = new Rect(position, markerSize);
                 Rect inner = box;
                 inner.height = ribbon;
-                inner.y += (height - ribbon) / 2;
+                if (twin)
+                {
+                    inner.y -= height * 0.08f;
+                }
+                else
+                {
+                    inner.y += (height - ribbon) / 2;
+                }
                 Widgets.DrawBoxSolid(box, shadedColor);
-                if (unlocked.networkDatabase.Contains(tech))
+                if (cloud)
                 {
                     GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
                     TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
                 }
-                else
+                if (book)
                 {
+                    if (twin)
+                    {
+                        float reduction = 0.9f;
+                        inner.width *= reduction;
+                        inner.height *= reduction;
+                        inner.y = box.yMax - inner.height - 1f;
+                        inner.x += (ribbon - inner.width) / 2;
+                    }
                     var material = TechDefOf.TechBook.graphic.MatSingle;
                     material.color = techColor;
-                    Graphics.DrawTexture(inner, ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
-                    bool fromScenario = unlocked.scenarioTechs.Contains(tech);
-                    bool fromFaction = unlocked.factionTechs.Contains(tech);
-                    bool startingTech = fromScenario || fromFaction;
-                    string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
-                    string text = startingTech ? "bookFromStart".Translate(source) : "bookInLibrary".Translate();
-                    TooltipHandler.TipRegionByKey(inner, text);
+                    Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
+                    TooltipHandler.TipRegionByKey(inner, "bookInLibrary".Translate());
                 }
             }
+            //origin tooltip if necessary
+            else if (tech.IsFinished)
+            {
+                bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+                bool fromFaction = unlocked.factionTechs.Contains(tech);
+                bool startingTech = fromScenario || fromFaction;
+                string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+                TooltipHandler.TipRegionByKey(rect, "bookFromStart".Translate(source));
+            }
+
             GUI.color = backup;
 
             //Pawn assignments
@@ -248,12 +271,15 @@ namespace HumanResources
             }
         }
 
-        public static void Ejected(this ResearchProjectDef tech, Thing place)
+        public static void Ejected(this ResearchProjectDef tech, Thing place, bool hardCopy)
         {
-            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
-            progress[tech] = 0f;
-            unlocked.networkDatabase.Remove(tech);
-            Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
+            if (!tech.HasBackup(hardCopy))
+            {
+                Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+                progress[tech] = 0f;
+                unlocked.TechsArchived.Remove(tech);
+                Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
+            }
         }
 
         public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
@@ -265,6 +291,11 @@ namespace HumanResources
             }
             expertise.Add(tech, 0f);
             return 0f;
+        }
+
+        public static bool HasBackup(this ResearchProjectDef tech, bool hardCopy)
+        {
+            return hardCopy ? tech.IsOnline() : tech.IsPhysicallyArchived();
         }
 
         public static void InferSkillBias(this ResearchProjectDef tech)
@@ -509,6 +540,16 @@ namespace HumanResources
             return false;
         }
 
+        public static bool IsOnline(this ResearchProjectDef tech)
+        {
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != UnlockManager.backupState.physical;
+        }
+        
+        public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
+        {
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != UnlockManager.backupState.digital;
+        }
+
         public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
         {
             float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
@@ -578,13 +619,13 @@ namespace HumanResources
             num += amount;
             Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
             progress[tech] = num;
-            if (tech.IsFinished) tech.CompleteUpload(location);
+            if (tech.IsFinished) tech.Unlock(location, false);
         }
 
-        public static void CompleteUpload(this ResearchProjectDef tech, Thing location)
+        public static void Unlock(this ResearchProjectDef tech, Thing location, bool hardCopy)
         {
             if (!tech.IsFinished) tech.CarefullyFinishProject(location);
-            unlocked.networkDatabase.Add(tech);
+            unlocked.Archive(tech, hardCopy);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)

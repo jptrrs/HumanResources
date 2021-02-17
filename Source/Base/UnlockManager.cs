@@ -9,23 +9,72 @@ using Verse;
 namespace HumanResources
 {
     public class UnlockManager : IExposable
-    {       
-        public List<ThingDef> weapons = new List<ThingDef>();
-        public List<ResearchProjectDef> networkDatabase = new List<ResearchProjectDef>();
-        public bool knowAllStartingWeapons;
-        public IEnumerable<ThingDef> startingWeapons;
-        public IEnumerable<ResearchProjectDef> scenarioTechs, factionTechs;
-        public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
-        private static FieldInfo 
-            ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
-            ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
+    {
+        //tracking archived technologies
+        public enum backupState { digital, physical, both };
+        private Dictionary<ResearchProjectDef, backupState> _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
+        public Dictionary<ResearchProjectDef, backupState> TechsArchived => _techsArchived;
         public int libraryFreeSpace;
         public int discoveredCount => stuffByTech.Keys.Where(x => x.IsFinished).EnumerableCount();
 
+        //tracking techology bases
+        public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
+        public IEnumerable<ResearchProjectDef> scenarioTechs, factionTechs;
+        
+        //tracking weapons
+        public List<ThingDef> weapons = new List<ThingDef>();
+        public bool knowAllStartingWeapons;
+        public IEnumerable<ThingDef> startingWeapons;
+
+        //reflection info
+        private static FieldInfo 
+            ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
+            ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
+
+        //Research speed boost by books in store using geometric progression 
+        private const float decay = 0.02f;
+        private static float ratio = 1 / (1 + decay);
+        private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
+        public int total => stuffByTech.Count;
+        private float geoSum => (float)(Math.Pow(ratio, total) - 1) / (ratio - 1);
+        private float quota => semiMaxBuff / geoSum;
+        private float linear => semiMaxBuff / total;
+
+        public void Archive(ResearchProjectDef tech, bool hardCopy)
+        {
+            if (!_techsArchived.ContainsKey(tech))
+            {
+                _techsArchived.Add(tech, hardCopy ? backupState.physical : backupState.digital);
+                Log.Message($"Added tech {tech} as {_techsArchived[tech]}");
+            }
+            else if (_techsArchived[tech] != backupState.both)
+            {
+                bool currentlyHard = _techsArchived[tech] == backupState.physical;
+                if (hardCopy != currentlyHard)
+                {
+                    _techsArchived[tech] = backupState.both;
+                }
+            }
+            else Log.Error("[HumanResoruces] Tried to archive a technology that already has both physical and digital copies.");
+        }
+
+        public void AuditArchive()
+        {
+
+        }
+
+        public float BookResearchIncrement(int count)
+        {
+            float term = (float)Math.Pow(ratio, count - 1);
+            float sum = quota * (term * ratio - 1) / (ratio - 1);
+            float result = sum + linear;
+            return result / 100;
+        }
+
         public void ExposeData()
         {
-            Scribe_Collections.Look<ThingDef>(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
-            Scribe_Collections.Look<ResearchProjectDef>(ref networkDatabase, "networkDatabase", LookMode.Deep, new object[0]);
+            Scribe_Collections.Look(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
+            //Scribe_Collections.Look(ref techsArchived, "techsArchived");
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 RecacheUnlockedWeapons();
@@ -42,11 +91,6 @@ namespace HumanResources
                 UnlockWeapons(tech.UnlockedWeapons());
             }
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
-        }
-
-        public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
-        {
-            weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
         }
 
         public void RegisterStartingResources()
@@ -76,20 +120,9 @@ namespace HumanResources
             }
         }
 
-        private const float decay = 0.02f;
-        private static float ratio = 1 / (1 + decay);
-        private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
-        public int total => stuffByTech.Count;
-        private float geoSum => (float) (Math.Pow(ratio, total)-1) / (ratio - 1);
-        private float quota => semiMaxBuff / geoSum;
-        private float linear => semiMaxBuff / total;
-
-        public float BookResearchIncrement(int count)
+        public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
         {
-            float term = (float)Math.Pow(ratio, count - 1);
-            float sum = quota * (term * ratio - 1) / (ratio - 1);
-            float result = sum + linear;
-            return result/100;
+            weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
         }
 
     }

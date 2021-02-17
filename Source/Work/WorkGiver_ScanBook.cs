@@ -34,7 +34,8 @@ namespace HumanResources
             if (thing.Stuff != null)
             {
                 bool chosen = bill.ingredientFilter.AllowedThingDefs.Contains(thing.Stuff);
-                bool relevant = !unlocked.networkDatabase.Contains(thing.TryGetTech());
+                ResearchProjectDef tech = thing.TryGetTech();
+                bool relevant = !tech.IsOnline();
                 return chosen && relevant;
             }
             return false;
@@ -59,7 +60,7 @@ namespace HumanResources
                         if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn)) //basic desk availabilty
                         {
                             var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-                            if (unlocked.networkDatabase.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount()) //check database
+                            if (unlocked.TechsArchived.Count < progress.Keys.Where(x => x.IsFinished).EnumerableCount()) //check database
                             {
                                 billGiver.BillStack.RemoveIncompletableBills();
                                 foreach (Bill bill in RelevantBills(thing, pawn))
@@ -84,7 +85,7 @@ namespace HumanResources
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
 			var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-			return unlocked.networkDatabase.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
+			return unlocked.TechsArchived.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
 		}
 
 		protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)

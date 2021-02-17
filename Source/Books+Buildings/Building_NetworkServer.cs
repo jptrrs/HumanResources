@@ -34,7 +34,7 @@ namespace HumanResources
 
         public override string GetInspectString()
         {
-            int count = unlocked.networkDatabase.Count;
+            int count = unlocked.TechsArchived.Count;
             StringBuilder s = new StringBuilder();
             string baseStr = base.GetInspectString();
             if (baseStr != "") s.AppendLine(baseStr);
@@ -47,6 +47,29 @@ namespace HumanResources
         {
             CompStorageGraphic?.UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
+        }
+
+        public override void DeSpawn(DestroyMode mode)
+        {
+            bool backup = false;
+            foreach (Map m in Find.Maps)
+            {
+                if (m.listerBuildings.ColonistsHaveBuilding(def))
+                {
+                    backup = true;
+                    break;
+                }
+            }
+            if (!backup) AuditArchive();
+            base.DeSpawn(mode);
+        }
+
+        public void AuditArchive()
+        {
+            foreach (ResearchProjectDef tech in unlocked.TechsArchived.Keys)
+            {
+                tech.Ejected(this, false);
+            }
         }
     }
 }

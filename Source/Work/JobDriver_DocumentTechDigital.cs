@@ -80,7 +80,7 @@ namespace HumanResources
 				if (project.IsFinished)
 				{
 					curJob.bill.Notify_IterationCompleted(actor, new List<Thing>() { });
-					project.CarefullyFinishProject(jobDriver_DoBill.BillGiver as Thing);
+					project.Unlock(jobDriver_DoBill.BillGiver as Thing, false);
 					jobDriver_DoBill.ReadyForNextToil();
 					return;
 				}
