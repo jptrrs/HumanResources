@@ -55,12 +55,7 @@ namespace HumanResources
                     _techsArchived[tech] = backupState.both;
                 }
             }
-            else Log.Error("[HumanResoruces] Tried to archive a technology that already has both physical and digital copies.");
-        }
-
-        public void AuditArchive()
-        {
-
+            else Log.Error($"[HumanResoruces] Tried to archive {tech}, but both physical and digital copies are already accounted for.");
         }
 
         public float BookResearchIncrement(int count)
@@ -74,16 +69,17 @@ namespace HumanResources
         public void ExposeData()
         {
             Scribe_Collections.Look(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
-            //Scribe_Collections.Look(ref techsArchived, "techsArchived");
+            Scribe_Collections.Look(ref _techsArchived, "techsArchived");
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                RecacheUnlockedWeapons();
+                RecacheUnlocked();
                 RegisterStartingResources();
             }
         }
 
-        public void RecacheUnlockedWeapons()
+        public void RecacheUnlocked()
         {
+            _techsArchived.Clear();
             weapons.Clear();
             UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
@@ -99,7 +95,6 @@ namespace HumanResources
             startingWeapons = Find.Scenario.AllParts.Where(x => typeof(ScenPart_ThingCount).IsAssignableFrom(x.GetType())).Cast<ScenPart_ThingCount>().Select(x => (ThingDef)ScenPartThingDefInfo.GetValue(x)).Where(x => x.IsWeapon).Except(ModBaseHumanResources.UniversalWeapons).ToList();
             scenarioTechs = Find.Scenario.AllParts.Where(x => typeof(ScenPart_StartingResearch).IsAssignableFrom(x.GetType())).Cast<ScenPart_StartingResearch>().Select(x => (ResearchProjectDef)ScenPartResearchDefInfo.GetValue(x));
             Faction playerFaction = Find.FactionManager.OfPlayer;
-                //Find.Scenario.AllParts.Where(x => typeof(ScenPart_PlayerFaction).IsAssignableFrom(x.GetType())).Cast<ScenPart_PlayerFaction>().Select(x => x.fac)
             if (playerFaction != null && !playerFaction.def.startingResearchTags.NullOrEmpty())
             {
                 var tags = playerFaction.def.startingResearchTags;
