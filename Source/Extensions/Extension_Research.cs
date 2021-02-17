@@ -275,6 +275,7 @@ namespace HumanResources
         {
             if (!tech.HasBackup(hardCopy))
             {
+                Log.Message($"{tech} ejected without backup");
                 Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
                 progress[tech] = 0f;
                 unlocked.TechsArchived.Remove(tech);

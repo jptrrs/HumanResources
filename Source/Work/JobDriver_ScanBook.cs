@@ -88,7 +88,8 @@ namespace HumanResources
                     actor.skills.GetSkill(curJob.RecipeDef.workSkill).Learn(xp, false);
                 }
                 project.Unlock(TargetThingA, false);
-                Toils_Recipe_Patch.ConsumeIngredients(new List<Thing> { TargetB.Thing }, curJob.RecipeDef, actor.Map);
+                Thing scanned = TargetB.Thing;
+                if (scanned.def == TechDefOf.TechDrive) Toils_Recipe_Patch.ConsumeIngredients(new List<Thing> { scanned }, curJob.RecipeDef, actor.Map);
                 curJob.bill.Notify_IterationCompleted(actor, new List<Thing>());
             };
             yield return upload;

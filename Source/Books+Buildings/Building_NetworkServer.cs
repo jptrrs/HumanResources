@@ -68,6 +68,7 @@ namespace HumanResources
         {
             foreach (ResearchProjectDef tech in unlocked.TechsArchived.Keys)
             {
+                Log.Message($"Auditing {tech}");
                 tech.Ejected(this, false);
             }
         }
