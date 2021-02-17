@@ -340,6 +340,7 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <None Include="Extensions\Extension_Research_RW1.1.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />
@@ -358,7 +359,6 @@
     <Compile Include="Books+Buildings\CompProperties_StorageGraphic.cs" />
     <Compile Include="Books+Buildings\CompStorageGraphic.cs" />
     <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
-    <None Include="Extensions\Extension_Research_RW1.1.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
