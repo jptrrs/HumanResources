@@ -64,7 +64,7 @@ namespace HumanResources
             {
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool fits = innerContainer.Count < dynamicCapacity;
-                bool duplicate = thing.TryGetTech().IsFinished;
+                bool duplicate = thing.TryGetTech().IsPhysicallyArchived();
                 return allowed && fits && !duplicate;
             }
             return false;

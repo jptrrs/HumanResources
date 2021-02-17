@@ -106,7 +106,7 @@ namespace HumanResources
                         Thing book = pawn.carryTracker.CarriedThing;
                         if (pawn.carryTracker.CarriedThing == null)
                         {
-                            Log.Error(pawn + " tried to place a book on shelf but is not hauling anything.");
+                            Log.Error($"[HumanResources] {pawn} tried to place a book on shelf but is not hauling anything.");
                             return;
                         }
                         if (shelf.Accepts(book))
@@ -125,7 +125,7 @@ namespace HumanResources
                         }
                         else
                         {
-                            Log.Error(pawn + " tried to place a book in " + shelf + ", but won't accept it.");
+                            Log.Error($"[HumanResources] {pawn} tried to place a book in {shelf}, but it won't accept it.");
                             return;
                         }
                         pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
@@ -185,14 +185,7 @@ namespace HumanResources
                     {
                         if (!GenPlace.TryPlaceThing(list[i], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                         {
-                            Log.Error(string.Concat(new object[]
-                            {
-                                actor,
-                                " could not drop recipe product ",
-                                list[i],
-                                " near ",
-                                actor.Position
-                            }), false);
+                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[i]} near {actor.Position}", false);
                         }
                     }
                     actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
@@ -204,14 +197,7 @@ namespace HumanResources
                     {
                         if (!GenPlace.TryPlaceThing(list[j], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                         {
-                            Log.Error(string.Concat(new object[]
-                            {
-                                actor,
-                                " could not drop recipe product ",
-                                list[j],
-                                " near ",
-                                actor.Position
-                            }), false);
+                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[j]} near {actor.Position}", false);
                         }
                     }
                 }
@@ -225,17 +211,11 @@ namespace HumanResources
                 }
                 else
                 {
-                    Log.ErrorOnce("Unknown store mode", 9158246, false);
+                    Log.ErrorOnce("[HumanResources] Unknown store mode", 9158246, false);
                 }
                 if (!GenPlace.TryPlaceThing(list[0], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                 {
-                    Log.Error(string.Concat(new object[]
-                    {
-                        "Bill doer could not drop product ",
-                        list[0],
-                        " near ",
-                        actor.Position
-                    }), false);
+                    Log.Error($"[HumanResources] Bill doer could not drop product {list[0]} near {actor.Position}", false);
                 }
             };
             return toil;

@@ -10,7 +10,7 @@ namespace HumanResources
         private static bool Act = false; //Only way I found to prevent the game from notifying twice for the same event.
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            if (Act && ___owner is Building_BookStore bookStore)
+            if (Act && ___owner is Building_BookStore bookStore && !bookStore.borrowed.Contains(item))
             {
                 bookStore.CheckBookIn(item);
                 Act = false;
