@@ -236,6 +236,9 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+            instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
+
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
             Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
@@ -244,8 +247,6 @@ namespace HumanResources
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
-            instance.Patch(AccessTools.Method(TreeType(), "Draw"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Tree_Draw_Prefix))));
             if (modName == "ResearchPal")
             {
                 string initializer = AltRPal ? "InitializeLayout" : "Initialize";
@@ -674,7 +675,7 @@ namespace HumanResources
 
         public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
 
-        public static void Tree_Draw_Prefix(object __instance)
+        public static void TreeRect_Prefix(object __instance)
         {
             if (!nodeSizeHacked)
             {

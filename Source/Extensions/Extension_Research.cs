@@ -254,7 +254,7 @@ namespace HumanResources
             //Pawn assignments
             Vector2 size = new Vector2(height, height);
             float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset; //rect.xMax - height/2
+            float startPos = rect.x - frameOffset;
             using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
             {
                 while (enumerator.MoveNext())
