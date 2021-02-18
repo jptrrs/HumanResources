@@ -9,7 +9,8 @@
       <operations>
         <li Class="PatchOperationAdd">
           <xpath>
-            Defs/RecipeDef[defName = "TrainWeaponMelee" or defName = "ExperimentWeaponMelee" or defName = "PracticeWeaponMelee"]/ingredients/li/filter/categories | Defs/RecipeDef[defName = "TrainWeaponMelee" or defName = "ExperimentWeaponMelee" or defName = "PracticeWeaponMelee"]/fixedIngredientFilter/categories
+            Defs/RecipeDef[@Name="MeleeWeaponsBase"]/ingredients/li/filter/categories |
+            Defs/RecipeDef[@Name="MeleeWeaponsBase"]/fixedIngredientFilter/categories
           </xpath>
           <value>
             <li>OGIMelee</li>
@@ -25,7 +26,8 @@
         </li>
         <li Class="PatchOperationAdd">
           <xpath>
-            Defs/RecipeDef[defName = "TrainWeaponShooting" or defName = "ExperimentWeaponShooting" or defName = "PracticeShooting"]/ingredients/li/filter/categories | Defs/RecipeDef[defName = "TrainWeaponShooting" or defName = "ExperimentWeaponShooting" or defName = "PracticeShooting"]/fixedIngredientFilter/categories
+            Defs/RecipeDef[@Name="FireWeaponsBase"]/ingredients/li/filter/categories |
+            Defs/RecipeDef[@Name="FireWeaponsBase"]/fixedIngredientFilter/categories
           </xpath>
           <value>
             <li>OGIRanged</li>
@@ -47,5 +49,5 @@
         </li>
       </operations>
     </match>
-  </Operation>x 
+  </Operation>
 </Patch>

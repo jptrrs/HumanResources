@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--Mlie.CyberneticWarfare-->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Cybernetic Warfare and Special Weapons (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>
+            Defs/RecipeDef[@Name="FireWeaponsBase"]/ingredients/li/filter/categories |
+            Defs/RecipeDef[@Name="FireWeaponsBase"]/fixedIngredientFilter/categories |
+            Defs/RecipeDef[@Name="MeleeWeaponsBase"]/ingredients/li/filter/categories |
+            Defs/RecipeDef[@Name="MeleeWeaponsBase"]/fixedIngredientFilter/categories
+          </xpath>
+          <value>
+            <li>CW_CyborgWeaponry</li>
+        </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

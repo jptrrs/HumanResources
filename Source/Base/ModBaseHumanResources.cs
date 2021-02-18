@@ -113,11 +113,11 @@ namespace HumanResources
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose || FullStartupReport)
             {
-                Log.Message("[HumanResources] Codified technologies: " + codifiedTech.Select(x => x.label).ToStringSafeEnumerable());
-                Log.Message("[HumanResources] Basic crops: " + UniversalCrops.ToStringSafeEnumerable());
-                Log.Message("[HumanResources] Basic weapons: " + UniversalWeapons.ToStringSafeEnumerable());
-                Log.Message("[HumanResources] Basic weapons that require training: " + SimpleWeapons.ToStringSafeEnumerable());
-                Log.Warning("[HumanResources] Basic weapons tags: " + SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable());
+                Log.Message($"[HumanResources] Codified technologies: {codifiedTech.Select(x => x.label).ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Basic crops: {UniversalCrops.ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Basic weapons: {UniversalWeapons.ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Basic weapons that require training: {SimpleWeapons.ToStringSafeEnumerable()}");
+                Log.Warning($"[HumanResources] Basic weapons tags: {SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable()}");
                 if (FullStartupReport)
                 {
                     Log.Warning("[HumanResources] Backstories classified by TechLevel:");
@@ -127,7 +127,7 @@ namespace HumanResources
                         IEnumerable<string> found = PawnBackgroundUtility.TechLevelByBackstory.Where(e => e.Value == level).Select(e => e.Key);
                         if (!found.EnumerableNullOrEmpty())
                         {
-                            Log.Message("- "+level.ToString().CapitalizeFirst() + " (" + found.EnumerableCount() + "): " + found.ToStringSafeEnumerable());
+                            Log.Message($"- {level.ToString().CapitalizeFirst()} ({found.EnumerableCount()}): {found.ToStringSafeEnumerable()}");
                         }
                     }
                     Log.Warning("[HumanResources] Techs classified by associated skill:");
@@ -136,11 +136,11 @@ namespace HumanResources
                     {
                         SkillDef skill = skills.Current;
                         IEnumerable<string> found = Extension_Research.SkillsByTech.Where(e => e.Value.Contains(skill)).Select(e => e.Key.label);
-                        Log.Message("- " + skill.LabelCap + " (" + found.EnumerableCount() + "): " + found.ToStringSafeEnumerable());
+                        Log.Message($"- {skill.LabelCap} ({found.EnumerableCount()}): {found.ToStringSafeEnumerable()}");
                     }
                 }
             }
-            else Log.Message("[HumanResources] This is what we know: " + codifiedTech.EnumerableCount() + " technologies processed, " + UniversalCrops.Count() + " basic crops, " + UniversalWeapons.Count() + " basic weapons + " + SimpleWeapons.Count() + " that require training.");
+            else Log.Message($"[HumanResources] This is what we know: {codifiedTech.EnumerableCount()} technologies processed, {UniversalCrops.Count()} basic crops, {UniversalWeapons.Count()} basic weapons + {SimpleWeapons.Count()} that require training.");
 
             //4. Filling gaps on the database
 
@@ -250,8 +250,7 @@ namespace HumanResources
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
             FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
-            IndividualTechsReport = Settings.GetHandle<bool>("IndividualTechsReport", "DEV: Report technologies individually", null, false);
-            FullStartupReport.NeverVisible = (IndividualTechsReport.NeverVisible = !Prefs.DevMode);
+            FullStartupReport.NeverVisible = !Prefs.DevMode;
         }
 
         public void ValidateTechPoolSettings(bool value)

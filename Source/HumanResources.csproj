@@ -340,7 +340,6 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <None Include="Extensions\Extension_Research_RW1.1.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />

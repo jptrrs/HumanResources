@@ -483,32 +483,28 @@ namespace HumanResources
                 }
 
                 //4. Telling humans what's going on, depending on settings
-                if (FullStartupReport && Prefs.LogVerbose)
+                if (Prefs.LogVerbose && FullStartupReport)
                 {
                     StringBuilder report = new StringBuilder();
-                    if (matchesCount > 0) { report.Append("keyword" + (matchesCount > 1 ? "s" : "") + ": " + keywords.ToStringSafeEnumerable()); }
+                    if (matchesCount > 0) { report.Append($"keyword{(matchesCount > 1 ? "s" : "")}: {keywords.ToStringSafeEnumerable()}"); }
                     if (thingsCount > 0) { report.AppendWithComma(thingsCount + " thing" + (thingsCount > 1 ? "s" : "")); }
                     if (recipesCount > 0) 
                     {
-                        report.AppendWithComma(recipesCount + " recipe" + (recipesCount > 1 ? "s" : "") + " ");
-                        if (recipeThingsCount > 0 || recipeSkillsCount > 0)
-                        {
-                            StringBuilder recipeSub = new StringBuilder();
-                            recipeSub.Append(recipeThingsCount > 0 ? recipeThingsCount + " thing" + (recipeThingsCount > 1 ? "s" : "") : "");
-                            recipeSub.AppendWithComma(recipeSkillsCount > 0 ? recipeSkillsCount + " workskill" + (recipeSkillsCount > 1 ? "s" : "") : "");
-                            report.Append("(" + recipeSub + ")");
-                        }
+                        report.AppendWithComma($"{recipesCount} recipe {(recipesCount > 1 ? "s" : "")} ");
+                        StringBuilder recipeSub = new StringBuilder();
+                        if (recipeThingsCount > 0) recipeSub.Append($"{recipeThingsCount} thing{(recipeThingsCount > 1 ? "s" : "")}");
+                        if (recipeSkillsCount > 0) recipeSub.AppendWithComma($"{recipeSkillsCount}  workskill{(recipeSkillsCount > 1 ? "s" : "")}");
+                        if (recipeSub.Length > 0) report.Append($"({recipeSub})");
                         else report.Append("(irrelevant)");
                     }
                     if (terrainsCount > 0) { report.AppendWithComma(terrainsCount + " terrain" + (terrainsCount > 1 ? "s" : "")); }
                     if (usedPreReq) { report.AppendWithComma("follows its pre-requisites"); }
-                    string skills = relevantSkills.Count() > 1 ? "Skills are " : "Skill is ";
-                    report.Append(". " + skills + relevantSkills.ToStringSafeEnumerable() + ".");
-                    Log.Message("[HumanResources] " + tech + ": "+report.ToString(), true);
+                    report.Append($". {(relevantSkills.Count() > 1 ? "Skills are" : "Skill is")} {relevantSkills.ToStringSafeEnumerable()}.");
+                    Log.Message($"{tech.LabelCap}: {report}", true);
                 }
-                else if (usedPreReq) Log.Warning("[HumanResources] No relevant skills could be calculated for " + tech + " so it inherited the ones from its pre-requisites: "+ relevantSkills.ToStringSafeEnumerable() + ".");
+                else if (usedPreReq) Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.");
             }
-            else Log.Warning("[HumanResources] No relevant skills could be calculated for " + tech+". It won't be known by anyone.");
+            else Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.");
         }
 
         public static bool InvestigateThingDef(ThingDef thing, ResearchProjectDef tech)
@@ -639,7 +635,8 @@ namespace HumanResources
             }
             else
             {
-                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, tech.TechprintCount), null)
+                int count = ModLister.RoyaltyInstalled ? tech.techprintCount : 0; //not using 1.2's property to maintain 1.1 compatibility
+                options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, count), null)
                 {
                     Disabled = true,
                 });
