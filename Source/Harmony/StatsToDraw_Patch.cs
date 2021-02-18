@@ -32,7 +32,7 @@ namespace HumanResources
             }
             if (thing.def.IsWeapon)
             {
-                string tech = "none".Translate();
+                string tech = "None".Translate();
                 if (TechByWeapon.ContainsKey(thing.def))
                 {
                     tech = TechByWeapon[thing.def].LabelCap;
