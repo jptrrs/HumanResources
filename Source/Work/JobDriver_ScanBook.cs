@@ -99,7 +99,12 @@ namespace HumanResources
                 yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
                 yield return Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
                 yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch).FailOnDestroyedOrNull(TargetIndex.B);
-                yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.A);
+                Toil handOver = Toils_Haul.DepositHauledThingInContainer(TargetIndex.B, TargetIndex.A);
+                handOver.AddPreInitAction(delegate
+                {
+                    bookOut = false;
+                });
+                yield return handOver;
             }
             yield return new Toil()
             {

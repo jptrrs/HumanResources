@@ -72,6 +72,7 @@ namespace HumanResources
 
         public virtual void CheckBookIn(Thing book)
         {
+            Log.Message($"checking book in, borrowed={borrowed.Contains(book)}");
             var tech = book.TryGetTech();
             if (tech != null) tech.Unlock(this, true);
             if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;
@@ -82,27 +83,24 @@ namespace HumanResources
         public virtual void CheckBookOut(Thing book, bool misplaced = false)
         {
             // This was fun!
-            // 0. normal use                            -> eject,       release     -> not leased,  not misplaced,  ?,        update.
-            // 1. book taken, ongoing scan              -> don't eject, keep        -> leased,      not misplaced,  offline,  update.
-            // 2. failed scan finish, book missing      -> eject,       release     -> leased,      misplaced,      offline,  no update.
-            // 3. failed scan finish, book returned     -> eject,       keep        -> not leased,  misplaced,      offline,  no update.
-            // 4. sucessful scan finish, book missing   -> don't eject, release     -> leased,      misplaced,      online,   no update. 
-            // 5. sucessful scan finish, book returned  -> don't eject, keep        -> not leased,  misplaced,      online,   no update.
+            // 0. normal use                            -> eject,   release -> not leased,  not misplaced,  update.
+            // 1. book taken, ongoing scan              -> hold,    keep    -> leased,      not misplaced,  update.
+            // 2. failed scan finish, book missing      -> eject,   release -> leased,      misplaced,      no update.
+            // 3. failed scan finish, book returned     -> eject,   keep    -> not leased,  misplaced,      no update.
+            // 4. sucessful scan finish, book missing   -> eject,   release -> leased,      misplaced,      no update. 
+            // 5. sucessful scan finish, book returned  -> eject,   keep    -> not leased,  misplaced,      no update.
 
             var tech = book.TryGetTech();
             bool leased = borrowed.Contains(book);
-            bool online = tech.IsOnline();
             bool release = leased == misplaced;
-            bool eject = misplaced != online;
+            bool hold = leased && !misplaced;
+            //Log.Message($"checking book out: {(leased ? "leased," : "")} {(misplaced? "misplaced,":"")} => {(release? "release," : "no release")} {(hold? "hold":"eject")}");
             if (release)
-            {
+            {   
                 unlocked.libraryFreeSpace++;
                 borrowed.Remove(book);
             }
-            if (eject)
-            {
-                tech.Ejected(this, true);
-            }
+            if (!hold) tech.Ejected(this, true);
             if (!misplaced) CompStorageGraphic.UpdateGraphics();
         }
 
@@ -125,11 +123,11 @@ namespace HumanResources
 
         public override void DeSpawn(DestroyMode mode)
         {
-            unlocked.libraryFreeSpace -= dynamicCapacity - innerContainer.Count;
             if (innerContainer.Count > 0)
             {
                 innerContainer.TryDropAll(Position, Map, ThingPlaceMode.Near, delegate (Thing t, int i) { t.TryGetTech().Ejected(this, true); });
             }
+            unlocked.libraryFreeSpace -= dynamicCapacity;
             base.DeSpawn(mode);
         }
 

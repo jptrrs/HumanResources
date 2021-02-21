@@ -45,7 +45,7 @@ namespace HumanResources
             if (!_techsArchived.ContainsKey(tech))
             {
                 _techsArchived.Add(tech, hardCopy ? backupState.physical : backupState.digital);
-                Log.Message($"Added tech {tech} as {_techsArchived[tech]}");
+                if (Prefs.LogVerbose) Log.Message($"[HumanResoruces] Added tech {tech} as {_techsArchived[tech]}");
             }
             else if (_techsArchived[tech] != backupState.both)
             {

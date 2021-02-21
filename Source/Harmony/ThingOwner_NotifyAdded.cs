@@ -7,18 +7,15 @@ namespace HumanResources
     [HarmonyPatch(typeof(ThingOwner), "NotifyAdded")]
     public static class ThingOwner_NotifyAdded
     {
-        private static bool Act = false; //Only way I found to prevent the game from notifying twice for the same event.
+        private static Thing last;
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            if (Act && ___owner is Building_BookStore bookStore && !bookStore.borrowed.Contains(item))
+            if (item != last && ___owner is Building_BookStore bookStore && !bookStore.borrowed.Contains(item))
             {
                 bookStore.CheckBookIn(item);
-                Act = false;
+                last = item;
             }
-        }
-        public static void Prefix(IThingHolder ___owner)
-        {
-            Act = ___owner is Building_BookStore;
+            else if (item == last) last = null;
         }
     }
 }
