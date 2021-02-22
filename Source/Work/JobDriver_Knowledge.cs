@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Verse;
+﻿using Verse;
 using Verse.AI;
 using RimWorld;
 
@@ -46,19 +44,5 @@ namespace HumanResources
                 }
             }
         }
-
-  //      public override bool TryMakePreToilReservations(bool errorOnFailed)
-  //      {
-		//	Pawn pawn = this.pawn;
-		//	LocalTargetInfo target = desk;
-		//	Job job = this.job;
-		//	bool result;
-		//	if (pawn.Reserve(target, job, 1, -1, null, errorOnFailed))
-		//	{
-		//		result = pawn.Reserve(target, job, 1, -1, null, errorOnFailed);
-		//	}
-		//	else result = false;
-		//	return result;
-		//}
 	}
 }

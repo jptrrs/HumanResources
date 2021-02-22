@@ -24,6 +24,7 @@ namespace HumanResources
 			var initiated = techComp.expertise.Where(x => valid.Contains(x.Key));
 			if (initiated.Any()) project = initiated.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;
 			else if (valid.Any()) project = valid.FirstOrDefault();
+			if (project == null) return false;
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 

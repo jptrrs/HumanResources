@@ -15,8 +15,6 @@ namespace HumanResources
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            //string test = job.targetQueueB != null ? "ok" : "bad";
-            //Log.Warning("starting Scanning Job: test is "+test);
             if (job.targetQueueB != null && job.targetQueueB.Count == 1 && job.targetQueueB[0].Thing != null)
             {
                 book = job.targetQueueB[0].Thing;
