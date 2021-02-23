@@ -45,12 +45,13 @@ namespace HumanResources
 						{
 							CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
 							IEnumerable<ResearchProjectDef> homework = techComp.homework;
-							if (techComp.knownTechs.Where(x => !x.IsFinished).Intersect(homework).Any()) //check homework 
+							var intersection = techComp.knownTechs.Where(x => !x.IsFinished).Intersect(homework);
+							if (intersection.Any()) //check homework 
 							{
 								billGiver.BillStack.RemoveIncompletableBills();
 								foreach (Bill bill in RelevantBills(thing, pawn))
 								{
-									if (bill.Allows(homework)) //check bill filter vs. homework
+									if (bill.Allows(intersection)) //check bill filter vs. homework
 									{
 										actualJob = StartOrResumeBillJob(pawn, billGiver, target);
 										lastVerifiedJobTick = tick;

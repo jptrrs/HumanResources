@@ -71,12 +71,12 @@ namespace HumanResources
         {
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                RecacheUnlocked();
+                RecacheUnlockedWeapons();
                 RegisterStartingResources();
             }
         }
 
-        public void RecacheUnlocked()
+        public void RecacheUnlockedWeapons()
         {
             weapons.Clear();
             UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
@@ -85,16 +85,6 @@ namespace HumanResources
                 UnlockWeapons(tech.UnlockedWeapons());
             }
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
-        }
-
-        public void RecacheDigitalArchive()
-        {
-            foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
-            {
-                bool fromScenario = scenarioTechs.Contains(tech);
-                bool fromFaction = factionTechs.Contains(tech);
-
-            }
         }
 
         public void RegisterStartingResources()
