@@ -34,6 +34,16 @@ namespace HumanResources
             }
         }
 
+        //public override void ExposeData()
+        //{
+        //    base.ExposeData();
+        //    Scribe_Collections.Look(ref unlocked._techsArchived, "techsArchived");
+        //    //if (Scribe.mode == LoadSaveMode.PostLoadInit)
+        //    //{
+        //    //    return;
+        //    //}
+        //}
+
         public override string GetInspectString()
         {
             int count = unlocked.TechsArchived.Count;

@@ -72,7 +72,7 @@ namespace HumanResources
 
         public virtual void CheckBookIn(Thing book)
         {
-            Log.Message($"checking book in, borrowed={borrowed.Contains(book)}");
+            //Log.Message($"checking book in, borrowed={borrowed.Contains(book)}");
             var tech = book.TryGetTech();
             if (tech != null) tech.Unlock(this, true);
             if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;
@@ -134,8 +134,8 @@ namespace HumanResources
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Deep.Look<ThingOwner>(ref innerContainer, "innerContainer", new object[] { this });
-            Scribe_Deep.Look<StorageSettings>(ref storageSettings, "storageSettings", new object[] { this });
+            Scribe_Deep.Look(ref innerContainer, "innerContainer", new object[] { this });
+            Scribe_Deep.Look(ref storageSettings, "storageSettings", new object[] { this });
         }
 
         public void GetChildHolders(List<IThingHolder> outChildren)
@@ -200,6 +200,7 @@ namespace HumanResources
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
+            Log.Warning("Spawning shelf");
             foreach (Thing book in innerContainer)
             {
                 book.TryGetTech()?.Unlock(this, true);

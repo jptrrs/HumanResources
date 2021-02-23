@@ -332,6 +332,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\TechDatabase.cs" />
     <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
     <Compile Include="Books+Buildings\CompProperties_NetworkAccess.cs" />
     <Compile Include="Books+Buildings\CompNetworkAccess.cs" />

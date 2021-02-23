@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace HumanResources
@@ -12,7 +13,7 @@ namespace HumanResources
     {
         //tracking archived technologies
         public enum backupState { digital, physical, both };
-        private Dictionary<ResearchProjectDef, backupState> _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
+        public Dictionary<ResearchProjectDef, backupState> _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
         public Dictionary<ResearchProjectDef, backupState> TechsArchived => _techsArchived;
         public int libraryFreeSpace;
         public int discoveredCount => stuffByTech.Keys.Where(x => x.IsFinished).EnumerableCount();
@@ -68,8 +69,6 @@ namespace HumanResources
 
         public void ExposeData()
         {
-            Scribe_Collections.Look(ref weapons, "unlockedWeapons", LookMode.Deep, new object[0]);
-            Scribe_Collections.Look(ref _techsArchived, "techsArchived");
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 RecacheUnlocked();
@@ -79,7 +78,6 @@ namespace HumanResources
 
         public void RecacheUnlocked()
         {
-            _techsArchived.Clear();
             weapons.Clear();
             UnlockWeapons(ModBaseHumanResources.SimpleWeapons);
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
@@ -87,6 +85,16 @@ namespace HumanResources
                 UnlockWeapons(tech.UnlockedWeapons());
             }
             if (Prefs.LogVerbose) Log.Message("[HumanResources] Unlocked weapons recached: " + ModBaseHumanResources.UniversalWeapons.ToStringSafeEnumerable());
+        }
+
+        public void RecacheDigitalArchive()
+        {
+            foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => x.IsFinished))
+            {
+                bool fromScenario = scenarioTechs.Contains(tech);
+                bool fromFaction = factionTechs.Contains(tech);
+
+            }
         }
 
         public void RegisterStartingResources()
