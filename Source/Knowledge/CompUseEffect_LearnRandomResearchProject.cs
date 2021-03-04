@@ -1,18 +1,22 @@
-﻿using RimWorld;
+﻿using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Verse;
 
 namespace HumanResources
 {
 	public class CompUseEffect_LearnRandomResearchProject : CompUseEffect
 	{
+		private static PropertyInfo ResearchableInfo = AccessTools.Property(typeof(ResearchProjectDef), "PlayerHasAnyAppropriateResearchBench");
+
 		public override void DoEffect(Pawn usedBy)
 		{
 			base.DoEffect(usedBy);
 			CompKnowledge techComp = usedBy.TryGetComp<CompKnowledge>();
-			var candidates = techComp.homework.Where(x => !x.IsFinished);
+			var candidates = techComp.homework.Where(x => !x.IsFinished && (x.requiredResearchBuilding == null || (bool)ResearchableInfo.GetValue(x)));
 			List<ResearchProjectDef> means = new List<ResearchProjectDef>();
 			foreach (ResearchProjectDef tech in candidates)
             {

@@ -31,7 +31,6 @@ namespace HumanResources
 						stringBuilder.AppendLine();
 					}
 				}
-				//else if (expertise.ContainsKey(proj) && expertise[proj] >= 1f)
 				else if (proj.IsKnownBy(applyingPawn))
                 {
 					stringBuilder.AppendLine("LetterTechprintAppliedPartAlreadyResearched".Translate(proj.Named("PROJECT")));
