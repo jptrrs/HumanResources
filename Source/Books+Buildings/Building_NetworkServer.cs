@@ -9,6 +9,7 @@ namespace HumanResources
     public class Building_NetworkServer : Building
     {
         protected CompStorageGraphic compStorageGraphic = null;
+        protected List<ResearchProjectDef> minifiedBackup;
 
         public CompStorageGraphic CompStorageGraphic
         {
@@ -34,15 +35,11 @@ namespace HumanResources
             }
         }
 
-        //public override void ExposeData()
-        //{
-        //    base.ExposeData();
-        //    Scribe_Collections.Look(ref unlocked._techsArchived, "techsArchived");
-        //    //if (Scribe.mode == LoadSaveMode.PostLoadInit)
-        //    //{
-        //    //    return;
-        //    //}
-        //}
+        public override void ExposeData()
+        {
+            Scribe_Collections.Look(ref minifiedBackup, "minifiedBackup");
+            base.ExposeData();
+        }
 
         public override string GetInspectString()
         {
@@ -58,31 +55,47 @@ namespace HumanResources
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             CompStorageGraphic?.UpdateGraphics();
+            if (!minifiedBackup.NullOrEmpty()) ReUpload();
             base.SpawnSetup(map, respawningAfterLoad);
         }
 
         public override void DeSpawn(DestroyMode mode)
         {
             base.DeSpawn(mode);
-            bool backup = false;
-            foreach (Map m in Find.Maps)
-            {
-                if (m.listerBuildings.ColonistsHaveBuilding(def))
-                {
-                    backup = true;
-                    break;
-                }
-            }
-            if (!backup) AuditArchive();
+            minifiedBackup = unlocked.TechsArchived.Keys.ToList();
+            if (!minifiedBackup.NullOrEmpty()) AuditArchive();
         }
 
         public void AuditArchive()
         {
-            List<ResearchProjectDef> currentArchive = unlocked.TechsArchived.Keys.ToList();
-            foreach (ResearchProjectDef tech in currentArchive)
+            bool mapBackup = false;
+            foreach (Map m in Find.Maps)
             {
-                tech.Ejected(this, false);
+                if (m.listerBuildings.ColonistsHaveBuilding(def))
+                {
+                    mapBackup = true;
+                    break;
+                }
             }
+            if (!mapBackup)
+            {
+                foreach (ResearchProjectDef tech in minifiedBackup)
+                {
+                    tech.Ejected(this, false);
+                }
+            }
+        }
+
+        public void ReUpload()
+        {
+            foreach (ResearchProjectDef tech in minifiedBackup)
+            {
+                if (!tech.IsOnline())
+                {
+                    tech.Unlock(this, false);
+                }
+            }
+            minifiedBackup.Clear();
         }
     }
 }
