@@ -170,7 +170,7 @@ namespace HumanResources
                         list[0].GetInnerIfMinified().def
                     });
                 }
-                if (list.Any<Thing>())
+                if (list.Any())
                 {
                     Find.QuestManager.Notify_ThingsProduced(actor, list);
                     techComp.homework.Remove(project);

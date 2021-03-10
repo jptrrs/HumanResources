@@ -81,6 +81,7 @@ namespace HumanResources
 				{
 					curJob.bill.Notify_IterationCompleted(actor, new List<Thing>() { });
 					project.Unlock(jobDriver_DoBill.BillGiver as Thing, false);
+					techComp.homework.Remove(project);
 					jobDriver_DoBill.ReadyForNextToil();
 					return;
 				}
