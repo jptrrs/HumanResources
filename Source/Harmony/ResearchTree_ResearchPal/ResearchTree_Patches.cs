@@ -263,7 +263,7 @@ namespace HumanResources
             //Queue
             if (altRPal)
             {
-                instance.Patch(AccessTools.Method(QueueType(), "Draw"),
+                instance.Patch(AccessTools.Method(QueueType(), "DrawS"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(QueueDraw_Prefix))));
             }
             else instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
