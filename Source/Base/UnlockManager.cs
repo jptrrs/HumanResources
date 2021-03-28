@@ -71,9 +71,19 @@ namespace HumanResources
         {
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                libraryFreeSpace = 0;
+                _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
                 RecacheUnlockedWeapons();
                 RegisterStartingResources();
             }
+        }
+
+        public void NewGameStarted()
+        {
+            libraryFreeSpace = 0;
+            _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
+            RegisterStartingResources();
+            RecacheUnlockedWeapons();
         }
 
         public void RecacheUnlockedWeapons()

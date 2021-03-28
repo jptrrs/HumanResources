@@ -192,9 +192,7 @@ namespace HumanResources
             if (GameJustLoaded)
             {
                 if (Prefs.LogVerbose) Log.Message("[HumanResources] Game started, resetting and caching resources...");
-                unlocked.libraryFreeSpace = 0;
-                unlocked.RegisterStartingResources();
-                unlocked.RecacheUnlockedWeapons();
+                unlocked.NewGameStarted();
                 Extension_Research.currentPawnsCache = null;
                 GameJustLoaded = false;
             }
