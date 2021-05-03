@@ -34,8 +34,7 @@ namespace HumanResources
             UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
         public static FactionWeaponPool WeaponPoolMode;
-        private static bool GameJustLoaded = false;
-        //private static List<RecipeDef> knowledgeRecipes  = new List<RecipeDef>() { TechDefOf.ScanBook, TechDefOf.LearnTech, TechDefOf.DocumentTech, TechDefOf.DocumentTechDigital };//=> 
+        private static bool GameJustLoaded = true;
 
         public ModBaseHumanResources()
         {
