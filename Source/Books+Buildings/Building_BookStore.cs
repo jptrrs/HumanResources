@@ -200,7 +200,6 @@ namespace HumanResources
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             unlocked.libraryFreeSpace += dynamicCapacity - innerContainer.Count;
-            Log.Warning("Spawning shelf");
             foreach (Thing book in innerContainer)
             {
                 book.TryGetTech()?.Unlock(this, true);

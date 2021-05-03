@@ -12,11 +12,9 @@ namespace HumanResources
     public class UnlockManager : IExposable
     {
         //tracking archived technologies
-        public enum backupState { digital, physical, both };
-        public Dictionary<ResearchProjectDef, backupState> _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
-        public Dictionary<ResearchProjectDef, backupState> TechsArchived => _techsArchived;
-        public int libraryFreeSpace;
-        public int discoveredCount => stuffByTech.Keys.Where(x => x.IsFinished).EnumerableCount();
+        public int libraryFreeSpace = 0;
+        public int DiscoveredCount => stuffByTech.Keys.Where(x => x.IsFinished).EnumerableCount();
+        public Dictionary<ResearchProjectDef, BackupState> TechsArchived => Find.World.GetComponent<TechDatabase>().techsArchived;
 
         //tracking techology bases
         public Dictionary<ResearchProjectDef, ThingDef> stuffByTech = new Dictionary<ResearchProjectDef, ThingDef>();
@@ -43,20 +41,18 @@ namespace HumanResources
 
         public void Archive(ResearchProjectDef tech, bool hardCopy)
         {
-            if (!_techsArchived.ContainsKey(tech))
+            if (!TechsArchived.ContainsKey(tech))
             {
-                _techsArchived.Add(tech, hardCopy ? backupState.physical : backupState.digital);
-                if (Prefs.LogVerbose) Log.Message($"[HumanResoruces] Added tech {tech} as {_techsArchived[tech]}");
+                TechsArchived.Add(tech, hardCopy ? BackupState.physical : BackupState.digital);
+                if (Prefs.LogVerbose) Log.Message($"[HumanResoruces] Added tech {tech} as {TechsArchived[tech]}");
+                return;
             }
-            else if (_techsArchived[tech] != backupState.both)
+            if (TechsArchived[tech] == BackupState.both) return;
+            bool currentlyHard = TechsArchived[tech] == BackupState.physical;
+            if (hardCopy != currentlyHard)
             {
-                bool currentlyHard = _techsArchived[tech] == backupState.physical;
-                if (hardCopy != currentlyHard)
-                {
-                    _techsArchived[tech] = backupState.both;
-                }
+                TechsArchived[tech] = BackupState.both;
             }
-            else Log.Error($"[HumanResoruces] Tried to archive {tech}, but both physical and digital copies are already accounted for.");
         }
 
         public float BookResearchIncrement(int count)
@@ -71,8 +67,6 @@ namespace HumanResources
         {
             if (Scribe.mode == LoadSaveMode.LoadingVars || Scribe.mode == LoadSaveMode.ResolvingCrossRefs || Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                libraryFreeSpace = 0;
-                _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
                 RecacheUnlockedWeapons();
                 RegisterStartingResources();
             }
@@ -80,8 +74,6 @@ namespace HumanResources
 
         public void NewGameStarted()
         {
-            libraryFreeSpace = 0;
-            _techsArchived = new Dictionary<ResearchProjectDef, backupState>();
             RegisterStartingResources();
             RecacheUnlockedWeapons();
         }

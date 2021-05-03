@@ -538,12 +538,12 @@ namespace HumanResources
 
         public static bool IsOnline(this ResearchProjectDef tech)
         {
-            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != UnlockManager.backupState.physical;
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.physical;
         }
         
         public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
         {
-            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != UnlockManager.backupState.digital;
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.digital;
         }
 
         public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)

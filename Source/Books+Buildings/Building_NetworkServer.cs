@@ -48,7 +48,7 @@ namespace HumanResources
             string baseStr = base.GetInspectString();
             if (baseStr != "") s.AppendLine(baseStr);
             if (count == 0) s.AppendLine("BookStoreEmpty".Translate());
-            else s.AppendLine("BookStoreCapacity".Translate(count, unlocked.discoveredCount ));
+            else s.AppendLine("BookStoreCapacity".Translate(count, unlocked.DiscoveredCount ));
             return s.ToString().TrimEndNewlines();
         }
 
