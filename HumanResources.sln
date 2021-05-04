@@ -482,11 +482,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{3BA239D3-1
 		Defs\WorkTypes.xml = Defs\WorkTypes.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Textures", "Textures", "{91F8C667-F56E-4EDA-B871-9A1E5FAB59B7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{7EADB1E7-7D64-45E4-B72A-7E3695ED7590}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{8C6D647A-0CB4-490A-A82E-87AC886E0518}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{68AE6DB6-7C05-4712-9F72-A8F7118CB704}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{F293C052-2089-4841-818D-426D6EB7F847}"
 	ProjectSection(SolutionItems) = preProject
 		Textures\Things\Building\BookShelf_east.png = Textures\Things\Building\BookShelf_east.png
 		Textures\Things\Building\BookShelf_eastm.png = Textures\Things\Building\BookShelf_eastm.png
@@ -550,7 +550,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{68
 		Textures\Things\Building\Target_southm.png = Textures\Things\Building\Target_southm.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{E5EF9623-6EC8-4BE5-9304-1E8432010982}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{15167719-DFD9-4367-A989-6F38434CA6BE}"
 	ProjectSection(SolutionItems) = preProject
 		Textures\Things\Item\book.png = Textures\Things\Item\book.png
 		Textures\Things\Item\book_m.png = Textures\Things\Item\book_m.png
@@ -560,10 +560,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Item", "Item", "{E5EF9623-6
 		Textures\Things\Item\unfinishedBook_m.png = Textures\Things\Item\unfinishedBook_m.png
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{067516B0-C368-4E73-98D0-C837582B5D27}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F80C419B-29EA-4987-B874-EB0B4BE2CC84}"
 	ProjectSection(SolutionItems) = preProject
 		Textures\UI\assignment.png = Textures\UI\assignment.png
 		Textures\UI\available.png = Textures\UI\available.png
+		Textures\UI\clearAssignments.png = Textures\UI\clearAssignments.png
 		Textures\UI\cloud.png = Textures\UI\cloud.png
 		Textures\UI\commomWeapons.png = Textures\UI\commomWeapons.png
 		Textures\UI\compact.png = Textures\UI\compact.png
@@ -574,6 +575,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{067516B0-C368-
 		Textures\UI\ranged.png = Textures\UI\ranged.png
 		Textures\UI\read.png = Textures\UI\read.png
 		Textures\UI\research.png = Textures\UI\research.png
+		Textures\UI\skills.png = Textures\UI\skills.png
 		Textures\UI\write.png = Textures\UI\write.png
 	EndProjectSection
 EndProject
@@ -688,10 +690,10 @@ Global
 		{B665B8C7-600D-44A7-884A-FDE7E1069B97} = {A5746C9E-E364-43F6-8963-9150A791657B}
 		{F5CB9120-564E-464C-B11A-891A5BD9CC29} = {A5746C9E-E364-43F6-8963-9150A791657B}
 		{5FDE203C-D8D4-409C-87C9-03D4C7173788} = {70A40F66-0D3F-4BA2-B37A-AA019993295E}
-		{7EADB1E7-7D64-45E4-B72A-7E3695ED7590} = {28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}
-		{68AE6DB6-7C05-4712-9F72-A8F7118CB704} = {7EADB1E7-7D64-45E4-B72A-7E3695ED7590}
-		{E5EF9623-6EC8-4BE5-9304-1E8432010982} = {7EADB1E7-7D64-45E4-B72A-7E3695ED7590}
-		{067516B0-C368-4E73-98D0-C837582B5D27} = {28E23EF0-78DC-42D6-B32C-0A68AAF5E1A4}
+		{8C6D647A-0CB4-490A-A82E-87AC886E0518} = {91F8C667-F56E-4EDA-B871-9A1E5FAB59B7}
+		{F293C052-2089-4841-818D-426D6EB7F847} = {8C6D647A-0CB4-490A-A82E-87AC886E0518}
+		{15167719-DFD9-4367-A989-6F38434CA6BE} = {8C6D647A-0CB4-490A-A82E-87AC886E0518}
+		{F80C419B-29EA-4987-B874-EB0B4BE2CC84} = {91F8C667-F56E-4EDA-B871-9A1E5FAB59B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

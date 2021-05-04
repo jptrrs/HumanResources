@@ -109,5 +109,18 @@
     </content>
   </HugsLib.UpdateFeatureDef>
 
-  
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_0_37</defName>
+    <assemblyVersion>0.37</assemblyVersion>
+    <content>
+      &lt;b&gt;Coming of Age Update&lt;/b&gt;
+      |This is a quick one:
+      |img:..\Textures\UI\skills|caption:Check this cool new &lt;i&gt;Group by Skills&lt;/i&gt; button on the Tech tab!
+      |Full change notes on our Steam page.
+      |Enjoy!
+      |
+      |img:Passion|caption:&lt;i&gt;Check out our Patreon page for more mods and add-ons that aren't on Steam!&lt;/i&gt; Follow the link above or go to https://www.patreon.com/jptrrs.
+    </content>
+  </HugsLib.UpdateFeatureDef>
+
 </Defs>

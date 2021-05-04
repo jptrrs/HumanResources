@@ -131,7 +131,7 @@ namespace HumanResources
             if (row > -1 && Mouse.IsOver(rowRect)) GUI.DrawTexture(rowRect, TexUI.HighlightTex);
         }
 
-        private Vector2 DrawGroupedNodes(List<ExpertiseNode> expertiseList, float max, ref Vector2 pos)
+        private Vector2 DrawGroupedNodes(IEnumerable<ExpertiseNode> expertiseList, float max, ref Vector2 pos)
         {
             Vector2 maxView = pos;
             var techsList = expertiseList.Select(x => x.Tech);
@@ -151,9 +151,10 @@ namespace HumanResources
             return maxView;
         }
 
-        private Rect DrawGroupTitle(Vector2 pos, SkillDef skill, float skillRatio, List<ExpertiseNode> expertiseList)
+        private Rect DrawGroupTitle(Vector2 pos, SkillDef skill, float skillRatio, IEnumerable<ExpertiseNode> expertiseList)
         {
             Rect groupBar = new Rect(pos.x, pos.y, nodeSize.x, Text.LineHeight);
+            GUI.DrawTexture(groupBar, TexUI.TitleBGTex);
             if (Mouse.IsOver(groupBar)) GUI.DrawTexture(groupBar, TexUI.HighlightTex);
             Widgets.FillableBar(groupBar, skillRatio, SkillBarFillTex, null, false);
             TooltipHandler.TipRegionByKey(groupBar, "ClickToGroupAssign".Translate());
@@ -204,7 +205,7 @@ namespace HumanResources
             if (!currentlist.EnumerableNullOrEmpty())
             {
                 var orderedList = fullTechs ? currentlist.OrderBy(x => x.techLevel) : currentlist.OrderByDescending(x => x.techLevel);
-                var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
+                var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout));
                 Rect viewRect = new Rect(Vector2.zero, viewSize);
                 Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect, true);
                 Vector2 pos = new Vector2(0f, 0f);
@@ -225,13 +226,12 @@ namespace HumanResources
             }
         }
 
-        private Vector2 DrawResearchNodes(List<ExpertiseNode> nodeList, float max, ref Vector2 pos, bool groupColumn = false)
+        private Vector2 DrawResearchNodes(IEnumerable<ExpertiseNode> nodeList, float max, ref Vector2 pos, bool groupColumn = false)
         {
             Vector2 maxView = pos;
             int TechLevelBreak = groupColumn ? 0 : (int)nodeList.First().Tech.techLevel;
-            for (int i = 0; i < nodeList.Count && pos.x + extendedNodeLength < max; i++)
+            foreach (var node in nodeList)
             {
-                var node = nodeList[i];
                 if (!groupColumn && fullTechs && (int)node.Tech.techLevel != TechLevelBreak)
                 {
                     breakColumn(ref pos);
