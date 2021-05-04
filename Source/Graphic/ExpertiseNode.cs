@@ -429,7 +429,7 @@ namespace HumanResources
             }
         }
 
-        private void UpdateAssignment()
+        public void UpdateAssignment()
         {
             if (techComp != null)
             {

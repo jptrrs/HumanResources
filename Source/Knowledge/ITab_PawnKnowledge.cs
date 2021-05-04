@@ -4,7 +4,8 @@ using UnityEngine;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Reflection;
+using HarmonyLib;
 
 namespace HumanResources
 {
@@ -13,11 +14,10 @@ namespace HumanResources
         private const int 
             iconSize = 29,
             rowHeight = 32;
-        private static int margin = (int)ResearchTree_Constants.Margin;
-        private const float 
+        private const float
             scrollBarWidth = 17f,
             tabSizeAdjust = 12f;
-        private static bool 
+        private static bool
             commomWeapons = false,
             fullTechs = false,
             fullWeapons = false,
@@ -27,13 +27,23 @@ namespace HumanResources
             showAvailable = false,
             showAssignment = false,
             showCompact = false;
+        private static int margin = (int)ResearchTree_Constants.Margin;
         private static Vector2
             scrollPosition = Vector2.zero,
             scrollPosition2 = Vector2.zero,
             buttonSize = new Vector2(24f, 24f),
             baseNodeSize = ResearchTree_Constants.NodeSize;
-        private static float viewHeight = 0;
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
+        private static Func<ThingDef, bool> weaponsFilter = (x) =>
+        {
+            bool valid = !x.menuHidden;
+            bool commom = commomWeapons ? true : !x.NotReallyAWeapon();
+            bool melee = meleeWeapons ? true : !x.IsMeleeWeapon;
+            bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
+            return valid & commom & melee & ranged;
+        };
+        private static FieldInfo SkillBarFillTexInfo = AccessTools.Field(typeof(SkillUI),"SkillBarFillTex");
+        private Vector2 viewSize;
         public ITab_PawnKnowledge()
         {
             labelKey = "TabKnowledge";
@@ -54,9 +64,11 @@ namespace HumanResources
             }
         }
         private static bool expandTab => fullTechs | fullWeapons;
-        private Vector2 nodeSize => new Vector2(baseNodeSize.x, showCompact ? baseNodeSize.y / 2 : baseNodeSize.y);
-        private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
+        private int columns => expandTab ? (groupTechs ? Extension_Research.TechsBySkill.Count() : maxColumns) : 1;
         private float columnWidth => extendedNodeLength + margin;
+        private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
+        private int maxColumns => ResearchTree_Tree.RelevantTechLevels.Count();
+        private Vector2 nodeSize => new Vector2(baseNodeSize.x, showCompact ? baseNodeSize.y / 2 : baseNodeSize.y);
         private Pawn PawnToShowInfoAbout
         {
             get
@@ -82,8 +94,8 @@ namespace HumanResources
                 return pawn;
             }
         }
-        private int maxColumns => ResearchTree_Tree.RelevantTechLevels.Count();
-        private int columns => expandTab ? (groupTechs ? Extension_Research.TechsBySkill.Count() : maxColumns) : 1;
+        private Texture2D SkillBarFillTex => (Texture2D)SkillBarFillTexInfo.GetValue(this);
+
 
         protected override void FillTab()
         {
@@ -94,8 +106,75 @@ namespace HumanResources
             float firstColumnWidth = canvas.width;
             if (!fullWeapons) DrawLeftColumn(padding, ref canvas, expandTT, ref firstColumnWidth);
             if (!fullTechs) DrawRightColumn(padding, canvas, expandTT, firstColumnWidth);
-            Verse.Text.Anchor = TextAnchor.UpperLeft;
+            Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
+        }
+
+        protected override void UpdateSize()
+        {
+            base.UpdateSize();
+            Vector2 margins = new Vector2(17f, 17f) * 2f;
+            Vector2 defaultSize = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) - new Vector2(tabSizeAdjust, 0f);
+            Vector2 expandedSize = new Vector2(maxColumns * columnWidth, defaultSize.y);
+            size = expandTab ? expandedSize + margins : defaultSize + margins;
+        }
+
+        private void breakColumn(ref Vector2 pos)
+        {
+            pos.x += columnWidth;
+            pos.y = 0f;
+        }
+
+        private void DrawBase(int row, float w, int col, int shift)
+        {
+            Rect rowRect = new Rect(col * w, (rowHeight * row) + shift, w - margin, rowHeight);
+            if (row > -1 && Mouse.IsOver(rowRect)) GUI.DrawTexture(rowRect, TexUI.HighlightTex);
+        }
+
+        private Vector2 DrawGroupedNodes(List<ExpertiseNode> expertiseList, float max, ref Vector2 pos)
+        {
+            Vector2 maxView = pos;
+            var techsList = expertiseList.Select(x => x.Tech);
+            var skillSet = Extension_Research.TechsBySkill.Where(x => x.Value.Any(y => techsList.Contains(y))).Select(x => x.Key).OrderByDescending(x => PawnToShowInfoAbout.skills.GetSkill(x).Level);
+            foreach (var skill in skillSet)
+            {
+                var filtered = expertiseList.Where(x => Extension_Research.TechsBySkill[skill].Contains(x.Tech)).ToList();
+                if (filtered.NullOrEmpty()) continue;
+                var skillRatio = (float)PawnToShowInfoAbout.skills.GetSkill(skill).Level / SkillRecord.MaxLevel;
+                Rect groupTitle = DrawGroupTitle(pos, skill, skillRatio, filtered);
+                pos.y += groupTitle.height + margin;
+                DrawResearchNodes(filtered, max, ref pos, true);
+                if (maxView.y < pos.y) maxView.y = pos.y;
+                if (fullTechs) breakColumn(ref pos);
+                if (pos.x > maxView.x) maxView.x = fullTechs ? pos.x : pos.x + columnWidth;
+            }
+            return maxView;
+        }
+
+        private Rect DrawGroupTitle(Vector2 pos, SkillDef skill, float skillRatio, List<ExpertiseNode> expertiseList)
+        {
+            Rect groupBar = new Rect(pos.x, pos.y, nodeSize.x, Text.LineHeight);
+            if (Mouse.IsOver(groupBar)) GUI.DrawTexture(groupBar, TexUI.HighlightTex);
+            Widgets.FillableBar(groupBar, skillRatio, SkillBarFillTex, null, false);
+            TooltipHandler.TipRegionByKey(groupBar, "ClickToGroupAssign".Translate());
+            if (Widgets.ButtonInvisible(groupBar))
+            {
+                foreach (var node in expertiseList) node.UpdateAssignment();
+            }
+            Rect groupTitle = new Rect(groupBar.x + margin, groupBar.y, groupBar.width - margin, groupBar.height);
+            GUI.color = Color.white;
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(groupTitle, skill.LabelCap);
+            return groupTitle;
+        }
+
+        private float DrawIcons(float x, int row, float w, ThingDef thing, int shift)
+        {
+            float pos = x * w;
+            Rect rect = new Rect(pos, (rowHeight * row) + shift, iconSize, iconSize);
+            Widgets.ThingIcon(rect, thing);
+            return pos + iconSize + margin / 2;
         }
 
         private void DrawLeftColumn(float padding, ref Rect canvas, string expandTT, ref float firstColumnWidth)
@@ -107,11 +186,11 @@ namespace HumanResources
                 titlebarWidth = firstColumnWidth - margin;
             }
             Rect leftColumn = new Rect(canvas.x, canvas.y, firstColumnWidth, canvas.height);
-            Verse.Text.Font = GameFont.Medium;
-            Rect titleRect = new Rect(leftColumn.x, leftColumn.y, titlebarWidth, Verse.Text.LineHeight);
+            Text.Font = GameFont.Medium;
+            Rect titleRect = new Rect(leftColumn.x, leftColumn.y, titlebarWidth, Text.LineHeight);
             Widgets.Label(titleRect, "TabKnowledgeTitle".Translate());
             DrawToggle(titleRect.max.x, leftColumn.y, expandTT, ref fullTechs, ContentFinder<Texture2D>.Get("UI/expand_left", true), ContentFinder<Texture2D>.Get("UI/expand_right", true), true);
-            Verse.Text.Font = GameFont.Small;
+            Text.Font = GameFont.Small;
             Vector2 scrollPos = new Vector2(leftColumn.x, titleRect.yMax + margin);
             int scrollColumns = expandTab ? maxColumns : 1;
             float scrollWidth = scrollColumns * columnWidth + scrollBarWidth;// leftColumn.width - margin;
@@ -122,15 +201,11 @@ namespace HumanResources
             {
                 var orderedList = fullTechs ? currentlist.OrderBy(x => x.techLevel) : currentlist.OrderByDescending(x => x.techLevel);
                 var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout)).ToList();
-                //var viewHeight = (nodeSize.y + margin) * expertiseList.Count();
-                //var viewWidth = extendedNodeLength;
-                //Rect viewRect = new Rect(Vector2.zero, viewSize);
-                var viewWidth = columns * columnWidth;
-                Rect viewRect = new Rect(0f, 0f, viewWidth, viewHeight);
+                Rect viewRect = new Rect(Vector2.zero, viewSize);
                 Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect, true);
                 Vector2 pos = new Vector2(0f, 0f);
-                if (groupTechs) viewHeight = DrawGroupedNodes(expertiseList, leftColumn.xMax, ref pos);
-                else viewHeight = DrawResearchNodes(expertiseList, leftColumn.xMax, ref pos);
+                if (groupTechs) viewSize = DrawGroupedNodes(expertiseList, leftColumn.xMax, ref pos);
+                else viewSize = DrawResearchNodes(expertiseList, leftColumn.xMax, ref pos);
                 Widgets.EndScrollView();
             }
             float baselineX = leftColumn.x;
@@ -139,29 +214,52 @@ namespace HumanResources
             next = DrawToggle(next, baselineY, "ShowCompact", ref showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
             next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
             next = DrawToggle(next, baselineY, "ShowAssignment", ref showAssignment, ContentFinder<Texture2D>.Get("UI/assignment", true));
-            next = DrawToggle(next, baselineY, "Group", ref groupTechs, ContentFinder<Texture2D>.Get("UI/dot", true));
+            next = DrawToggle(next, baselineY, "GroupBySkills", ref groupTechs, ContentFinder<Texture2D>.Get("UI/skills", true));
             foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
             {
                 next = DrawToggle(next, baselineY, level);
             }
         }
-        
+
+        private Vector2 DrawResearchNodes(List<ExpertiseNode> nodeList, float max, ref Vector2 pos, bool groupColumn = false)
+        {
+            Vector2 maxView = pos;
+            int TechLevelBreak = groupColumn ? 0 : (int)nodeList.First().Tech.techLevel;
+            for (int i = 0; i < nodeList.Count && pos.x + extendedNodeLength < max; i++)
+            {
+                var node = nodeList[i];
+                if (!groupColumn && fullTechs && (int)node.Tech.techLevel != TechLevelBreak)
+                {
+                    breakColumn(ref pos);
+                    TechLevelBreak = (int)node.Tech.techLevel;
+                }
+                var nodeBox = new Rect(pos, nodeSize);
+                var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
+                var indicatorBox = new Rect(indicatorPos, buttonSize);
+                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
+                pos.y += nodeSize.y + margin;
+                if (pos.y > maxView.y) maxView.y = pos.y;
+                if (indicatorBox.xMax > maxView.x) maxView.x = indicatorBox.xMax;
+            }
+            return maxView;
+        }
+
         private void DrawRightColumn(float padding, Rect canvas, string expandTT, float firstColumnWidth)
         {
             if (fullWeapons) firstColumnWidth = 0f;
             Rect rightColumn = new Rect(canvas.x + firstColumnWidth, canvas.y, canvas.width - firstColumnWidth - margin, canvas.height);
-            Verse.Text.Font = GameFont.Medium;
-            Rect titleRect = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, Verse.Text.LineHeight);
+            Text.Font = GameFont.Medium;
+            Rect titleRect = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, Text.LineHeight);
             if (!fullWeapons)
             {
-                Verse.Text.Font = GameFont.Small;
-                Verse.Text.Anchor = TextAnchor.LowerLeft;
+                Text.Font = GameFont.Small;
+                Text.Anchor = TextAnchor.LowerLeft;
             }
             GUI.color = Color.white;
             Widgets.Label(titleRect, "TabKnowledgeWeapons".Translate());
             DrawToggle(titleRect.max.x, rightColumn.y, expandTT, ref fullWeapons, ContentFinder<Texture2D>.Get("UI/expand_left", true), ContentFinder<Texture2D>.Get("UI/expand_right", true), true);
-            if (fullWeapons) Verse.Text.Font = GameFont.Small;
-            else Verse.Text.Anchor = TextAnchor.UpperLeft;
+            if (fullWeapons) Text.Font = GameFont.Small;
+            else Text.Anchor = TextAnchor.UpperLeft;
             Rect scrollrect = new Rect(rightColumn.x, titleRect.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect.height - rowHeight - margin - padding * 2 - 2f);
             var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons.Where(weaponsFilter);
             if (!knownWeapons.EnumerableNullOrEmpty())
@@ -186,63 +284,52 @@ namespace HumanResources
             next = DrawToggle(next, rightBaselineY, "ShowRanged", ref rangedWeapons, ContentFinder<Texture2D>.Get("UI/ranged", true), null, true);
             next = DrawToggle(next, rightBaselineY, "ShowMelee", ref meleeWeapons, ContentFinder<Texture2D>.Get("UI/melee", true), null, true);
         }
-
-        private float DrawResearchNodes(List<ExpertiseNode> nodeList, float max, ref Vector2 pos, bool groupColumn = false)
+        
+        private void DrawRow(ThingDef thing, int row, float width, int col)
         {
-            float result = pos.y;
-            int TechLevelBreak = groupColumn ? 0 : (int)nodeList.First().Tech.techLevel;
-            for (int i = 0; i < nodeList.Count && pos.x + extendedNodeLength < max; i++)
-            {
-                var node = nodeList[i];
-                if (!groupColumn && fullTechs && (int)node.Tech.techLevel != TechLevelBreak)
-                {
-                    pos = breakColumn(pos);
-                    TechLevelBreak = (int)node.Tech.techLevel;
-                }
-                var nodeBox = new Rect(pos, nodeSize);
-                var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
-                var indicatorBox = new Rect(indicatorPos, buttonSize);
-                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
-                pos.y += nodeSize.y + margin;
-                if (pos.y > result) result = pos.y;
-            }
-            //if (groupColumn && fullTechs) pos = breakColumn(pos);
-            return result;
+            int shift = fullWeapons ? margin : 0;
+            DrawBase(row, width, col, shift);
+            float next = col;
+            next = DrawIcons(next, row, width, thing, shift);
+            string tooltip = Prefs.DevMode ? thing.weaponTags?.ToStringSafeEnumerable() : thing.description;
+            PrintCell(thing.LabelCap, row, next, shift, width - (iconSize + margin / 2), tooltip);
         }
 
-        Vector2 breakColumn(Vector2 pos)
+        private void DrawTechColorBar(float w, int x)
         {
-            pos.x += columnWidth;
-            pos.y = 0f;
-            return pos;
+            Rect rowRect = new Rect(x * w, 0, w - margin, margin - 2);
+            GUI.DrawTexture(rowRect, ResearchTree_Assets.ButtonActive);
         }
 
-        private float DrawGroupedNodes(List<ExpertiseNode> expertiseList, float max, ref Vector2 pos)
+        private float DrawToggle(float posX, float posY, string tooltip, ref bool toggle, Texture2D textOn, Texture2D texOff = null, bool left = false, Color? c = null)
         {
-            int count = 0;
-            float maxHeight = pos.y;
-            foreach (var skill in Extension_Research.TechsBySkill.Keys)
-            {
-                var filtered = expertiseList.Where(x => Extension_Research.TechsBySkill[skill].Contains(x.Tech)).ToList();
-                if (filtered.NullOrEmpty()) continue;
-                var spacing = margin + buttonSize.x;
-                Rect groupBar = new Rect(pos.x, pos.y, nodeSize.x, Verse.Text.LineHeight);
-                Rect groupTitle = new Rect(groupBar.x + margin, groupBar.y, groupBar.width - margin, groupBar.height);
-                GUI.color = Color.white;
-                Verse.Text.Font = GameFont.Small;
-                Verse.Text.Anchor = TextAnchor.MiddleLeft;
-                GUI.DrawTexture(groupBar, TexUI.TitleBGTex);
-                Widgets.Label(groupTitle, skill.LabelCap);
-                pos.y += groupTitle.height + margin;
-                DrawResearchNodes(filtered, max, ref pos, true);
-                if (maxHeight < pos.y) maxHeight = pos.y;
-                if (fullTechs)
-                {
-                    count++;
-                    if (count < columns) pos = breakColumn(pos);
-                }
-            }
-            return maxHeight;
+            float startPos = left ? posX - rowHeight : posX;
+            Vector2 position = new Vector2(startPos, posY);
+            Rect box = new Rect(position, buttonSize);
+            var curFont = Text.Font;
+            Text.Font = GameFont.Tiny;
+            TooltipHandler.TipRegionByKey(box, tooltip);
+            Text.Font = curFont;
+            Color baseColor = c ?? Color.white;
+            Color color = toggle ? baseColor : Color.grey;
+            Texture2D swap = toggle ? textOn : texOff;
+            Texture2D face = texOff != null ? swap : textOn;
+            if (Widgets.ButtonImage(box, face, color)) toggle = !toggle;
+            return left ? posX - rowHeight : posX + rowHeight;
+        }
+
+        private float DrawToggle(float posX, float posY, TechLevel techLevel)
+        {
+            bool toggle = TechLevelVisibility[techLevel];
+            Vector2 position = new Vector2(posX, posY);
+            Rect box = new Rect(position, buttonSize);
+            var curFont = Text.Font;
+            Text.Font = GameFont.Tiny;
+            TooltipHandler.TipRegionByKey(box, techLevel.ToStringHuman());
+            Text.Font = curFont;
+            Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
+            if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
+            return posX + rowHeight;
         }
 
         private void DrawWeaponsList(List<ThingDef> weaponsList, float rowWidth)
@@ -280,90 +367,11 @@ namespace HumanResources
             else return expertise.Keys;
         }
 
-        private static Func<ThingDef, bool> weaponsFilter = (x) =>
-        {
-            bool valid = !x.menuHidden;
-            bool commom = commomWeapons ? true : !x.NotReallyAWeapon();
-            bool melee = meleeWeapons ? true : !x.IsMeleeWeapon;
-            bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
-            return valid & commom & melee & ranged;
-        };
-
-        protected override void UpdateSize()
-        {
-            base.UpdateSize();
-            Vector2 margins = new Vector2(17f, 17f) * 2f;
-            Vector2 defaultSize = CharacterCardUtility.PawnCardSize(PawnToShowInfoAbout) - new Vector2(tabSizeAdjust, 0f);
-            Vector2 expandedSize = new Vector2(maxColumns * columnWidth, defaultSize.y);
-            size = expandTab ? expandedSize + margins : defaultSize + margins;
-        }
-
-        private void DrawBase(int row, float w, int col, int shift)
-        {
-            Rect rowRect = new Rect(col * w, (rowHeight * row) + shift, w - margin, rowHeight);
-            if (row > -1 && Mouse.IsOver(rowRect)) GUI.DrawTexture(rowRect, TexUI.HighlightTex);
-        }
-
-        private float DrawIcons(float x, int row, float w, ThingDef thing, int shift)
-        {
-            float pos = x * w;
-            Rect rect = new Rect(pos, (rowHeight * row) + shift, iconSize, iconSize);
-            Widgets.ThingIcon(rect, thing);
-            return pos + iconSize + margin / 2;
-        }
-
-        private void DrawRow(ThingDef thing, int row, float width, int col)
-        {
-            int shift = fullWeapons ? margin : 0;
-            DrawBase(row, width, col, shift);
-            float next = col;
-            next = DrawIcons(next, row, width, thing, shift);
-            string tooltip = Prefs.DevMode ? thing.weaponTags?.ToStringSafeEnumerable() : thing.description;
-            PrintCell(thing.LabelCap, row, next, shift, width - (iconSize + margin/2), tooltip);
-        }
-
-        private void DrawTechColorBar(float w, int x)
-        {
-            Rect rowRect = new Rect(x * w, 0, w - margin, margin - 2);
-            GUI.DrawTexture(rowRect, ResearchTree_Assets.ButtonActive);
-        }
-
         private void PrintCell(string content, int row, float x, int shift, float width = rowHeight, string tooltip = "")
         {
             Rect rect = new Rect(x, (rowHeight * row) + shift + 3, width, rowHeight - 3);
             Widgets.Label(rect, content);
             if (!string.IsNullOrEmpty(tooltip)) TooltipHandler.TipRegion(rect, tooltip);
-        }
-
-        private float DrawToggle(float posX, float posY, string tooltip, ref bool toggle, Texture2D textOn, Texture2D texOff = null, bool left = false, Color? c = null)
-        {
-            float startPos = left ? posX - rowHeight : posX;
-            Vector2 position = new Vector2(startPos, posY);
-            Rect box = new Rect(position, buttonSize);
-            var curFont = Verse.Text.Font;
-            Verse.Text.Font = GameFont.Tiny;
-            TooltipHandler.TipRegionByKey(box, tooltip);
-            Verse.Text.Font = curFont;
-            Color baseColor = c ?? Color.white;
-            Color color = toggle? baseColor : Color.grey;
-            Texture2D swap = toggle ? textOn : texOff;
-            Texture2D face = texOff != null ? swap : textOn;
-            if (Widgets.ButtonImage(box, face, color)) toggle = !toggle;
-            return left ? posX - rowHeight : posX + rowHeight;
-        }
-
-        private float DrawToggle(float posX, float posY, TechLevel techLevel)
-        {
-            bool toggle = TechLevelVisibility[techLevel];
-            Vector2 position = new Vector2(posX, posY);
-            Rect box = new Rect(position, buttonSize);
-            var curFont = Verse.Text.Font;
-            Verse.Text.Font = GameFont.Tiny;
-            TooltipHandler.TipRegionByKey(box, techLevel.ToStringHuman());
-            Verse.Text.Font = curFont;
-            Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
-            if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
-            return posX + rowHeight;
         }
     }
 }
