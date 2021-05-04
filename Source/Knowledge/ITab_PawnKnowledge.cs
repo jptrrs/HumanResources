@@ -189,7 +189,11 @@ namespace HumanResources
             Text.Font = GameFont.Medium;
             Rect titleRect = new Rect(leftColumn.x, leftColumn.y, titlebarWidth, Text.LineHeight);
             Widgets.Label(titleRect, "TabKnowledgeTitle".Translate());
-            DrawToggle(titleRect.max.x, leftColumn.y, expandTT, ref fullTechs, ContentFinder<Texture2D>.Get("UI/expand_left", true), ContentFinder<Texture2D>.Get("UI/expand_right", true), true);
+            float button = DrawToggle(titleRect.max.x, leftColumn.y, expandTT, ref fullTechs, ContentFinder<Texture2D>.Get("UI/expand_left", true), ContentFinder<Texture2D>.Get("UI/expand_right", true), true);
+            if (showAssignment && DrawCommand(button, leftColumn.y, "ClearAssignments".Translate(), ContentFinder<Texture2D>.Get("UI/clearAssignments", true), true))
+            {
+                PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.homework.Clear();
+            }
             Text.Font = GameFont.Small;
             Vector2 scrollPos = new Vector2(leftColumn.x, titleRect.yMax + margin);
             int scrollColumns = expandTab ? maxColumns : 1;
@@ -247,7 +251,7 @@ namespace HumanResources
         private void DrawRightColumn(float padding, Rect canvas, string expandTT, float firstColumnWidth)
         {
             if (fullWeapons) firstColumnWidth = 0f;
-            Rect rightColumn = new Rect(canvas.x + firstColumnWidth, canvas.y, canvas.width - firstColumnWidth - margin, canvas.height);
+            Rect rightColumn = new Rect(canvas.x + firstColumnWidth + margin, canvas.y, canvas.width - firstColumnWidth - margin, canvas.height);
             Text.Font = GameFont.Medium;
             Rect titleRect = new Rect(rightColumn.x, rightColumn.y, rightColumn.width, Text.LineHeight);
             if (!fullWeapons)
@@ -330,6 +334,19 @@ namespace HumanResources
             Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
             if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
             return posX + rowHeight;
+        }
+
+        private bool DrawCommand(float posX, float posY, string tooltip, Texture2D face, bool left = false, Color? c = null)
+        {
+            float startPos = left ? posX - rowHeight : posX;
+            Vector2 position = new Vector2(startPos, posY);
+            Rect box = new Rect(position, buttonSize);
+            var curFont = Text.Font;
+            Text.Font = GameFont.Tiny;
+            TooltipHandler.TipRegionByKey(box, tooltip);
+            Text.Font = curFont;
+            Color color = c ?? Color.grey;
+            return Widgets.ButtonImage(box, face, color);
         }
 
         private void DrawWeaponsList(List<ThingDef> weaponsList, float rowWidth)

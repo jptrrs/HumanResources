@@ -11,13 +11,14 @@
   <ShowAvailable>Show techs available to learn.</ShowAvailable>
   <ShowCompact>Compact view.</ShowCompact>
   <ShowAssignment>Show assignments.</ShowAssignment>
+  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
   <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
+  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
   <Expand>Expand</Expand>
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
   <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
-  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
   <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
   <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
   <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
