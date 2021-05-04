@@ -144,6 +144,7 @@ namespace HumanResources
                 Rect groupTitle = DrawGroupTitle(pos, skill, skillRatio, filtered);
                 pos.y += groupTitle.height + margin;
                 DrawResearchNodes(filtered, max, ref pos, true);
+                if (!fullTechs) pos.y += margin;
                 if (maxView.y < pos.y) maxView.y = pos.y;
                 if (fullTechs) breakColumn(ref pos);
                 if (pos.x > maxView.x) maxView.x = fullTechs ? pos.x : pos.x + columnWidth;
@@ -154,7 +155,9 @@ namespace HumanResources
         private Rect DrawGroupTitle(Vector2 pos, SkillDef skill, float skillRatio, IEnumerable<ExpertiseNode> expertiseList)
         {
             Rect groupBar = new Rect(pos.x, pos.y, nodeSize.x, Text.LineHeight);
+            GUI.color = Color.grey;
             GUI.DrawTexture(groupBar, TexUI.TitleBGTex);
+            GUI.color = Color.white;
             if (Mouse.IsOver(groupBar)) GUI.DrawTexture(groupBar, TexUI.HighlightTex);
             Widgets.FillableBar(groupBar, skillRatio, SkillBarFillTex, null, false);
             TooltipHandler.TipRegionByKey(groupBar, "ClickToGroupAssign".Translate());
@@ -163,7 +166,6 @@ namespace HumanResources
                 foreach (var node in expertiseList) node.UpdateAssignment();
             }
             Rect groupTitle = new Rect(groupBar.x + margin, groupBar.y, groupBar.width - margin, groupBar.height);
-            GUI.color = Color.white;
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(groupTitle, skill.LabelCap);
