@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<Operation Class="PatchOperationFindMod">
+	<!--Medieval Patches-->
+  <Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>Medieval Patches</li>
+			<li>bennington.medievalpatches</li>
 		</mods>
 		<match Class="PatchOperationRemove">
       <xpath>Defs/ResearchProjectDef[defName="Bionics"]/prerequisites</xpath>

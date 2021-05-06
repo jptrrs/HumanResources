@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-  <!--oskarpotocki.vfe.vikings-->
-  <Operation Class="PatchOperationFindMod">
+  <!--Vanilla Factions Expanded - Vikings-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>Vanilla Factions Expanded - Vikings</li>
+      <li>oskarpotocki.vfe.vikings</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>

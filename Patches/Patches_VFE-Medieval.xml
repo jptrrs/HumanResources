@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-  <!--oskarpotocki.vanillafactionsexpanded.medievalmodule-->
-  <Operation Class="PatchOperationFindMod">
+  <!--Vanilla Factions Expanded - Medieval-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>Vanilla Factions Expanded - Medieval</li>
+      <li>oskarpotocki.vanillafactionsexpanded.medievalmodule</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>

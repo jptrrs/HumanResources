@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<!--OskarPotocki.VanillaFactionsExpanded.SettlersModule-->
-	<Operation Class="PatchOperationFindMod">
+	<!--Vanilla Factions Expanded - Settlers-->
+	<Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>Vanilla Factions Expanded - Settlers</li>
+			<li>OskarPotocki.VanillaFactionsExpanded.SettlersModule</li>
 		</mods>
 		<match Class="PatchOperationAdd">
 			<xpath>Defs/ScenarioDef[defName = "VFES_Bandits"]/scenario/parts</xpath>

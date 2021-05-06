@@ -28,7 +28,7 @@ namespace HumanResources
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
-		protected override IEnumerable<Toil> MakeNewToils()	
+		public override IEnumerable<Toil> MakeNewToils()	
 		{
             Dictionary<ResearchProjectDef, float> expertise = pawn.TryGetComp<CompKnowledge>().expertise;
 			AddEndCondition(delegate

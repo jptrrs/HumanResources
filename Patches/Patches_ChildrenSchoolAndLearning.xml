@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<Operation Class="PatchOperationFindMod">
-		<mods>
-			<li>Children, school and learning</li>
+  <!--Children, school and learning-->
+  <Operation Class="JPTools.PatchOperationFindModById">
+    <mods>
+      <li>dylan.csl</li>
 		</mods>
 		<match Class="PatchOperationSequence">
       <operations>

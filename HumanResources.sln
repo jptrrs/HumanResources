@@ -385,27 +385,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{074C9151
 		Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml = Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{3371D14E-3D2F-4229-9809-B0594F29FF8D}"
-	ProjectSection(SolutionItems) = preProject
-		Patches\Patches.xml = Patches\Patches.xml
-		Patches\Patches_AdeptusMechanicus.xml = Patches\Patches_AdeptusMechanicus.xml
-		Patches\Patches_BabyAndChildren.xml = Patches\Patches_BabyAndChildren.xml
-		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
-		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
-		Patches\Patches_MedievalPatches.xml = Patches\Patches_MedievalPatches.xml
-		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
-		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
-		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
-		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
-		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
-		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
-		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
-		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
-		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
-		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
-		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Defs", "Defs", "{3BA239D3-13FE-4E73-8CCC-70F14E17C611}"
 	ProjectSection(SolutionItems) = preProject
 		Defs\Jobs.xml = Defs\Jobs.xml
@@ -577,6 +556,29 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{501A09B3-F38A-4AB6-ABB9-AEE256AEA87C}"
 	ProjectSection(SolutionItems) = preProject
 		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{844EBA11-D5FF-49B1-BD79-73FCD7460CEC}"
+	ProjectSection(SolutionItems) = preProject
+		Patches\Patches.xml = Patches\Patches.xml
+		Patches\Patches_AdeptusMechanicus.xml = Patches\Patches_AdeptusMechanicus.xml
+		Patches\Patches_ARimworldOfMagic.xml = Patches\Patches_ARimworldOfMagic.xml
+		Patches\Patches_BabyAndChildren.xml = Patches\Patches_BabyAndChildren.xml
+		Patches\Patches_Borderlands.xml = Patches\Patches_Borderlands.xml
+		Patches\Patches_ChildrenSchoolAndLearning.xml = Patches\Patches_ChildrenSchoolAndLearning.xml
+		Patches\Patches_CyberneticWarfare.xml = Patches\Patches_CyberneticWarfare.xml
+		Patches\Patches_MedievalPatches.xml = Patches\Patches_MedievalPatches.xml
+		Patches\Patches_Pawnmorpher.xml = Patches\Patches_Pawnmorpher.xml
+		Patches\Patches_Polarisbloc.xml = Patches\Patches_Polarisbloc.xml
+		Patches\Patches_RimmuNation.xml = Patches\Patches_RimmuNation.xml
+		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
+		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
+		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
+		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
+		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
+		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml
+		Patches\Patches_WeaponTech.xml = Patches\Patches_WeaponTech.xml
+		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
 EndProject
 Global

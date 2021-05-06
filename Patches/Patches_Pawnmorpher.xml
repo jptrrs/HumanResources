@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<!--tachyonite.pawnmorpherpublic-->
-	<Operation Class="PatchOperationFindMod">
+  <!--Pawnmorpher-->
+  <Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>Pawnmorpher</li>
+			<li>tachyonite.pawnmorpherpublic</li>
 		</mods>
     <match Class="PatchOperationSequence">
       <operations>

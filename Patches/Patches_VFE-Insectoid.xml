@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<!--OskarPotocki.VFE.Insectoid-->
-	<Operation Class="PatchOperationFindMod">
+	<!--Vanilla Factions Expanded - Insectoids-->
+	<Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>Vanilla Factions Expanded - Insectoids</li>
+			<li>OskarPotocki.VFE.Insectoid</li>
 		</mods>
 		<match Class="PatchOperationAdd">
 			<xpath>Defs/ScenarioDef[defName = "VFEI_MercenarySquad"]/scenario/parts</xpath>

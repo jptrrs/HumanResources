@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
 	<!--Check if  ZARS Production Spots is installed-->
-	<Operation Class="PatchOperationFindMod">
+	<Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>ZARS Production Spots</li>
+			<li>dracoix.zars.spots</li>
 		</mods>
 		<!--If not also check for ZARS Tribalism-->
-		<nomatch Class="PatchOperationFindMod">
+		<nomatch Class="JPTools.PatchOperationFindModById">
 			<mods>
-				<li>ZARS Tribalism</li>
+				<li>dracoix.zars.tribalism</li>
 			</mods>
 			<match Class="PatchOperationSequence">
 				<operations>

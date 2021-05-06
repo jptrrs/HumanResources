@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-	<Operation Class="PatchOperationFindMod">
+  <!--Weapon Tech 1.1-->
+	<Operation Class="JPTools.PatchOperationFindModById">
 		<mods>
-			<li>Weapon Tech 1.1</li>
+			<li>janson.weapontech11</li>
 		</mods>
 		<match Class="PatchOperationAdd">
 			<xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>

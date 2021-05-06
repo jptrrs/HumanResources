@@ -97,7 +97,7 @@ namespace HumanResources
         private Texture2D SkillBarFillTex => (Texture2D)SkillBarFillTexInfo.GetValue(this);
 
 
-        protected override void FillTab()
+        public override void FillTab()
         {
             float padding = Mathf.Max(margin, 10f);
             Rect canvas = new Rect(margin, 2 * margin, size.x - margin - 1f, size.y - 2 * margin);
@@ -110,7 +110,7 @@ namespace HumanResources
             GUI.EndGroup();
         }
 
-        protected override void UpdateSize()
+        public override void UpdateSize()
         {
             base.UpdateSize();
             Vector2 margins = new Vector2(17f, 17f) * 2f;

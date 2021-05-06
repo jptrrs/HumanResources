@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-  <!--deon.borderlands-->
-  <Operation Class="PatchOperationFindMod">
+  <!--Borderlands: The Rim-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>Borderlands: The Rim</li>
+      <li>deon.borderlands</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>

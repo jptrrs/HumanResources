@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-  <!--neronix17.stargate.core-->
-  <Operation Class="PatchOperationFindMod">
+  <!--[O21] Stargate-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>[O21] Stargate</li>
+      <li>neronix17.stargate.core</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>

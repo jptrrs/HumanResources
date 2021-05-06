@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-  <!--vanya.polarisbloc.mechenemy-->
-  <Operation Class="PatchOperationFindMod">
+  
+  <!--Polarisbloc - Mechenemy-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>Polarisbloc - Mechenemy</li>
+      <li>vanya.polarisbloc.mechenemy</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
@@ -26,10 +27,10 @@
     </match>
   </Operation>
   
-  <!--vanya.polarisbloc.securityforce-->
-  <Operation Class="PatchOperationFindMod">
+  <!--Polarisbloc - Security Force-->
+  <Operation Class="JPTools.PatchOperationFindModById">
     <mods>
-      <li>Polarisbloc - Security Force</li>
+      <li>vanya.polarisbloc.securityforce</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
