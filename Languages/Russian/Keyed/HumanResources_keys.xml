@@ -11,10 +11,10 @@
 	<ShowAvailable>Отображать доступные для изучения технологии</ShowAvailable>
 	<ShowCompact>Компактный вид</ShowCompact>
 	<ShowAssignment>Отображать назначения</ShowAssignment>
-  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
-  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
-  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
-  <Expand>Развернуть</Expand>
+	<ClearAssignments>Отменить все назначения</ClearAssignments>
+	<GroupBySkills>Группировать по навыкам</GroupBySkills>
+	<ClickToGroupAssign>Назначить для исследования, документирования или изучения всех технологий этой группы</ClickToGroupAssign>
+	<Expand>Развернуть</Expand>
 	<Collapse>Свернуть</Collapse>
 	<TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
