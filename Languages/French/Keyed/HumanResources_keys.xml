@@ -21,6 +21,9 @@
   <ShowCompact>Vue compacte</ShowCompact>
   <!--EN: Show Assignments.-->
   <ShowAssignment>Voir les affectations..</ShowAssignment>
+  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
+  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
   <!--EN: Expand-->
   <Expand>Étendre</Expand>
   <!--EN: Collapse-->
@@ -29,7 +32,8 @@
   <TabCatalogue>Catalogue</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{0} livre(s) dans {1} étagère(s)</AvailableBooksReport>
-    <!--EN: Left-click to assign for studying.-->
+  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
+  <!--EN: Left-click to assign for studying.-->
   <ClickToAssignForStudying>Clic-gauche pour affecter à l'étude.</ClickToAssignForStudying>
   <!--EN: Left-click to assign for documentation.-->
   <ClickToAssignForDocumentation>Clic-gauche pour affecter à la documentation.</ClickToAssignForDocumentation>
@@ -47,7 +51,11 @@
   <AssignedToDocument>{0} est affectée à la documentation de ceci.</AssignedToDocument>
   <!--EN: click to remove-->
   <ClickToRemove>Clic-gauche pour retirer.</ClickToRemove>
-  
+  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart>
+  <!--"0" here is either the scenario or the player faction's name-->
+  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
+  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
+
   <!--Settings-->
   
   <!--EN: Knowledge generation draws from...-->
@@ -133,6 +141,12 @@
   <BookTheory>Théorie sur {0}</BookTheory>
   <!--EN: {0} Database-->
   <BookDatabase>Base de données de {0}</BookDatabase>
+  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
+  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
+  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
+  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
+  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
+  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
 
   <!--Feedback-->
   

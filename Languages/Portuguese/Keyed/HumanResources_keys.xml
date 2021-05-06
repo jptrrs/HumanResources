@@ -11,10 +11,14 @@
   <ShowAvailable>Mostrar tecnologias disponíveis para serem aprendidas.</ShowAvailable>
   <ShowCompact>Vizualização compacta.</ShowCompact>
   <ShowAssignment>Mostrar tarefas.</ShowAssignment>
+  <ClearAssignments>Cancelar todas as tarefas.</ClearAssignments>
+  <GroupBySkills>Agrupar por habilidade.</GroupBySkills>
+  <ClickToGroupAssign>Marcar todas estas tecnologias ao mesmo tempo.</ClickToGroupAssign>
   <Expand>Expandir</Expand>
   <Collapse>Recolher</Collapse>
   <TabCatalogue>Catálogo</TabCatalogue>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
+  <AvailableOnNetwork>{0} tecnologias online</AvailableOnNetwork>
   <ClickToAssignForStudying>Botão esquerdo para marcar para estudo.</ClickToAssignForStudying>
   <ClickToAssignForDocumentation>Botão esquerdo para marcar para documentação.</ClickToAssignForDocumentation>
   <ClickToUnassign>Botão esquerdo para desmarcar.</ClickToUnassign>
@@ -24,7 +28,11 @@
   <AssignedToStudy>{0} foi encarregado de estudar isto.</AssignedToStudy>
   <AssignedToDocument>{0} foi encarregado de documentar isto.</AssignedToDocument>
   <ClickToRemove>clique para remover</ClickToRemove>
-  
+  <bookFromStart>Conhecimento inicial para {0}.</bookFromStart>
+  <bookInLibrary>Arquivado em nossa biblioteca.</bookInLibrary>
+  <bookInDatabase>Arquivado em nosso banco de dados.</bookInDatabase>
+
+
   <!--Settings-->
   <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
   <TechPoolModeDesc>Define o conjunto de tecnologias que alimenta a geração de conhecimento para os colonos quando eles são criados.</TechPoolModeDesc>
@@ -64,6 +72,12 @@
   <BookManual>Manual de {0}</BookManual>
   <BookTheory>Teoria de {0}</BookTheory>
   <BookDatabase>Banco de dados sobre {0}</BookDatabase>
+  <WeaponAssociatedTech>Tecnologia de base</WeaponAssociatedTech>
+  <WeaponAssociatedTechDesc>A tecnologia que uma colônia (ou colono) necessita para poder aprender a utilizar esta arma.</WeaponAssociatedTechDesc>
+  <WeaponKnown>Conhecido?</WeaponKnown>
+  <WeaponKnownDesc>Indica se a colônia possui o conhecimento necessário para que seus membros produzam e aprendam a utilizar esta arma.</WeaponKnownDesc>
+  <WeaponRequiresTraining>Requer treinamento?</WeaponRequiresTraining>
+  <WeaponRequiresTrainingDesc>Indica se esta arma requer treinamento prévio.</WeaponRequiresTrainingDesc>
 
   <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} aprendeu {1}.</MessageStudyComplete>
@@ -87,6 +101,11 @@
   <EvilWeapon>O personagem não compreende esta arma e tem receio de tocá-la.</EvilWeapon>
   <TechAlreadyKnown>{0} já é algo conhecido.</TechAlreadyKnown>
   <NoWeaponEquipped>Equipamento inválido.</NoWeaponEquipped>
+  <NoBooksToScan>Não há livros a escanear.</NoBooksToScan>
+  <NoAvailableServer>Não há servidores disponíveis na rede da colônia.</NoAvailableServer>
+  <ForbiddenAssignment>Os projetos designados não são permitidos aqui.</ForbiddenAssignment>
+  <NoAssignment>Nenhum projeto foi designado para {0_nameDef}. Utilize o menu principal de Pesquisa.</NoAssignment>
+  <ShootingRangeObstructed>Área de tiro obstruída.</ShootingRangeObstructed>
 
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} não conseguiu entender como {1_definite} funciona.</WeaponTestFail>

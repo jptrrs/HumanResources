@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  
+
   <!--UI-->
   <TabKnowledge>Tech</TabKnowledge>
   <TabKnowledgeTitle>Conhecimentos</TabKnowledgeTitle>
@@ -11,10 +11,14 @@
   <ShowAvailable>Mostrar tecnologias disponíveis para serem aprendidas.</ShowAvailable>
   <ShowCompact>Vizualização compacta.</ShowCompact>
   <ShowAssignment>Mostrar tarefas.</ShowAssignment>
+  <ClearAssignments>Cancelar todas as tarefas.</ClearAssignments>
+  <GroupBySkills>Agrupar por habilidade.</GroupBySkills>
+  <ClickToGroupAssign>Marcar todas estas tecnologias ao mesmo tempo.</ClickToGroupAssign>
   <Expand>Expandir</Expand>
   <Collapse>Recolher</Collapse>
   <TabCatalogue>Catálogo</TabCatalogue>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
+  <AvailableOnNetwork>{0} tecnologias online</AvailableOnNetwork>
   <ClickToAssignForStudying>Botão esquerdo para marcar para estudo.</ClickToAssignForStudying>
   <ClickToAssignForDocumentation>Botão esquerdo para marcar para documentação.</ClickToAssignForDocumentation>
   <ClickToUnassign>Botão esquerdo para desmarcar.</ClickToUnassign>
@@ -24,6 +28,9 @@
   <AssignedToStudy>{0} foi encarregado de estudar isto.</AssignedToStudy>
   <AssignedToDocument>{0} foi encarregado de documentar isto.</AssignedToDocument>
   <ClickToRemove>clique para remover</ClickToRemove>
+  <bookFromStart>Conhecimento inicial para {0}.</bookFromStart>
+  <bookInLibrary>Arquivado em nossa biblioteca.</bookInLibrary>
+  <bookInDatabase>Arquivado em nosso banco de dados.</bookInDatabase>
 
   <!--Settings-->
   <TechPoolModeTitle>Conhecimento gerado a partir...</TechPoolModeTitle>
@@ -70,6 +77,12 @@
   <BookManual>Manual de {0}</BookManual>
   <BookTheory>Teoria de {0}</BookTheory>
   <BookDatabase>Banco de dados sobre {0}</BookDatabase>
+  <WeaponAssociatedTech>Tecnologia de base</WeaponAssociatedTech>
+  <WeaponAssociatedTechDesc>A tecnologia que uma colônia (ou colono) necessita para poder aprender a utilizar esta arma.</WeaponAssociatedTechDesc>
+  <WeaponKnown>Conhecido?</WeaponKnown>
+  <WeaponKnownDesc>Indica se a colônia possui o conhecimento necessário para que seus membros produzam e aprendam a utilizar esta arma.</WeaponKnownDesc>
+  <WeaponRequiresTraining>Requer treinamento?</WeaponRequiresTraining>
+  <WeaponRequiresTrainingDesc>Indica se esta arma requer treinamento prévio.</WeaponRequiresTrainingDesc>
 
   <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} aprendeu {1}.</MessageStudyComplete>
@@ -93,6 +106,11 @@
   <EvilWeapon>O personagem não compreende esta arma e tem receio de tocá-la.</EvilWeapon>
   <TechAlreadyKnown>{0} já é algo conhecido.</TechAlreadyKnown>
   <NoWeaponEquipped>Equipamento inválido.</NoWeaponEquipped>
+  <NoBooksToScan>Não há livros para escanear.</NoBooksToScan>
+  <NoAvailableServer>Não há servidores disponíveis na rede da colônia.</NoAvailableServer>
+  <ForbiddenAssignment>Os projetos designados não são permitidos aqui.</ForbiddenAssignment>
+  <NoAssignment>Nenhum projeto foi designado para {0_nameDef}. Utilize o menu principal de Pesquisa.</NoAssignment>
+  <ShootingRangeObstructed>Área de tiro obstruída.</ShootingRangeObstructed>
 
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} não conseguiu entender como {1_definite} funciona.</WeaponTestFail>
@@ -102,10 +120,9 @@
   <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} sofreu um acidente ao tentar usar {WEAPON_definite} e saiu {TESTER_gender ? ferido : ferida} ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
   <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} falhou completamente ao tentar usar {WEAPON_definite}. {TESTER_pronoun} foi {TESTER_gender ? ferido : ferida} e a arma foi destruída. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
 
-
   <!--Go Explore-->
   <LetterResearchRequest_SuccessHR>A investigação foi um sucesso. Trabalhando juntos vocês avançaram no entendimento de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_SuccessHR>
   <LetterResearchRequest_TriumphHR>A investigação foi um triunfo! Trabalhando juntos você conseguiram desvendar todos os segredos de {2}.\n\nRelações com {0} melhoraram em {1}.</LetterResearchRequest_TriumphHR>
   <ResearchRequestXPGainHR>{0}, seu investigador, adquiriu uma conhecimentos valiosos acerca de {1} e ganhou {2} em experiência intelectual.</ResearchRequestXPGainHR>
   
-</LanguageData> 
+</LanguageData>

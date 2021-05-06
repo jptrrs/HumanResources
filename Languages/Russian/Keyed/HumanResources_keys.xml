@@ -11,7 +11,10 @@
 	<ShowAvailable>Отображать доступные для изучения технологии</ShowAvailable>
 	<ShowCompact>Компактный вид</ShowCompact>
 	<ShowAssignment>Отображать назначения</ShowAssignment>
-	<Expand>Развернуть</Expand>
+  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
+  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
+  <Expand>Развернуть</Expand>
 	<Collapse>Свернуть</Collapse>
 	<TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
@@ -25,7 +28,7 @@
 	<AssignedToStudy>{0} {0_gender ? назначен : назначена} для изучения этой технологии</AssignedToStudy>
 	<AssignedToDocument>{0} {0_gender ? назначен : назначена} для документирования этой технологии</AssignedToDocument>
 	<ClickToRemove>нажмите, чтобы отменить</ClickToRemove>
-	<bookFromStart>Базовое знание ({0}).</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
+	<bookFromStart>Базовое знание ({0}).</bookFromStart>
 	<bookInLibrary>В архиве библиотеки.</bookInLibrary>
 	<bookInDatabase>В облачном хранилище.</bookInDatabase>
 
@@ -98,29 +101,22 @@
 	<DoesntKnowHowToRepair>{0_nameDef} не знает, как починить {1} (требуется «{2}»).</DoesntKnowHowToRepair>
 	<DoesntKnowHowToCraft>{0_nameDef} не знает, как {1} (требуется «{2}»).</DoesntKnowHowToCraft>
 	<DoesntKnowThisPlant>{0_nameDef} не знает, как выращивать {1} (требуется «{2}»).</DoesntKnowThisPlant>
-	<!-- Pawn has not been trained to use this weapon -->
 	<UnknownWeapon>необходимо сперва обучиться владению этим оружием</UnknownWeapon>
-	<!-- Pawn cannot comprehend this weapon and is scared of it -->
 	<EvilWeapon>необходимо сперва изучить соответствующую технологию</EvilWeapon>
 	<TechAlreadyKnown>Технология «{0_label}» уже известна.</TechAlreadyKnown>
 	<NoWeaponEquipped>Неподходящий тип оружия.</NoWeaponEquipped>
 	<NoBooksToScan>Нет книг для сканирования.</NoBooksToScan>
 	<NoAvailableServer>В сети нет доступных серверов.</NoAvailableServer>
 	<ForbiddenAssignment>Назначенный проект слишком сложный, чтобы работать над ним за этим столом.</ForbiddenAssignment>
-	<!-- {0_nameDef} was not assigned any projects. Use the main Research tab. -->
 	<NoAssignment>У поселенца нет назначенных проектов. Используйте вкладку «Технологии».</NoAssignment>
 	<ShootingRangeObstructed>Требуется свободная линия обзора.</ShootingRangeObstructed>
 
 	<!--weapon testing -->
 	<WeaponTestFail>{0_nameDef} не {0_gender ? смог : смогла } понять, как работает {1_definite}.</WeaponTestFail>
 	<FearedWeapon>{0_nameDef} уже {0_gender ? испытывал : испытывала } это оружие прежде, что привело к печальным последствиям.</FearedWeapon>
-
 	<LetterLabelWeaponTestFailed>Инцидент ({WEAPON})</LetterLabelWeaponTestFailed>
-	<!-- {TESTER_labelShort} has damaged {WEAPON_definite} while trying to use it ({RECIPE_label}). -->
 	<MessageWeaponTestFailureMinor>{TESTER_labelShort} {TESTER_gender ? повредил : повредила } оружие «{WEAPON_definite}», пока {TESTER_gender ? пытался : пыталась } с ним экспериментировать.</MessageWeaponTestFailureMinor> 
-	<!-- {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}). -->
 	<MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} {TESTER_gender ? получил : получила } травму в результате несчастного случая, произошедшего во время экспериментирования с оружием «{WEAPON_definite}».</MessageWeaponTestFailureCatastrophic>
-	<!-- {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}). -->
 	<MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} {TESTER_gender ? допустил : допустила } серьёзную оплошность во время экспериментирования с оружием.\nРезультат: {TESTER_labelShort} получает увечье, {WEAPON_definite} разваливается на части.</MessageMedicalWeaponTestFailureRidiculous>
 
 	<!--Go Explore-->

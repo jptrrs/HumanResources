@@ -21,6 +21,9 @@
   <ShowCompact>小窗視圖</ShowCompact>
   <!--EN: Show assignments.-->
   <ShowAssignment>顯示被分配的任務</ShowAssignment>
+  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
+  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
   <!--EN: Expand-->
   <Expand>擴展</Expand>
   <!--EN: Collapse-->
@@ -29,6 +32,7 @@
   <TabCatalogue>目錄</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{1}個書架上有{0}本書</AvailableBooksReport>
+  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
   <!--EN: Left-click to assign for studying.-->
   <ClickToAssignForStudying>左鍵點擊以命令該殖民者學習此科技。</ClickToAssignForStudying>
   <!--EN: Left-click to assign for documentation.-->
@@ -47,6 +51,10 @@
   <AssignedToDocument>{0}被下令將撰寫該科技的技術書。</AssignedToDocument>
   <!--EN: click to remove-->
   <ClickToRemove>左鍵單擊以撤銷該任務</ClickToRemove>
+  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart>
+  <!--"0" here is either the scenario or the player faction's name-->
+  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
+  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
 
   <!--Settings-->
   
@@ -135,6 +143,13 @@
   <BookTheory>{0} 理論</BookTheory>
   <!--EN: {0} Database-->
   <BookDatabase>{0} 數據庫</BookDatabase>
+  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
+  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
+  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
+  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
+  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
+  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
+
 
   <!--Feedback-->
   
@@ -180,7 +195,13 @@
   <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
   <!--EN: Invalid equipment.-->
   <NoWeaponEquipped>任務分配無效。</NoWeaponEquipped>
-  
+  <!--NEW--><NoBooksToScan>No books to scan.</NoBooksToScan>
+  <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
+  <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
+  <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
+  <!--NEW--><ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
+
+
   <!--weapon testing -->
   
   <!--EN: {0_nameDef} couldn't figure out how {1_definite} works.-->
