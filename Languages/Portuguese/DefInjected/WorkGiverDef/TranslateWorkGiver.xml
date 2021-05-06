@@ -2,23 +2,27 @@
 <LanguageData>
   
   <DocumentTech.label>Documentar tecnologias</DocumentTech.label>
-  <DocumentTech.gerund>escrevendo</DocumentTech.gerund>
   <DocumentTech.verb>escrever</DocumentTech.verb>
+  <DocumentTech.gerund>escrevendo</DocumentTech.gerund>
   
   <LearnTech.label>Estudar tecnologias</LearnTech.label>
-  <LearnTech.gerund>estudando</LearnTech.gerund>
   <LearnTech.verb>estudar</LearnTech.verb>
-  
+  <LearnTech.gerund>estudando</LearnTech.gerund>
+
+  <ScanBook.label>Escanear Livros</ScanBook.label>
+  <ScanBook.verb>escanear</ScanBook.verb>
+  <ScanBook.gerund>escanendo</ScanBook.gerund>
+
   <TrainWeapon.label>Treinar uma arma</TrainWeapon.label>
   <TrainWeapon.gerund>treinando</TrainWeapon.gerund>
   <TrainWeapon.verb>treinar</TrainWeapon.verb>
-  
-  <PracticeShooting.label>Praticar tiro</PracticeShooting.label>
-  <PracticeShooting.gerund>praticando</PracticeShooting.gerund>
-  <PracticeShooting.verb>praticar</PracticeShooting.verb>
-  
-  <PracticeMelee.label>Praticar combate corpo-a-corpo</PracticeMelee.label>
-  <PracticeMelee.gerund>praticando</PracticeMelee.gerund>
-  <PracticeMelee.verb>praticar</PracticeMelee.verb>
-  
+    
+  <PracticeWeapon.label>Praticar com armas</PracticeWeapon.label>
+  <PracticeWeapon.verb>praticar</PracticeWeapon.verb>
+  <PracticeWeapon.gerund>praticando</PracticeWeapon.gerund>
+
+  <ExperimentWeapon.label>Experimentar com armas</ExperimentWeapon.label>
+  <ExperimentWeapon.verb>experimentar</ExperimentWeapon.verb>
+  <ExperimentWeapon.gerund>experimentando</ExperimentWeapon.gerund>
+
 </LanguageData>

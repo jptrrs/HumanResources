@@ -1,8 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <!--EN: technic-->
-  <Technic.label>技術</Technic.label>
-
+  <!--EN: neolithic-->
+  <Neolithic.label>石器時代</Neolithic.label>
+  <!--EN: medieval-->
+  <Medieval.label>中世時代</Medieval.label>
+  <!--EN: industrial-->
+  <Industrial.label>産業時代</Industrial.label>
+  <!--EN: spacer-->
+  <Spacer.label>宇宙時代</Spacer.label>
+  <!--EN: ultra-->
+  <Ultra.label>ウルトラ時代</Ultra.label>
+  <!--EN: archotech-->
+  <Archotech.label>アルコテック</Archotech.label>
 
 </LanguageData>

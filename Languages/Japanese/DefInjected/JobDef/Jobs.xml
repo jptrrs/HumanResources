@@ -1,18 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <!--Review: No need for "TargetB"-->
   <!--EN: learning TargetB.-->
   <LearnTech.reportString>TargetBを学習している。</LearnTech.reportString>
   <!--EN: documenting TargetB.-->
   <DocumentTech.reportString>TargetBを文書化している。</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>TargetBを文書化している。</DocumentTechDigital.reportString>
   <!--EN: researching TargetB.-->
   <ResearchTech.reportString>TargetBを研究している。</ResearchTech.reportString>
   <!--EN: practicing TargetB.-->
+  <!--NEW-->
+  <ScanBook.reportString>scanning</ScanBook.reportString>
   <TrainWeapon.reportString>TargetBを練習している。</TrainWeapon.reportString>
-
   <!--NeW-->
   <!--EN: training melee.-->
   <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
+  <!--NeW-->
   <!--EN: training shooting.-->
   <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
 

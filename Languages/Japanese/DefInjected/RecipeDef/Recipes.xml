@@ -8,13 +8,26 @@
   <LearnTech.description>新しいテクノロジーに関する知識を得るために、本を勉強する。</LearnTech.description>
   <!--EN: Studying a new technology.-->
   <LearnTech.jobString>新しいテクノロジーを学習している。</LearnTech.jobString>
+  
+  <!--EN: Study technology-->
+  <LearnTechDigital.label>テクノロジーを学習する</LearnTechDigital.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTechDigital.description>新しいテクノロジーに関する知識を得るために、本を勉強する。</LearnTechDigital.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTechDigital.jobString>新しいテクノロジーを学習している。</LearnTechDigital.jobString>
 
   <!--EN: Document technology-->
   <DocumentTech.label>テクノロジーを文書化する</DocumentTech.label>
-  <!--EN: Consolidate knowledge into a technical book.-->
+  <!--CHANGED-->
+  <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
   <DocumentTech.description>脳内の知識を専門書にする。</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>テクノロジーを文書化している。</DocumentTech.jobString>
+
+  <!--NEW-->
+  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
 
   <!--EN: Research technologie-->
   <ResearchTech.label>テクノロジーを研究する</ResearchTech.label>
@@ -37,8 +50,14 @@
   <!--EN: Training to use a melee weapon.-->
   <TrainWeaponMelee.jobString>近接武器の使い方を練習している。</TrainWeaponMelee.jobString>
 
+  <!--NEW-->
+  <ExperimentWeaponShooting.label>Experiment with unknown weapon</ExperimentWeaponShooting.label>
+  <ExperimentWeaponShooting.description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponShooting.description>
+  <ExperimentWeaponShooting.jobString>Experimenting with a ranged weapon.</ExperimentWeaponShooting.jobString>
 
-  <!-- From ItchyFlea's Practise Target -->
+  <ExperimentWeaponMelee.label>Experiment with unknown weapon</ExperimentWeaponMelee.label>
+  <ExperimentWeaponMelee.description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponMelee.description>
+  <ExperimentWeaponMelee.jobString>Experimenting with a melee weapon.</ExperimentWeaponMelee.jobString>
 
   <!--EN: Practice shooting-->
   <PracticeShooting.label>射撃を練習する</PracticeShooting.label>

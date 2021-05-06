@@ -8,13 +8,26 @@
   <LearnTech.description>Étudier pour acquérir des connaissances à propos d'une technologie.</LearnTech.description>
   <!--EN: Studying a new technology.-->
   <LearnTech.jobString>Étudie une technologie.</LearnTech.jobString>
+  
+  <!--EN: Study technology-->
+  <LearnTechDigital.label>Étudier la technologie</LearnTechDigital.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTechDigital.description>Étudier pour acquérir des connaissances à propos d'une technologie.</LearnTechDigital.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTechDigital.jobString>Étudie une technologie.</LearnTechDigital.jobString>
 
   <!--EN: Document technology-->
   <DocumentTech.label>Documenter la technologie</DocumentTech.label>
-  <!--EN: Consolidate knowledge into a technical book.-->
+  <!--CHANGED-->
+  <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
   <DocumentTech.description>Entériner la connaissance en rédigeant un texte technique.</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>Documente une technologie</DocumentTech.jobString>
+
+  <!--NEW-->
+  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
 
   <!--EN: Research technologie-->
   <ResearchTech.label>Rechercher la technologie</ResearchTech.label>
@@ -37,8 +50,14 @@
   <!--EN: Training to use a melee weapon.-->
   <TrainWeaponMelee.jobString>S'entraîne au corps-à-corps.</TrainWeaponMelee.jobString>
 
+  <!--NEW-->
+  <ExperimentWeaponShooting.label>Experiment with unknown weapon</ExperimentWeaponShooting.label>
+  <ExperimentWeaponShooting.description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponShooting.description>
+  <ExperimentWeaponShooting.jobString>Experimenting with a ranged weapon.</ExperimentWeaponShooting.jobString>
 
-  <!-- From ItchyFlea's Practise Target -->
+    <ExperimentWeaponMelee.label>Experiment with unknown weapon</ExperimentWeaponMelee.label>
+  <ExperimentWeaponMelee.description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponMelee.description>
+  <ExperimentWeaponMelee.jobString>Experimenting with a melee weapon.</ExperimentWeaponMelee.jobString>
 
   <!--EN: Practice shooting-->
   <PracticeShooting.label>S'netraîner au tir</PracticeShooting.label>

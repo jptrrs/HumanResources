@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<Neolithic.label>уровня неолит</Neolithic.label>
+	<Medieval.label>средневекового уровня</Medieval.label>
+	<Industrial.label>индустриального уровня</Industrial.label>
+	<Spacer.label>космического уровня</Spacer.label>
+	<Ultra.label>утопического уровня</Ultra.label>
+	<Archotech.label>уровня архотек</Archotech.label>
+
+</LanguageData>

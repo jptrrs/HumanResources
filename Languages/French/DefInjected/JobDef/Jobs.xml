@@ -5,14 +5,17 @@
   <LearnTech.reportString>Apprend</LearnTech.reportString>
   <!--EN: documenting-->
   <DocumentTech.reportString>Documente</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>Documente</DocumentTechDigital.reportString>
   <!--EN: researching-->
   <ResearchTech.reportString>Recherche</ResearchTech.reportString>
+  <!--NEW-->
+  <ScanBook.reportString>scanning</ScanBook.reportString>
   <!--EN: practicing-->
   <TrainWeapon.reportString>S'entraîne avec</TrainWeapon.reportString>
-
-  <!--NeW-->
+  <!--NEW-->
   <!--EN: training melee.-->
   <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
+  <!--NEW-->
   <!--EN: training shooting.-->
   <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
 

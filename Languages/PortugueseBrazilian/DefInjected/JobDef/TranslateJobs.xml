@@ -2,7 +2,9 @@
 <LanguageData>
   <LearnTech.reportString>aprendendo.</LearnTech.reportString>
   <DocumentTech.reportString>documentando.</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>documentando.</DocumentTechDigital.reportString>
   <ResearchTech.reportString>pesquisando.</ResearchTech.reportString>
+  <ScanBook.reportString>escaneando</ScanBook.reportString>
   <TrainWeapon.reportString>praticando.</TrainWeapon.reportString>
   <PlayAtDummy.reportString>praticando luta corpo-a-corpo.</PlayAtDummy.reportString>
   <PlayAtTarget.reportString>praticando tiro.</PlayAtTarget.reportString>

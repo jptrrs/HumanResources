@@ -4,13 +4,22 @@
   <StudyDesk.label>Escrivaninha</StudyDesk.label>
   <StudyDesk.description>Uma mesa para estudar e pesquisar tecnologias. Acompanha todo o conhecimento inicial da sua facção</StudyDesk.description>
 
+  <NetworkTerminal.label>Terminal de Rede</NetworkTerminal.label>
+  <NetworkTerminal.description>Um ponto de acesso para transmissão de conhecimento entre os colonos e o banco de dados central. Inclui "Paciência" pré-instalado.</NetworkTerminal.description>
+
   <BookShelf.label>Estante</BookShelf.label>
   <BookShelf.description>Uma estante robusta para armazenar conhecimento na forma de livros.</BookShelf.description>
+
+  <NetworkServer.label>Servidor de Rede</NetworkServer.label>
+  <NetworkServer.description>Uma unidade de armazenamento definitiva para hospedar seu banco de dados central na nuvem. Inclui todo o espaço de biblioteca que você pode precisar.</NetworkServer.description>
 
   <UnfinishedTechBook.label>livro técnico inacabado</UnfinishedTechBook.label>
 
   <TechBook.label>Livro Técnico</TechBook.label>
   <TechBook.description>Um livro cheio de conhecimentos.</TechBook.description>
+
+  <TechDrive.label>Drive com tecnologia</TechDrive.label>
+  <TechDrive.description>Um disco rígido recheado com conhecimento. Pode ser arquivado apenas em um terminal de rede.</TechDrive.description>
 
   <Target.label>Alvo</Target.label>
   <Target.description>Um estande de tiro para seus atiradores desenvolverem suas habilidades.</Target.description>

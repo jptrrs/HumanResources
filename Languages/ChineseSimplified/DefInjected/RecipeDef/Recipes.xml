@@ -8,13 +8,26 @@
   <LearnTech.description>学习以获取有关新科技的知识。</LearnTech.description>
   <!--EN: Studying a new technology.-->
   <LearnTech.jobString>正在学习一项新科技。</LearnTech.jobString>
+  
+  <!--EN: Study technology-->
+  <LearnTechDigital.label>学习科技</LearnTechDigital.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTechDigital.description>学习以获取有关新科技的知识。</LearnTechDigital.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTechDigital.jobString>正在学习一项新科技。</LearnTechDigital.jobString>
 
   <!--EN: Document technology-->
   <DocumentTech.label>记录科技</DocumentTech.label>
-  <!--EN: Consolidate knowledge into a technical book.-->
+  <!--CHANGED-->
+  <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
   <DocumentTech.description>将脑中知识化作技术书。</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>正在记录一项科技。</DocumentTech.jobString>
+
+  <!--NEW-->
+  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
 
   <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>学习使用远程武器</TrainWeaponShooting.label>
@@ -43,8 +56,6 @@
   <ExperimentWeaponMelee.description>试用一把未知的近战武器，在对内部工作原理不求甚解的情况下尝试掌握其操控方法。风险极大。</ExperimentWeaponMelee.description>
   <!--EN: Experimenting with a melee weapon.-->
   <ExperimentWeaponMelee.jobString>正在试用未知的近战武器。</ExperimentWeaponMelee.jobString>
-
-  <!-- From ItchyFlea's Practise Target -->
 
   <!--EN: Practice shooting-->
   <PracticeWeaponShooting.label>练习射击</PracticeWeaponShooting.label>

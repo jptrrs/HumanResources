@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
-  <LearnTech.reportString>a aprender TargetA.</LearnTech.reportString>
-  <DocumentTech.reportString>a documentar TargetA.</DocumentTech.reportString>
-  <ResearchTech.reportString>a pesquisar TargetA.</ResearchTech.reportString>
-  <TrainWeapon.reportString>a praticar TargetA.</TrainWeapon.reportString>
+  <LearnTech.reportString>a aprender.</LearnTech.reportString>
+  <DocumentTech.reportString>a documentar.</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>documentando.</DocumentTechDigital.reportString>
+  <ResearchTech.reportString>a pesquisar.</ResearchTech.reportString>
+  <ScanBook.reportString>a escanear</ScanBook.reportString>
+  <TrainWeapon.reportString>a praticar.</TrainWeapon.reportString>
   <PlayAtDummy.reportString>a praticar combate corpo-a-corpo.</PlayAtDummy.reportString>
   <PlayAtTarget.reportString>a praticar tiro.</PlayAtTarget.reportString>
 

@@ -5,12 +5,13 @@
   <LearnTech.reportString>正在学习</LearnTech.reportString>
   <!--EN: documenting-->
   <DocumentTech.reportString>正在记录</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>正在记录</DocumentTechDigital.reportString>
   <!--EN: researching-->
   <ResearchTech.reportString>正在研究</ResearchTech.reportString>
+  <!--NEW-->
+  <ScanBook.reportString>scanning</ScanBook.reportString>
   <!--EN: training weapon-->
   <TrainWeapon.reportString>正在练习使用武器</TrainWeapon.reportString>
-  
-  <!--From ItchyFlea's Practise Target-->
   <!--EN: Training Melee.-->
   <PlayAtDummy.reportString>正在练习使用近战武器。</PlayAtDummy.reportString>
   <!--EN: Training Shooting.-->

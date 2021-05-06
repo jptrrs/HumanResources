@@ -5,13 +5,25 @@
   <LearnTech.description>Estudar para aprender uma tecnologia nova.</LearnTech.description>
   <LearnTech.jobString>Estudando uma tecnologia nova.</LearnTech.jobString>
 
+  <LearnTechDigital.label>estudar tecnologia</LearnTechDigital.label>
+  <LearnTechDigital.description>Estudar para aprender uma tecnologia nova.</LearnTechDigital.description>
+  <LearnTechDigital.jobString>Estudando uma tecnologia nova.</LearnTechDigital.jobString>
+
   <DocumentTech.label>documentar tecnologia</DocumentTech.label>
-  <DocumentTech.description>Consolidar conhecimentos em um livro técnico</DocumentTech.description>
+  <DocumentTech.description>Consolidar conhecimentos em um livro técnico. (Limitado a tecnologias industriais aqui.)</DocumentTech.description>
   <DocumentTech.jobString>Documentando uma tecnologia</DocumentTech.jobString>ExperimentWeapon
+
+  <DocumentTechDigital.label>documentar tecnologia</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Consolidar conhecimento em uma mídia de aprendizado digital e acrescentá-la ao banco de dados central.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documentando uma tecnologia</DocumentTechDigital.jobString>
 
   <ResearchTech.label>Pesquisar tecnologias</ResearchTech.label>
   <ResearchTech.description>Expandir a fronteira do conhecimento pesquisando novas tecnologias.</ResearchTech.description>
   <ResearchTech.jobString>Pesquisando uma tecnologia</ResearchTech.jobString>
+
+  <ScanBook.label>escanear um livro</ScanBook.label>
+  <ScanBook.description>Escanear livros existentes e incorporar seu conteúdo ao banco de dados central.</ScanBook.description>
+  <ScanBook.jobString>Escaneando um livro.</ScanBook.jobString>
 
   <TrainWeaponShooting.label>Treinar para atirar com uma arma</TrainWeaponShooting.label>
   <TrainWeaponShooting.description>Treinar com uma arma até se tornar proficiente nela.</TrainWeaponShooting.description>

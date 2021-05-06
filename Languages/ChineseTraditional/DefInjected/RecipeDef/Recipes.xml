@@ -8,13 +8,26 @@
   <LearnTech.description>學習以獲取有關新科技的知識。</LearnTech.description>
   <!--EN: Studying a new technology.-->
   <LearnTech.jobString>正在學習一項新科技。</LearnTech.jobString>
+  
+  <!--EN: Study technology-->
+  <LearnTechDigital.label>學習科技</LearnTechDigital.label>
+  <!--EN: Study to acquire knowledge about a new technology.-->
+  <LearnTechDigital.description>學習以獲取有關新科技的知識。</LearnTechDigital.description>
+  <!--EN: Studying a new technology.-->
+  <LearnTechDigital.jobString>正在學習一項新科技。</LearnTechDigital.jobString>
 
   <!--EN: Document technology-->
   <DocumentTech.label>記錄科技</DocumentTech.label>
-  <!--EN: Consolidate knowledge into a technical book.-->
+  <!--CHANGED-->
+  <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
   <DocumentTech.description>將腦中知識化作技術書。</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>正在記錄一項科技。</DocumentTech.jobString>
+
+  <!--NEW-->
+  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
 
   <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>學習使用遠端武器</TrainWeaponShooting.label>

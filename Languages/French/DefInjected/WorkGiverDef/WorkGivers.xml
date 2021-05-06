@@ -15,6 +15,11 @@
   <!--EN: studying at-->
   <LearnTech.gerund>étudie à</LearnTech.gerund>
 
+  <!--NEW-->
+  <ScanBook.label>Scan Books</ScanBook.label>
+  <ScanBook.verb>scan</ScanBook.verb>
+  <ScanBook.gerund>scanning at</ScanBook.gerund>
+
   <!--EN: Learn weapon use-->
   <TrainWeapon.label>Apprendre l'usage d'une arme</TrainWeapon.label>
   <!--EN: train-->
@@ -22,19 +27,29 @@
   <!--EN: training-->
   <TrainWeapon.gerund>s'entraîne avec une arme</TrainWeapon.gerund>
 
-  <!--EN: shooting practice-->
+  <!--NEW-->
+  <PracticeWeapon.label>Weapon practice</PracticeWeapon.label>
+  <PracticeWeapon.verb>train</PracticeWeapon.verb>
+  <PracticeWeapon.gerund>training</PracticeWeapon.gerund>
+
+  <!--NEW-->
+  <ExperimentWeapon.label>Weapon experimenting</ExperimentWeapon.label>
+  <ExperimentWeapon.verb>train</ExperimentWeapon.verb>
+  <ExperimentWeapon.gerund>training</ExperimentWeapon.gerund>
+
+  <!--EN: shooting practice--><!--
   <PracticeShooting.label>Entraînement au tir</PracticeShooting.label>
-  <!--EN: train-->
+  --><!--EN: train--><!--
   <PracticeShooting.verb>s'entraîner au tir</PracticeShooting.verb>
-  <!--EN: training-->
+  --><!--EN: training--><!--
   <PracticeShooting.gerund>s'entraîne au tir</PracticeShooting.gerund>
 
-  <!--EN: melee practice-->
+  --><!--EN: melee practice--><!--
   <PracticeMelee.label>S'entraîner au corps-à-corps</PracticeMelee.label>
-  <!--EN: train-->
+  --><!--EN: train--><!--
   <PracticeMelee.verb>s'entraîner au corps-à-corps</PracticeMelee.verb>
-  <!--EN: training-->
-  <PracticeMelee.gerund>S'entraîne au corps-à-corps</PracticeMelee.gerund>
+  --><!--EN: training--><!--
+  <PracticeMelee.gerund>S'entraîne au corps-à-corps</PracticeMelee.gerund>-->
 
 
 </LanguageData>

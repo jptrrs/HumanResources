@@ -385,65 +385,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{074C9151
 		Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml = Languages\PortugueseBrazilian\Keyed\HumanResources_keys.xml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Russian", "Russian", "{70A40F66-0D3F-4BA2-B37A-AA019993295E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{A5746C9E-E364-43F6-8963-9150A791657B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{14C07F19-5621-4690-BD67-85C5950F291B}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\JobDef\Jobs.xml = Languages\Russian\DefInjected\JobDef\Jobs.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RecipeDef", "RecipeDef", "{3D3CD81C-8791-442B-8CA5-9AF6EF333529}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\RecipeDef\Recipes.xml = Languages\Russian\DefInjected\RecipeDef\Recipes.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RoomRoleDef", "RoomRoleDef", "{9D11476D-59BB-44B5-B2AC-FF5C01DB3982}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\RoomRoleDef\Rooms.xml = Languages\Russian\DefInjected\RoomRoleDef\Rooms.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScenPartDef", "ScenPartDef", "{A65CCF6D-8E83-4D7F-9188-BD55AB6118F9}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\ScenPartDef\ScenParts.xml = Languages\Russian\DefInjected\ScenPartDef\ScenParts.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StuffCategoryDef", "StuffCategoryDef", "{65CEECDA-50C3-41EC-9F63-2BD3C7C76232}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\StuffCategoryDef\StuffCategories.xml = Languages\Russian\DefInjected\StuffCategoryDef\StuffCategories.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThingCategoryDef", "ThingCategoryDef", "{6BAD1369-C330-4B80-9449-146982547CA8}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\ThingCategoryDef\ThingCategories.xml = Languages\Russian\DefInjected\ThingCategoryDef\ThingCategories.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThingDef", "ThingDef", "{2787D94D-978E-406E-9C6D-AC270F2ADB5C}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\ThingDef\Things.xml = Languages\Russian\DefInjected\ThingDef\Things.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraderKindDef", "TraderKindDef", "{D649F597-1A25-447D-AA2D-8006D06DF797}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\TraderKindDef\TraderKinds.xml = Languages\Russian\DefInjected\TraderKindDef\TraderKinds.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkGiverDef", "WorkGiverDef", "{B665B8C7-600D-44A7-884A-FDE7E1069B97}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\WorkGiverDef\WorkGivers.xml = Languages\Russian\DefInjected\WorkGiverDef\WorkGivers.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkTypeDef", "WorkTypeDef", "{F5CB9120-564E-464C-B11A-891A5BD9CC29}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\DefInjected\WorkTypeDef\WorkTypes.xml = Languages\Russian\DefInjected\WorkTypeDef\WorkTypes.xml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{5FDE203C-D8D4-409C-87C9-03D4C7173788}"
-	ProjectSection(SolutionItems) = preProject
-		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{3371D14E-3D2F-4229-9809-B0594F29FF8D}"
 	ProjectSection(SolutionItems) = preProject
 		Patches\Patches.xml = Patches\Patches.xml
@@ -579,6 +520,65 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F80C419B-29EA-
 		Textures\UI\write.png = Textures\UI\write.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Russian", "Russian", "{C70089AB-5A29-4787-B2E1-70F01CE4CD76}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{49A6B8A1-4AAF-41A5-82CE-FAD49249098A}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\JobDef\Jobs.xml = Languages\Russian\DefInjected\JobDef\Jobs.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RecipeDef", "RecipeDef", "{E80713E8-FF93-434C-9EF6-6B0703B89579}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\RecipeDef\Recipes.xml = Languages\Russian\DefInjected\RecipeDef\Recipes.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RoomRoleDef", "RoomRoleDef", "{D2806F19-87ED-4DD0-BC2D-62505E44005E}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\RoomRoleDef\Rooms.xml = Languages\Russian\DefInjected\RoomRoleDef\Rooms.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScenPartDef", "ScenPartDef", "{E4AD2AFA-0BF0-4DA5-9239-AEE66B6F6179}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\ScenPartDef\ScenParts.xml = Languages\Russian\DefInjected\ScenPartDef\ScenParts.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StuffCategoryDef", "StuffCategoryDef", "{744C5A03-D642-439D-8AE6-9CBC754DD4EE}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\StuffCategoryDef\StuffCategories.xml = Languages\Russian\DefInjected\StuffCategoryDef\StuffCategories.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThingCategoryDef", "ThingCategoryDef", "{FB4B5635-2C64-4E82-B510-D3925A7BB733}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\ThingCategoryDef\ThingCategories.xml = Languages\Russian\DefInjected\ThingCategoryDef\ThingCategories.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThingDef", "ThingDef", "{24AED87E-B26E-4914-9700-6E452468E92A}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\ThingDef\Things.xml = Languages\Russian\DefInjected\ThingDef\Things.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TraderKindDef", "TraderKindDef", "{F1ABB782-459D-4A90-9056-5F9EA70C2E98}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\TraderKindDef\TraderKinds.xml = Languages\Russian\DefInjected\TraderKindDef\TraderKinds.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkGiverDef", "WorkGiverDef", "{F5DDEEF5-8150-41DA-8C56-18924E66AFF6}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\WorkGiverDef\WorkGivers.xml = Languages\Russian\DefInjected\WorkGiverDef\WorkGivers.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkTypeDef", "WorkTypeDef", "{A48BB53B-1904-4F48-A364-85DCEDD4EC52}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\DefInjected\WorkTypeDef\WorkTypes.xml = Languages\Russian\DefInjected\WorkTypeDef\WorkTypes.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyed", "Keyed", "{501A09B3-F38A-4AB6-ABB9-AEE256AEA87C}"
+	ProjectSection(SolutionItems) = preProject
+		Languages\Russian\Keyed\HumanResources_keys.xml = Languages\Russian\Keyed\HumanResources_keys.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1.1|Any CPU = 1.1|Any CPU
@@ -677,23 +677,23 @@ Global
 		{AFABDB04-E037-4185-8F98-43692728A44F} = {C79277D0-5E1E-4ECF-8609-68CE61E5B625}
 		{620CFAC1-38A0-49B5-A808-C42317B816A2} = {C79277D0-5E1E-4ECF-8609-68CE61E5B625}
 		{074C9151-03BF-4684-8D73-7A6CE7CA2BC1} = {BF2718B6-E311-46DC-9DF0-D45C4B36E497}
-		{70A40F66-0D3F-4BA2-B37A-AA019993295E} = {85441F37-161D-46B6-9A2D-7950A3262593}
-		{A5746C9E-E364-43F6-8963-9150A791657B} = {70A40F66-0D3F-4BA2-B37A-AA019993295E}
-		{14C07F19-5621-4690-BD67-85C5950F291B} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{3D3CD81C-8791-442B-8CA5-9AF6EF333529} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{9D11476D-59BB-44B5-B2AC-FF5C01DB3982} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{A65CCF6D-8E83-4D7F-9188-BD55AB6118F9} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{65CEECDA-50C3-41EC-9F63-2BD3C7C76232} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{6BAD1369-C330-4B80-9449-146982547CA8} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{2787D94D-978E-406E-9C6D-AC270F2ADB5C} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{D649F597-1A25-447D-AA2D-8006D06DF797} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{B665B8C7-600D-44A7-884A-FDE7E1069B97} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{F5CB9120-564E-464C-B11A-891A5BD9CC29} = {A5746C9E-E364-43F6-8963-9150A791657B}
-		{5FDE203C-D8D4-409C-87C9-03D4C7173788} = {70A40F66-0D3F-4BA2-B37A-AA019993295E}
 		{8C6D647A-0CB4-490A-A82E-87AC886E0518} = {91F8C667-F56E-4EDA-B871-9A1E5FAB59B7}
 		{F293C052-2089-4841-818D-426D6EB7F847} = {8C6D647A-0CB4-490A-A82E-87AC886E0518}
 		{15167719-DFD9-4367-A989-6F38434CA6BE} = {8C6D647A-0CB4-490A-A82E-87AC886E0518}
 		{F80C419B-29EA-4987-B874-EB0B4BE2CC84} = {91F8C667-F56E-4EDA-B871-9A1E5FAB59B7}
+		{C70089AB-5A29-4787-B2E1-70F01CE4CD76} = {85441F37-161D-46B6-9A2D-7950A3262593}
+		{ADAD18EC-0280-4B87-900A-84D5EE4BA4C9} = {C70089AB-5A29-4787-B2E1-70F01CE4CD76}
+		{49A6B8A1-4AAF-41A5-82CE-FAD49249098A} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{E80713E8-FF93-434C-9EF6-6B0703B89579} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{D2806F19-87ED-4DD0-BC2D-62505E44005E} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{E4AD2AFA-0BF0-4DA5-9239-AEE66B6F6179} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{744C5A03-D642-439D-8AE6-9CBC754DD4EE} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{FB4B5635-2C64-4E82-B510-D3925A7BB733} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{24AED87E-B26E-4914-9700-6E452468E92A} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{F1ABB782-459D-4A90-9056-5F9EA70C2E98} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{F5DDEEF5-8150-41DA-8C56-18924E66AFF6} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{A48BB53B-1904-4F48-A364-85DCEDD4EC52} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
+		{501A09B3-F38A-4AB6-ABB9-AEE256AEA87C} = {C70089AB-5A29-4787-B2E1-70F01CE4CD76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

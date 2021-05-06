@@ -11,7 +11,6 @@
 	<LearnTechDigital.description>Освоить знания о новой для себя технологии.</LearnTechDigital.description>
 	<LearnTechDigital.jobString>Изучает технологию</LearnTechDigital.jobString>
 
-
 	<!-- Documenting -->
 
 	<DocumentTech.label>документировать технологию</DocumentTech.label>
@@ -22,7 +21,6 @@
 	<!-- Consolidate knowledge into a network learning resource and upload it to the colony database. -->
 	<DocumentTechDigital.description>Задокументировать в электронном виде накопленные знания о конкретной технологии и загрузить их в исследовательскую базу данных.</DocumentTechDigital.description>
 	<DocumentTechDigital.jobString>Документирует технологию</DocumentTechDigital.jobString>
-
 
 	<!-- Scanning -->
 
