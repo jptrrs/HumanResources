@@ -378,11 +378,20 @@ namespace HumanResources
             var text = new StringBuilder();
             text.AppendLine(Tech.description);
             text.AppendLine();
-            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Tech)) text.AppendLine("ClickToUnassign".Translate());
-            else if (!Tech.IsFinished && Tech.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForDocumentation".Translate());
-            else if (Tech.IsFinished && !Tech.IsKnownBy(Pawn)) text.AppendLine("ClickToAssignForStudying".Translate());
+            var leftClick = AppropriateLeftClickTip();
+            if (!leftClick.NullOrEmpty()) text.AppendLine(leftClick.Translate());
             text.AppendLine("RightClickToTree".Translate());
             return text.ToString();
+        }
+
+        private string AppropriateLeftClickTip()
+        {
+            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Tech)) return "ClickToUnassign";
+            var finished = Tech.IsFinished;
+            var known = Tech.IsKnownBy(Pawn);
+            if (!finished && known) return "ClickToAssignForDocumentation";
+            if (finished && !known) return "ClickToAssignForStudying";
+            return null;
         }
 
         private void SetMarked(Rect rect)

@@ -21,7 +21,10 @@
   <ShowCompact>縮小表示</ShowCompact>
   
   <!--NEW--><ShowAssignment>Show assignments.</ShowAssignment>
-
+  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
+  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
+  
   <!--EN: Expand-->
   <Expand>展開</Expand>
   <!--EN: Collapse-->
