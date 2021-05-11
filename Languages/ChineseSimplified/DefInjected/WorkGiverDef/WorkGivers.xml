@@ -15,10 +15,12 @@
   <!--EN: studying at-->
   <LearnTech.gerund>学习</LearnTech.gerund>
 
-  <!--NEW-->
-  <ScanBook.label>Scan Books</ScanBook.label>
-  <ScanBook.verb>scan</ScanBook.verb>
-  <ScanBook.gerund>scanning at</ScanBook.gerund>
+  <!--EN: Scan Books-->
+  <ScanBook.label>扫描资料</ScanBook.label>
+  <!--EN: scan-->
+  <ScanBook.verb>扫描</ScanBook.verb>
+  <!--EN: scanning at-->
+  <ScanBook.gerund>扫描</ScanBook.gerund>
 
   <!--EN: Learn weapon use-->
   <TrainWeapon.label>学习武器的使用方法</TrainWeapon.label>
@@ -27,28 +29,18 @@
   <!--EN: training-->
   <TrainWeapon.gerund>练习</TrainWeapon.gerund>
 
-  <!--NEW-->
-  <PracticeWeapon.label>Weapon practice</PracticeWeapon.label>
-  <PracticeWeapon.verb>train</PracticeWeapon.verb>
-  <PracticeWeapon.gerund>training</PracticeWeapon.gerund>
-
-  <!--NEW-->
-  <ExperimentWeapon.label>Weapon experimenting</ExperimentWeapon.label>
-  <ExperimentWeapon.verb>train</ExperimentWeapon.verb>
-  <ExperimentWeapon.gerund>training</ExperimentWeapon.gerund>
-
-  <!--EN: Weapon practice--><!--
+  <!--EN: Weapon practice-->
   <PracticeWeapon.label>练习武器</PracticeWeapon.label>
-  --><!--EN: train--><!--
+  <!--EN: train-->
   <PracticeWeapon.verb>练习</PracticeWeapon.verb>
-  --><!--EN: training--><!--
+  <!--EN: training-->
   <PracticeWeapon.gerund>练习</PracticeWeapon.gerund>
 
-  --><!--EN: Weapon experimenting--><!--
+  <!--EN: Weapon experimenting-->
   <ExperimentWeapon.label>试用武器</ExperimentWeapon.label>
-  --><!--EN: train--><!--
+  <!--EN: train-->
   <ExperimentWeapon.verb>试用</ExperimentWeapon.verb>
-  --><!--EN: training--><!--
-  <ExperimentWeapon.gerund>试用</ExperimentWeapon.gerund>-->
+  <!--EN: training-->
+  <ExperimentWeapon.gerund>试用</ExperimentWeapon.gerund>
 
 </LanguageData>
