@@ -18,16 +18,24 @@
 
   <!--EN: Document technology-->
   <DocumentTech.label>記錄科技</DocumentTech.label>
-  <!--CHANGED-->
   <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
-  <DocumentTech.description>將腦中知識化作技術書。</DocumentTech.description>
+  <DocumentTech.description>將腦中知識化作技術書。（在這張桌子上，只能記錄工業時代及以前的科技。）</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>正在記錄一項科技。</DocumentTech.jobString>
 
-  <!--NEW-->
-  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
-  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
-  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
+  <!--EN: Document technology-->
+  <DocumentTechDigital.label>錄入科技</DocumentTechDigital.label>
+  <!--EN: Consolidate knowledge into a network learning resource and upload it to the colony database.-->
+  <DocumentTechDigital.description>將腦中知識轉化為線上學習資源，再將其上傳至殖民地資料庫。</DocumentTechDigital.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTechDigital.jobString>正在錄入一項科技。</DocumentTechDigital.jobString>
+
+  <!--EN: Scan books & drives -->
+  <ScanBook.label>掃描書籍或磁碟</ScanBook.label>
+  <!--EN: Scan existing books or drives and upload its contents to the colony database.-->
+  <ScanBook.description>掃描手頭的書籍或磁碟，再將他們上傳至殖民地資料庫。</ScanBook.description>
+  <!--EN: Scanning a book or drive.-->
+  <ScanBook.jobString>正在掃描書籍或磁碟。</ScanBook.jobString>
 
   <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>學習使用遠端武器</TrainWeaponShooting.label>
@@ -57,12 +65,10 @@
   <!--EN: Experimenting with a melee weapon.-->
   <ExperimentWeaponMelee.jobString>正在試用未知的近戰武器。</ExperimentWeaponMelee.jobString>
 
-  <!-- From ItchyFlea's Practise Target -->
-
   <!--EN: Practice shooting-->
   <PracticeWeaponShooting.label>練習射擊</PracticeWeaponShooting.label>
   <!--EN: Shoots at a target to practice shooting accuracy.-->
-  <PracticeWeaponShooting.description>向目標射擊以練習射擊精度。</PracticeWeaponShooting.description>
+  <PracticeWeaponShooting.description>向目標射擊以提升射擊精度。</PracticeWeaponShooting.description>
   <!--EN: Practicing shooting.-->
   <PracticeWeaponShooting.jobString>正在練習射擊。</PracticeWeaponShooting.jobString>
 

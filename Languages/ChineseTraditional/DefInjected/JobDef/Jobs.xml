@@ -5,11 +5,11 @@
   <LearnTech.reportString>正在學習</LearnTech.reportString>
   <!--EN: documenting-->
   <DocumentTech.reportString>正在記錄</DocumentTech.reportString>
-  <DocumentTechDigital.reportString>正在記錄</DocumentTechDigital.reportString>
+  <DocumentTechDigital.reportString>正在錄入</DocumentTechDigital.reportString>
   <!--EN: researching-->
   <ResearchTech.reportString>正在研究</ResearchTech.reportString>
-  <!--NEW-->
-  <ScanBook.reportString>scanning</ScanBook.reportString>
+  <!--EN: scanning-->
+  <ScanBook.reportString>正在掃描</ScanBook.reportString>
   <!--EN: training weapon-->
   <TrainWeapon.reportString>正在練習使用武器</TrainWeapon.reportString>
   <!--EN: Training Melee.-->

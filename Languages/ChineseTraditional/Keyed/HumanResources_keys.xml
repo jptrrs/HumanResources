@@ -14,47 +14,54 @@
   <!--EN: Show melee weapons.-->
   <ShowMelee>顯示近戰武器</ShowMelee>
   <!--EN: Show ranged weapons.-->
-  <ShowRanged>顯示遠程武器</ShowRanged>
+  <ShowRanged>顯示遠端武器</ShowRanged>
   <!--EN: Show techs available to learn.-->
   <ShowAvailable>顯示可供學習的科技</ShowAvailable>
   <!--EN: Compact view.-->
-  <ShowCompact>小窗視圖</ShowCompact>
+  <ShowCompact>小窗模式</ShowCompact>
   <!--EN: Show assignments.-->
   <ShowAssignment>顯示被分配的任務</ShowAssignment>
-  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
-  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
-  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
+  <!--EN: Clear ALL assignments.-->
+  <ClearAssignments>清除所有任務分配。</ClearAssignments>
+  <!--EN: Group by skills-->
+  <GroupBySkills>按技能分組</GroupBySkills>
+  <!--EN: Assign all these technologies at once.-->
+  <ClickToGroupAssign>令殖民者學習或記錄列表中的所有科技。</ClickToGroupAssign>
   <!--EN: Expand-->
-  <Expand>擴展</Expand>
+  <Expand>展開</Expand>
   <!--EN: Collapse-->
   <Collapse>摺疊</Collapse>
   <!--EN: Catalog-->
   <TabCatalogue>目錄</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
-  <AvailableBooksReport>{1}個書架上有{0}本書</AvailableBooksReport>
-  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
+  <AvailableBooksReport>{1} 個書架上有 {0} 本書</AvailableBooksReport>
+  <!--EN: {0} technologies online-->
+  <AvailableOnNetwork>線上伺服器記憶體有 {0} 種科技</AvailableOnNetwork>
   <!--EN: Left-click to assign for studying.-->
-  <ClickToAssignForStudying>左鍵點擊以命令該殖民者學習此科技。</ClickToAssignForStudying>
+  <ClickToAssignForStudying>左鍵點選以命令該殖民者學習此科技。</ClickToAssignForStudying>
   <!--EN: Left-click to assign for documentation.-->
-  <ClickToAssignForDocumentation>左鍵點擊以命令該殖民者撰寫此科技的技術書。</ClickToAssignForDocumentation>
+  <ClickToAssignForDocumentation>左鍵點選以命令該殖民者記錄此科技。</ClickToAssignForDocumentation>
   <!--EN: Left-click to unassign.-->
-  <ClickToUnassign>左鍵點擊以取消任務分配。</ClickToUnassign>
+  <ClickToUnassign>左鍵點選以取消任務分配。</ClickToUnassign>
   <!--EN: Right-click to show on Research Tree.-->
-  <RightClickToTree>右鍵點擊以在科技樹上查看此科技。</RightClickToTree>
+  <RightClickToTree>右鍵點選以在科技樹上檢視此科技。</RightClickToTree>
   <!--EN: {0} is tasked with:-->
-  <AssignedTo>{0}被分配了以下任務：</AssignedTo>
+  <AssignedTo>{0} 被分配了以下任務：</AssignedTo>
   <!--EN: {0} is tasked with researching this.-->
-  <AssignedToResearch>{0}被下令研究此科技。</AssignedToResearch>
+  <AssignedToResearch>{0} 被下令研究此科技。</AssignedToResearch>
   <!--EN: {0} is tasked with studying this.-->
-  <AssignedToStudy>{0}被下令學習此科技。</AssignedToStudy>
+  <AssignedToStudy>{0} 被下令學習此科技。</AssignedToStudy>
   <!--EN: {0} is tasked with documenting this.-->
-  <AssignedToDocument>{0}被下令將撰寫該科技的技術書。</AssignedToDocument>
+  <AssignedToDocument>{0} 被下令記錄此科技。</AssignedToDocument>
   <!--EN: click to remove-->
-  <ClickToRemove>左鍵單擊以撤銷該任務</ClickToRemove>
-  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart>
+  <ClickToRemove>左鍵單擊以移除</ClickToRemove>
+  <!--EN: Starting knowledge for {0}.-->
   <!--"0" here is either the scenario or the player faction's name-->
-  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
-  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
+  <bookFromStart>{0} 的起始科技</bookFromStart>
+  <!--EN: Archived in our library.-->
+  <bookInLibrary>已存於圖書館。</bookInLibrary>
+  <!--EN: Archived in our database.-->
+  <bookInDatabase>已存於資料庫。</bookInDatabase>
 
   <!--Settings-->
   
@@ -63,7 +70,7 @@
   <!--EN: Defines the pool from which to draw technologies for the player's colonists when they are created.-->
   <TechPoolModeDesc>定義玩家派系殖民者的科技池。當玩家派系的殖民者被生成時，將從中隨機抽選若干項開局自帶科技。</TechPoolModeDesc>
   <!--EN: ...the faction's default starting techs-->
-  <TechPoolIncludesStartingTitle>玩家派系的默認初始科技</TechPoolIncludesStartingTitle>
+  <TechPoolIncludesStartingTitle>玩家派系的預設初始科技</TechPoolIncludesStartingTitle>
   <!--EN: If checked, the knowledge pool for new colonists will include the default starting technologies for your faction.-->
   <TechPoolIncludesStartingDesc>若勾選此項，科技池將包括玩家派系的初始自帶科技。</TechPoolIncludesStartingDesc>
   <!--EN: ...the faction's tech level-->
@@ -75,9 +82,9 @@
   <!--EN: If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!-->
   <TechPoolIncludesBackgroundDesc>若勾選此項，則殖民者的背景將影響殖民者的初始自帶科技。這會讓殖民者開局所擁有的技能更貼近自己的人生歷程，但也可能導致殖民者掌握與所屬派系的科技層級不相稱的知識。雖然這很有趣！</TechPoolIncludesBackgroundDesc>
   <!--EN: ...the scenario starting research-->
-  <TechPoolIncludesScenarioTitle>劇本添加的初始科技</TechPoolIncludesScenarioTitle>
+  <TechPoolIncludesScenarioTitle>劇本新增的初始科技</TechPoolIncludesScenarioTitle>
   <!--EN: If checked, any technologies you add on the scenario editor will also be included on the knowledge pool for new colonists.-->
-  <TechPoolIncludesScenarioDesc>若勾選此項，科技池將包含您在劇本編輯器中添加的開局科技。</TechPoolIncludesScenarioDesc>
+  <TechPoolIncludesScenarioDesc>若勾選此項，科技池將包含您在劇本編輯器中新增的開局科技。</TechPoolIncludesScenarioDesc>
   <!--EN: They must know something!-->
   <TechPoolMinimumDefaultMsg>總該知道點啥吧！</TechPoolMinimumDefaultMsg>
   <!--EN: Combat specialists start with weapons from...-->
@@ -91,17 +98,17 @@
   <!--EN: the scenario only-->
   <WeaponPoolMode_Scenario>劇本</WeaponPoolMode_Scenario>
   <!--EN: All colonists start with scenario weapons.-->
-  <FreeScenarioWeaponsTitle>所有殖民者一開始就知道如何使用劇本添加的武器。</FreeScenarioWeaponsTitle>
+  <FreeScenarioWeaponsTitle>所有殖民者一開始就知道如何使用劇本新增的武器。</FreeScenarioWeaponsTitle>
   <!--EN: If checked, any weapons you add on the scenario editor will also be included on the list of weapons the player's colonists can use. (The vanilla "Rich Explorer" scenario was patched to always do this, regardless of what's chosen here)-->
-  <FreeScenarioWeaponsDesc>若勾選此項，所有您在劇本編輯器裏添加的武器會被自動添加至殖民者的初始武器精通列表。（原版遊戲所帶的“富有的探險家”劇本已強制開啓此選項，不受此項勾選與否影響）</FreeScenarioWeaponsDesc>
+  <FreeScenarioWeaponsDesc>若勾選此項，所有您在劇本編輯器裡新增的武器會被自動新增至殖民者的初始武器精通列表。（原版遊戲所帶的「富有的探險家」劇本已強制開啟此選項，不受此項勾選與否影響）</FreeScenarioWeaponsDesc>
   <!--EN: Learn melee weapons by group.-->
-  <LearnMeleeWeaponsByGroupTitle>批量學習近戰武器的使用方法</LearnMeleeWeaponsByGroupTitle>
+  <LearnMeleeWeaponsByGroupTitle>批次學習近戰武器的使用方法</LearnMeleeWeaponsByGroupTitle>
   <!--EN: When learning melee weapons, learn all weapons unlocked by that technology at the same time.-->
   <LearnMeleeWeaponsByGroupDesc>學習近戰武器的使用方法時，同時解鎖同一科技下的所有近戰武器。</LearnMeleeWeaponsByGroupDesc>
   <!--EN: Learn ranged weapons by group.-->
-  <LearnRangedWeaponsByGroupTitle>批量學習遠程武器的使用方法</LearnRangedWeaponsByGroupTitle>
+  <LearnRangedWeaponsByGroupTitle>批次學習遠端武器的使用方法</LearnRangedWeaponsByGroupTitle>
   <!--EN: When learning ranged weapons, learn all weapons unlocked by that technology at the same time.-->
-  <LearnRangedWeaponsByGroupDesc>學習遠程武器的使用方法時，同時解鎖同一科技下的所有遠程武器。</LearnRangedWeaponsByGroupDesc>
+  <LearnRangedWeaponsByGroupDesc>學習遠端武器的使用方法時，同時解鎖同一科技下的所有遠端武器。</LearnRangedWeaponsByGroupDesc>
   <!--EN: Require training for single-use weapons.-->
   <RequireTrainingForSingleUseWeaponsTitle>一次性武器同樣需要訓練</RequireTrainingForSingleUseWeaponsTitle>
   <!--EN: If checked, weapons like rocket launchers will also require the pawn to be proficient with them before equipping.-->
@@ -109,16 +116,16 @@
   <!--EN: Use training facilities for fun.-->
   <EnableJoyGiverTitle>將武器訓練當成一種樂趣</EnableJoyGiverTitle>
   <!--EN: Pawns will go practice at the target stand and training dummy just to blow off some steam.-->
-  <EnableJoyGiverDesc>殖民者會通過射擊靶子和毆打訓練用假人的方式發泄心中的怨氣。</EnableJoyGiverDesc>
+  <EnableJoyGiverDesc>殖民者會透過射擊靶子和毆打訓練用假人的方式發洩心中的怨氣。</EnableJoyGiverDesc>
   <!--EN: Difficulty settings slows down research.-->
   <ResearchSpeedTiedToDifficultyTitle>高難度會減緩研究速度。</ResearchSpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.-->
-  <ResearchSpeedTiedToDifficultyDesc>若勾選此項，研究速度將隨難度增加而減緩（簡單難度不變，困難難度降低30%）。不開啓此項時，一律較原版降低10%。</ResearchSpeedTiedToDifficultyDesc>
+  <ResearchSpeedTiedToDifficultyDesc>若勾選此項，研究速度將隨難度增加而減緩（簡單難度不變，困難難度降低30%）。不開啟此項時，一律較原版降低10%。</ResearchSpeedTiedToDifficultyDesc>
   <!--EN: Difficulty settings slows down tech studying.</-->
   <StudySpeedTiedToDifficultyTitle>高難度會減緩學習速度。</StudySpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
-  <StudySpeedTiedToDifficultyDesc>若勾選此項，學習新科技的基礎速度將與難度設置相關聯（中等難度降低10％，困難難度降低20％）。</StudySpeedTiedToDifficultyDesc>
-  
+  <StudySpeedTiedToDifficultyDesc>若勾選此項，學習新科技的基礎速度將與難度設定相關聯（中等難度降低10％，困難難度降低20％）。</StudySpeedTiedToDifficultyDesc>
+
   <!--Things-->
   
   <!--EN: Empty-->
@@ -128,7 +135,7 @@
   <!--EN: Retrieve Book-->
   <BookStoreRetrieveBook>取出書本</BookStoreRetrieveBook>
   <!--EN: Find and remove a particular book from the book shelf.-->
-  <BookStoreRetrieveBookDesc>在書架中查找並取出特定的書籍</BookStoreRetrieveBookDesc>
+  <BookStoreRetrieveBookDesc>在書架中查詢並取出特定的書籍</BookStoreRetrieveBookDesc>
   <!--EN: {0} doesn't fit at any book shelf.-->
   <BookStoreNoInternalStorage>{0} 無法被放入任何書架。</BookStoreNoInternalStorage>
   <!--EN: {0} knowledge-->
@@ -142,29 +149,35 @@
   <!--EN: {0} Theory-->
   <BookTheory>{0} 理論</BookTheory>
   <!--EN: {0} Database-->
-  <BookDatabase>{0} 數據庫</BookDatabase>
-  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
-  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
-  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
-  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
-  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
-  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
+  <BookDatabase>{0} 資料庫</BookDatabase>
+  <!--EN: Base technology-->
+  <WeaponAssociatedTech>基礎科技</WeaponAssociatedTech>
+  <!--EN: The knowledge a colony (or colonist) needs in order to learn how to use this weapon.-->
+  <WeaponAssociatedTechDesc>某個殖民地上的殖民者在學習該武器的使用方法前需要事先掌握的知識。\n\n（只要該科技被圖書館或資料庫收藏，所有殖民者即可學習該武器的使用方法，而不需要親自將該科技再學習一遍）</WeaponAssociatedTechDesc>
+  <!--EN: Known?-->
+  <WeaponKnown>是否已知？</WeaponKnown>
+  <!--EN: Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.-->
+  <WeaponKnownDesc>該殖民地是否掌握學習該武器的使用方法所需要的前置科技。</WeaponKnownDesc>
+  <!--EN: Requires training?-->
+  <WeaponRequiresTraining>需要訓練？</WeaponRequiresTraining>
+  <!--EN: Whether this weapon requires training to be used.-->
+  <WeaponRequiresTrainingDesc>該武器是否需要透過訓練來掌握使用方法。</WeaponRequiresTrainingDesc>
 
 
   <!--Feedback-->
   
   <!--EN: {0_nameDef} has learned the secrets of {1}.-->
-  <MessageStudyComplete>{0_nameDef} 已經弄懂了 {1} 的祕密。</MessageStudyComplete>
+  <MessageStudyComplete>{0_nameDef} 已經弄懂了 {1} 的秘密。</MessageStudyComplete>
   <!--EN: {0_nameDef} wrote a book on {1}.-->
   <MessageDocumentComplete>{0_nameDef} 寫了一本關於 {1} 的書。</MessageDocumentComplete>
   <!--EN: The knowledge for {0} was added to our library.-->
-  <MessageFiledTech>{0} 的知識已添加到我們的圖書館中。</MessageFiledTech>
+  <MessageFiledTech>{0} 的知識已新增到我們的圖書館中。</MessageFiledTech>
   <!--EN: The knowledge for {0} was removed from our library.-->
   <MessageEjectedTech>{0} 的知識已從我們的圖書館中移除。</MessageEjectedTech>
   <!--EN: {0_nameDef} has mastered the {1}.-->
   <MessageTrainingComplete>{0_nameDef} 已能熟練使用 {1}。</MessageTrainingComplete>
   <!--EN: You know nothing, {0_nameFull}.-->
-  <NothingToAddToLibrary>{0_nameFull}，我看你完全是不懂喔。</NothingToAddToLibrary>
+  <NothingToAddToLibrary>{0_nameFull}，我看你完全是不懂哦。</NothingToAddToLibrary>
   <!--EN: {0_nameDef} has read all the books.-->
   <AlreadyKnowsTheWholeLibrary>{0_nameDef} 已閱讀所有書籍。</AlreadyKnowsTheWholeLibrary>
   <!--EN: {0_nameDef} is missing basic knowledge on those subjects.-->
@@ -184,7 +197,7 @@
   <!--EN: {0_nameDef} doesn't know how to repair a {1} (requires {2}).-->
   <DoesntKnowHowToRepair>{0_nameDef} 不知如何修復 {1}（需要 {2}）。</DoesntKnowHowToRepair>
   <!--EN: {0_nameDef} doesn't know how to {1} (requires {2}).-->
-  <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成“{1}”（需要 {2}）。</DoesntKnowHowToCraft>
+  <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成 {1}（需要 {2}）。</DoesntKnowHowToCraft>
   <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
   <DoesntKnowThisPlant>{0_nameDef} 不知如何栽種 {1}（需要 {2}）。</DoesntKnowThisPlant>
   <!--EN: Pawn has not been trained to use this weapon-->
@@ -195,12 +208,16 @@
   <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
   <!--EN: Invalid equipment.-->
   <NoWeaponEquipped>任務分配無效。</NoWeaponEquipped>
-  <!--NEW--><NoBooksToScan>No books to scan.</NoBooksToScan>
-  <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
-  <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
-  <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
-  <!--NEW--><ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
-
+  <!--EN: No books to scan.-->
+  <NoBooksToScan>沒用可供掃描的書籍。</NoBooksToScan>
+  <!--EN: No servers available on the colony network.-->
+  <NoAvailableServer>無可用伺服器。</NoAvailableServer>
+  <!--EN: Assigned projects not allowed here.-->
+  <ForbiddenAssignment>無法在該處學習或記錄指定的研究專案。</ForbiddenAssignment>
+  <!--EN: {0_nameDef} was not assigned any projects. Use the main Research tab.-->
+  <NoAssignment>{0_nameDef} 尚未被分配任何研究任務。請在「研究」介面中指定。</NoAssignment>
+  <!--EN: Requires an unobstructed line of sight.-->
+  <ShootingRangeObstructed>需要一條沒有障礙物的視線。</ShootingRangeObstructed>
 
   <!--weapon testing -->
   
@@ -215,15 +232,15 @@
   <!--EN: {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).-->
   <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} 在嘗試使用 {WEAPON_definite} 時發生意外，傷到了自己（{RECIPE_label}）。</MessageWeaponTestFailureCatastrophic>
   <!--EN: {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).-->
-  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} 嘗試使用 {WEAPON_definite} 的努力遭到了徹底的失敗。{TESTER_pronoun} 負了傷，武器也報廢了。（{RECIPE_label}）.</MessageMedicalWeaponTestFailureRidiculous>
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} 對 {WEAPON_definite} 進行的嘗試遭遇了滑鐵盧。{TESTER_pronoun} 負了傷，武器也報廢了。（{RECIPE_label}）.</MessageMedicalWeaponTestFailureRidiculous>
   
   <!--Go Explore-->
   
   <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
-  <LetterResearchRequest_SuccessHR>研究成功！通過合作，您對 {2} 的理解有所提高。\n\n與 {0} 的關係已提升了{1}。</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_SuccessHR>研究成功！透過合作，您對 {2} 的理解有所提高。\n\n與 {0} 的關係已提升了 {1}。</LetterResearchRequest_SuccessHR>
   <!--EN: The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.-->
-  <LetterResearchRequest_TriumphHR>研究取得了巨大成功！通過合作，您取得了突破，發現了 {2} 的祕密。\n\n與 {0} 的關係已提升了{1}。</LetterResearchRequest_TriumphHR>
+  <LetterResearchRequest_TriumphHR>研究取得了巨大成功！透過合作，您取得了突破，發現了 {2} 的秘密。\n\n與 {0} 的關係已提升了 {1}。</LetterResearchRequest_TriumphHR>
   <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
-  <ResearchRequestXPGainHR>您的研究人員 {0} 在 {1} 上獲得了寶貴的專業知識，並獲得了{2}點智識經驗值。</ResearchRequestXPGainHR>
+  <ResearchRequestXPGainHR>您的研究人員 {0} 在 {1} 上獲得了寶貴的專業知識，並獲得了 {2} 點智識經驗值。</ResearchRequestXPGainHR>
 
 </LanguageData> 
