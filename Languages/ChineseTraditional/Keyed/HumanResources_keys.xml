@@ -26,7 +26,7 @@
   <!--EN: Group by skills-->
   <GroupBySkills>按技能分組</GroupBySkills>
   <!--EN: Assign all these technologies at once.-->
-  <ClickToGroupAssign>令殖民者學習或記錄列表中的所有科技。</ClickToGroupAssign>
+  <ClickToGroupAssign>令該殖民者學習或記錄列表中的所有科技。</ClickToGroupAssign>
   <!--EN: Expand-->
   <Expand>展開</Expand>
   <!--EN: Collapse-->
@@ -62,6 +62,7 @@
   <bookInLibrary>已存於圖書館。</bookInLibrary>
   <!--EN: Archived in our database.-->
   <bookInDatabase>已存於資料庫。</bookInDatabase>
+
 
   <!--Settings-->
   
@@ -125,6 +126,7 @@
   <StudySpeedTiedToDifficultyTitle>高難度會減緩學習速度。</StudySpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
   <StudySpeedTiedToDifficultyDesc>若勾選此項，學習新科技的基礎速度將與難度設定相關聯（中等難度降低10％，困難難度降低20％）。</StudySpeedTiedToDifficultyDesc>
+
 
   <!--Things-->
   
@@ -207,17 +209,18 @@
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
   <!--EN: Invalid equipment.-->
-  <NoWeaponEquipped>任務分配無效。</NoWeaponEquipped>
+  <NoWeaponEquipped>無效的武器裝備。</NoWeaponEquipped>
   <!--EN: No books to scan.-->
   <NoBooksToScan>沒用可供掃描的書籍。</NoBooksToScan>
   <!--EN: No servers available on the colony network.-->
-  <NoAvailableServer>無可用伺服器。</NoAvailableServer>
+  <NoAvailableServer>殖民地網路上無可用伺服器。</NoAvailableServer>
   <!--EN: Assigned projects not allowed here.-->
   <ForbiddenAssignment>無法在該處學習或記錄指定的研究專案。</ForbiddenAssignment>
   <!--EN: {0_nameDef} was not assigned any projects. Use the main Research tab.-->
   <NoAssignment>{0_nameDef} 尚未被分配任何研究任務。請在「研究」介面中指定。</NoAssignment>
   <!--EN: Requires an unobstructed line of sight.-->
   <ShootingRangeObstructed>需要一條沒有障礙物的視線。</ShootingRangeObstructed>
+
 
   <!--weapon testing -->
   
@@ -233,6 +236,7 @@
   <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} 在嘗試使用 {WEAPON_definite} 時發生意外，傷到了自己（{RECIPE_label}）。</MessageWeaponTestFailureCatastrophic>
   <!--EN: {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).-->
   <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} 對 {WEAPON_definite} 進行的嘗試遭遇了滑鐵盧。{TESTER_pronoun} 負了傷，武器也報廢了。（{RECIPE_label}）.</MessageMedicalWeaponTestFailureRidiculous>
+  
   
   <!--Go Explore-->
   
