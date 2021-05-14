@@ -33,7 +33,7 @@
   <!--EN: Scan books & drives -->
   <ScanBook.label>扫描书籍或磁盘</ScanBook.label>
   <!--EN: Scan existing books or drives and upload its contents to the colony database.-->
-  <ScanBook.description>扫描手头的书籍或磁盘，再将他们上传至殖民地数据库。</ScanBook.description>
+  <ScanBook.description>扫描手头的书籍或磁盘，再将内容上传至殖民地数据库。</ScanBook.description>
   <!--EN: Scanning a book or drive.-->
   <ScanBook.jobString>正在扫描书籍或磁盘。</ScanBook.jobString>
 

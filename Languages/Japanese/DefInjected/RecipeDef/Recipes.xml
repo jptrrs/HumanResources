@@ -3,45 +3,46 @@
 
   
   <!--EN: Study technology-->
-  <LearnTech.label>テクノロジーを学習する</LearnTech.label>
+  <LearnTech.label>テクノロジーを学習</LearnTech.label>
   <!--EN: Study to acquire knowledge about a new technology.-->
-  <LearnTech.description>新しいテクノロジーに関する知識を得るために、本を勉強する。</LearnTech.description>
+  <LearnTech.description>新しいテクノロジーの知識を得るために勉強する。</LearnTech.description>
   <!--EN: Studying a new technology.-->
   <LearnTech.jobString>新しいテクノロジーを学習している。</LearnTech.jobString>
   
   <!--EN: Study technology-->
-  <LearnTechDigital.label>テクノロジーを学習する</LearnTechDigital.label>
+  <LearnTechDigital.label>テクノロジーを学習</LearnTechDigital.label>
   <!--EN: Study to acquire knowledge about a new technology.-->
-  <LearnTechDigital.description>新しいテクノロジーに関する知識を得るために、本を勉強する。</LearnTechDigital.description>
+  <LearnTechDigital.description>新しいテクノロジーの知識を得るために勉強する。</LearnTechDigital.description>
   <!--EN: Studying a new technology.-->
   <LearnTechDigital.jobString>新しいテクノロジーを学習している。</LearnTechDigital.jobString>
 
   <!--EN: Document technology-->
-  <DocumentTech.label>テクノロジーを文書化する</DocumentTech.label>
-  <!--CHANGED-->
+  <DocumentTech.label>テクノロジーを文書化</DocumentTech.label>
   <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
-  <DocumentTech.description>脳内の知識を専門書にする。</DocumentTech.description>
+  <DocumentTech.description>脳内の知識を専門書に化する。（産業時代までのテックのみ）</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>テクノロジーを文書化している。</DocumentTech.jobString>
 
-  <!--NEW-->
-  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
-  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
-  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
+  <!--EN: Document technology-->
+  <DocumentTechDigital.label>テクノロジーを入力</DocumentTechDigital.label>
+  <!--EN: Consolidate knowledge into a network learning resource and upload it to the colony database.-->
+  <DocumentTechDigital.description>脳内の知識をオンライン学習リソースに化し、コロニーのデータベースにアップロードする。</DocumentTechDigital.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTechDigital.jobString>テクノロジーを入力している。</DocumentTechDigital.jobString>
 
-  <!--EN: Research technologie-->
-  <ResearchTech.label>テクノロジーを研究する</ResearchTech.label>
-  <!--EN: Expand the frontier of knowledge by researching new technologies.-->
-  <ResearchTech.description>新しいテクノロジーを研究することによって、知識の限界を広げる。</ResearchTech.description>
-  <!--EN: Researching.-->
-  <ResearchTech.jobString>研究中。</ResearchTech.jobString>
-
+  <!--EN: Scan books & drives -->
+  <ScanBook.label>本・ドライブをスキャン</ScanBook.label>
+  <!--EN: Scan existing books or drives and upload its contents to the colony database.-->
+  <ScanBook.description>専門書やドライブをスキャンし、その内容をコロニーのデータベースにアップロードする。</ScanBook.description>
+  <!--EN: Scanning a book or drive.-->
+  <ScanBook.jobString>本・ドライブをスキャンしている。</ScanBook.jobString>
+  
   <!--EN: Learn to shoot a weapon-->
-  <TrainWeaponShooting.label>遠隔武器を練習する</TrainWeaponShooting.label>
+  <TrainWeaponShooting.label>遠距離武器を練習する</TrainWeaponShooting.label>
   <!--EN: Train with a ranged weapon to acquire proficiency.-->
-  <TrainWeaponShooting.description>遠隔武器を練習し、熟練度を上げる。</TrainWeaponShooting.description>
+  <TrainWeaponShooting.description>遠距離武器を練習し、熟練度を上げる。</TrainWeaponShooting.description>
   <!--EN: Training to use a ranged weapon.-->
-  <TrainWeaponShooting.jobString>遠隔武器の使い方を練習している。</TrainWeaponShooting.jobString>
+  <TrainWeaponShooting.jobString>遠距離武器の使い方を練習している。</TrainWeaponShooting.jobString>
 
   <!--EN: Learn to wield a weapon-->
   <TrainWeaponMelee.label>近接武器を練習する</TrainWeaponMelee.label>
@@ -50,14 +51,19 @@
   <!--EN: Training to use a melee weapon.-->
   <TrainWeaponMelee.jobString>近接武器の使い方を練習している。</TrainWeaponMelee.jobString>
 
-  <!--NEW-->
-  <ExperimentWeaponShooting.label>Experiment with unknown weapon</ExperimentWeaponShooting.label>
-  <ExperimentWeaponShooting.description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponShooting.description>
-  <ExperimentWeaponShooting.jobString>Experimenting with a ranged weapon.</ExperimentWeaponShooting.jobString>
+  <!--EN: Experiment with unknown weapon-->
+  <ExperimentWeaponShooting.label>未知の武器を試す</ExperimentWeaponShooting.label>
+  <!--EN: Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.-->
+  <ExperimentWeaponShooting.description>未知の遠距離武器を試し、その動作原理を知らずに使い方を見つけてみる。とても危険だが。</ExperimentWeaponShooting.description>
+  <!--EN: Experimenting with a ranged weapon.-->
+  <ExperimentWeaponShooting.jobString>未知の遠距離武器を試している。</ExperimentWeaponShooting.jobString>
 
-  <ExperimentWeaponMelee.label>Experiment with unknown weapon</ExperimentWeaponMelee.label>
-  <ExperimentWeaponMelee.description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponMelee.description>
-  <ExperimentWeaponMelee.jobString>Experimenting with a melee weapon.</ExperimentWeaponMelee.jobString>
+  <!--EN: Experiment with unknown weapon-->
+  <ExperimentWeaponMelee.label>未知の武器を試す</ExperimentWeaponMelee.label>
+  <!--EN: Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.-->
+  <ExperimentWeaponMelee.description>未知の近接武器を試し、その動作原理を知らずに使い方を見つけてみる。とても危険だが。</ExperimentWeaponMelee.description>
+  <!--EN: Experimenting with a melee weapon.-->
+  <ExperimentWeaponMelee.jobString>未知の近接武器を試している。</ExperimentWeaponMelee.jobString>
 
   <!--EN: Practice shooting-->
   <PracticeShooting.label>射撃を練習する</PracticeShooting.label>
@@ -69,7 +75,7 @@
   <!--EN: Practice melee-->
   <PracticeMelee.label>近接戦闘を練習する</PracticeMelee.label>
   <!--EN: Practices close quarters combat against a straw dummy.-->
-  <PracticeMelee.description>わら製人形を相手にし、近接戦闘を練習する。</PracticeMelee.description>
+  <PracticeMelee.description>わら製人形を相手に、近接戦闘を練習する。</PracticeMelee.description>
   <!--EN: Practicing melee.-->
   <PracticeMelee.jobString>近接戦闘を練習している。</PracticeMelee.jobString>
 
