@@ -276,6 +276,8 @@ namespace HumanResources
             else instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
             //Test
+            instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
             IsQueuedInfo = AccessTools.Method(QueueType(), "IsQueued");
             EnqueueInfo = AccessTools.Method(QueueType(), "Enqueue", new Type[] { ResearchNodeType(), typeof(bool) });
             EnqueueRangeInfo = AccessTools.Method(QueueType(), "EnqueueRange", new Type[] { ResearchNodeType(), typeof(bool) });
@@ -309,6 +311,11 @@ namespace HumanResources
         #endregion
 
         #region "main patches"
+
+        public static bool Inhibitor()
+        {
+            return false;
+        }
 
         public static List<ResearchProjectDef> Ancestors(this ResearchProjectDef research) { throw stubMsg; }
 
@@ -711,16 +718,17 @@ namespace HumanResources
             }
         }
 
+        #endregion
+
+        #region oskarpotocki.vfe.mechanoid adaptation
         public static bool IsQueued(ResearchProjectDef tech)
         {
             return (bool)IsQueuedInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
         }
-
         public static void Dequeue(ResearchProjectDef tech)
         {
             DequeueInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
         }
-
         public static void EnqueueRange(IEnumerable<ResearchProjectDef> techs)
         {
             foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.CostApparent).Select(x => ResearchNodesCache[x]))
@@ -728,19 +736,16 @@ namespace HumanResources
                 EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });
             }
         }
+        #endregion
 
-        #endregion 
-
-        #region "VinaLx.ResearchPalForked adaptation"
+        #region VinaLx.ResearchPalForked adaptation
 
         public static bool 
             AltRPal = false,
             expertiseDisplayed = false;
 
         private static MethodInfo
-            //ResearchProjectDef_Extensions:
             ResearchNodeInfo,
-            //ResearchNode:
             BuildingPresentInfo,
             HighlightInfo;
 
