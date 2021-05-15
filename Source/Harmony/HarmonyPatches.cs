@@ -14,6 +14,7 @@ namespace HumanResources
         public static bool
             ResearchPal = false,
             PrisonLabor = false,
+            VFEM = false,
             RunSpecialCases = false,
             VisibleBooksCategory = false;
 
@@ -109,6 +110,13 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Hospitality detected! Integrating...");
                 Hospitality_Patches.Execute(Instance);
+            }
+
+            //VFEM integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("OskarPotocki.VFE.Mechanoid")))
+            {
+                Log.Message("[HumanResources] Vanilla Factions Expanded - Mechanoids detected! Integrating...");
+                VFEM = true;
             }
 
             //Provisions for specific research projects

@@ -55,6 +55,7 @@ namespace HumanResources
             LabelRectInfo,
             RectInfo,
             RightInfo,
+            XInfo,
         //ResearchNode:
             AvailableInfo,
             ChildrenInfo,
@@ -80,7 +81,12 @@ namespace HumanResources
             HandleFixedHighlightInfo,
             StopFixedHighlightsInfo,
         //Edge:
-            InResearchInfo;
+            InResearchInfo,
+        //Queue
+            IsQueuedInfo,
+            EnqueueInfo,
+            EnqueueRangeInfo,
+            DequeueInfo;
 
         private static FieldInfo
         //Node:
@@ -151,6 +157,7 @@ namespace HumanResources
             CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
             CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
             IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
+            XInfo = AccessTools.Property(NodeType(), "X");
             if (altRPal)
             {
                 instance.CreateReversePatcher(AccessTools.Method(modName + ".Node:Highlighted"),
@@ -268,6 +275,11 @@ namespace HumanResources
             }
             else instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
+            //Test
+            IsQueuedInfo = AccessTools.Method(QueueType(), "IsQueued");
+            EnqueueInfo = AccessTools.Method(QueueType(), "Enqueue", new Type[] { ResearchNodeType(), typeof(bool) });
+            EnqueueRangeInfo = AccessTools.Method(QueueType(), "EnqueueRange", new Type[] { ResearchNodeType(), typeof(bool) });
+            DequeueInfo = AccessTools.Method(QueueType(), "Dequeue");
 
             //Constants
             EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
@@ -698,9 +710,28 @@ namespace HumanResources
                 isMatchedInfo.SetValue(node, expertiseDisplay.Contains(node));
             }
         }
-        #endregion
 
-            #region "VinaLx.ResearchPalForked adaptation"
+        public static bool IsQueued(ResearchProjectDef tech)
+        {
+            return (bool)IsQueuedInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
+        }
+
+        public static bool Dequeue(ResearchProjectDef tech)
+        {
+            return (bool)DequeueInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
+        }
+
+        public static void EnqueueRange(IEnumerable<ResearchProjectDef> techs)
+        {
+            foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.CostApparent).Select(x => ResearchNodesCache[x]))
+            {
+                EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });
+            }
+        }
+
+        #endregion 
+
+        #region "VinaLx.ResearchPalForked adaptation"
 
         public static bool 
             AltRPal = false,

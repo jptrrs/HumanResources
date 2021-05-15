@@ -16,36 +16,47 @@ namespace HumanResources
     public static class Extension_Research
     {
         public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
-        public static SkillDef Bias = new SkillDef();
+        public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
+        public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
+
         public static List<Pawn> currentPawnsCache;
         public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
-        public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
-        public static Dictionary<SkillDef, List<ResearchProjectDef>> TechsBySkill = new Dictionary<SkillDef, List<ResearchProjectDef>>();
         public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
-        public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
         private const float MarketValueOffset = 200f;
+        private static List<SkillMapping> _skills;
+        private static List<TechMapping> _techs;
 
-        private static List<string>
-            AnimalHints = new List<string>() { "animal" },
-            CraftingHints = new List<string>() { "tool", "armor", "armour", "cloth" },
-            IntellectualHints = new List<string>() { "manage" },
-            MiningHints = new List<string>() { "scanner", "terraform" },
-            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
-            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" };
+        public static List<TechMapping> Techs
+        {
+            get
+            {
+                if (_techs.NullOrEmpty())
+                {
+                    _techs = new List<TechMapping>();
+                    foreach (ResearchProjectDef def in DefDatabase<ResearchProjectDef>.AllDefs)
+                    {
+                        _techs.Add(new TechMapping(def));
+                    }
+                }
+                return _techs;
+            }
+        }
 
-        private static bool
-            animalsTag = false,
-            artisticTag = false,
-            constructionTag = false,
-            cookingTag = false,
-            craftingTag = false,
-            intellectualTag = false,
-            medicineTag = false,
-            meleeTag = false,
-            miningTag = false,
-            plantsTag = false,
-            shootingTag = false,
-            socialTag = false;
+        public static List<SkillMapping> Skills
+        {
+            get
+            {
+                if (_skills.NullOrEmpty())
+                {
+                    _skills = new List<SkillMapping>();
+                    foreach (SkillDef def in DefDatabase<SkillDef>.AllDefs)
+                    {
+                        _skills.Add(new SkillMapping(def));
+                    }
+                }
+                return _skills;
+            }
+        }
 
         private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
         {
@@ -56,7 +67,7 @@ namespace HumanResources
                 if (tech.IsKnownBy(pawn)) status = "AssignedToDocument".Translate(pawn);
                 else status = tech.IsFinished ? "AssignedToStudy".Translate(pawn) : "AssignedToResearch".Translate(pawn);
             }
-            return status + " (" + "ClickToRemove".Translate() + ")";
+            return $"{status} ({"ClickToRemove".Translate()})";
         };
 
         private static Func<Pawn, ResearchProjectDef, bool> HasBeenAssigned = (pawn, tech) =>
@@ -191,9 +202,51 @@ namespace HumanResources
             unlocked.stuffByTech.Add(tech, techStuff);
         }
 
-        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted) 
+        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
-            //storage marker insertion
+            DrawStorageMarker(tech, rect, highlighted);
+            float height = rect.height;
+            Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
+            float startPos = rect.x - frameOffset.x;
+            if (HarmonyPatches.VFEM && ResearchTree_Patches.IsQueued(tech)) startPos += DrawQueueAssignment(tech, DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer"), height, frameOffset, startPos);
+            DrawPawnAssignments(tech, height, frameOffset, startPos);
+        }
+
+        private static float DrawQueueAssignment(ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
+        {
+            Vector2 position;
+            Vector2 size = new Vector2(height, height);
+            position = new Vector2(startPos, frameOffset.y);
+            Rect box = new Rect(position, size);
+            Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
+            GUI.DrawTexture(box, thingDef.uiIcon);
+            if (Widgets.ButtonInvisible(clickBox)) ResearchTree_Patches.Dequeue(tech);
+            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)} ({"ClickToRemove".Translate()})");
+            return height / 2;
+        }
+
+        private static void DrawPawnAssignments(ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos)
+        {
+            Vector2 position;
+            Vector2 size = new Vector2(height, height);
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    position = new Vector2(startPos, frameOffset.y);
+                    Rect box = new Rect(position, size);
+                    Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
+                    startPos += height / 2;
+                }
+            }
+        }
+
+        private static void DrawStorageMarker(ResearchProjectDef tech, Rect rect, bool highlighted)
+        {
             float height = rect.height;
             float ribbon = ResearchTree_Constants.push.x;
             Vector2 position = new Vector2(rect.xMax, rect.y);
@@ -248,27 +301,8 @@ namespace HumanResources
                 string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
                 TooltipHandler.TipRegionByKey(rect, "bookFromStart".Translate(source));
             }
-
             GUI.color = backup;
-
-            //Pawn assignments
-            Vector2 size = new Vector2(height, height);
-            float frameOffset = height / 4;
-            float startPos = rect.x - frameOffset;
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    position = new Vector2(startPos, rect.y + (height / 3));
-                    Rect box = new Rect(position, size);
-                    Rect clickBox = new Rect(position.x + frameOffset, position.y, size.x - (2 * frameOffset), size.y);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
-                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
-                    startPos += height / 2;
-                }
-            }
+            return;
         }
 
         public static void Ejected(this ResearchProjectDef tech, Thing place, bool hardCopy)
@@ -314,197 +348,233 @@ namespace HumanResources
             //1. check what it unlocks
             List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
             IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
-            IEnumerable<ThingDef> thingDefs = from d in defs
-                                              where d is ThingDef
-                                              select d as ThingDef;
-            IEnumerable<RecipeDef> recipeDefs = from d in defs
-                                                where d is RecipeDef
-                                                select d as RecipeDef;
-            IEnumerable<TerrainDef> terrainDefs = from d in defs
-                                                  where d is TerrainDef
-                                                  select d as TerrainDef;
+            IEnumerable<ThingDef> thingDefs = defs.Where(d => d is ThingDef).Select(d => d as ThingDef);
+            IEnumerable<RecipeDef> recipeDefs = defs.Where(d => d is RecipeDef).Select(d => d as RecipeDef);
+            IEnumerable<TerrainDef> terrainDefs = defs.Where(d => d is TerrainDef).Select(d => d as TerrainDef);
 
             //2. look for skills based on unlocked stuff
 
             //a. checking by query on the research tree
-            foreach (string word in AnimalHints) if (tech.Matches(word)) { animalsTag = true; matchesCount++; keywords.Add(word); break; }
-            foreach (string word in CraftingHints) if (tech.Matches(word)) { craftingTag = true; matchesCount++; keywords.Add(word); break; }
-            foreach (string word in IntellectualHints) if (tech.Matches(word)) { intellectualTag = true; matchesCount++; keywords.Add(word); break; }
-            foreach (string word in MiningHints) if (tech.Matches(word)) { miningTag = true; matchesCount++; keywords.Add(word); break; }
-            foreach (string word in MedicineHints) if (tech.Matches(word)) { medicineTag = true; matchesCount++; keywords.Add(word); break; }
-            foreach (string word in PlantsHints) if (tech.Matches(word)) { plantsTag = true; matchesCount++; keywords.Add(word); break; }
+            matchesCount = tech.CheckKeywordsFor(keywords);
 
             //b. checking by unlocked things
             if (thingDefs.Count() > 0)
             {
-                foreach (ThingDef t in thingDefs)
-                {
-                    if (t != null && InvestigateThingDef(t, tech)) thingsCount++;
-                }
+                thingsCount = tech.CheckUnlockedThings(thingDefs);
             }
 
             //c. checking by unlocked recipes
             if (recipeDefs.Count() > 0)
             {
-                foreach (RecipeDef r in recipeDefs)
-                {
-                    recipesCount++;
-                    foreach (ThingDef t in r.products.Select(x => x.thingDef))
-                    {
-                        if (InvestigateThingDef(t, tech)) recipeThingsCount++;
-                    }
-                    if (r.workSkill != null)
-                    {
-                        AccessTools.Field(typeof(Extension_Research), r.workSkill.defName.ToLower() + "Tag").SetValue(tech, true);
-                        recipeSkillsCount++;
-                    }
-                }
+                recipesCount = tech.CheckUnlockedRecipes(ref recipeThingsCount, ref recipeSkillsCount, recipeDefs);
             }
 
             //d. checking by unlocked terrainDefs
             if (terrainDefs.Count() > 0)
             {
-                foreach (TerrainDef t in terrainDefs)
-                {
-                    if (!constructionTag && t.designationCategory != null && t.designationCategory.label.Contains("floor")) constructionTag = true;
-                    else if (!miningTag) miningTag = true;
-                    terrainsCount++;
-                }
+                terrainsCount = CheckUnlockedTerrains(terrainDefs);
             }
 
             //e. special cases
             if (HarmonyPatches.RunSpecialCases)
             {
-                if (tech.defName.StartsWith("ResearchProject_RotR"))
-                {
-                    miningTag = true;
-                    constructionTag = true;
-                }
-                if (tech.defName.StartsWith("BackupPower") || tech.defName.StartsWith("FluffyBreakdowns")) constructionTag = true;
-                if (tech.defName.StartsWith("OG_"))
-                {
-                    if (tech.Matches("weapon"))
-                    {
-                        shootingTag = (meleeTag = (craftingTag = true));
-                        keywords.Add("weapon");
-                    }
-                 }
+                tech.CheckSpecialCases(keywords);
             }
 
             //f. If necessary, consider the skills already assigned to its prerequisites 
-            if (!(shootingTag || meleeTag || constructionTag || miningTag || cookingTag || plantsTag || animalsTag || craftingTag || artisticTag || medicineTag || socialTag || intellectualTag))
+            if (!Skills.Any(x => x.relevant))
             {
-                if (!tech.prerequisites.NullOrEmpty())
-                {
-                    foreach (ResearchProjectDef prereq in tech.prerequisites)
-                    {
-                        if (SkillsByTech.ContainsKey(prereq))
-                        {
-                            foreach (SkillDef skill in SkillsByTech[prereq])
-                            {
-                                AccessTools.Field(typeof(Extension_Research), skill.defName.ToLower() + "Tag").SetValue(tech, true);
-                            }
-                            usedPreReq = true;
-                        }
-                    }
-                }
+                usedPreReq = tech.CopyFromPreReq();
             }
 
             //3. Figure out Bias.
-            List<SkillDef> relevantSkills = new List<SkillDef>();
-            if (shootingTag)
+            List<SkillDef> relevantSkills = GetSkillBiasAndReset().ToList();
+            bool success = !relevantSkills.NullOrEmpty();
+            if (success)
             {
-                relevantSkills.Add(SkillDefOf.Shooting);
-                shootingTag = false;
-            }
-            if (meleeTag)
-            {
-                relevantSkills.Add(SkillDefOf.Melee);
-                meleeTag = false;
-            }
-            if (constructionTag)
-            {
-                relevantSkills.Add(SkillDefOf.Construction);
-                constructionTag = false;
-            }
-            if (miningTag)
-            {
-                relevantSkills.Add(SkillDefOf.Mining);
-                miningTag = false;
-            }
-            if (cookingTag)
-            {
-                relevantSkills.Add(SkillDefOf.Cooking);
-                cookingTag = false;
-            }
-            if (plantsTag)
-            {
-                relevantSkills.Add(SkillDefOf.Plants);
-                plantsTag = false;
-            }
-            if (animalsTag)
-            {
-                relevantSkills.Add(SkillDefOf.Animals);
-                animalsTag = false;
-            }
-            if (craftingTag)
-            {
-                relevantSkills.Add(SkillDefOf.Crafting);
-                craftingTag = false;
-            }
-            if (artisticTag)
-            {
-                relevantSkills.Add(SkillDefOf.Artistic);
-                artisticTag = false;
-            }
-            if (medicineTag)
-            {
-                relevantSkills.Add(SkillDefOf.Medicine);
-                medicineTag = false;
-            }
-            if (socialTag)
-            {
-                relevantSkills.Add(SkillDefOf.Social);
-                socialTag = false;
-            }
-            if (intellectualTag)
-            {
-                relevantSkills.Add(SkillDefOf.Intellectual);
-                intellectualTag = false;
+                LinkTechAndSkills(tech, relevantSkills);
             }
 
-            if (!relevantSkills.NullOrEmpty())
+            //4. Telling humans what's going on, depending on the settings
+            StringBuilder report = new StringBuilder();
+            if (Prefs.LogVerbose)
             {
-                SkillsByTech.Add(tech, relevantSkills);
-                foreach (SkillDef skill in relevantSkills)
+                if (!success || usedPreReq) GatherNoMatchesDetails(thingDefs.EnumerableCount(), recipeDefs.EnumerableCount(), terrainDefs.EnumerableCount(), report);
+                if (success && FullStartupReport)
                 {
-                    if (!TechsBySkill.ContainsKey(skill)) TechsBySkill.Add(skill, new List<ResearchProjectDef>() { tech });
-                    else TechsBySkill[skill].Add(tech);
-                }
-
-                //4. Telling humans what's going on, depending on settings
-                if (Prefs.LogVerbose && FullStartupReport)
-                {
-                    StringBuilder report = new StringBuilder();
-                    if (matchesCount > 0) { report.Append($"keyword{(matchesCount > 1 ? "s" : "")}: {keywords.ToStringSafeEnumerable()}"); }
-                    if (thingsCount > 0) { report.AppendWithComma(thingsCount + " thing" + (thingsCount > 1 ? "s" : "")); }
-                    if (recipesCount > 0) 
-                    {
-                        report.AppendWithComma($"{recipesCount} recipe {(recipesCount > 1 ? "s" : "")} ");
-                        StringBuilder recipeSub = new StringBuilder();
-                        if (recipeThingsCount > 0) recipeSub.Append($"{recipeThingsCount} thing{(recipeThingsCount > 1 ? "s" : "")}");
-                        if (recipeSkillsCount > 0) recipeSub.AppendWithComma($"{recipeSkillsCount}  workskill{(recipeSkillsCount > 1 ? "s" : "")}");
-                        if (recipeSub.Length > 0) report.Append($"({recipeSub})");
-                        else report.Append("(irrelevant)");
-                    }
-                    if (terrainsCount > 0) { report.AppendWithComma(terrainsCount + " terrain" + (terrainsCount > 1 ? "s" : "")); }
-                    if (usedPreReq) { report.AppendWithComma("follows its pre-requisites"); }
-                    report.Append($". {(relevantSkills.Count() > 1 ? "Skills are" : "Skill is")} {relevantSkills.ToStringSafeEnumerable()}.");
+                    GatherSuccessDetails(tech, matchesCount, thingsCount, recipesCount, recipeThingsCount, recipeSkillsCount, terrainsCount, keywords, usedPreReq, relevantSkills, report);
                     Log.Message($"{tech.LabelCap}: {report}", true);
                 }
-                else if (usedPreReq) Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.");
             }
-            else Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.");
+            NoMatchesWarning(tech, usedPreReq, relevantSkills, success, report);
+        }
+
+        private static void LinkTechAndSkills(ResearchProjectDef tech, List<SkillDef> relevantSkills)
+        {
+            SkillsByTech.Add(tech, relevantSkills);
+            foreach (var skillMap in Skills.FindAll(x => relevantSkills.Contains(x)))
+            {
+                skillMap.Techs.Add(tech);
+            }
+        }
+
+        private static void NoMatchesWarning(ResearchProjectDef tech, bool usedPreReq, List<SkillDef> relevantSkills, bool success, StringBuilder report)
+        {
+            string appendReport = report.Length > 0 ? report.ToString() : "";
+            if (!success)
+            {
+                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.{appendReport}");
+                return;
+            }
+            if (usedPreReq && !Prefs.LogVerbose)
+            {
+                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.{appendReport}");
+            }
+        }
+
+        private static void GatherSuccessDetails(ResearchProjectDef tech, int matchesCount, int thingsCount, int recipesCount, int recipeThingsCount, int recipeSkillsCount, int terrainsCount, List<string> keywords, bool usedPreReq, List<SkillDef> relevantSkills, StringBuilder report)
+        {
+            string appendReport = report.Length > 0 ? report.ToString() : "";
+            report.Clear();
+            if (matchesCount > 0) { report.Append($"keyword{(matchesCount > 1 ? "s" : "")}: {keywords.ToStringSafeEnumerable()}"); }
+            if (thingsCount > 0) { report.AppendWithComma(thingsCount + " thing" + (thingsCount > 1 ? "s" : "")); }
+            if (recipesCount > 0)
+            {
+                report.AppendWithComma($"{recipesCount} recipe{(recipesCount > 1 ? "s" : "")} ");
+                StringBuilder recipeSub = new StringBuilder();
+                if (recipeThingsCount > 0) recipeSub.Append($"{recipeThingsCount} thing{(recipeThingsCount > 1 ? "s" : "")}");
+                if (recipeSkillsCount > 0) recipeSub.AppendWithComma($"{recipeSkillsCount}  workskill{(recipeSkillsCount > 1 ? "s" : "")}");
+                if (recipeSub.Length > 0) report.Append($"({recipeSub})");
+                else report.Append("(irrelevant)");
+            }
+            if (terrainsCount > 0) { report.AppendWithComma(terrainsCount + " terrain" + (terrainsCount > 1 ? "s" : "")); }
+            if (usedPreReq) { report.AppendWithComma("follows its pre-requisites"); }
+            report.Append($". {(relevantSkills.Count() > 1 ? "Skills are" : "Skill is")} {relevantSkills.ToStringSafeEnumerable()}.");
+            if (usedPreReq) report.Append(appendReport);
+        }
+
+        private static void GatherNoMatchesDetails(int things, int recipes, int terrains, StringBuilder report)
+        {
+            if (things + recipes + terrains == 0) return;
+            StringBuilder sub = new StringBuilder();
+            if (things > 0) { sub.AppendWithComma(things + " thing" + (things > 1 ? "s" : "")); }
+            if (recipes > 0) { sub.AppendWithComma($"{recipes} recipe{(recipes > 1 ? "s" : "")} "); }
+            if (terrains > 0) { sub.AppendWithComma(terrains + " terrain" + (terrains > 1 ? "s" : "")); }
+            report.Append($" (Unlocks {sub}).");
+        }
+
+        private static IEnumerable<SkillDef> GetSkillBiasAndReset()
+        {
+            foreach (var skill in Skills.Where(x => x.relevant))
+            {
+                yield return skill;
+                skill.relevant = false;
+            }
+        }
+
+        private static bool CopyFromPreReq(this ResearchProjectDef tech)
+        {
+            if (tech.prerequisites.NullOrEmpty()) return false;
+            bool applied = false;
+            foreach (ResearchProjectDef prereq in tech.prerequisites.Where(x => SkillsByTech.ContainsKey(x)))
+            {
+                foreach (var skill in SkillsByTech[prereq])
+                {
+                    SetSkillRelevance(skill, true);
+                }
+                applied = true;
+            }
+            return applied;
+        }
+
+        private static void CheckSpecialCases(this ResearchProjectDef tech, List<string> keywords)
+        {
+            if (tech.defName.StartsWith("ResearchProject_RotR"))
+            {
+                SetSkillRelevance(SkillDefOf.Mining, true);
+                SetSkillRelevance(SkillDefOf.Construction, true);
+            }
+            if (tech.defName.StartsWith("BackupPower") || tech.defName.StartsWith("FluffyBreakdowns")) SetSkillRelevance(SkillDefOf.Construction, true);
+            if (tech.defName.StartsWith("OG_"))
+            {
+                if (tech.Matches("weapon"))
+                {
+                    SetSkillRelevance(SkillDefOf.Shooting, true);
+                    SetSkillRelevance(SkillDefOf.Melee, true);
+                    SetSkillRelevance(SkillDefOf.Crafting, true);
+                    keywords.Add("weapon");
+                }
+            }
+        }
+
+        private static void SetSkillRelevance(SkillDef skill, bool value)
+        {
+            Skills.Find(x => x.Skill == skill).relevant = value;
+        }
+
+        private static bool GetSkillRelevance(SkillDef skill)
+        {
+            return Skills.Find(x => x.Skill == skill);
+        }
+
+        private static int CheckUnlockedTerrains(IEnumerable<TerrainDef> terrainDefs)
+        {
+            int count = 0;
+            foreach (TerrainDef t in terrainDefs)
+            {
+                if (!GetSkillRelevance(SkillDefOf.Construction) && t.designationCategory != null && t.designationCategory.label.Contains("floor")) SetSkillRelevance(SkillDefOf.Construction, true);
+                else if (!GetSkillRelevance(SkillDefOf.Mining)) SetSkillRelevance(SkillDefOf.Mining, true);
+                count++;
+            }
+            return count;
+        }
+
+        private static int CheckUnlockedRecipes(this ResearchProjectDef tech, ref int recipeThingsCount, ref int recipeSkillsCount, IEnumerable<RecipeDef> recipeDefs)
+        {
+            int count = 0;
+            foreach (RecipeDef r in recipeDefs)
+            {
+                count++;
+                foreach (ThingDef t in r.products.Select(x => x.thingDef))
+                {
+                    if (InvestigateThingDef(t, tech)) recipeThingsCount++;
+                }
+                if (r.workSkill != null)
+                {
+                    SetSkillRelevance(r.workSkill, true);
+                    recipeSkillsCount++;
+                }
+            }
+            return count;
+        }
+
+        private static int CheckUnlockedThings(this ResearchProjectDef tech, IEnumerable<ThingDef> thingDefs)
+        {
+            int count = 0;
+            foreach (ThingDef t in thingDefs)
+            {
+                if (t != null && InvestigateThingDef(t, tech)) count++;
+            }
+            return count;
+        }
+
+        private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
+        {
+            var matches = 0;
+            foreach (var skill in Skills.Where(x => !x.Hints.NullOrEmpty()))
+            {
+                foreach (var word in skill.Hints)
+                {
+                    if (tech.Matches(word))
+                    {
+                        SetSkillRelevance(skill, true);
+                        matches++;
+                        keywords.Add(word);
+                        break;
+                    }
+                }
+            }
+            return matches;
         }
 
         public static bool InvestigateThingDef(ThingDef thing, ResearchProjectDef tech)
@@ -512,15 +582,10 @@ namespace HumanResources
             bool found = false;
             if (thing != null)
             {
-                if (!shootingTag) try { shootingTag |= thing.IsRangedWeapon | thing.designationCategory == DesignationCategoryDefOf.Security; found = true; } catch { };
-                if (!meleeTag) try { meleeTag |= thing.IsMeleeWeapon | thing.designationCategory == DesignationCategoryDefOf.Security; found = true; } catch { };
-                if (!constructionTag) try { constructionTag |= thing.BuildableByPlayer; found = true; } catch { };
-                if (!miningTag) try { miningTag |= thing.IsShell; found = true; } catch { };
-                if (!cookingTag) try { cookingTag |= thing.ingestible.IsMeal | thing.building.isMealSource; found = true; } catch { };
-                if (!plantsTag) try { plantsTag |= thing.plant != null; found = true; } catch { };
-                if (!craftingTag) try { craftingTag |= thing.IsApparel | thing.IsWeapon; found = true; } catch { };
-                if (!artisticTag) try { artisticTag |= thing.IsArt | thing.IsWithinCategory(ThingCategoryDefOf.BuildingsArt); found = true; } catch { };
-                if (!medicineTag) try { medicineTag |= thing.IsMedicine | thing.IsDrug; found = true; } catch { };
+                foreach (var skill in Skills.Where(x => !x && x.Criteria != null))
+                {
+                    try { found = skill.Criteria(thing); } catch { }
+                }
                 //measures for weapons
                 if (thing.IsWeapon && !TechByWeapon.ContainsKey(thing)) tech.RegisterWeapon(thing);
                 if (thing.building != null && thing.building.turretGunDef != null && !TechByWeapon.ContainsKey(thing.building.turretGunDef)) tech.RegisterWeapon(thing);
@@ -632,6 +697,7 @@ namespace HumanResources
             {
                 options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
                            select opt.option).ToList<FloatMenuOption>();
+                options.Add(ResearchTreeHelper.SelectforVanillaResearch(tech));
             }
             else
             {

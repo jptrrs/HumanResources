@@ -342,7 +342,10 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
+    <Compile Include="Extensions\TechMapping.cs" />
+    <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />

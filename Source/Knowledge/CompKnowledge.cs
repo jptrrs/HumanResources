@@ -183,7 +183,7 @@ namespace HumanResources
         {
             if (homework == null) homework = new List<ResearchProjectDef>();
             homework.Add(tech);
-            if (!knownTechs.Contains(tech)) homework.AddRange(GetRequiredRecursive(tech));
+            if (!knownTechs.Contains(tech)) homework.AddRange(RequiredFor(tech));
         }
 
         public void CancelBranch(ResearchProjectDef tech)
@@ -330,14 +330,10 @@ namespace HumanResources
             return null;
         }
 
-        public List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech)
+        public List<ResearchProjectDef> RequiredFor(ResearchProjectDef tech)
         {
             if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech))) return new List<ResearchProjectDef>();
-            var parents = tech.prerequisites?.Where(x => !x.IsKnownBy(pawn));
-            if (parents == null) return new List<ResearchProjectDef>();
-            var allParents = new List<ResearchProjectDef>(parents);
-            foreach (var parent in parents) allParents.AddRange(GetRequiredRecursive(parent));
-            return allParents.Distinct().ToList();
+            return ResearchTreeHelper.GetRequiredRecursive(tech, x => !x.IsKnownBy(pawn));
         }
 
         public void LearnCrops(ResearchProjectDef tech)
@@ -460,14 +456,7 @@ namespace HumanResources
 
         private static bool SkillIsRelevant(SkillDef skill, TechLevel level)
         {
-            //bool result = false;
-            if (Extension_Research.TechsBySkill.ContainsKey(skill))
-            {
-                return Extension_Research.TechsBySkill[skill].Any(x => x.techLevel == level);
-            }
-            //string test = result ? "is":"is NOT";
-            //if (!result) Log.Message($"DEBUG {skill} is NOT relevant for {level);
-            return false;
+            return Extension_Research.Skills.Any(x => x.Skill == skill && x.Techs.Any(y => y.techLevel == level));
         }
 
         private static float TechLikelihoodForSkill(Pawn pawn, List<SkillDef> skills, int slots, int pass, SkillDef highestSkill = null)
