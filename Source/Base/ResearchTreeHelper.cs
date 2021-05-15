@@ -29,10 +29,6 @@ namespace HumanResources
             {
                 EnqueueRange(GetRequiredRecursive(tech, x => !x.IsFinished && !IsQueued(x)));
             }
-            //else
-            //{
-            //    Dequeue(tech);
-            //}
         }
 
         public static List<ResearchProjectDef> GetRequiredRecursive(ResearchProjectDef tech, Predicate<ResearchProjectDef> filter)
