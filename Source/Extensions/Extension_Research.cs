@@ -16,10 +16,14 @@ namespace HumanResources
 
     public static class Extension_Research
     {
+        #region variables
         public static List<Pawn> currentPawnsCache;
         public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
         private const float MarketValueOffset = 200f;
+        private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
+        #endregion
 
+        #region functions
         private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
         {
             string status = "error";
@@ -42,8 +46,6 @@ namespace HumanResources
             return false;
         };
 
-        private static FieldInfo ResearchPointsPerWorkTickInfo = AccessTools.Field(typeof(ResearchManager), "ResearchPointsPerWorkTick");
-
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
             bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
@@ -51,7 +53,9 @@ namespace HumanResources
             bool exempted = x.IsExempted();
             return !basic && !tool && !exempted;
         };
+        #endregion
 
+        #region properties
         private static IEnumerable<Pawn> currentPawns
         {
             get
@@ -88,30 +92,9 @@ namespace HumanResources
                 return StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
+        #endregion
 
-        public static void CarefullyFinishProject(this ResearchProjectDef project, Thing place)
-        {
-            bool careful = !project.prerequisites.NullOrEmpty();
-            List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
-            if (careful)
-            {
-                prerequisitesCopy.AddRange(project.prerequisites);
-                project.prerequisites.Clear();
-            }
-            Find.ResearchManager.FinishProject(project);
-            if (careful) project.prerequisites.AddRange(prerequisitesCopy);
-            Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
-            using (IEnumerator<Pawn> enumerator = currentPawns.GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    CompKnowledge techComp = enumerator.Current.TryGetComp<CompKnowledge>();
-                    techComp.homework?.RemoveAll(x => x == project);
-                }
-            }
-            currentPawnsCache.Clear();
-        }
-
+        #region startup
         public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
         {
             string name = "Tech_" + tech.defName;
@@ -163,136 +146,6 @@ namespace HumanResources
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;
             unlocked.totalBooks++;
-        }
-
-        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
-        {
-            DrawStorageMarker(tech, rect, highlighted);
-            float height = rect.height;
-            Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
-            float startPos = rect.x - frameOffset.x;
-            if (HarmonyPatches.VFEM && ResearchTree_Patches.IsQueued(tech)) startPos += DrawQueueAssignment(tech, DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer"), height, frameOffset, startPos);
-            DrawPawnAssignments(tech, height, frameOffset, startPos);
-        }
-
-        private static float DrawQueueAssignment(ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
-        {
-            Vector2 position;
-            Vector2 size = new Vector2(height, height);
-            position = new Vector2(startPos, frameOffset.y);
-            Rect box = new Rect(position, size);
-            Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
-            GUI.DrawTexture(box, thingDef.uiIcon);
-            if (Widgets.ButtonInvisible(clickBox)) ResearchTree_Patches.Dequeue(tech);
-            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)} ({"ClickToRemove".Translate()})");
-            return height / 2;
-        }
-
-        private static void DrawPawnAssignments(ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos)
-        {
-            Vector2 position;
-            Vector2 size = new Vector2(height, height);
-            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    position = new Vector2(startPos, frameOffset.y);
-                    Rect box = new Rect(position, size);
-                    Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
-                    Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
-                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
-                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
-                    startPos += height / 2;
-                }
-            }
-        }
-
-        private static void DrawStorageMarker(ResearchProjectDef tech, Rect rect, bool highlighted)
-        {
-            float height = rect.height;
-            float ribbon = ResearchTree_Constants.push.x;
-            Vector2 position = new Vector2(rect.xMax, rect.y);
-            Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
-            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
-            Color backup = GUI.color;
-            if (unlocked.TechsArchived.ContainsKey(tech))
-            {
-                bool cloud = tech.IsOnline();
-                bool book = tech.IsPhysicallyArchived();
-                bool twin = cloud && book;
-                Vector2 markerSize = new Vector2(ribbon, height);
-                Rect box = new Rect(position, markerSize);
-                Rect inner = box;
-                inner.height = ribbon;
-                if (twin)
-                {
-                    inner.y -= height * 0.08f;
-                }
-                else
-                {
-                    inner.y += (height - ribbon) / 2;
-                }
-                Widgets.DrawBoxSolid(box, shadedColor);
-                if (cloud)
-                {
-                    GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
-                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
-                }
-                if (book)
-                {
-                    if (twin)
-                    {
-                        float reduction = 0.9f;
-                        inner.width *= reduction;
-                        inner.height *= reduction;
-                        inner.y = box.yMax - inner.height - 1f;
-                        inner.x += (ribbon - inner.width) / 2;
-                    }
-                    var material = TechDefOf.TechBook.graphic.MatSingle;
-                    material.color = techColor;
-                    Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
-                    TooltipHandler.TipRegionByKey(inner, "bookInLibrary".Translate());
-                }
-            }
-            //origin tooltip if necessary
-            else if (tech.IsFinished)
-            {
-                bool fromScenario = unlocked.scenarioTechs.Contains(tech);
-                bool fromFaction = unlocked.factionTechs.Contains(tech);
-                bool startingTech = fromScenario || fromFaction;
-                string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
-                TooltipHandler.TipRegionByKey(rect, "bookFromStart".Translate(source));
-            }
-            GUI.color = backup;
-            return;
-        }
-
-        public static void Ejected(this ResearchProjectDef tech, Thing place, bool hardCopy)
-        {
-            if (!tech.HasBackup(hardCopy))
-            {
-                Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
-                progress[tech] = 0f;
-                unlocked.TechsArchived.Remove(tech);
-                Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
-            }
-        }
-
-        public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
-        {
-            float result;
-            if (expertise != null && expertise.TryGetValue(tech, out result))
-            {
-                return result;
-            }
-            expertise.Add(tech, 0f);
-            return 0f;
-        }
-
-        public static bool HasBackup(this ResearchProjectDef tech, bool hardCopy)
-        {
-            return hardCopy ? tech.IsOnline() : tech.IsPhysicallyArchived();
         }
 
         public static void InferSkillBias(this ResearchProjectDef tech)
@@ -372,18 +225,141 @@ namespace HumanResources
             NoMatchesWarning(tech, usedPreReq, relevantSkills, success, report);
         }
 
-        private static void NoMatchesWarning(ResearchProjectDef tech, bool usedPreReq, List<SkillDef> relevantSkills, bool success, StringBuilder report)
+        public static bool InvestigateThingDef(ThingDef thing, ResearchProjectDef tech)
         {
-            string appendReport = report.Length > 0 ? report.ToString() : "";
-            if (!success)
+            bool found = false;
+            if (thing != null)
             {
-                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.{appendReport}");
-                return;
+                foreach (var skill in FindSkills(x => !x && x.Criteria != null))
+                {
+                    try { found = skill.Criteria(thing); } catch { }
+                }
+                //measures for weapons
+                if (thing.IsWeapon) tech.RegisterWeapon(thing);
+                if (thing.building != null && thing.building.turretGunDef != null && !FindTechs(thing.building.turretGunDef).Any()) tech.RegisterWeapon(thing);
             }
-            if (usedPreReq && !Prefs.LogVerbose)
+            return found;
+        }
+
+        public static bool Matches(this ResearchProjectDef tech, string query)
+        {
+            var culture = CultureInfo.CurrentUICulture;
+            query = query.ToLower(culture);
+
+            return
+                tech.LabelCap.RawText.ToLower(culture).Contains(query) ||
+                ResearchTree_Patches.GetUnlockDefsAndDescs(tech).Any(unlock => unlock.First.LabelCap.RawText.ToLower(culture).Contains(query)) ||
+                tech.description.ToLower(culture).Contains(query);
+        }
+
+        public static float StuffCostFactor(this ResearchProjectDef tech)
+        {
+            return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
+        }
+
+        private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
+        {
+            var matches = 0;
+            foreach (var skill in FindSkills(x => !x.Hints.NullOrEmpty()))
             {
-                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.{appendReport}");
+                foreach (var word in skill.Hints)
+                {
+                    if (tech.Matches(word))
+                    {
+                        SetSkillRelevance(skill, true);
+                        matches++;
+                        keywords.Add(word);
+                        break;
+                    }
+                }
             }
+            return matches;
+        }
+
+        private static void CheckSpecialCases(this ResearchProjectDef tech, List<string> keywords)
+        {
+            if (tech.defName.StartsWith("ResearchProject_RotR"))
+            {
+                SetSkillRelevance(SkillDefOf.Mining, true);
+                SetSkillRelevance(SkillDefOf.Construction, true);
+            }
+            if (tech.defName.StartsWith("BackupPower") || tech.defName.StartsWith("FluffyBreakdowns")) SetSkillRelevance(SkillDefOf.Construction, true);
+            if (tech.defName.StartsWith("OG_"))
+            {
+                if (tech.Matches("weapon"))
+                {
+                    SetSkillRelevance(SkillDefOf.Shooting, true);
+                    SetSkillRelevance(SkillDefOf.Melee, true);
+                    SetSkillRelevance(SkillDefOf.Crafting, true);
+                    keywords.Add("weapon");
+                }
+            }
+        }
+
+        private static int CheckUnlockedRecipes(this ResearchProjectDef tech, ref int recipeThingsCount, ref int recipeSkillsCount, IEnumerable<RecipeDef> recipeDefs)
+        {
+            int count = 0;
+            foreach (RecipeDef r in recipeDefs)
+            {
+                count++;
+                foreach (ThingDef t in r.products.Select(x => x.thingDef))
+                {
+                    if (InvestigateThingDef(t, tech)) recipeThingsCount++;
+                }
+                if (r.workSkill != null)
+                {
+                    SetSkillRelevance(r.workSkill, true);
+                    recipeSkillsCount++;
+                }
+            }
+            return count;
+        }
+
+        private static int CheckUnlockedTerrains(IEnumerable<TerrainDef> terrainDefs)
+        {
+            int count = 0;
+            foreach (TerrainDef t in terrainDefs)
+            {
+                if (!GetSkillRelevance(SkillDefOf.Construction) && t.designationCategory != null && t.designationCategory.label.Contains("floor")) SetSkillRelevance(SkillDefOf.Construction, true);
+                else if (!GetSkillRelevance(SkillDefOf.Mining)) SetSkillRelevance(SkillDefOf.Mining, true);
+                count++;
+            }
+            return count;
+        }
+
+        private static int CheckUnlockedThings(this ResearchProjectDef tech, IEnumerable<ThingDef> thingDefs)
+        {
+            int count = 0;
+            foreach (ThingDef t in thingDefs)
+            {
+                if (t != null && InvestigateThingDef(t, tech)) count++;
+            }
+            return count;
+        }
+
+        private static bool CopyFromPreReq(this ResearchProjectDef tech)
+        {
+            if (tech.prerequisites.NullOrEmpty()) return false;
+            bool applied = false;
+            foreach (ResearchProjectDef prereq in tech.prerequisites)
+            {
+                foreach (var skill in FindTech(prereq).Skills)
+                {
+                    SetSkillRelevance(skill, true);
+                }
+                applied = true;
+            }
+            return applied;
+        }
+
+        private static void GatherNoMatchesDetails(int things, int recipes, int terrains, StringBuilder report)
+        {
+            if (things + recipes + terrains == 0) return;
+            StringBuilder sub = new StringBuilder();
+            if (things > 0) { sub.AppendWithComma(things + " thing" + (things > 1 ? "s" : "")); }
+            if (recipes > 0) { sub.AppendWithComma($"{recipes} recipe{(recipes > 1 ? "s" : "")} "); }
+            if (terrains > 0) { sub.AppendWithComma(terrains + " terrain" + (terrains > 1 ? "s" : "")); }
+            report.Append($" (Unlocks {sub}).");
         }
 
         private static void GatherSuccessDetails(ResearchProjectDef tech, int matchesCount, int thingsCount, int recipesCount, int recipeThingsCount, int recipeSkillsCount, int terrainsCount, List<string> keywords, bool usedPreReq, List<SkillDef> relevantSkills, StringBuilder report)
@@ -407,221 +383,43 @@ namespace HumanResources
             if (usedPreReq) report.Append(appendReport);
         }
 
-        private static void GatherNoMatchesDetails(int things, int recipes, int terrains, StringBuilder report)
+        private static void NoMatchesWarning(ResearchProjectDef tech, bool usedPreReq, List<SkillDef> relevantSkills, bool success, StringBuilder report)
         {
-            if (things + recipes + terrains == 0) return;
-            StringBuilder sub = new StringBuilder();
-            if (things > 0) { sub.AppendWithComma(things + " thing" + (things > 1 ? "s" : "")); }
-            if (recipes > 0) { sub.AppendWithComma($"{recipes} recipe{(recipes > 1 ? "s" : "")} "); }
-            if (terrains > 0) { sub.AppendWithComma(terrains + " terrain" + (terrains > 1 ? "s" : "")); }
-            report.Append($" (Unlocks {sub}).");
-        }
-
-        private static bool CopyFromPreReq(this ResearchProjectDef tech)
-        {
-            if (tech.prerequisites.NullOrEmpty()) return false;
-            bool applied = false;
-            foreach (ResearchProjectDef prereq in tech.prerequisites)
+            string appendReport = report.Length > 0 ? report.ToString() : "";
+            if (!success)
             {
-                foreach (var skill in FindTech(prereq).Skills)
-                {
-                    SetSkillRelevance(skill, true);
-                }
-                applied = true;
-            }
-            return applied;
-        }
-
-        private static void CheckSpecialCases(this ResearchProjectDef tech, List<string> keywords)
-        {
-            if (tech.defName.StartsWith("ResearchProject_RotR"))
-            {
-                SetSkillRelevance(SkillDefOf.Mining, true);
-                SetSkillRelevance(SkillDefOf.Construction, true);
-            }
-            if (tech.defName.StartsWith("BackupPower") || tech.defName.StartsWith("FluffyBreakdowns")) SetSkillRelevance(SkillDefOf.Construction, true);
-            if (tech.defName.StartsWith("OG_"))
-            {
-                if (tech.Matches("weapon"))
-                {
-                    SetSkillRelevance(SkillDefOf.Shooting, true);
-                    SetSkillRelevance(SkillDefOf.Melee, true);
-                    SetSkillRelevance(SkillDefOf.Crafting, true);
-                    keywords.Add("weapon");
-                }
-            }
-        }
-
-        private static int CheckUnlockedTerrains(IEnumerable<TerrainDef> terrainDefs)
-        {
-            int count = 0;
-            foreach (TerrainDef t in terrainDefs)
-            {
-                if (!GetSkillRelevance(SkillDefOf.Construction) && t.designationCategory != null && t.designationCategory.label.Contains("floor")) SetSkillRelevance(SkillDefOf.Construction, true);
-                else if (!GetSkillRelevance(SkillDefOf.Mining)) SetSkillRelevance(SkillDefOf.Mining, true);
-                count++;
-            }
-            return count;
-        }
-
-        private static int CheckUnlockedRecipes(this ResearchProjectDef tech, ref int recipeThingsCount, ref int recipeSkillsCount, IEnumerable<RecipeDef> recipeDefs)
-        {
-            int count = 0;
-            foreach (RecipeDef r in recipeDefs)
-            {
-                count++;
-                foreach (ThingDef t in r.products.Select(x => x.thingDef))
-                {
-                    if (InvestigateThingDef(t, tech)) recipeThingsCount++;
-                }
-                if (r.workSkill != null)
-                {
-                    SetSkillRelevance(r.workSkill, true);
-                    recipeSkillsCount++;
-                }
-            }
-            return count;
-        }
-
-        private static int CheckUnlockedThings(this ResearchProjectDef tech, IEnumerable<ThingDef> thingDefs)
-        {
-            int count = 0;
-            foreach (ThingDef t in thingDefs)
-            {
-                if (t != null && InvestigateThingDef(t, tech)) count++;
-            }
-            return count;
-        }
-
-        private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
-        {
-            var matches = 0;
-            foreach (var skill in FindSkills(x => !x.Hints.NullOrEmpty()))
-            {
-                foreach (var word in skill.Hints)
-                {
-                    if (tech.Matches(word))
-                    {
-                        SetSkillRelevance(skill, true);
-                        matches++;
-                        keywords.Add(word);
-                        break;
-                    }
-                }
-            }
-            return matches;
-        }
-
-        public static bool InvestigateThingDef(ThingDef thing, ResearchProjectDef tech)
-        {
-            bool found = false;
-            if (thing != null)
-            {
-                foreach (var skill in FindSkills(x => !x && x.Criteria != null))
-                {
-                    try { found = skill.Criteria(thing); } catch { }
-                }
-                //measures for weapons
-                if (thing.IsWeapon) tech.RegisterWeapon(thing);
-                if (thing.building != null && thing.building.turretGunDef != null && !FindTechs(thing.building.turretGunDef).Any()/*!TechByWeapon.ContainsKey(thing.building.turretGunDef)*/) tech.RegisterWeapon(thing);
-            }
-            return found;
-        }
-
-        public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
-        {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            var expertise = techComp.expertise;
-            if (expertise != null) return expertise.ContainsKey(tech) && techComp.expertise[tech] >= 1f;
-            return false;
-        }
-
-        public static bool IsOnline(this ResearchProjectDef tech)
-        {
-            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.physical;
-        }
-        
-        public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
-        {
-            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.digital;
-        }
-
-        public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
-        {
-            float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
-            amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
-            amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true); //Because, why not?
-            CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
-            Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
-            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
-            {
-                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
-                {
-                    amount *= 2;
-                    break;
-                }
-            }
-            if (researcher != null && researcher.Faction != null)
-            {
-                amount /= tech.CostFactor(techComp.techLevel);
-            }
-            if (DebugSettings.fastResearch)
-            {
-                amount *= 500f;
-            }
-            if (researcher != null && research)
-            {
-                researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
-            }
-            float num = tech.GetProgress(expertise);
-            num += amount / total;
-            expertise[tech] = num;
-        }
-
-        public static bool Matches(this ResearchProjectDef tech, string query)
-        {
-            var culture = CultureInfo.CurrentUICulture;
-            query = query.ToLower(culture);
-
-            return 
-                tech.LabelCap.RawText.ToLower(culture).Contains(query) ||
-                ResearchTree_Patches.GetUnlockDefsAndDescs(tech).Any(unlock => unlock.First.LabelCap.RawText.ToLower(culture).Contains(query)) ||
-                tech.description.ToLower(culture).Contains(query);
-        }
-
-        public static bool RequisitesKnownBy(this ResearchProjectDef tech, Pawn pawn)
-        {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            var expertise = techComp.expertise;
-            if (expertise != null)
-            {
-                //1. test if any descendent is known
-                if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech))) return true;
-                //2. test if all ancestors are known
-                if (!tech.prerequisites.NullOrEmpty()) return tech.prerequisites.All(x => x.IsKnownBy(pawn));
-            }
-            //3. test if there are any ancestors
-            return tech.prerequisites.NullOrEmpty();
-        }
-
-        public static void Uploaded(this ResearchProjectDef tech, float amount, Thing location)
-        {
-            if (tech == null)
-            {
-                Log.Error("Tryed to upload a null tech.", false);
+                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.{appendReport}");
                 return;
             }
-            float num = Find.ResearchManager.GetProgress(tech);
-            num += amount;
-            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
-            progress[tech] = num;
-            if (tech.IsFinished) tech.Unlock(location, false);
+            if (usedPreReq && !Prefs.LogVerbose)
+            {
+                Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.{appendReport}");
+            }
         }
 
-        public static void Unlock(this ResearchProjectDef tech, Thing location, bool hardCopy)
+        private static void RegisterWeapon(this ResearchProjectDef tech, ThingDef weapon)
         {
-            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
-            unlocked.Archive(tech, hardCopy);
+            if (ShouldLockWeapon(weapon))
+            {
+                FindTech(tech).Weapons.Add(weapon);
+            }
+        }
+        private static float StuffMarketValueFactor(this ResearchProjectDef tech)
+        {
+			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+		}
+
+        #endregion
+
+        #region research tree
+        public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
+        {
+            DrawStorageMarker(tech, rect, highlighted);
+            float height = rect.height;
+            Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
+            float startPos = rect.x - frameOffset.x;
+            if (HarmonyPatches.VFEM && ResearchTree_Patches.IsQueued(tech)) startPos += DrawQueueAssignment(tech, DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer"), height, frameOffset, startPos);
+            DrawPawnAssignments(tech, height, frameOffset, startPos);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed)
@@ -646,24 +444,97 @@ namespace HumanResources
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        public static float StuffCostFactor(this ResearchProjectDef tech)
+        private static void DrawPawnAssignments(ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos)
         {
-            return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
-        }
-
-        public static List<ThingDef> UnlockedPlants(this ResearchProjectDef tech)
-        {
-            List<ThingDef> result = new List<ThingDef>();
-            foreach (ThingDef plant in tech.GetPlantsUnlocked()) //Cacau shouldn't be a Tree!
+            Vector2 position;
+            Vector2 size = new Vector2(height, height);
+            using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
             {
-                result.Add(plant);
+                while (enumerator.MoveNext())
+                {
+                    position = new Vector2(startPos, frameOffset.y);
+                    Rect box = new Rect(position, size);
+                    Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
+                    Pawn pawn = enumerator.Current;
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
+                    TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
+                    startPos += height / 2;
+                }
             }
-            return result;
         }
 
-        public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
+        private static float DrawQueueAssignment(ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
         {
-            return FindTech(tech).Weapons;
+            Vector2 position;
+            Vector2 size = new Vector2(height, height);
+            position = new Vector2(startPos, frameOffset.y);
+            Rect box = new Rect(position, size);
+            Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
+            GUI.DrawTexture(box, thingDef.uiIcon);
+            if (Widgets.ButtonInvisible(clickBox)) ResearchTree_Patches.Dequeue(tech);
+            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)} ({"ClickToRemove".Translate()})");
+            return height / 2;
+        }
+
+        private static void DrawStorageMarker(ResearchProjectDef tech, Rect rect, bool highlighted)
+        {
+            float height = rect.height;
+            float ribbon = ResearchTree_Constants.push.x;
+            Vector2 position = new Vector2(rect.xMax, rect.y);
+            Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
+            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
+            Color backup = GUI.color;
+            if (unlocked.TechsArchived.ContainsKey(tech))
+            {
+                bool cloud = tech.IsOnline();
+                bool book = tech.IsPhysicallyArchived();
+                bool twin = cloud && book;
+                Vector2 markerSize = new Vector2(ribbon, height);
+                Rect box = new Rect(position, markerSize);
+                Rect inner = box;
+                inner.height = ribbon;
+                if (twin)
+                {
+                    inner.y -= height * 0.08f;
+                }
+                else
+                {
+                    inner.y += (height - ribbon) / 2;
+                }
+                Widgets.DrawBoxSolid(box, shadedColor);
+                if (cloud)
+                {
+                    GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
+                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
+                }
+                if (book)
+                {
+                    if (twin)
+                    {
+                        float reduction = 0.9f;
+                        inner.width *= reduction;
+                        inner.height *= reduction;
+                        inner.y = box.yMax - inner.height - 1f;
+                        inner.x += (ribbon - inner.width) / 2;
+                    }
+                    var material = TechDefOf.TechBook.graphic.MatSingle;
+                    material.color = techColor;
+                    Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
+                    TooltipHandler.TipRegionByKey(inner, "bookInLibrary".Translate());
+                }
+            }
+            //origin tooltip if necessary
+            else if (tech.IsFinished)
+            {
+                bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+                bool fromFaction = unlocked.factionTechs.Contains(tech);
+                bool startingTech = fromScenario || fromFaction;
+                string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+                TooltipHandler.TipRegionByKey(rect, "bookFromStart".Translate(source));
+            }
+            GUI.color = backup;
+            return;
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
@@ -721,23 +592,164 @@ namespace HumanResources
             yield break;
         }
 
-        private static void RegisterWeapon(this ResearchProjectDef tech, ThingDef weapon)
-        {
-            if (ShouldLockWeapon(weapon))
-            {
-                FindTech(tech).Weapons.Add(weapon);
-            }
-        }
-
         private static IEnumerable<Pawn> SortedPawns(this ResearchProjectDef tech)
         {
             if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
             else return currentPawns.OrderBy(x => tech.IsKnownBy(x))/*.ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level)*/;
         }
+        #endregion
 
-        private static float StuffMarketValueFactor(this ResearchProjectDef tech)
+        #region operational
+        public static void CarefullyFinishProject(this ResearchProjectDef project, Thing place)
         {
-			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
-		}
+            bool careful = !project.prerequisites.NullOrEmpty();
+            List<ResearchProjectDef> prerequisitesCopy = new List<ResearchProjectDef>();
+            if (careful)
+            {
+                prerequisitesCopy.AddRange(project.prerequisites);
+                project.prerequisites.Clear();
+            }
+            Find.ResearchManager.FinishProject(project);
+            if (careful) project.prerequisites.AddRange(prerequisitesCopy);
+            Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
+            using (IEnumerator<Pawn> enumerator = currentPawns.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    CompKnowledge techComp = enumerator.Current.TryGetComp<CompKnowledge>();
+                    techComp.homework?.RemoveAll(x => x == project);
+                }
+            }
+            currentPawnsCache.Clear();
+        }
+
+        public static void Ejected(this ResearchProjectDef tech, Thing place, bool hardCopy)
+        {
+            if (!tech.HasBackup(hardCopy))
+            {
+                Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+                progress[tech] = 0f;
+                unlocked.TechsArchived.Remove(tech);
+                Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
+            }
+        }
+
+        public static float GetProgress(this ResearchProjectDef tech, Dictionary<ResearchProjectDef, float> expertise)
+        {
+            float result;
+            if (expertise != null && expertise.TryGetValue(tech, out result))
+            {
+                return result;
+            }
+            expertise.Add(tech, 0f);
+            return 0f;
+        }
+
+        public static bool HasBackup(this ResearchProjectDef tech, bool hardCopy)
+        {
+            return hardCopy ? tech.IsOnline() : tech.IsPhysicallyArchived();
+        }
+
+        public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            var expertise = techComp.expertise;
+            if (expertise != null) return expertise.ContainsKey(tech) && techComp.expertise[tech] >= 1f;
+            return false;
+        }
+
+        public static bool IsOnline(this ResearchProjectDef tech)
+        {
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.physical;
+        }
+        
+        public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
+        {
+            return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.digital;
+        }
+
+        public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
+        {
+            float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
+            amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
+            amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true); //Because, why not?
+            CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
+            Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
+            {
+                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
+                {
+                    amount *= 2;
+                    break;
+                }
+            }
+            if (researcher != null && researcher.Faction != null)
+            {
+                amount /= tech.CostFactor(techComp.techLevel);
+            }
+            if (DebugSettings.fastResearch)
+            {
+                amount *= 500f;
+            }
+            if (researcher != null && research)
+            {
+                researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
+            }
+            float num = tech.GetProgress(expertise);
+            num += amount / total;
+            expertise[tech] = num;
+        }
+
+        public static bool RequisitesKnownBy(this ResearchProjectDef tech, Pawn pawn)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            var expertise = techComp.expertise;
+            if (expertise != null)
+            {
+                //1. test if any descendent is known
+                if (expertise.Any(x => x.Value >= 1 && !x.Key.prerequisites.NullOrEmpty() && x.Key.prerequisites.Contains(tech))) return true;
+                //2. test if all ancestors are known
+                if (!tech.prerequisites.NullOrEmpty()) return tech.prerequisites.All(x => x.IsKnownBy(pawn));
+            }
+            //3. test if there are any ancestors
+            return tech.prerequisites.NullOrEmpty();
+        }
+
+        public static void Unlock(this ResearchProjectDef tech, Thing location, bool hardCopy)
+        {
+            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
+            unlocked.Archive(tech, hardCopy);
+        }
+
+        public static List<ThingDef> UnlockedPlants(this ResearchProjectDef tech)
+        {
+            List<ThingDef> result = new List<ThingDef>();
+            foreach (ThingDef plant in tech.GetPlantsUnlocked()) //Cacau shouldn't be a Tree!
+            {
+                result.Add(plant);
+            }
+            return result;
+        }
+
+        public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
+        {
+            return FindTech(tech).Weapons;
+        }
+
+        public static void Uploaded(this ResearchProjectDef tech, float amount, Thing location)
+        {
+            if (tech == null)
+            {
+                Log.Error("Tryed to upload a null tech.", false);
+                return;
+            }
+            float num = Find.ResearchManager.GetProgress(tech);
+            num += amount;
+            Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
+            progress[tech] = num;
+            if (tech.IsFinished) tech.Unlock(location, false);
+        }
+
+        #endregion
     }
 }

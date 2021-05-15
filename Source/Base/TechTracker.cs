@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using RimWorld;
-using System.Threading.Tasks;
 using Verse;
 
 namespace HumanResources
@@ -12,22 +10,6 @@ namespace HumanResources
     {
         private static List<SkillMapping> _skills;
         private static List<TechMapping> _techs;
-
-        private static List<TechMapping> Techs
-        {
-            get
-            {
-                if (_techs.NullOrEmpty())
-                {
-                    _techs = new List<TechMapping>();
-                    foreach (ResearchProjectDef def in DefDatabase<ResearchProjectDef>.AllDefs)
-                    {
-                        _techs.Add(new TechMapping(def));
-                    }
-                }
-                return _techs;
-            }
-        }
 
         public static List<SkillMapping> Skills
         {
@@ -45,33 +27,48 @@ namespace HumanResources
             }
         }
 
-        public static void LinkTechAndSkills(ResearchProjectDef tech, List<SkillDef> relevantSkills)
+        private static List<TechMapping> Techs
         {
-            FindTech(tech).Skills.AddRange(relevantSkills);
-            foreach (var skill in relevantSkills)
+            get
             {
-                FindSkill(skill).Techs.Add(tech);
+                if (_techs.NullOrEmpty())
+                {
+                    _techs = new List<TechMapping>();
+                    foreach (ResearchProjectDef def in DefDatabase<ResearchProjectDef>.AllDefs)
+                    {
+                        _techs.Add(new TechMapping(def));
+                    }
+                }
+                return _techs;
             }
         }
-
-        public static IEnumerable<SkillDef> GetSkillBiasAndReset()
+        public static SkillMapping FindSkill<T>(T query) where T : class
         {
-            foreach (var skill in FindSkills(x => x.relevant))
+            return FindSkills(query).FirstOrDefault();
+        }
+
+        public static IEnumerable<SkillMapping> FindSkills(Predicate<SkillMapping> query)
+        {
+            return FindSkills<Predicate<SkillMapping>>(query);
+        }
+
+        public static IEnumerable<SkillMapping> FindSkills<T>(T query) where T : class
+        {
+            if (typeof(T) == typeof(Predicate<SkillMapping>))
             {
-                yield return skill;
-                skill.relevant = false;
+                Predicate<SkillMapping> lookup = query as Predicate<SkillMapping>;
+                return Skills.Where(x => lookup(x));
             }
-        }
-
-        public static void SetSkillRelevance(SkillDef skill, bool value)
-        {
-            FindSkill(skill).relevant = value;
-        }
-
-        public static bool GetSkillRelevance(SkillDef skill)
-        {
-            //return Skills.Find(x => x.Skill == skill);
-            return FindSkill(skill).relevant;
+            if (typeof(T) == typeof(SkillDef))
+            {
+                return Skills.Where(x => x.Skill == query);
+            }
+            if (typeof(T) == typeof(ResearchProjectDef))
+            {
+                return Skills.Where(x => x.Techs.Any(y => y == query));
+            }
+            Log.Error($"[HumanResources] Can't find a skill by {query.GetType()}!");
+            return null;
         }
 
         public static TechMapping FindTech<T>(T query) where T : class
@@ -84,7 +81,7 @@ namespace HumanResources
             return FindTechs<Predicate<TechMapping>>(query);
         }
 
-        public static IEnumerable<TechMapping> FindTechs<T>(T query) where T : class    
+        public static IEnumerable<TechMapping> FindTechs<T>(T query) where T : class
         {
             if (typeof(T) == typeof(Predicate<TechMapping>))
             {
@@ -111,33 +108,32 @@ namespace HumanResources
             return null;
         }
 
-        public static IEnumerable<SkillMapping> FindSkills(Predicate<SkillMapping> query)
+        public static IEnumerable<SkillDef> GetSkillBiasAndReset()
         {
-            return FindSkills<Predicate<SkillMapping>>(query);
+            foreach (var skill in FindSkills(x => x.relevant))
+            {
+                yield return skill;
+                skill.relevant = false;
+            }
         }
 
-        public static SkillMapping FindSkill<T>(T query) where T : class
+        public static bool GetSkillRelevance(SkillDef skill)
         {
-            return FindSkills(query).FirstOrDefault();
+            return FindSkill(skill).relevant;
         }
 
-        public static IEnumerable<SkillMapping> FindSkills<T>(T query) where T : class
+        public static void LinkTechAndSkills(ResearchProjectDef tech, List<SkillDef> relevantSkills)
         {
-            if (typeof(T) == typeof(Predicate<SkillMapping>))
+            FindTech(tech).Skills.AddRange(relevantSkills);
+            foreach (var skill in relevantSkills)
             {
-                Predicate<SkillMapping> lookup = query as Predicate<SkillMapping>;
-                return Skills.Where(x => lookup(x));
+                FindSkill(skill).Techs.Add(tech);
             }
-            if (typeof(T) == typeof(SkillDef))
-            {
-                return Skills.Where(x => x.Skill == query);
-            }
-            if (typeof(T) == typeof(ResearchProjectDef))
-            {
-                return Skills.Where(x => x.Techs.Any(y => y == query));
-            }
-            Log.Error($"[HumanResources] Can't find a skill by {query.GetType()}!");
-            return null;
+        }
+
+        public static void SetSkillRelevance(SkillDef skill, bool value)
+        {
+            FindSkill(skill).relevant = value;
         }
     }
 }
