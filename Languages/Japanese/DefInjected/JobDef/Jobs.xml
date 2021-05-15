@@ -1,23 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <!--Review: No need for "TargetB"-->
-  <!--EN: learning TargetB.-->
-  <LearnTech.reportString>TargetBを学習している。</LearnTech.reportString>
-  <!--EN: documenting TargetB.-->
-  <DocumentTech.reportString>TargetBを文書化している。</DocumentTech.reportString>
-  <DocumentTechDigital.reportString>TargetBを文書化している。</DocumentTechDigital.reportString>
-  <!--EN: researching TargetB.-->
-  <ResearchTech.reportString>TargetBを研究している。</ResearchTech.reportString>
-  <!--EN: practicing TargetB.-->
-  <!--NEW-->
-  <ScanBook.reportString>scanning</ScanBook.reportString>
-  <TrainWeapon.reportString>TargetBを練習している。</TrainWeapon.reportString>
-  <!--NeW-->
-  <!--EN: training melee.-->
-  <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
-  <!--NeW-->
-  <!--EN: training shooting.-->
-  <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
+  <!--EN: studying-->
+  <LearnTech.reportString>学習している</LearnTech.reportString>
+  <!--EN: documenting-->
+  <DocumentTech.reportString>文書化している</DocumentTech.reportString>
+  <DocumentTechDigital.reportString>入力している</DocumentTechDigital.reportString>
+  <!--EN: researching-->
+  <ResearchTech.reportString>研究している</ResearchTech.reportString>
+    <!--EN: documenting-->
+  <ScanBook.reportString>スキャンしている</ScanBook.reportString>
+  <!--EN: training weapon-->
+  <TrainWeapon.reportString>武器を練習している</TrainWeapon.reportString>
+  <!--EN: Training Melee.-->
+  <PlayAtDummy.reportString>近接武器を練習している。</PlayAtDummy.reportString>
+  <!--EN: Training Shooting.-->
+  <PlayAtTarget.reportString>遠距離武器を練習している。</PlayAtTarget.reportString>
 
 </LanguageData> 

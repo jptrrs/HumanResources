@@ -18,16 +18,24 @@
 
   <!--EN: Document technology-->
   <DocumentTech.label>记录科技</DocumentTech.label>
-  <!--CHANGED-->
   <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
-  <DocumentTech.description>将脑中知识化作技术书。</DocumentTech.description>
+  <DocumentTech.description>将脑中知识化作技术书。（在这张桌子上，只能记录工业时代及以前的科技。）</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>正在记录一项科技。</DocumentTech.jobString>
 
-  <!--NEW-->
-  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
-  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
-  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
+  <!--EN: Document technology-->
+  <DocumentTechDigital.label>录入科技</DocumentTechDigital.label>
+  <!--EN: Consolidate knowledge into a network learning resource and upload it to the colony database.-->
+  <DocumentTechDigital.description>将脑中知识转化为在线学习资源，再将其上传至殖民地数据库。</DocumentTechDigital.description>
+  <!--EN: Documenting a technology.-->
+  <DocumentTechDigital.jobString>正在录入一项科技。</DocumentTechDigital.jobString>
+
+  <!--EN: Scan books & drives -->
+  <ScanBook.label>扫描书籍或磁盘</ScanBook.label>
+  <!--EN: Scan existing books or drives and upload its contents to the colony database.-->
+  <ScanBook.description>扫描手头的书籍或磁盘，再将内容上传至殖民地数据库。</ScanBook.description>
+  <!--EN: Scanning a book or drive.-->
+  <ScanBook.jobString>正在扫描书籍或磁盘。</ScanBook.jobString>
 
   <!--EN: Learn to shoot a weapon-->
   <TrainWeaponShooting.label>学习使用远程武器</TrainWeaponShooting.label>
@@ -60,7 +68,7 @@
   <!--EN: Practice shooting-->
   <PracticeWeaponShooting.label>练习射击</PracticeWeaponShooting.label>
   <!--EN: Shoots at a target to practice shooting accuracy.-->
-  <PracticeWeaponShooting.description>向目标射击以练习射击精度。</PracticeWeaponShooting.description>
+  <PracticeWeaponShooting.description>向目标射击以提升射击精度。</PracticeWeaponShooting.description>
   <!--EN: Practicing shooting.-->
   <PracticeWeaponShooting.jobString>正在练习射击。</PracticeWeaponShooting.jobString>
 

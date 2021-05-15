@@ -4,20 +4,39 @@
   <!--EN: Study Desk-->
   <StudyDesk.label>書卓</StudyDesk.label>
   <!--EN: A desk to study and research technologies. Comes with all your faction's starting research.-->
-  <StudyDesk.description>学習と研究をするための机。全ての初期テクノロジーを内蔵しています。</StudyDesk.description>
+  <StudyDesk.description>学習と研究をするための机。全ての初期テクノロジーを内蔵している。</StudyDesk.description>
 
-  <!--NEW-->
-  <NetworkTerminal.label>Network Terminal</NetworkTerminal.label>
-  <NetworkTerminal.description>An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed.</NetworkTerminal.description>
+  <!--EN: Network Terminal-->
+  <NetworkTerminal.label>ネットワークターミナル</NetworkTerminal.label>
+  <!--EN: An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed.-->
+  <NetworkTerminal.description>入植者が研究データベースに知識を入出力するためのアクセスポイント。カードゲーム「ソリティア」を内蔵している。</NetworkTerminal.description>
 
+  
+  <!--Borrewed from ItchyFlea's Practise Target-->
+
+  <!--EN: Target Stand-->
+  <Target.label>標的</Target.label>
+  <!--EN: A target for your sharpshooters to hone their skills with.-->
+  <Target.description>あなたの射撃名手は、この標的で腕を磨くことができます。</Target.description>
+
+  <!--EN: Training Dummy-->
+  <MrDummy.label>訓練用人形</MrDummy.label>
+  <!--EN: A straw dummy for training melee skill.-->
+  <MrDummy.description>近接戦闘を練習するためのわら製人形。</MrDummy.description>
+  
+
+  <!--"Storage"-->
+  <!--Borrowed from Jecrell's RimWriter-->
+    
   <!--EN: Book Shelf-->
   <BookShelf.label>本棚</BookShelf.label>
   <!--EN: A sturdy shelf for storing knowledge in form of books.-->
-  <BookShelf.description>丈夫な棚。本の形にされた知識を収納します。</BookShelf.description>
+  <BookShelf.description>丈夫な棚。本の形となった知識を収納する。</BookShelf.description>
 
-  <!--NEW-->
-  <NetworkServer.label>Network Server</NetworkServer.label>
-  <NetworkServer.description>The ultimate cloud storage unit to host your research database. All library space you'll ever need.</NetworkServer.description>
+  <!--EN: Network Server-->
+  <NetworkServer.label>ネットワークサーバ</NetworkServer.label>
+  <!--EN: The ultimate cloud storage unit to host your research database. All library space you'll ever need.-->
+  <NetworkServer.description>研究データベースをホストする究極なクラウド記憶装置。1台だけで図書館の役割を果たせる。</NetworkServer.description>
 
   <!-- Technical Book -->
 
@@ -29,19 +48,9 @@
   <!--EN: A book filled with knowledge.-->
   <TechBook.description>知識に満ちた本。</TechBook.description>
 
-  <!--NEW-->
-  <TechDrive.label>Technology Database Drive</TechDrive.label>
-  <TechDrive.description>A hard drive filled with knowledge. Can only be archived on a network terminal.</TechDrive.description>
-
-  <!--EN: Target Stand-->
-  <Target.label>標的</Target.label>
-  <!--EN: A target for your sharpshooters to hone their skills with.-->
-  <Target.description>あなたの射撃名手は、この標的で腕を磨くことができます。</Target.description>
-
-  <!--EN: Training Dummy-->
-  <MrDummy.label>訓練用人形</MrDummy.label>
-  <!--EN: A straw dummy for training melee skill.-->
-  <MrDummy.description>近接戦闘を練習するためのわら製人形。</MrDummy.description>
-
+  <!--EN: Technology Database Drive-->
+  <TechDrive.label>テクノロジーデータベースドライブ</TechDrive.label>
+  <!--EN: A hard drive filled with knowledge. Can only be archived on a network terminal.-->
+  <TechDrive.description>知識に満ちたハードディスク。読み込むにはネットワークターミナルが必要。</TechDrive.description>
 
 </LanguageData>

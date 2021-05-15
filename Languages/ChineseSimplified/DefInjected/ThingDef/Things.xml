@@ -4,35 +4,16 @@
   <!--EN: Study Desk-->
   <StudyDesk.label>书桌</StudyDesk.label>
   <!--EN: A desk to study and research technologies. Comes with all your faction's starting research.-->
-  <StudyDesk.description>一张可用于学习和研究的桌子。自带所有开局科技（殖民者可以直接在书桌上学习它们而不需要额外写书）。</StudyDesk.description>
+  <StudyDesk.description>一张可用于学习和研究的桌子。自带所有开局科技（殖民者可以直接在书桌上学习它们，无需额外写书）。</StudyDesk.description>
   
-  <!--NEW-->
-  <NetworkTerminal.label>Network Terminal</NetworkTerminal.label>
-  <NetworkTerminal.description>An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed.</NetworkTerminal.description>
+  <!--EN: Network Terminal-->
+  <NetworkTerminal.label>网络终端</NetworkTerminal.label>
+  <!--EN: An access point to input and output knowledge between colonists and the research database. Comes with solitaire pre-installed.-->
+  <NetworkTerminal.description>一套电脑操作设备，殖民者可通过它接入研究数据库，将知识录入其中，或是学习数据库里储存的知识。预装纸牌游戏。</NetworkTerminal.description>
 
-  <!--EN: Book Shelf-->
-  <BookShelf.label>书架</BookShelf.label>
-  <!--EN: A sturdy shelf for storing knowledge in form of books.-->
-  <BookShelf.description>一个坚固的架子，用于存放记载知识的书本。</BookShelf.description>
 
-  <!--NEW-->
-  <NetworkServer.label>Network Server</NetworkServer.label>
-  <NetworkServer.description>The ultimate cloud storage unit to host your research database. All library space you'll ever need.</NetworkServer.description>
-
-  <!-- Technical Book -->
-
-  <!--EN: Unfinished technical book-->
-  <UnfinishedTechBook.label>未完成的技术书</UnfinishedTechBook.label>
-
-  <!--EN: Technical Book-->
-  <TechBook.label>技术书</TechBook.label>
-  <!--EN: A book filled with knowledge.-->
-  <TechBook.description>一本充满知识的书。</TechBook.description>
-
-  <!--NEW-->
-  <TechDrive.label>Technology Database Drive</TechDrive.label>
-  <TechDrive.description>A hard drive filled with knowledge. Can only be archived on a network terminal.</TechDrive.description>
-
+  <!--Borrewed from ItchyFlea's Practise Target-->
+  
   <!--EN: Target Stand-->
   <Target.label>靶子</Target.label>
   <!--EN: A target for your sharpshooters to hone their skills with.-->
@@ -42,6 +23,35 @@
   <MrDummy.label>训练用假人</MrDummy.label>
   <!--EN: A straw dummy for training melee skill.-->
   <MrDummy.description>用于训练格斗技能的稻草假人。</MrDummy.description>
+  
+  
+  <!--"Storage"-->
+  <!--Borrowed from Jecrell's RimWriter-->
+  
+  <!--EN: Book Shelf-->
+  <BookShelf.label>书架</BookShelf.label>
+  <!--EN: A sturdy shelf for storing knowledge in form of books.-->
+  <BookShelf.description>一个坚固的架子，用于存放记载知识的书本。</BookShelf.description>
 
+  <!--EN: Network Server-->
+  <NetworkServer.label>网络服务器</NetworkServer.label>
+  <!--EN: The ultimate cloud storage unit to host your research database. All library space you'll ever need.-->
+  <NetworkServer.description>用于储存研究数据库的终极云存储设备。只需一台，就可以让所有书架失去存在意义。</NetworkServer.description>
+
+
+  <!--Items-->
+
+  <!--EN: Unfinished technical book-->
+  <UnfinishedTechBook.label>未完成的技术书</UnfinishedTechBook.label>
+
+  <!--EN: Technical Book-->
+  <TechBook.label>技术书</TechBook.label>
+  <!--EN: A book filled with knowledge.-->
+  <TechBook.description>一本充满知识的书。</TechBook.description>
+
+  <!--EN: Technology Database Drive-->
+  <TechDrive.label>科技数据磁盘</TechDrive.label>
+  <!--A hard drive filled with knowledge. Can only be archived on a network terminal.-->
+  <TechDrive.description>一块充满知识的磁盘。只能通过网络终端对其进行读取。</TechDrive.description>
 
 </LanguageData>

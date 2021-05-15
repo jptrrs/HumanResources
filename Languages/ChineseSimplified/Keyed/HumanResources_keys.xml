@@ -18,42 +18,51 @@
   <!--EN: Show techs available to learn.-->
   <ShowAvailable>显示可供学习的科技</ShowAvailable>
   <!--EN: Compact view.-->
-  <ShowCompact>小窗视图</ShowCompact>
+  <ShowCompact>小窗模式</ShowCompact>
   <!--EN: Show assignments.-->
   <ShowAssignment>显示被分配的任务</ShowAssignment>
-  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
-  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
-  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
+  <!--EN: Clear ALL assignments.-->
+  <ClearAssignments>清除所有任务分配。</ClearAssignments>
+  <!--EN: Group by skills-->
+  <GroupBySkills>按技能分组</GroupBySkills>
+  <!--EN: Assign all these technologies at once.-->
+  <ClickToGroupAssign>令该殖民者学习或记录列表中的所有科技。</ClickToGroupAssign>
   <!--EN: Expand-->
-  <Expand>扩展</Expand>
+  <Expand>展开</Expand>
   <!--EN: Collapse-->
   <Collapse>折叠</Collapse>
   <!--EN: Catalog-->
   <TabCatalogue>目录</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
-  <AvailableBooksReport>{1}个书架上有{0}本书</AvailableBooksReport>
-  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
+  <AvailableBooksReport>{1} 个书架上有 {0} 本书</AvailableBooksReport>
+  <!--EN: {0} technologies online-->
+  <AvailableOnNetwork>在线服务器内存有 {0} 种科技</AvailableOnNetwork>
   <!--EN: Left-click to assign for studying.-->
   <ClickToAssignForStudying>左键点击以命令该殖民者学习此科技。</ClickToAssignForStudying>
   <!--EN: Left-click to assign for documentation.-->
-  <ClickToAssignForDocumentation>左键点击以命令该殖民者撰写此科技的技术书。</ClickToAssignForDocumentation>
+  <ClickToAssignForDocumentation>左键点击以命令该殖民者记录此科技。</ClickToAssignForDocumentation>
   <!--EN: Left-click to unassign.-->
   <ClickToUnassign>左键点击以取消任务分配。</ClickToUnassign>
   <!--EN: Right-click to show on Research Tree.-->
   <RightClickToTree>右键点击以在科技树上查看此科技。</RightClickToTree>
   <!--EN: {0} is tasked with:-->
-  <AssignedTo>{0}被分配了以下任务：</AssignedTo>
+  <AssignedTo>{0} 被分配了以下任务：</AssignedTo>
   <!--EN: {0} is tasked with researching this.-->
-  <AssignedToResearch>{0}被下令研究此科技。</AssignedToResearch>
+  <AssignedToResearch>{0} 被下令研究此科技。</AssignedToResearch>
   <!--EN: {0} is tasked with studying this.-->
-  <AssignedToStudy>{0}被下令学习此科技。</AssignedToStudy>
+  <AssignedToStudy>{0} 被下令学习此科技。</AssignedToStudy>
   <!--EN: {0} is tasked with documenting this.-->
-  <AssignedToDocument>{0}被下令将撰写该科技的技术书。</AssignedToDocument>
+  <AssignedToDocument>{0} 被下令记录此科技。</AssignedToDocument>
   <!--EN: click to remove-->
-  <ClickToRemove>左键单击以撤销该任务</ClickToRemove>
-  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
-  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
-  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
+  <ClickToRemove>左键单击以移除</ClickToRemove>
+  <!--EN: Starting knowledge for {0}.-->
+  <!--"0" here is either the scenario or the player faction's name-->
+  <bookFromStart>{0} 的起始科技</bookFromStart>
+  <!--EN: Archived in our library.-->
+  <bookInLibrary>已存于图书馆。</bookInLibrary>
+  <!--EN: Archived in our database.-->
+  <bookInDatabase>已存于数据库。</bookInDatabase>
+
 
   <!--Settings-->
   
@@ -118,6 +127,7 @@
   <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
   <StudySpeedTiedToDifficultyDesc>若勾选此项，学习新科技的基础速度将与难度设置相关联（中等难度降低10％，困难难度降低20％）。</StudySpeedTiedToDifficultyDesc>
 
+
   <!--Things-->
   
   <!--EN: Empty-->
@@ -142,12 +152,18 @@
   <BookTheory>{0} 理论</BookTheory>
   <!--EN: {0} Database-->
   <BookDatabase>{0} 数据库</BookDatabase>
-  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
-  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
-  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
-  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
-  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
-  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
+  <!--EN: Base technology-->
+  <WeaponAssociatedTech>基础科技</WeaponAssociatedTech>
+  <!--EN: The knowledge a colony (or colonist) needs in order to learn how to use this weapon.-->
+  <WeaponAssociatedTechDesc>某个殖民地上的殖民者在学习该武器的使用方法前需要事先掌握的知识。\n\n（只要该科技被图书馆或数据库收藏，所有殖民者即可学习该武器的使用方法，而不需要亲自将该科技再学习一遍）</WeaponAssociatedTechDesc>
+  <!--EN: Known?-->
+  <WeaponKnown>是否已知？</WeaponKnown>
+  <!--EN: Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.-->
+  <WeaponKnownDesc>该殖民地是否掌握学习该武器的使用方法所需要的前置科技。</WeaponKnownDesc>
+  <!--EN: Requires training?-->
+  <WeaponRequiresTraining>需要训练？</WeaponRequiresTraining>
+  <!--EN: Whether this weapon requires training to be used.-->
+  <WeaponRequiresTrainingDesc>该武器是否需要通过训练来掌握使用方法。</WeaponRequiresTrainingDesc>
 
 
   <!--Feedback-->
@@ -183,7 +199,7 @@
   <!--EN: {0_nameDef} doesn't know how to repair a {1} (requires {2}).-->
   <DoesntKnowHowToRepair>{0_nameDef} 不知如何修复 {1}（需要 {2}）。</DoesntKnowHowToRepair>
   <!--EN: {0_nameDef} doesn't know how to {1} (requires {2}).-->
-  <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成“{1}”（需要 {2}）。</DoesntKnowHowToCraft>
+  <DoesntKnowHowToCraft>{0_nameDef} 不知如何完成 {1}（需要 {2}）。</DoesntKnowHowToCraft>
   <!--EN: {0_nameDef} doesn't know how to cultivate {1} (requires {2}).-->
   <DoesntKnowThisPlant>{0_nameDef} 不知如何栽种 {1}（需要 {2}）。</DoesntKnowThisPlant>
   <!--EN: Pawn has not been trained to use this weapon-->
@@ -193,12 +209,18 @@
   <!--EN: {0} is already known.-->
   <TechAlreadyKnown>{0} 是已知的科技。</TechAlreadyKnown>
   <!--EN: Invalid equipment.-->
-  <NoWeaponEquipped>任务分配无效。</NoWeaponEquipped>
-  <!--NEW--><NoBooksToScan>No books to scan.</NoBooksToScan>
-  <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
-  <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
-  <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
-  <!--NEW--><ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
+  <NoWeaponEquipped>无效的武器装备。</NoWeaponEquipped>
+  <!--EN: No books to scan.-->
+  <NoBooksToScan>没用可供扫描的书籍。</NoBooksToScan>
+  <!--EN: No servers available on the colony network.-->
+  <NoAvailableServer>殖民地网络上无可用服务器。</NoAvailableServer>
+  <!--EN: Assigned projects not allowed here.-->
+  <ForbiddenAssignment>无法在该处学习或记录指定的研究项目。</ForbiddenAssignment>
+  <!--EN: {0_nameDef} was not assigned any projects. Use the main Research tab.-->
+  <NoAssignment>{0_nameDef} 尚未被分配任何研究任务。请在“研究”界面中指定。</NoAssignment>
+  <!--EN: Requires an unobstructed line of sight.-->
+  <ShootingRangeObstructed>需要一条没有障碍物的视线。</ShootingRangeObstructed>
+
 
   <!--weapon testing -->
   
@@ -213,15 +235,16 @@
   <!--EN: {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).-->
   <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} 在尝试使用 {WEAPON_definite} 时发生意外，伤到了自己（{RECIPE_label}）。</MessageWeaponTestFailureCatastrophic>
   <!--EN: {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).-->
-  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} 尝试使用 {WEAPON_definite} 的努力遭到了彻底的失败。{TESTER_pronoun} 负了伤，武器也报废了。（{RECIPE_label}）.</MessageMedicalWeaponTestFailureRidiculous>
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} 对 {WEAPON_definite} 进行的尝试遭遇了滑铁卢。{TESTER_pronoun} 负了伤，武器也报废了。（{RECIPE_label}）.</MessageMedicalWeaponTestFailureRidiculous>
+  
   
   <!--Go Explore-->
   
   <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
-  <LetterResearchRequest_SuccessHR>研究成功！通过合作，您对 {2} 的理解有所提高。\n\n与 {0} 的关系已提升了{1}。</LetterResearchRequest_SuccessHR>
+  <LetterResearchRequest_SuccessHR>研究成功！通过合作，您对 {2} 的理解有所提高。\n\n与 {0} 的关系已提升了 {1} 。</LetterResearchRequest_SuccessHR>
   <!--EN: The research was a great triumph! Working together you achieved a breakthrough and uncovered the secrets of {2}.\n\nRelations with {0} have improved by {1}.-->
-  <LetterResearchRequest_TriumphHR>研究取得了巨大成功！通过合作，您取得了突破，发现了 {2} 的秘密。\n\n与 {0} 的关系已提升了{1}。</LetterResearchRequest_TriumphHR>
+  <LetterResearchRequest_TriumphHR>研究取得了巨大成功！通过合作，您取得了突破，发现了 {2} 的秘密。\n\n与 {0} 的关系已提升了 {1} 。</LetterResearchRequest_TriumphHR>
   <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
-  <ResearchRequestXPGainHR>您的研究人员 {0} 在 {1} 上获得了宝贵的专业知识，并获得了{2}点智识经验值。</ResearchRequestXPGainHR>
+  <ResearchRequestXPGainHR>您的研究人员 {0} 在 {1} 上获得了宝贵的专业知识，并获得了 {2} 点智识经验值。</ResearchRequestXPGainHR>
 
 </LanguageData> 

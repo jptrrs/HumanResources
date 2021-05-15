@@ -15,10 +15,12 @@
   <!--EN: studying at-->
   <LearnTech.gerund>学習</LearnTech.gerund>
 
-  <!--NEW-->
-  <ScanBook.label>Scan Books</ScanBook.label>
-  <ScanBook.verb>scan</ScanBook.verb>
-  <ScanBook.gerund>scanning at</ScanBook.gerund>
+  <!--EN: Scan Books-->
+  <ScanBook.label>資料をスキャン</ScanBook.label>
+  <!--EN: scan-->
+  <ScanBook.verb>スキャン</ScanBook.verb>
+  <!--EN: scanning at-->
+  <ScanBook.gerund>スキャン</ScanBook.gerund>
 
   <!--EN: Learn weapon use-->
   <TrainWeapon.label>武器の使い方を練習</TrainWeapon.label>
@@ -27,28 +29,18 @@
   <!--EN: training-->
   <TrainWeapon.gerund>練習</TrainWeapon.gerund>
   
-  <!--NEW-->
-  <PracticeWeapon.label>Weapon practice</PracticeWeapon.label>
-  <PracticeWeapon.verb>train</PracticeWeapon.verb>
-  <PracticeWeapon.gerund>training</PracticeWeapon.gerund>
+  <!--EN: Weapon practice-->
+  <PracticeWeapon.label>武器を練習</PracticeWeapon.label>
+  <!--EN: train-->
+  <PracticeWeapon.verb>練習</PracticeWeapon.verb>
+  <!--EN: training-->
+  <PracticeWeapon.gerund>練習</PracticeWeapon.gerund>
 
-  <!--NEW-->
-  <ExperimentWeapon.label>Weapon experimenting</ExperimentWeapon.label>
-  <ExperimentWeapon.verb>train</ExperimentWeapon.verb>
-  <ExperimentWeapon.gerund>training</ExperimentWeapon.gerund>
-
-  <!--EN: shooting practice--><!--
-  <PracticeShooting.label>射撃を練習</PracticeShooting.label>
-  --><!--EN: train--><!--
-  <PracticeShooting.verb>練習</PracticeShooting.verb>
-  --><!--EN: training--><!--
-  <PracticeShooting.gerund>練習</PracticeShooting.gerund>
-
-  --><!--EN: melee practice--><!--
-  <PracticeMelee.label>近接戦闘を練習</PracticeMelee.label>
-  --><!--EN: train--><!--
-  <PracticeMelee.verb>練習</PracticeMelee.verb>
-  --><!--EN: training--><!--
-  <PracticeMelee.gerund>練習</PracticeMelee.gerund>-->
+  <!--EN: Weapon experimenting-->
+  <ExperimentWeapon.label>武器試し</ExperimentWeapon.label>
+  <!--EN: train-->
+  <ExperimentWeapon.verb>試用</ExperimentWeapon.verb>
+  <!--EN: training-->
+  <ExperimentWeapon.gerund>試用</ExperimentWeapon.gerund>
 
 </LanguageData>
