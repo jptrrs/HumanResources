@@ -12,51 +12,13 @@ using System.Text;
 namespace HumanResources
 {
     using static ModBaseHumanResources;
+    using static TechTracker;
 
     public static class Extension_Research
     {
-        public static Dictionary<ResearchProjectDef, List<Pawn>> AssignedHomework = new Dictionary<ResearchProjectDef, List<Pawn>>();
-        public static Dictionary<ResearchProjectDef, List<SkillDef>> SkillsByTech = new Dictionary<ResearchProjectDef, List<SkillDef>>();
-        public static Dictionary<ResearchProjectDef, List<ThingDef>> WeaponsByTech = new Dictionary<ResearchProjectDef, List<ThingDef>>();
-
         public static List<Pawn> currentPawnsCache;
         public static FieldInfo progressInfo = AccessTools.Field(typeof(ResearchManager), "progress");
-        public static Dictionary<ThingDef, ResearchProjectDef> TechByWeapon = new Dictionary<ThingDef, ResearchProjectDef>();
         private const float MarketValueOffset = 200f;
-        private static List<SkillMapping> _skills;
-        private static List<TechMapping> _techs;
-
-        public static List<TechMapping> Techs
-        {
-            get
-            {
-                if (_techs.NullOrEmpty())
-                {
-                    _techs = new List<TechMapping>();
-                    foreach (ResearchProjectDef def in DefDatabase<ResearchProjectDef>.AllDefs)
-                    {
-                        _techs.Add(new TechMapping(def));
-                    }
-                }
-                return _techs;
-            }
-        }
-
-        public static List<SkillMapping> Skills
-        {
-            get
-            {
-                if (_skills.NullOrEmpty())
-                {
-                    _skills = new List<SkillMapping>();
-                    foreach (SkillDef def in DefDatabase<SkillDef>.AllDefs)
-                    {
-                        _skills.Add(new SkillMapping(def));
-                    }
-                }
-                return _skills;
-            }
-        }
 
         private static Func<Pawn, ResearchProjectDef, string> AssignmentStatus = (pawn, tech) =>
         {
@@ -168,7 +130,7 @@ namespace HumanResources
                 menuHidden = true,
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { sCat/*TechDefOf.Technic*/ },
+                    categories = new List<StuffCategoryDef>() { sCat },
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()
@@ -199,7 +161,8 @@ namespace HumanResources
             GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
-            unlocked.stuffByTech.Add(tech, techStuff);
+            FindTech(tech).Stuff = techStuff;
+            unlocked.totalBooks++;
         }
 
         public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
@@ -382,7 +345,7 @@ namespace HumanResources
             }
 
             //f. If necessary, consider the skills already assigned to its prerequisites 
-            if (!Skills.Any(x => x.relevant))
+            if (!FindSkills(x => x.relevant).Any())
             {
                 usedPreReq = tech.CopyFromPreReq();
             }
@@ -407,15 +370,6 @@ namespace HumanResources
                 }
             }
             NoMatchesWarning(tech, usedPreReq, relevantSkills, success, report);
-        }
-
-        private static void LinkTechAndSkills(ResearchProjectDef tech, List<SkillDef> relevantSkills)
-        {
-            SkillsByTech.Add(tech, relevantSkills);
-            foreach (var skillMap in Skills.FindAll(x => relevantSkills.Contains(x)))
-            {
-                skillMap.Techs.Add(tech);
-            }
         }
 
         private static void NoMatchesWarning(ResearchProjectDef tech, bool usedPreReq, List<SkillDef> relevantSkills, bool success, StringBuilder report)
@@ -463,22 +417,13 @@ namespace HumanResources
             report.Append($" (Unlocks {sub}).");
         }
 
-        private static IEnumerable<SkillDef> GetSkillBiasAndReset()
-        {
-            foreach (var skill in Skills.Where(x => x.relevant))
-            {
-                yield return skill;
-                skill.relevant = false;
-            }
-        }
-
         private static bool CopyFromPreReq(this ResearchProjectDef tech)
         {
             if (tech.prerequisites.NullOrEmpty()) return false;
             bool applied = false;
-            foreach (ResearchProjectDef prereq in tech.prerequisites.Where(x => SkillsByTech.ContainsKey(x)))
+            foreach (ResearchProjectDef prereq in tech.prerequisites)
             {
-                foreach (var skill in SkillsByTech[prereq])
+                foreach (var skill in FindTech(prereq).Skills)
                 {
                     SetSkillRelevance(skill, true);
                 }
@@ -505,16 +450,6 @@ namespace HumanResources
                     keywords.Add("weapon");
                 }
             }
-        }
-
-        private static void SetSkillRelevance(SkillDef skill, bool value)
-        {
-            Skills.Find(x => x.Skill == skill).relevant = value;
-        }
-
-        private static bool GetSkillRelevance(SkillDef skill)
-        {
-            return Skills.Find(x => x.Skill == skill);
         }
 
         private static int CheckUnlockedTerrains(IEnumerable<TerrainDef> terrainDefs)
@@ -561,7 +496,7 @@ namespace HumanResources
         private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
         {
             var matches = 0;
-            foreach (var skill in Skills.Where(x => !x.Hints.NullOrEmpty()))
+            foreach (var skill in FindSkills(x => !x.Hints.NullOrEmpty()))
             {
                 foreach (var word in skill.Hints)
                 {
@@ -582,13 +517,13 @@ namespace HumanResources
             bool found = false;
             if (thing != null)
             {
-                foreach (var skill in Skills.Where(x => !x && x.Criteria != null))
+                foreach (var skill in FindSkills(x => !x && x.Criteria != null))
                 {
                     try { found = skill.Criteria(thing); } catch { }
                 }
                 //measures for weapons
-                if (thing.IsWeapon && !TechByWeapon.ContainsKey(thing)) tech.RegisterWeapon(thing);
-                if (thing.building != null && thing.building.turretGunDef != null && !TechByWeapon.ContainsKey(thing.building.turretGunDef)) tech.RegisterWeapon(thing);
+                if (thing.IsWeapon) tech.RegisterWeapon(thing);
+                if (thing.building != null && thing.building.turretGunDef != null && !FindTechs(thing.building.turretGunDef).Any()/*!TechByWeapon.ContainsKey(thing.building.turretGunDef)*/) tech.RegisterWeapon(thing);
             }
             return found;
         }
@@ -728,7 +663,7 @@ namespace HumanResources
 
         public static List<ThingDef> UnlockedWeapons(this ResearchProjectDef tech)
         {
-            return WeaponsByTech.ContainsKey(tech) ? WeaponsByTech[tech] : new List<ThingDef>();
+            return FindTech(tech).Weapons;
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
@@ -790,9 +725,7 @@ namespace HumanResources
         {
             if (ShouldLockWeapon(weapon))
             {
-                if (!TechByWeapon.ContainsKey(weapon)) TechByWeapon.Add(weapon, tech);
-                if (WeaponsByTech.ContainsKey(tech)) WeaponsByTech[tech].Add(weapon);
-                else WeaponsByTech.Add(tech, new List<ThingDef>() { weapon });
+                FindTech(tech).Weapons.Add(weapon);
             }
         }
 

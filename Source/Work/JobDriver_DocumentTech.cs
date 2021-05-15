@@ -23,7 +23,7 @@ namespace HumanResources
         {
             project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
             if (project == null) return false;
-			techStuff = ModBaseHumanResources.unlocked.stuffByTech.TryGetValue(project);
+			techStuff = TechTracker.FindTech(project).Stuff;
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 

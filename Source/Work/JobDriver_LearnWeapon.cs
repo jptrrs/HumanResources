@@ -2,6 +2,7 @@
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Verse;
@@ -172,9 +173,9 @@ namespace HumanResources
         {
             bool groupRanged = ModBaseHumanResources.LearnRangedWeaponsByGroup && weapon.IsRangedWeapon;
             bool groupMelee = ModBaseHumanResources.LearnMeleeWeaponsByGroup && weapon.IsMeleeWeapon;
-            if (Extension_Research.TechByWeapon.ContainsKey(weapon) && (groupRanged || groupMelee))
+            if (TechTracker.FindTechs(weapon).Any() && (groupRanged || groupMelee))
             {
-                foreach (ThingDef sister in Extension_Research.WeaponsByTech[Extension_Research.TechByWeapon[weapon]])
+                foreach (ThingDef sister in TechTracker.FindTech(weapon).Weapons)
                 {
                     if ((groupRanged && sister.IsRangedWeapon) || (groupMelee && sister.IsMeleeWeapon))
                     {

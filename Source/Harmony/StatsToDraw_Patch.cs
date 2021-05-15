@@ -2,6 +2,7 @@
 using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace HumanResources
@@ -32,11 +33,7 @@ namespace HumanResources
             }
             if (thing.def.IsWeapon)
             {
-                string tech = "None".Translate();
-                if (TechByWeapon.ContainsKey(thing.def))
-                {
-                    tech = TechByWeapon[thing.def].LabelCap;
-                }
+                string tech = TechTracker.FindTech(thing.def)?.Tech.LabelCap ?? "None".Translate();
                 yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "WeaponAssociatedTech".Translate(), tech, "WeaponAssociatedTechDesc".Translate(), 10000, null, null, false);
                 bool known = unlocked.weapons.Contains(thing.def);
                 yield return new StatDrawEntry(StatCategoryDefOf.Weapon, "WeaponKnown".Translate(), known.ToStringYesNo(), "WeaponKnownDesc".Translate(), 9999, null, null, false);

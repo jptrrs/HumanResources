@@ -8,7 +8,7 @@ namespace HumanResources
     public class SkillMapping
     {
         public SkillDef Skill;
-        public List<ResearchProjectDef> Techs = new List<ResearchProjectDef>;
+        public List<ResearchProjectDef> Techs = new List<ResearchProjectDef>();
         public bool relevant;
         private Predicate<ThingDef> criteria;
         private List<string> hints;
@@ -48,15 +48,8 @@ namespace HumanResources
                     if (Skill == SkillDefOf.Shooting) criteria = (thing) => thing.IsRangedWeapon | thing.designationCategory == DesignationCategoryDefOf.Security;
                     else if (Skill == SkillDefOf.Melee) criteria = (thing) => thing.IsMeleeWeapon | thing.designationCategory == DesignationCategoryDefOf.Security;
                     else if (Skill == SkillDefOf.Construction) criteria = (thing) => thing.BuildableByPlayer;
-                    //else if (Skill == SkillDefOf.Mining) criteria = (thing) => thing.IsShell;
                     else if (Skill == SkillDefOf.Cooking) criteria = (thing) => thing.ingestible.IsMeal | thing.building.isMealSource;
                     else if (Skill == SkillDefOf.Plants) criteria = (thing) => thing.plant != null;
-                                                                    //delegate (ThingDef thing)
-                                                                    //{
-                                                                    //    bool result = thing.plant != null;
-                                                                    //    Log.Message($"Criteria evaluation for {thing} against {Skill}: {result}");
-                                                                    //    return result;
-                                                                    //};
                     else if (Skill == SkillDefOf.Crafting) criteria = (thing) => thing.IsApparel | thing.IsWeapon;
                     else if (Skill == SkillDefOf.Artistic) criteria = (thing) => thing.IsArt | thing.IsWithinCategory(ThingCategoryDefOf.BuildingsArt);
                     else if (Skill == SkillDefOf.Medicine) criteria = (thing) => thing.IsMedicine | thing.IsDrug;

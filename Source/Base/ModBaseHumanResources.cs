@@ -134,7 +134,7 @@ namespace HumanResources
                     while (skills.MoveNext())
                     {
                         SkillDef skill = skills.Current;
-                        IEnumerable<string> found = Extension_Research.SkillsByTech.Where(e => e.Value.Contains(skill)).Select(e => e.Key.label);
+                        IEnumerable<string> found = TechTracker.FindTechs(skill).Select(x => x.Tech.label);
                         Log.Message($"- {skill.LabelCap} ({found.EnumerableCount()}): {found.ToStringSafeEnumerable()}");
                     }
                 }
@@ -237,7 +237,6 @@ namespace HumanResources
             TechPoolIncludesBackground.OnValueChanged = x => { ValidateTechPoolSettings(x); };
             TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
             TechPoolIncludesScenario.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-            //TechPoolMode = Settings.GetHandle("TechPoolMode", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), FactionTechPool.Both, null, "TechPoolMode_");
             WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
             FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
             LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);

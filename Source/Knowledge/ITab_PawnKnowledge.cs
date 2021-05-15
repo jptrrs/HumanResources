@@ -64,7 +64,7 @@ namespace HumanResources
             }
         }
         private static bool expandTab => fullTechs | fullWeapons;
-        private int columns => expandTab ? (groupTechs ? Extension_Research.Skills.Count() : maxColumns) : 1;
+        private int columns => expandTab ? (groupTechs ? TechTracker.Skills.Count() : maxColumns) : 1;
         private float columnWidth => extendedNodeLength + margin;
         private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private int maxColumns => ResearchTree_Tree.RelevantTechLevels.Count();
@@ -135,7 +135,7 @@ namespace HumanResources
         {
             Vector2 maxView = pos;
             var techsList = expertiseList.Select(x => x.Tech);
-            var skillSet = Extension_Research.Skills.Where(x => x.Techs.Any(y => techsList.Contains(y))).OrderByDescending(x => PawnToShowInfoAbout.skills.GetSkill(x).Level);
+            var skillSet = TechTracker.FindSkills(x => x.Techs.Any(y => techsList.Contains(y))).OrderByDescending(x => PawnToShowInfoAbout.skills.GetSkill(x).Level);
             foreach (var skill in skillSet)
             {
                 var filtered = expertiseList.Where(x => skill.Techs.Contains(x.Tech)).ToList();

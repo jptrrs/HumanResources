@@ -12,14 +12,14 @@ namespace HumanResources
         //Bill
         public static bool Allows(this Bill bill, IEnumerable<ResearchProjectDef> homework)
         {
-            var textBooks = homework.Select(x => unlocked.stuffByTech[x]);
+            var textBooks = homework.Select(x => TechTracker.FindTech(x).Stuff);
             bool result = bill.ingredientFilter.AllowedThingDefs.Intersect(textBooks).Any();
             return result;
         }
 
         public static bool Allows(this Bill bill, ResearchProjectDef tech)
         {
-            return bill.ingredientFilter.Allows(unlocked.stuffByTech[tech]);
+            return bill.ingredientFilter.Allows(TechTracker.FindTech(tech).Stuff);
         }
 
         //Map
@@ -45,7 +45,7 @@ namespace HumanResources
         //Thing
         public static ResearchProjectDef TryGetTech(this Thing book)
         {
-            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? unlocked.stuffByTech.ReverseLookup(book.Stuff) : null;
+            return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? TechTracker.FindTech(book.Stuff) : null;
         }
 
         //ThingDef
@@ -59,14 +59,14 @@ namespace HumanResources
             return weapon.weaponTags.NullOrEmpty() || weapon.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
         }
 
-        //Dictionary
-        public static TKey ReverseLookup<TKey, TValue>(this IDictionary<TKey, TValue> source, TValue sample)
-        {
-            if (source.Values.Contains(sample))
-            {
-                return source.FirstOrDefault(x => x.Value.Equals(sample)).Key;
-            }
-            return default(TKey);
-        }
+        ////Dictionary
+        //public static TKey ReverseLookup<TKey, TValue>(this IDictionary<TKey, TValue> source, TValue sample)
+        //{
+        //    if (source.Values.Contains(sample))
+        //    {
+        //        return source.FirstOrDefault(x => x.Value.Equals(sample)).Key;
+        //    }
+        //    return default(TKey);
+        //}
     }
 } 

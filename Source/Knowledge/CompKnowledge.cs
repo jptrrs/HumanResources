@@ -285,7 +285,7 @@ namespace HumanResources
             //4. Finally, Distribute knowledge
             bool strict = false;
             bool useChildhood = childhoodSkill != null && TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;
-            var filtered = Extension_Research.SkillsByTech.Where(e => TechPool(isPlayer, e.Key, workingTechLevel, strict));
+            var filtered = TechTracker.FindTechs(x => TechPool(isPlayer, x, workingTechLevel, strict));
             int pass = 0;
             List<ResearchProjectDef> result = new List<ResearchProjectDef>();
             if (guru) workingTechLevel++;
@@ -294,18 +294,18 @@ namespace HumanResources
                 pass++;
                 filtered.ExecuteEnumerable();
                 if (filtered.EnumerableNullOrEmpty()) Log.Warning("[HumanResources] Empty technology pool!");
-                var remaining = filtered.Where(x => !result.Contains(x.Key));
+                var remaining = filtered.Where(x => !result.Contains(x));
                 if (remaining.EnumerableNullOrEmpty()) break;
                 SkillDef skill = null;
-                if (pass == 1 && remaining.Any(e => e.Value.Contains(highestSkill)))
+                if (pass == 1 && remaining.Any(x => x.Skills.Contains(highestSkill)))
                 {
                     skill = highestSkill;
                 }
-                else if (pass == 2 && remaining.Any(e => e.Value.Contains(secondSkill)))
+                else if (pass == 2 && remaining.Any(x => x.Skills.Contains(secondSkill)))
                 {
                     skill = useChildhood ? childhoodSkill : secondSkill;
                 }
-                ResearchProjectDef selected = remaining.RandomElementByWeightWithDefault(entry => TechLikelihoodForSkill(pawn, entry.Value, slots, pass, skill), 1f).Key ?? remaining.RandomElement().Key;
+                ResearchProjectDef selected = remaining.RandomElementByWeightWithDefault(x => TechLikelihoodForSkill(pawn, x.Skills, slots, pass, skill), 1f) ?? remaining.RandomElement();
                 result.Add(selected);
 
                 //prepare next pass:
@@ -456,7 +456,7 @@ namespace HumanResources
 
         private static bool SkillIsRelevant(SkillDef skill, TechLevel level)
         {
-            return Extension_Research.Skills.Any(x => x.Skill == skill && x.Techs.Any(y => y.techLevel == level));
+            return TechTracker.FindSkills(x => x.Skill == skill && x.Techs.Any(y => y.techLevel == level)).Any();
         }
 
         private static float TechLikelihoodForSkill(Pawn pawn, List<SkillDef> skills, int slots, int pass, SkillDef highestSkill = null)
