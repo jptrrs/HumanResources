@@ -162,7 +162,7 @@ namespace HumanResources
             bool usedPreReq = false;
 
             //1. check what it unlocks
-            List<Pair<Def, string>> unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(tech);
+            List<Pair<Def, string>> unlocks = GetUnlockDefsAndDescs(tech);
             IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
             IEnumerable<ThingDef> thingDefs = defs.Where(d => d is ThingDef).Select(d => d as ThingDef);
             IEnumerable<RecipeDef> recipeDefs = defs.Where(d => d is RecipeDef).Select(d => d as RecipeDef);
@@ -232,7 +232,10 @@ namespace HumanResources
             {
                 foreach (var skill in FindSkills(x => !x && x.Criteria != null))
                 {
-                    try { found = skill.Criteria(thing); } catch { }
+                    bool check = false;
+                    try { check = skill.Criteria(thing); } catch { }
+                    SetSkillRelevance(skill, check);
+                    found |= check; 
                 }
                 //measures for weapons
                 if (thing.IsWeapon) tech.RegisterWeapon(thing);
