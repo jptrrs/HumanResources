@@ -10,24 +10,21 @@ namespace HumanResources
     using static ResearchTree_Patches;
     public static class ResearchTreeHelper
     {
+        public static ThingDef VFE_Supercomputer = DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer");
+        public static bool QueueAvailable => HarmonyPatches.VFEM && Find.CurrentMap.listerBuildings.ColonistsHaveBuilding(VFE_Supercomputer);
+
         public static FloatMenuOption SelectforVanillaResearch(ResearchProjectDef tech)
         {
-            if (IsQueued(tech))
-            {
-                return new FloatMenuOption("CancelResearchWithTheSuperComputer",
-                    delegate () { Dequeue(tech); },
-                    MenuOptionPriority.Default, null, null, 0f, null, null);
-            }
-            return new FloatMenuOption("ResearchWithTheSuperComputer",
+            return new FloatMenuOption($"{TechStrings.headerResearch}: {VFE_Supercomputer.LabelCap}",
                 delegate () { Enqueue(tech); },
-                MenuOptionPriority.Default, null, null, 0f, null, null);
+                MenuOptionPriority.High, null, null, 0f, null, null);
         }
 
         public static void Enqueue(ResearchProjectDef tech)
         {
             if (!IsQueued(tech))
             {
-                EnqueueRange(GetRequiredRecursive(tech, x => !x.IsFinished && !IsQueued(x)));
+                EnqueueRange(GetRequiredRecursive(tech, x => !x.IsFinished && !IsQueued(x)).Concat(tech));
             }
         }
 

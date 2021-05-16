@@ -13,6 +13,8 @@ namespace HumanResources
 {
     using static ModBaseHumanResources;
     using static TechTracker;
+    using static ResearchTreeHelper;
+    using static ResearchTree_Patches;
 
     public static class Extension_Research
     {
@@ -64,7 +66,6 @@ namespace HumanResources
                 return currentPawnsCache;
             }
         }
-
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
         { 
             get
@@ -74,7 +75,6 @@ namespace HumanResources
                 return 1 - (adjusted + 0.2f);
             }
         }
-
         private static float ResearchPointsPerWorkTick // default is aprox. 10% down down from vanilla 0.00825f, neutralized with half available techs in library.
         {
             get
@@ -83,7 +83,6 @@ namespace HumanResources
                 return ResearchSpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue * 0.9f;
             }
         }
-
         private static float StudyPointsPerWorkTick // 100% on easy, 90% on medium, 85% on rough & 80% on hard.
         {
             get
@@ -92,6 +91,7 @@ namespace HumanResources
                 return StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
+
         #endregion
 
         #region startup
@@ -418,7 +418,7 @@ namespace HumanResources
             float height = rect.height;
             Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
             float startPos = rect.x - frameOffset.x;
-            if (HarmonyPatches.VFEM && ResearchTree_Patches.IsQueued(tech)) startPos += DrawQueueAssignment(tech, DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer"), height, frameOffset, startPos);
+            if (QueueAvailable && IsQueued(tech)) startPos += DrawQueueAssignment(tech, VFE_Supercomputer, height, frameOffset, startPos);
             DrawPawnAssignments(tech, height, frameOffset, startPos);
         }
 
@@ -429,8 +429,8 @@ namespace HumanResources
             if (tech.TechprintRequirementMet)
             {
                 options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
-                           select opt.option).ToList<FloatMenuOption>();
-                options.Add(ResearchTreeHelper.SelectforVanillaResearch(tech));
+                           select opt.option).ToList();
+                if (QueueAvailable && !IsQueued(tech)) options.Add(SelectforVanillaResearch(tech));
             }
             else
             {
@@ -472,8 +472,8 @@ namespace HumanResources
             Rect box = new Rect(position, size);
             Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
             GUI.DrawTexture(box, thingDef.uiIcon);
-            if (Widgets.ButtonInvisible(clickBox)) ResearchTree_Patches.Dequeue(tech);
-            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)} ({"ClickToRemove".Translate()})");
+            if (Widgets.ButtonInvisible(clickBox)) Dequeue(tech);
+            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)}\n({"ClickToRemove".Translate()})");
             return height / 2;
         }
 
