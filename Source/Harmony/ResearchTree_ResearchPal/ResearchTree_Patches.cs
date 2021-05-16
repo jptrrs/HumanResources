@@ -681,6 +681,7 @@ namespace HumanResources
                 if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !Research.IsFinished)
                 {
                     Find.ResearchManager.FinishProject(Research);
+                    Research.WipeAssignments();
                 }
             }
 
@@ -794,6 +795,7 @@ namespace HumanResources
                 if (DebugSettings.godMode && Prefs.DevMode && Event.current.button == 1 && !completed)
                 {
                     Find.ResearchManager.FinishProject(Research);
+                    Research.WipeAssignments();
                 }
             }
             return false;

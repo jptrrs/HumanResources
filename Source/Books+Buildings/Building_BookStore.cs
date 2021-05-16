@@ -40,7 +40,7 @@ namespace HumanResources
             {
                 if (dynamicCapacityInt == 0)
                 {
-                    dynamicCapacityInt = Math.Max(unlocked.totalBooks / 20, CompStorageGraphic.Props.countFullCapacity);
+                    dynamicCapacityInt = Math.Max(TechTracker.totalBooks / 20, CompStorageGraphic.Props.countFullCapacity);
                 }
                 return dynamicCapacityInt;
             }

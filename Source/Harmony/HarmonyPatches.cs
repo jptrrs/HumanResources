@@ -116,6 +116,7 @@ namespace HumanResources
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("OskarPotocki.VFE.Mechanoid")))
             {
                 Log.Message("[HumanResources] Vanilla Factions Expanded - Mechanoids detected! Integrating...");
+                VFEM_Patches.Execute(Instance);
                 VFEM = true;
             }
 

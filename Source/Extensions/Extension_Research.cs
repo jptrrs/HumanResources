@@ -145,7 +145,7 @@ namespace HumanResources
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;
-            unlocked.totalBooks++;
+            totalBooks++;
         }
 
         public static void InferSkillBias(this ResearchProjectDef tech)
@@ -547,19 +547,19 @@ namespace HumanResources
                     Pawn pawn = enumerator.Current;
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     bool known = tech.IsKnownBy(pawn);
-                    WorkTypeDef workGiver = (completed || known) ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
+                    WorkTypeDef workType = (completed || known) ? TechDefOf.HR_Learn : WorkTypeDefOf.Research;
                     string header = TechStrings.GetTask(pawn, tech);
                     if (techComp != null && (techComp.homework.NullOrEmpty() || !techComp.homework.Contains(tech)))
                     {
-                        if (pawn.WorkTypeIsDisabled(workGiver))
+                        if (pawn.WorkTypeIsDisabled(workType))
                         {
                             yield return new Widgets.DropdownMenuElement<Pawn>
                             {
-                                option = new FloatMenuOption(string.Format("{0}: {1} ({2})", header, pawn.LabelShortCap, "WillNever".Translate(workGiver.verb)), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
+                                option = new FloatMenuOption(string.Format("{0}: {1} ({2})", header, pawn.LabelShortCap, "WillNever".Translate(workType.labelShort.ToLower())), null, MenuOptionPriority.DisabledOption, null, null, 0f, null, null),
                                 payload = pawn
                             };
                         }
-                        else if (!pawn.workSettings.WorkIsActive(workGiver))
+                        else if (!pawn.workSettings.WorkIsActive(workType))
                         {
                             yield return new Widgets.DropdownMenuElement<Pawn>
                             {
@@ -612,6 +612,11 @@ namespace HumanResources
             Find.ResearchManager.FinishProject(project);
             if (careful) project.prerequisites.AddRange(prerequisitesCopy);
             Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
+            project.WipeAssignments();
+        }
+
+        public static void WipeAssignments(this ResearchProjectDef project)
+        {
             using (IEnumerator<Pawn> enumerator = currentPawns.GetEnumerator())
             {
                 while (enumerator.MoveNext())
@@ -717,8 +722,8 @@ namespace HumanResources
 
         public static void Unlock(this ResearchProjectDef tech, Thing location, bool hardCopy)
         {
-            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
             unlocked.Archive(tech, hardCopy);
+            if (!tech.IsFinished) tech.CarefullyFinishProject(location);
         }
 
         public static List<ThingDef> UnlockedPlants(this ResearchProjectDef tech)

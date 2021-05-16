@@ -40,7 +40,7 @@ namespace HumanResources
                     else if (parent.def == TechDefOf.NetworkServer)
                     {
                         count = unlocked.TechsArchived.Count;
-                        capacity = (int)(unlocked.totalBooks * 0.80f); //discoveredCount;
+                        capacity = (int)(TechTracker.totalBooks * 0.80f); //discoveredCount;
                         sparseThreshold = capacity / 4;
                     }
                     if (count >= capacity)

@@ -11,7 +11,7 @@ namespace HumanResources
     public static class ResearchTreeHelper
     {
         public static ThingDef VFE_Supercomputer = DefDatabase<ThingDef>.GetNamed("VFE_Supercomputer");
-        public static bool QueueAvailable => HarmonyPatches.VFEM && Find.CurrentMap.listerBuildings.ColonistsHaveBuilding(VFE_Supercomputer);
+        public static bool QueueAvailable => HarmonyPatches.VFEM && Find.Maps.Any(x => x.listerBuildings.ColonistsHaveBuilding(VFE_Supercomputer));
 
         public static FloatMenuOption SelectforVanillaResearch(ResearchProjectDef tech)
         {

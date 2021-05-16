@@ -10,7 +10,6 @@ namespace HumanResources
     {
         private static List<SkillMapping> _skills;
         private static List<TechMapping> _techs;
-
         public static List<SkillMapping> Skills
         {
             get
@@ -26,7 +25,6 @@ namespace HumanResources
                 return _skills;
             }
         }
-
         private static List<TechMapping> Techs
         {
             get
@@ -42,6 +40,26 @@ namespace HumanResources
                 return _techs;
             }
         }
+
+        //Research speed boost by books in store using geometric progression 
+
+        private const float decay = 0.02f;
+        private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
+        public static int totalBooks = 0;
+        private static float ratio = 1 / (1 + decay);
+
+        private static float geoSum => (float)(Math.Pow(ratio, totalBooks) - 1) / (ratio - 1);
+        private static float quota => semiMaxBuff / geoSum;
+        private static float linear => semiMaxBuff / totalBooks;
+
+        public static float BookResearchIncrement(int count)
+        {
+            float term = (float)Math.Pow(ratio, count - 1);
+            float sum = quota * (term * ratio - 1) / (ratio - 1);
+            float result = sum + linear;
+            return result / 100;
+        }
+
         public static SkillMapping FindSkill<T>(T query) where T : class
         {
             return FindSkills(query).FirstOrDefault();

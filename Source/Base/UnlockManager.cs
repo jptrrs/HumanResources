@@ -29,15 +29,6 @@ namespace HumanResources
             ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
             ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
 
-        //Research speed boost by books in store using geometric progression 
-        public int totalBooks = 0;
-        private const float decay = 0.02f;
-        private static float ratio = 1 / (1 + decay);
-        private const int semiMaxBuff = 10; // research speed max buff for books is 20% 
-        private float geoSum => (float)(Math.Pow(ratio, totalBooks) - 1) / (ratio - 1);
-        private float quota => semiMaxBuff / geoSum;
-        private float linear => semiMaxBuff / totalBooks;
-
         public void Archive(ResearchProjectDef tech, bool hardCopy)
         {
             if (!TechsArchived.ContainsKey(tech))
@@ -52,14 +43,6 @@ namespace HumanResources
             {
                 TechsArchived[tech] = BackupState.both;
             }
-        }
-
-        public float BookResearchIncrement(int count)
-        {
-            float term = (float)Math.Pow(ratio, count - 1);
-            float sum = quota * (term * ratio - 1) / (ratio - 1);
-            float result = sum + linear;
-            return result / 100;
         }
 
         public void ExposeData()

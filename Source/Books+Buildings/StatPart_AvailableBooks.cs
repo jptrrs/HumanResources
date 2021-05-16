@@ -19,14 +19,14 @@ namespace HumanResources
                     result += shelf.innerContainer.Count;
                 }
             }
-            libraryPower = unlocked.BookResearchIncrement(result);
+            libraryPower = TechTracker.BookResearchIncrement(result);
             return result;
         }
 
         private int DatabaseCount(out float databasePower)
         {
             int result = unlocked.TechsArchived.Count();
-            databasePower = unlocked.BookResearchIncrement(result);
+            databasePower = TechTracker.BookResearchIncrement(result);
             return result;
         }
 

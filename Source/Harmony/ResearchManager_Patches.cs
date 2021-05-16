@@ -21,6 +21,8 @@ namespace HumanResources
                 ModBaseHumanResources.unlocked.UnlockWeapons(weapons);
                 if (Prefs.LogVerbose) Log.Message("[HumanResources] " + proj + " discovered, unlocked weapons: " + weapons.ToStringSafeEnumerable());
             }
+            var unlockMgr = ModBaseHumanResources.unlocked;
+            if (ResearchTreeHelper.QueueAvailable && !unlockMgr.TechsArchived.ContainsKey(proj)) unlockMgr.Archive(proj, false);
         }
 
         //Guarantees the same happens on debug command.
