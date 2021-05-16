@@ -391,7 +391,7 @@ namespace HumanResources
                 Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech}. It won't be known by anyone.{appendReport}");
                 return;
             }
-            if (usedPreReq && !Prefs.LogVerbose)
+            if (usedPreReq && Prefs.LogVerbose && !FullStartupReport)
             {
                 Log.Warning($"[HumanResources] No relevant skills could be calculated for {tech} so it inherited the ones from its pre-requisites: {relevantSkills.ToStringSafeEnumerable()}.{appendReport}");
             }
