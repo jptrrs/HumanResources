@@ -20,10 +20,15 @@ namespace HumanResources
                 if (!requisites.NullOrEmpty())
                 {
                     var knownPlants = pawn.TryGetComp<CompKnowledge>().knownPlants;
-                    if (Prefs.LogVerbose) Log.Warning("[HumanResources] "+pawn + "'s plant knowledge: " + knownPlants);
-                    bool flag = false;
-                    if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
-                    if (!flag)
+                    if (knownPlants == null)
+                    {
+                        Log.Error($"[HumanResources] {pawn} plant knowledge is null. Can't plant. This is critical.");
+                        __result = null;
+                        return;
+                    }
+                    if (Prefs.LogVerbose) 
+                        Log.Message("[HumanResources] "+pawn + "'s plant knowledge: " + Diagnostic.ExpandEnumerableSafelyToString(knownPlants));
+                    if (!knownPlants.Contains(___wantedPlantDef))
                     {
                         var missing = requisites.Where(x => !x.IsKnownBy(pawn));
                         string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;

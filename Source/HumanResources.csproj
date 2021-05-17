@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -333,6 +333,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\IImmutableSpecialRegistryCache.cs" />
+    <Compile Include="Base\SpecialRegistryCache.cs" />
     <Compile Include="Base\TechDatabase.cs" />
     <Compile Include="Base\TechTracker.cs" />
     <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
@@ -396,6 +398,7 @@
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books+Buildings\ITab_Inventory.cs" />
+    <Compile Include="Tools\Diagnostic.cs" />
     <Compile Include="Tools\PatchOperationFindModById.cs" />
     <Compile Include="Work\JobDriver_ScanBook.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />

@@ -267,7 +267,7 @@ namespace HumanResources
             if (fullWeapons) Text.Font = GameFont.Small;
             else Text.Anchor = TextAnchor.UpperLeft;
             Rect scrollrect = new Rect(rightColumn.x, titleRect.yMax + margin, rightColumn.width - margin, rightColumn.height - titleRect.height - rowHeight - margin - padding * 2 - 2f);
-            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons.Where(weaponsFilter);
+            var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.KnownWeaponsCached.Where(weaponsFilter);
             if (!knownWeapons.EnumerableNullOrEmpty())
             {
                 var weaponsList = knownWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();

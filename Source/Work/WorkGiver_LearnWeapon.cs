@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace HumanResources
 
         public static bool ShouldReserve(Pawn p, LocalTargetInfo target, int maxPawns = 1, int stackCount = -1, ReservationLayerDef layer = null, bool ignoreOtherReservations = false)
         {
-            if (p.TryGetComp<CompKnowledge>().knownWeapons.Contains(target.Thing.def))
+            if (p.TryGetComp<CompKnowledge>().KnownWeaponsCached.Contains(target.Thing.def))
             {
                 return false;
             }
@@ -55,7 +55,7 @@ namespace HumanResources
             return actualJob;
         }
 
-        protected virtual bool IsRangeClear(Thing target)
+        private bool IsRangeClear(Thing target)
         {
             CompShootingArea comp = target.TryGetComp<CompShootingArea>();
             if (comp == null) return true;
@@ -67,7 +67,7 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.KnownWeaponsCached;
             if (knownWeapons != null)
             {
                 IEnumerable<ThingDef> available = unlocked.weapons;
@@ -80,22 +80,32 @@ namespace HumanResources
         protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();  
-            IEnumerable<ThingDef> known = techComp.knownWeapons;
-            IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
-            IEnumerable<ThingDef> allowed = unlocked.weapons.Concat(craftable);
-            IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            IEnumerable<ThingDef> viable = chosen.Intersect(allowed).Except(known);
-            IEnumerable<ThingDef> unavailable = chosen.Except(viable);
-            if (viable.EnumerableNullOrEmpty() && !unavailable.EnumerableNullOrEmpty())
+            
+            var missing = techComp.MissingWeapons;
+            
+            // Bill-based discriminator
+            IEnumerable<ThingDef> chosenByBill = bill.ingredientFilter.AllowedThingDefs;
+            IEnumerable<ThingDef> candidatesToLearn = missing.Intersect(chosenByBill);
+            
+            // Pawn has a lot to learn, but this learning device just can't provide
+            /*
+             * We need to show list of weapons which are:
+             * 1. Found to be trainable by bill provider
+             * 2. Not allowed to be trained by pawn
+             */
+            if (candidatesToLearn.EnumerableNullOrEmpty())
             {
+                // Weapons already known, but beyond pawn understanding
+                // PERFORMANCE: This is actually is VERY slow. This pathway triggers everytime there is 
+                var newWeaponsThisOffers = chosenByBill.Except(techComp.KnownWeaponsCached);
                 string thoseWeapons = "ThoseWeapons".Translate();
-                string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
+                string listing = (newWeaponsThisOffers.EnumerableCount() < 10) ? newWeaponsThisOffers.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
                 JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
             }
-            return viable;
+            return candidatesToLearn;
         }
 
-        protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
+        private Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
         {
             IntRange range = (IntRange)rangeInfo.GetValue(this);
             if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
@@ -112,7 +122,7 @@ namespace HumanResources
             return null;
         }
 
-        protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
+        private Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
         {
             Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
             if (job != null)

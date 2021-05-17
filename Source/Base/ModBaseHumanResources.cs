@@ -25,9 +25,18 @@ namespace HumanResources
             EnableJoyGiver,
             ResearchSpeedTiedToDifficulty,
             StudySpeedTiedToDifficulty,
+            OptimizationExperimentalGrowingCache,
+            OptimizationExperimentalWeaponCache,
             FullStartupReport,
             IndividualTechsReport;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
+
+        private static readonly SpecialRegistryCache _specialRegistry = new SpecialRegistryCache();
+        /**
+         * Registry with caches useful for the mod
+         */
+        public static IImmutableSpecialRegistryCache SpecialRegistry => _specialRegistry; 
+        
         public static List<ThingDef> 
             SimpleWeapons = new List<ThingDef>(),
             UniversalCrops = new List<ThingDef>(),
@@ -82,10 +91,13 @@ namespace HumanResources
             }
             InspectPaneUtility.Reset();
 
-            //3. Preparing knowledge support infrastructure
+            //3. Caching things required by the mod
+            _specialRegistry.NotifyAllDefsLoaded();
+            
+            //4. Preparing knowledge support infrastructure
 
             //a. Things everyone knows
-            UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
+            UniversalWeapons.AddRange(SpecialRegistry.AllWeapons); // Copy for later classification
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
             //b. Minus things unlocked on research
@@ -141,7 +153,7 @@ namespace HumanResources
             }
             else Log.Message($"[HumanResources] This is what we know: {codifiedTech.EnumerableCount()} technologies processed, {UniversalCrops.Count()} basic crops, {UniversalWeapons.Count()} basic weapons + {SimpleWeapons.Count()} that require training.");
 
-            //4. Filling gaps on the database
+            //5. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
             TechDefOf.TechBook.stuffCategories = TechDefOf.UnfinishedTechBook.stuffCategories = TechDefOf.LowTechCategories.stuffCategories;
@@ -245,6 +257,8 @@ namespace HumanResources
             EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
             ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
             StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
+            OptimizationExperimentalGrowingCache = Settings.GetHandle<bool>("OptimizationExperimentalGrowingCache", "OptimizationExperimentalGrowingCacheTitle".Translate(), "OptimizationExperimentalGrowingCacheDesc".Translate(), true);
+            OptimizationExperimentalWeaponCache = Settings.GetHandle<bool>("OptimizationExperimentalWeaponCache", "OptimizationExperimentalWeaponCacheTitle".Translate(), "OptimizationExperimentalWeaponCacheDesc".Translate(), true);
             FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
             FullStartupReport.NeverVisible = !Prefs.DevMode;
         }
