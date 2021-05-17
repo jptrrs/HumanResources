@@ -85,7 +85,6 @@ namespace HumanResources
         //Queue
             IsQueuedInfo,
             EnqueueInfo,
-            EnqueueRangeInfo,
             DequeueInfo;
 
         private static FieldInfo
@@ -245,7 +244,6 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
             instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
-
             InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
             Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
@@ -272,16 +270,26 @@ namespace HumanResources
             {
                 instance.Patch(AccessTools.Method(QueueType(), "DrawS"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(QueueDraw_Prefix))));
+                IsQueuedInfo = AccessTools.Method(QueueType(), "ContainsS");
+                AppendSInfo = AccessTools.Method(QueueType(), "AppendS");
+                DequeueInfo = AccessTools.Method(QueueType(), "RemoveS");
             }
-            else instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
-            //Test
+            else
+            {
+                instance.Patch(AccessTools.Method(QueueType(), "DrawQueue"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawQueue_Prefix))));
+                IsQueuedInfo = AccessTools.Method(QueueType(), "IsQueued");
+                EnqueueInfo = AccessTools.Method(QueueType(), "Enqueue", new Type[] { ResearchNodeType(), typeof(bool) });
+                DequeueInfo = AccessTools.Method(QueueType(), "Dequeue");
+            }
             instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
-            IsQueuedInfo = AccessTools.Method(QueueType(), "IsQueued");
-            EnqueueInfo = AccessTools.Method(QueueType(), "Enqueue", new Type[] { ResearchNodeType(), typeof(bool) });
-            EnqueueRangeInfo = AccessTools.Method(QueueType(), "EnqueueRange", new Type[] { ResearchNodeType(), typeof(bool) });
-            DequeueInfo = AccessTools.Method(QueueType(), "Dequeue");
+
+            var IsQueuedInfoTest = IsQueuedInfo != null ? "ok" : "bad";
+            var EnqueueInfoTest = EnqueueInfo != null ? "ok" : "bad";
+            var DequeueInfoTest = DequeueInfo != null ? "ok" : "bad";
+
+            Log.Warning($"DEBUG altRPal: IsQueuedInfo {IsQueuedInfoTest}, EnqueueInfo {EnqueueInfoTest}, DequeueInfo {DequeueInfoTest}");
 
             //Constants
             EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
@@ -734,7 +742,8 @@ namespace HumanResources
         {
             foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.CostApparent).Select(x => ResearchNodesCache[x]))
             {
-                EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });
+                if (AltRPal) AppendSInfo.Invoke(null, new object[] { node });
+                else EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });
             }
         }
         #endregion
@@ -748,7 +757,8 @@ namespace HumanResources
         private static MethodInfo
             ResearchNodeInfo,
             BuildingPresentInfo,
-            HighlightInfo;
+            HighlightInfo,
+            AppendSInfo;
 
         private static bool searchActive
         {
