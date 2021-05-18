@@ -285,12 +285,6 @@ namespace HumanResources
             instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
 
-            var IsQueuedInfoTest = IsQueuedInfo != null ? "ok" : "bad";
-            var EnqueueInfoTest = EnqueueInfo != null ? "ok" : "bad";
-            var DequeueInfoTest = DequeueInfo != null ? "ok" : "bad";
-
-            Log.Warning($"DEBUG altRPal: IsQueuedInfo {IsQueuedInfoTest}, EnqueueInfo {EnqueueInfoTest}, DequeueInfo {DequeueInfoTest}");
-
             //Constants
             EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
             DetailedModeZoomLevelCutoffInfo = AccessTools.Field(ConstantsType(), "DetailedModeZoomLevelCutoff");
