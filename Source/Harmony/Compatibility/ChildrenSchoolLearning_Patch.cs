@@ -11,6 +11,7 @@ namespace HumanResources
     class ChildrenSchoolLearning_Patch
     {
         private static WorkTypeDef supressedDef = DefDatabase<WorkTypeDef>.GetNamed("HR_Learn");
+        private static bool acted = false;
 
         public static void Execute(Harmony instance)
         {
@@ -24,8 +25,9 @@ namespace HumanResources
         }
 
         [HarmonyBefore("fluffy.worktab")]
-        public static void Prefix(object __instance, PawnTableDef ___def)
+        public static void Prefix(PawnTableDef ___def)
         {
+            if (acted) return;
             int idx = ___def.columns.FindIndex(x => x.workType == supressedDef);
             if (idx >= 0)
             {
@@ -34,6 +36,7 @@ namespace HumanResources
                     ___def.columns[i].moveWorkTypeLabelDown = !___def.columns[i].moveWorkTypeLabelDown;
                 }
                 ___def.columns.RemoveAt(idx);
+                acted = true;
             }
         }
     }
