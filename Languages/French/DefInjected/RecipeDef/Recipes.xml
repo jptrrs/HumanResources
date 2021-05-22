@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-
   
   <!--EN: Study technology-->
   <LearnTech.label>Étudier la technologie</LearnTech.label>
@@ -18,21 +17,24 @@
 
   <!--EN: Document technology-->
   <DocumentTech.label>Documenter la technologie</DocumentTech.label>
-  <!--CHANGED-->
-  <!--EN: Consolidate knowledge into a technical book.  (Limited to industrial technologies at this desk.)-->
+  <!--EN: Consolidate knowledge into a technical book. (Limited to industrial technologies at this desk.)-->
   <DocumentTech.description>Entériner la connaissance en rédigeant un texte technique.</DocumentTech.description>
   <!--EN: Documenting a technology.-->
   <DocumentTech.jobString>Documente une technologie</DocumentTech.jobString>
 
-  <!--NEW-->
+  <!--EN: Document technology-->
   <DocumentTechDigital.label>Documenter la technologie</DocumentTechDigital.label>
+  <!--EN: Consolidate knowledge into a network learning resource and upload it to the colony database.-->
   <DocumentTechDigital.description>Entériner la connaissance numériquement et la télécharger dans la base de données de la colonie.</DocumentTechDigital.description>
+  <!--EN: Documenting a technology.-->
   <DocumentTechDigital.jobString>Documente une technologie</DocumentTechDigital.jobString>
 
+  <!--EN: Scan books &amp; drives-->
   <ScanBook.label>Numériser des livres</ScanBook.label>
+  <!--EN: Scan existing books or drives and upload its contents to the colony database.-->
   <ScanBook.description>Numériser les livres existants et télécharger leur contenus dans la base de données de la colonie.</ScanBook.description>
+  <!--EN: Scanning a book or drive.-->
   <ScanBook.jobString>Numérise un livre</ScanBook.jobString>
-
 
   <!--EN: Research technologie-->
   <ResearchTech.label>Rechercher la technologie</ResearchTech.label>
@@ -55,13 +57,18 @@
   <!--EN: Training to use a melee weapon.-->
   <TrainWeaponMelee.jobString>S'entraîne au corps-à-corps.</TrainWeaponMelee.jobString>
 
-  <!--NEW-->
+  <!--EN: Experiment with unknown weapon-->
   <ExperimentWeaponShooting.label>Expérimentez une arme inconnue</ExperimentWeaponShooting.label>
+  <!--EN: Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.-->
   <ExperimentWeaponShooting.description>Expérimentez une arme à distance inconnue pour rechercher des compétences sans vraiment comprendre son fonctionnement interne. Très risqué.</ExperimentWeaponShooting.description>
+  <!--EN: Experimenting with a ranged weapon.-->
   <ExperimentWeaponShooting.jobString>Expérimente une arme à distance.</ExperimentWeaponShooting.jobString>
 
+  <!--EN: Experiment with unknown weapon-->
   <ExperimentWeaponMelee.label>Expérimentez une arme inconnue</ExperimentWeaponMelee.label>
+  <!--EN: Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.-->
   <ExperimentWeaponMelee.description>Expérimentez une arme de mêlée inconnue pour rechercher des compétences sans vraiment comprendre son fonctionnement interne. Très risqué.</ExperimentWeaponMelee.description>
+  <!--EN: Experimenting with a melee weapon.-->
   <ExperimentWeaponMelee.jobString>Expérimente une arme de mêlée.</ExperimentWeaponMelee.jobString>
 
   <!--EN: Practice shooting-->
@@ -77,6 +84,5 @@
   <PracticeWeaponMelee.description>S'entraîne au corps-à-corps avec un manequin d'entraînement.</PracticeWeaponMelee.description>
   <!--EN: Practicing melee.-->
   <PracticeWeaponMelee.jobString>S'entraîne au corps-à-corps.</PracticeWeaponMelee.jobString>
-
 
 </LanguageData>

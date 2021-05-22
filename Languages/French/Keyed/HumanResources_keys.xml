@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
+<LanguageData>.
 
   <!--UI-->
   
@@ -21,10 +21,12 @@
   <ShowCompact>Vue compacte</ShowCompact>
   <!--EN: Show Assignments.-->
   <ShowAssignment>Voir les affectations..</ShowAssignment>
-  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <!--EN: Clear ALL assignments.-->
 	<ClearAssignments>Effacez TOUTES les affectations.</ClearAssignments>
+  <!--EN: Group by skills-->
   <GroupBySkills>Regrouper par compétences</GroupBySkills>
- <ClickToGroupAssign>Attribuez toutes ces technologies à la fois.</ClickToGroupAssign>
+  <!--EN: Assign all these technologies at once.-->
+  <ClickToGroupAssign>Attribuez toutes ces technologies à la fois.</ClickToGroupAssign>
   <!--EN: Expand-->
   <Expand>Étendre</Expand>
   <!--EN: Collapse-->
@@ -33,6 +35,7 @@
   <TabCatalogue>Catalogue</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
   <AvailableBooksReport>{0} livre(s) dans {1} étagère(s)</AvailableBooksReport>
+  <!--EN: {0} technologies online-->
   <AvailableOnNetwork>{0} technologies en ligne</AvailableOnNetwork>
   <!--EN: Left-click to assign for studying.-->
   <ClickToAssignForStudying>Clic-gauche pour affecter à l'étude.</ClickToAssignForStudying>
@@ -52,11 +55,13 @@
   <AssignedToDocument>{0} est affectée à la documentation de ceci.</AssignedToDocument>
   <!--EN: click to remove-->
   <ClickToRemove>Clic-gauche pour retirer.</ClickToRemove>
+  <!--EN: Starting knowledge for {0}.--> <!--"0" here is either the scenario or the player faction's name-->
   <bookFromStart>Début des connaissances pour {0}.</bookFromStart>
-  <!--"0" here is either the scenario or the player faction's name-->
+  <!--EN: Archived in our library.-->
   <bookInLibrary>Archivé dans notre bibliothèque.</bookInLibrary>
-  <bookInDatabase>Archivé dans notre base de données.</bookInDatabase>
-
+  <!--EN: Archived in our database.-->
+  <bookInDatabase>Archivé dans notre base de données.</bookInDatabase>.
+  
   <!--Settings-->
   
   <!--EN: Knowledge generation draws from...-->
@@ -72,7 +77,7 @@
   <!--EN: If checked, the knowledge pool for new colonists will include all technologies from your faction's tech level.-->
   <TechPoolIncludesTechLevelDesc>Si sélectionné, les connaissances de départ des personnages inclueront toutes les technologies du niveau technologique de votre faction.</TechPoolIncludesTechLevelDesc>
   <!--EN: ...the pawn's background--><TechPoolIncludesBackgroundTitle>... les antécédents du personnage</TechPoolIncludesBackgroundTitle>
-  <!--EN :If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!-->
+  <!--EN: If checked, the individual pawn's backstory will be taken into consideration. This will make their expertise follow their biography more closely, but might also result in colonists out of tune with their faction's original tech level. It's fun though!-->
   <TechPoolIncludesBackgroundDesc>Si sélectionné, l'histoire personnelle de chaque personnage sera considérée. Cela rendra leurs expériences et connaissances plus fidèles à leur biographie, mais pourra aussi générer des personnages aux connaissances hors du niveau de technologique de leur faction. Cela dit, c'est fun !</TechPoolIncludesBackgroundDesc>
   <!--EN: ...the scenario starting research-->
   <TechPoolIncludesScenarioTitle>... Les recherches de base du scénario</TechPoolIncludesScenarioTitle>  
@@ -116,8 +121,8 @@
   <!--EN: Difficulty settings slows down tech studying.</-->
   <StudySpeedTiedToDifficultyTitle>Le niveau de difficulté ralentit l'étude des technologies</StudySpeedTiedToDifficultyTitle>
   <!--EN: If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on hard.-->
-  <StudySpeedTiedToDifficultyDesc>Si activé, la vitesse d'étude est liée au niveau de difficulté, avec 10% de malus en facile et 20% en difficile.</StudySpeedTiedToDifficultyDesc>
-
+  <StudySpeedTiedToDifficultyDesc>Si activé, la vitesse d'étude est liée au niveau de difficulté, avec 10% de malus en facile et 20% en difficile.</StudySpeedTiedToDifficultyDesc>.
+  
   <!--Things-->
   
   <!--EN: Empty-->
@@ -142,13 +147,19 @@
   <BookTheory>Théorie sur {0}</BookTheory>
   <!--EN: {0} Database-->
   <BookDatabase>Base de données de {0}</BookDatabase>
+  <!--EN: Base technology-->
   <WeaponAssociatedTech>Technologie de base</WeaponAssociatedTech>
+  <!--EN: The knowledge a colony (or colonist) needs in order to learn how to use this weapon.-->
   <WeaponAssociatedTechDesc>Les connaissances dont une colonie (ou un colon) a besoin pour apprendre à utiliser cette arme.</WeaponAssociatedTechDesc>
+  <!--EN: Known?-->
   <WeaponKnown>Connu?</WeaponKnown>
+  <!--EN: Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.-->
   <WeaponKnownDesc>Si la colonie a les connaissances nécessaires pour que ses membres puissent fabriquer et apprendre à utiliser cette arme.</WeaponKnownDesc>
+  <!--EN: Requires training?-->
   <WeaponRequiresTraining>Nécessite une formation?</WeaponRequiresTraining>
-  <WeaponRequiresTrainingDesc>Est-ce que cette arme nécessite une formation pour être utilisée ?.</WeaponRequiresTrainingDesc>
-
+  <!--EN: Whether this weapon requires training to be used.-->
+  <WeaponRequiresTrainingDesc>Est-ce que cette arme nécessite une formation pour être utilisée ?.</WeaponRequiresTrainingDesc>.
+  
   <!--Feedback-->
   
   <!--EN: {0_nameDef} has learned the secrets of {1}.-->
@@ -195,6 +206,7 @@
   <NoWeaponEquipped>Équipement incorrect.</NoWeaponEquipped>
   
   <!--weapon testing -->
+  
   <!--EN: {0_nameDef} couldn't figure out how {1_definite} works.-->
   <WeaponTestFail>{0_nameDef} N'a pas pu découvrir comment {1_definite} fonctionne.</WeaponTestFail>
   <!--EN: {0_nameDef} has tried these weapons before with bad results.-->
@@ -206,8 +218,8 @@
   <!--EN: {TESTER_labelShort} suffered an accident while trying to use {WEAPON_definite} and sustained an injury ({RECIPE_label}).-->
   <MessageWeaponTestFailureCatastrophic>{TESTER_labelShort} a provoqué un accident en essayant d'utiliser {WEAPON_definite} et a subi des blessures ({RECIPE_label}).</MessageWeaponTestFailureCatastrophic>
   <!--EN: {TESTER_labelShort} totally botched it while trying to use {WEAPON_definite}. {TESTER_pronoun} is injured and the weapon, destroyed. ({RECIPE_label}).-->
-  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} a lamentablement échoué en essayant d'utiliser {WEAPON_definite}. {TESTER_pronoun} est blessé.e et l'arme, détruite. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>
-
+  <MessageMedicalWeaponTestFailureRidiculous>{TESTER_labelShort} a lamentablement échoué en essayant d'utiliser {WEAPON_definite}. {TESTER_pronoun} est blessé.e et l'arme, détruite. ({RECIPE_label}).</MessageMedicalWeaponTestFailureRidiculous>.
+  
   <!--Go Explore-->
   
   <!--EN: The research was a success. Working together you advanced in understanding {2}.\n\nRelations with {0} have improved by {1}.-->
@@ -216,5 +228,5 @@
   <LetterResearchRequest_TriumphHR>La recherche partagée est un vrai triomphe !  Collectivement, vous avez repoussé les frontières et percé les secrets de {2} ! \n\nLes relations avec {0} se sont améliorées de {1}.</LetterResearchRequest_TriumphHR>
   <!--EN: {0}, your researcher, acquired valuable expertise in {1} and gained {2} intellectual experience.-->
   <ResearchRequestXPGainHR>Votre chercheur {0} a acquis une expertise considérable sur {1} et gagné {2} d'expérience intellectuelle.</ResearchRequestXPGainHR>
-
+  
 </LanguageData> 

@@ -11,14 +11,14 @@
   <ShowAvailable>Show techs available to learn.</ShowAvailable>
   <ShowCompact>Compact view.</ShowCompact>
   <ShowAssignment>Show assignments.</ShowAssignment>
-  <!--NEW--><ClearAssignments>Clear ALL assignments.</ClearAssignments>
-  <!--NEW--><GroupBySkills>Group by skills</GroupBySkills>
-  <!--NEW--><ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
+  <ClearAssignments>Clear ALL assignments.</ClearAssignments>
+  <GroupBySkills>Group by skills</GroupBySkills>
+  <ClickToGroupAssign>Assign all these technologies at once.</ClickToGroupAssign>
   <Expand>Expand</Expand>
   <Collapse>Collapse</Collapse>
   <TabCatalogue>Catalog</TabCatalogue>
   <AvailableBooksReport>{0} books in {1} shelves</AvailableBooksReport>
-  <!--NEW--><AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
+  <AvailableOnNetwork>{0} technologies online</AvailableOnNetwork>
   <ClickToAssignForStudying>Left-click to assign for studying.</ClickToAssignForStudying>
   <ClickToAssignForDocumentation>Left-click to assign for documentation.</ClickToAssignForDocumentation>
   <ClickToUnassign>Left-click to unassign.</ClickToUnassign>
@@ -28,9 +28,9 @@
   <AssignedToStudy>{0} is tasked with studying this.</AssignedToStudy>
   <AssignedToDocument>{0} is tasked with documenting this.</AssignedToDocument>
   <ClickToRemove>click to remove</ClickToRemove>
-  <!--NEW--><bookFromStart>Starting knowledge for {0}.</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
-  <!--NEW--><bookInLibrary>Archived in our library.</bookInLibrary>
-  <!--NEW--><bookInDatabase>Archived in our database.</bookInDatabase>
+  <bookFromStart>Starting knowledge for {0}.</bookFromStart> <!--"0" here is either the scenario or the player faction's name-->
+  <bookInLibrary>Archived in our library.</bookInLibrary>
+  <bookInDatabase>Archived in our database.</bookInDatabase>
                     
   <!--Settings-->
   <TechPoolModeTitle>Knowledge generation draws from...</TechPoolModeTitle>
@@ -76,12 +76,12 @@
   <BookManual>{0} Manual</BookManual>
   <BookTheory>{0} Theory</BookTheory>
   <BookDatabase>{0} Database</BookDatabase>
-  <!--NEW--><WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
-  <!--NEW--><WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
-  <!--NEW--><WeaponKnown>Known?</WeaponKnown>
-  <!--NEW--><WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
-  <!--NEW--><WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
-  <!--NEW--><WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
+  <WeaponAssociatedTech>Base technology</WeaponAssociatedTech>
+  <WeaponAssociatedTechDesc>The knowledge a colony (or colonist) needs in order to learn how to use this weapon.</WeaponAssociatedTechDesc>
+  <WeaponKnown>Known?</WeaponKnown>
+  <WeaponKnownDesc>Whether the colony has the necessary knowledge for its members to craft and learn how to use this weapon.</WeaponKnownDesc>
+  <WeaponRequiresTraining>Requires training?</WeaponRequiresTraining>
+  <WeaponRequiresTrainingDesc>Whether this weapon requires training to be used.</WeaponRequiresTrainingDesc>
 
   <!--Feedback-->
   <MessageStudyComplete>{0_nameDef} has learned the secrets of {1}.</MessageStudyComplete>
@@ -105,11 +105,11 @@
   <EvilWeapon>Pawn cannot comprehend this weapon and is scared of it</EvilWeapon>
   <TechAlreadyKnown>{0_label} is already known.</TechAlreadyKnown>
   <NoWeaponEquipped>Invalid equipment.</NoWeaponEquipped>
-  <!--NEW--><NoBooksToScan>No books to scan.</NoBooksToScan>
-  <!--NEW--><NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
-  <!--NEW--><ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
-  <!--NEW--><NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
-  <!--NEW--><ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
+  <NoBooksToScan>No books to scan.</NoBooksToScan>
+  <NoAvailableServer>No servers available on the colony network.</NoAvailableServer>
+  <ForbiddenAssignment>Assigned projects not allowed here.</ForbiddenAssignment>
+  <NoAssignment>{0_nameDef} was not assigned any projects. Use the main Research tab.</NoAssignment>
+  <ShootingRangeObstructed>Requires an unobstructed line of sight.</ShootingRangeObstructed>
   
   <!--weapon testing -->
   <WeaponTestFail>{0_nameDef} couldn't figure out how {1_definite} works.</WeaponTestFail>
