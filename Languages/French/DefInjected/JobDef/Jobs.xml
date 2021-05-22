@@ -9,14 +9,14 @@
   <!--EN: researching-->
   <ResearchTech.reportString>Recherche</ResearchTech.reportString>
   <!--NEW-->
-  <ScanBook.reportString>scanning</ScanBook.reportString>
+  <ScanBook.reportString>Numérise</ScanBook.reportString>
   <!--EN: practicing-->
   <TrainWeapon.reportString>S'entraîne avec</TrainWeapon.reportString>
   <!--NEW-->
   <!--EN: training melee.-->
-  <PlayAtDummy.reportString>training melee.</PlayAtDummy.reportString>
+  <PlayAtDummy.reportString>S'entraîne au combat.</PlayAtDummy.reportString>
   <!--NEW-->
   <!--EN: training shooting.-->
-  <PlayAtTarget.reportString>training shooting.</PlayAtTarget.reportString>
+  <PlayAtTarget.reportString>S'entraîne au tir.</PlayAtTarget.reportString>
 
 </LanguageData> 

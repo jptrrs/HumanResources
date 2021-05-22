@@ -16,9 +16,9 @@
   <LearnTech.gerund>étudie à</LearnTech.gerund>
 
   <!--NEW-->
-  <ScanBook.label>Scan Books</ScanBook.label>
-  <ScanBook.verb>scan</ScanBook.verb>
-  <ScanBook.gerund>scanning at</ScanBook.gerund>
+  <ScanBook.label>Numériser un livre</ScanBook.label>
+  <ScanBook.verb>numériser</ScanBook.verb>
+  <ScanBook.gerund>numérise à</ScanBook.gerund>
 
   <!--EN: Learn weapon use-->
   <TrainWeapon.label>Apprendre l'usage d'une arme</TrainWeapon.label>
@@ -28,27 +28,27 @@
   <TrainWeapon.gerund>s'entraîne avec une arme</TrainWeapon.gerund>
 
   <!--NEW-->
-  <PracticeWeapon.label>Weapon practice</PracticeWeapon.label>
-  <PracticeWeapon.verb>train</PracticeWeapon.verb>
-  <PracticeWeapon.gerund>training</PracticeWeapon.gerund>
+  <PracticeWeapon.label>Pratique des armes</PracticeWeapon.label>
+  <PracticeWeapon.verb>s'entraîner</PracticeWeapon.verb>
+  <PracticeWeapon.gerund>s'entraîne</PracticeWeapon.gerund>
 
   <!--NEW-->
-  <ExperimentWeapon.label>Weapon experimenting</ExperimentWeapon.label>
-  <ExperimentWeapon.verb>train</ExperimentWeapon.verb>
-  <ExperimentWeapon.gerund>training</ExperimentWeapon.gerund>
+  <ExperimentWeapon.label>Expérimentation d'armes</ExperimentWeapon.label>
+  <ExperimentWeapon.verb>s'entraîner</ExperimentWeapon.verb>
+  <ExperimentWeapon.gerund>s'entraîne</ExperimentWeapon.gerund>
 
-  <!--EN: shooting practice--><!--
+  <!--EN: shooting practice-->
   <PracticeShooting.label>Entraînement au tir</PracticeShooting.label>
-  --><!--EN: train--><!--
+  <!--EN: train-->
   <PracticeShooting.verb>s'entraîner au tir</PracticeShooting.verb>
-  --><!--EN: training--><!--
+  <!--EN: training-->
   <PracticeShooting.gerund>s'entraîne au tir</PracticeShooting.gerund>
 
-  --><!--EN: melee practice--><!--
+  <!--EN: melee practice-->
   <PracticeMelee.label>S'entraîner au corps-à-corps</PracticeMelee.label>
-  --><!--EN: train--><!--
+  <!--EN: train-->
   <PracticeMelee.verb>s'entraîner au corps-à-corps</PracticeMelee.verb>
-  --><!--EN: training--><!--
+  <!--EN: training-->
   <PracticeMelee.gerund>S'entraîne au corps-à-corps</PracticeMelee.gerund>-->
 
 

@@ -25,9 +25,14 @@
   <DocumentTech.jobString>Documente une technologie</DocumentTech.jobString>
 
   <!--NEW-->
-  <DocumentTechDigital.label>Document technology</DocumentTechDigital.label>
-  <DocumentTechDigital.description>Consolidate knowledge into a network learning resource and upload it to the colony database.</DocumentTechDigital.description>
-  <DocumentTechDigital.jobString>Documenting a technology</DocumentTechDigital.jobString>
+  <DocumentTechDigital.label>Documenter la technologie</DocumentTechDigital.label>
+  <DocumentTechDigital.description>Entériner la connaissance numériquement et la télécharger dans la base de données de la colonie.</DocumentTechDigital.description>
+  <DocumentTechDigital.jobString>Documente une technologie</DocumentTechDigital.jobString>
+
+  <ScanBook.label>Numériser des livres</ScanBook.label>
+  <ScanBook.description>Numériser les livres existants et télécharger leur contenus dans la base de données de la colonie.</ScanBook.description>
+  <ScanBook.jobString>Numérise un livre</ScanBook.jobString>
+
 
   <!--EN: Research technologie-->
   <ResearchTech.label>Rechercher la technologie</ResearchTech.label>
@@ -51,27 +56,27 @@
   <TrainWeaponMelee.jobString>S'entraîne au corps-à-corps.</TrainWeaponMelee.jobString>
 
   <!--NEW-->
-  <ExperimentWeaponShooting.label>Experiment with unknown weapon</ExperimentWeaponShooting.label>
-  <ExperimentWeaponShooting.description>Experiment with an unknown ranged weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponShooting.description>
-  <ExperimentWeaponShooting.jobString>Experimenting with a ranged weapon.</ExperimentWeaponShooting.jobString>
+  <ExperimentWeaponShooting.label>Expérimentez une arme inconnue</ExperimentWeaponShooting.label>
+  <ExperimentWeaponShooting.description>Expérimentez une arme à distance inconnue pour rechercher des compétences sans vraiment comprendre son fonctionnement interne. Très risqué.</ExperimentWeaponShooting.description>
+  <ExperimentWeaponShooting.jobString>Expérimente une arme à distance.</ExperimentWeaponShooting.jobString>
 
-    <ExperimentWeaponMelee.label>Experiment with unknown weapon</ExperimentWeaponMelee.label>
-  <ExperimentWeaponMelee.description>Experiment with an unknown melee weapon to seek proficiency without really understanding its inner workings. Very risky.</ExperimentWeaponMelee.description>
-  <ExperimentWeaponMelee.jobString>Experimenting with a melee weapon.</ExperimentWeaponMelee.jobString>
+  <ExperimentWeaponMelee.label>Expérimentez une arme inconnue</ExperimentWeaponMelee.label>
+  <ExperimentWeaponMelee.description>Expérimentez une arme de mêlée inconnue pour rechercher des compétences sans vraiment comprendre son fonctionnement interne. Très risqué.</ExperimentWeaponMelee.description>
+  <ExperimentWeaponMelee.jobString>Expérimente une arme de mêlée.</ExperimentWeaponMelee.jobString>
 
   <!--EN: Practice shooting-->
-  <PracticeShooting.label>S'netraîner au tir</PracticeShooting.label>
+  <PracticeWeaponShooting.label>S'entraîner au tir</PracticeWeaponShooting.label>
   <!--EN: Shoots at a target to practice shooting accuracy.-->
-  <PracticeShooting.description>Tire sur une cible pour améliorer sa précision à distance.</PracticeShooting.description>
+  <PracticeWeaponShooting.description>Tire sur une cible pour améliorer sa précision à distance.</PracticeWeaponShooting.description>
   <!--EN: Practicing shooting.-->
-  <PracticeShooting.jobString>S'entraîne au tir.</PracticeShooting.jobString>
+  <PracticeWeaponShooting.jobString>S'entraîne au tir.</PracticeWeaponShooting.jobString>
 
   <!--EN: Practice melee-->
-  <PracticeMelee.label>S'entraîner au corps-à-corps</PracticeMelee.label>
+  <PracticeWeaponMelee.label>S'entraîner au corps-à-corps</PracticeWeaponMelee.label>
   <!--EN: Practices close quarters combat against a straw dummy.-->
-  <PracticeMelee.description>S'entraîne au corps-à-corps avec un manequin d'entraînement.</PracticeMelee.description>
+  <PracticeWeaponMelee.description>S'entraîne au corps-à-corps avec un manequin d'entraînement.</PracticeWeaponMelee.description>
   <!--EN: Practicing melee.-->
-  <PracticeMelee.jobString>S'entraîne au corps-à-corps.</PracticeMelee.jobString>
+  <PracticeWeaponMelee.jobString>S'entraîne au corps-à-corps.</PracticeWeaponMelee.jobString>
 
 
 </LanguageData>
