@@ -145,10 +145,10 @@ namespace HumanResources
         public static bool CheckKnownWeapons(Pawn pawn, ThingDef def)
         {
 
-            var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
-            bool result = false;
-            if (!knownWeapons.EnumerableNullOrEmpty()) result = knownWeapons.Contains(def);
-            return result;
+            var knownWeapons = pawn.TryGetComp<CompKnowledge>()?.KnownWeaponsCached;
+            if (knownWeapons == null)
+                return false;
+            return knownWeapons.Contains(def);
         }
 
         public static void InitNewGame_Prefix()

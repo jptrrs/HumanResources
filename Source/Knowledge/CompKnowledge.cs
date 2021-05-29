@@ -34,6 +34,9 @@ namespace HumanResources
         private List<ThingDef> _craftableWeapons = new List<ThingDef>();
         private List<ResearchProjectDef> _knownTechs;
 
+        private List<ThingDef> m_localCacheAllKnownPlants;
+        private HashSet<ThingDef> m_localCacheMissingWeapons;
+        
         public IEnumerable<ThingDef> craftableWeapons
         {
             get
@@ -47,11 +50,20 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> knownPlants
+        public IReadOnlyCollection<ThingDef> MissingWeapons
+        {
+            get { return m_localCacheMissingWeapons; }
+        }
+        
+        public IEnumerable<ThingDef> knownPlants
         {
             get
             {
-                return proficientPlants.Concat(UniversalCrops).ToList();
+                if (OptimizationExperimentalGrowingCache)
+                {
+                    return m_localCacheAllKnownPlants;
+                }
+                return proficientPlants.Concat(UniversalCrops);
             }
         }
 
@@ -64,7 +76,16 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(techLevelWeapons).ToList();
+        private readonly HashSet<ThingDef> m_knownWeaponsCached = new HashSet<ThingDef>();
+        public HashSet<ThingDef> KnownWeaponsCached
+        {
+            get
+            {
+                if (ModBaseHumanResources.OptimizationExperimentalWeaponCache)
+                    return m_knownWeaponsCached;
+                return GetKnownWeaponsHot().ToHashSet();
+            }
+        }
 
         public IEnumerable<ThingDef> techLevelWeapons => SimpleWeapons.Where(x => x.techLevel <= startingTechLevel);
 
@@ -162,7 +183,7 @@ namespace HumanResources
                 if (pawn.equipment.HasAnything())
                 {
                     ThingWithComps weapon = pawn.equipment.Primary;
-                    if (!knownWeapons.Contains(weapon.def))
+                    if (!GetKnownWeaponsHot().Contains(weapon.def))
                     {
                         proficientWeapons.Add(weapon.def);
                         if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is using a {weapon.def.label}.");
@@ -339,8 +360,46 @@ namespace HumanResources
         public void LearnCrops(ResearchProjectDef tech)
         {
             proficientPlants.AddRange(tech.UnlockedPlants());
+            UpdatePlantCache();
         }
 
+        private void UpdatePlantCache()
+        {
+            if(ModBaseHumanResources.OptimizationExperimentalGrowingCache)
+                m_localCacheAllKnownPlants = proficientPlants == null 
+                    ? UniversalCrops.ToList() 
+                    : proficientPlants.Concat(UniversalCrops).ToList();
+        }
+
+        /**
+         * This method returns known weapons with full reevaluation. May be only used during precaching
+         */
+        private IEnumerable<ThingDef> GetKnownWeaponsHot()
+        {
+            return proficientWeapons.Concat(UniversalWeapons).Concat(techLevelWeapons);
+        }
+        
+        private void UpdateWeaponCache()
+        {
+            if (!ModBaseHumanResources.OptimizationExperimentalWeaponCache)
+                return;
+            //Repopulate known weapons cache
+            m_knownWeaponsCached.Clear();
+            m_knownWeaponsCached.AddRange(GetKnownWeaponsHot());
+            /*
+             * This part is really finicky and actually breaks performance:
+             * 1. Collect unlocked weapons data universe-wide.
+             * 2. If pawn is special and has knowledge beyond colony aka ABLE TO CRAFT they can learn as exception
+             */
+            IEnumerable<ThingDef> allowed = unlocked.weapons.Concat(craftableWeapons);
+            m_localCacheMissingWeapons = SpecialRegistry.AllWeapons
+                .Except(m_knownWeaponsCached)
+                .Intersect(allowed)
+                .ToHashSet();
+            if (Prefs.LogVerbose)
+                Log.Message($"{pawn} now wants to learn those weapons: {Diagnostic.ExpandEnumerableSafelyToString(m_localCacheMissingWeapons)}");
+        }
+        
         public bool LearnTech(ResearchProjectDef tech)
         {
             if (expertise != null)
@@ -351,6 +410,7 @@ namespace HumanResources
                 _craftableWeapons.AddRange(tech.UnlockedWeapons());
                 techLevel = (TechLevel)Mathf.Max((int)tech.techLevel, (int)techLevel);
                 LearnCrops(tech);
+                UpdateWeaponCache();
                 Messages.Message("MessageStudyComplete".Translate(pawn, tech.LabelCap), pawn, MessageTypeDefOf.TaskCompletion, true);
                 return true;
             }
@@ -365,11 +425,13 @@ namespace HumanResources
         {
             if (!fearedWeapons.NullOrEmpty() && fearedWeapons.Contains(weapon)) fearedWeapons.Remove(weapon);
             proficientWeapons.Add(weapon);
+            UpdateWeaponCache();
         }
 
         public void LearnWeapons(ResearchProjectDef tech)
         {
             proficientWeapons.AddRange(tech.UnlockedWeapons());
+            UpdateWeaponCache();
         }
 
         public override void PostExposeData()
@@ -377,10 +439,9 @@ namespace HumanResources
             base.PostExposeData();
             if (Scribe.mode == LoadSaveMode.Saving && expertise != null)
             {
-                var e = expertise.Where(x => x.Value > 1f).GetEnumerator();
-                while (e.MoveNext())
+                foreach (var expertiseItem in expertise.Where(x => x.Value > 1f))
                 {
-                    expertise[e.Current.Key] = 1f;
+                    expertise[expertiseItem.Key] = 1f;
                 }
             }
             Scribe_Collections.Look(ref expertise, "Expertise");
@@ -390,13 +451,43 @@ namespace HumanResources
             Scribe_Collections.Look(ref fearedWeapons, "fearedWeapons");
             Scribe_Values.Look<TechLevel>(ref techLevel, "techLevel", 0);
             Scribe_Values.Look<TechLevel>(ref startingTechLevel, "startingTechLevel", techLevel);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && homework == null) homework = new List<ResearchProjectDef>();
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if(homework == null) // Repair homework queue if not available in save
+                    homework = new List<ResearchProjectDef>();
+                // Prime caches // TODO: Wrong place? UpdateWeaponCache had to be moved to PostSpawnSetup
+                if (OptimizationExperimentalGrowingCache)
+                    UpdatePlantCache();
+            }
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             if (expertise == null) AcquireExpertise();
             if (techLevel == 0) techLevel = expertise.Keys.Aggregate((a, b) => a.techLevel > b.techLevel ? a : b).techLevel;
+            // Prime caches
+            if (ModBaseHumanResources.OptimizationExperimentalWeaponCache)
+            {
+                unlocked.OnUnlockedWeaponsChangedEvent += OnUnlockedWeaponsChanged;
+                UpdateWeaponCache();
+            }
+        }
+
+        public override void PostDeSpawn(Map map)
+        {
+            base.PostDeSpawn(map);
+            // No longer is directly-controlled form. Therefore doesn't need cache updates.
+            if (ModBaseHumanResources.OptimizationExperimentalWeaponCache)
+            {
+                unlocked.OnUnlockedWeaponsChangedEvent -= OnUnlockedWeaponsChanged;
+            }
+        }
+
+        private void OnUnlockedWeaponsChanged(UnlockManager sender, IReadOnlyCollection<ThingDef> unlockedlist)
+        {
+            if(Prefs.LogVerbose)
+                Log.Message($"Unlocked weapons list cache has been invalidated for {pawn} by {typeof(UnlockManager).Name}.");
+            UpdateWeaponCache();
         }
 
         private static int FactionExpertiseRange(TechLevel level)

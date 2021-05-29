@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System;
-using System.Collections.Generic;
 using Verse;
 
 namespace HumanResources
@@ -15,7 +14,7 @@ namespace HumanResources
             Pawn trainee = WorkGiver_DoBill_TryFindBestBillIngredients.Trainee;
             if (trainee != null)
             { 
-                return !trainee.TryGetComp<CompKnowledge>().knownWeapons.Contains(thing.def);
+                return !trainee.TryGetComp<CompKnowledge>().KnownWeaponsCached.Contains(thing.def);
             }
             return true;
         }

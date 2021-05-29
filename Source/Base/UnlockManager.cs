@@ -97,9 +97,16 @@ namespace HumanResources
             }
         }
 
+
+        public delegate void UnlockedWeaponsChangedHandler(UnlockManager sender,
+            IReadOnlyCollection<ThingDef> unlockedList);
+
+        public event UnlockedWeaponsChangedHandler OnUnlockedWeaponsChangedEvent;
+        
         public void UnlockWeapons(IEnumerable<ThingDef> newWeapons)
         {
             weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
+            OnUnlockedWeaponsChangedEvent?.Invoke(this, weapons);
         }
 
     }

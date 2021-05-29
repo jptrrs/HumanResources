@@ -63,7 +63,11 @@
   <ResearchSpeedTiedToDifficultyDesc>If checked, the base speed for research is tied to the difficulty settings, with no changes on Easy and up to 30% slower on Hard. If unchecked, it defaults to 10% slower than vanilla.</ResearchSpeedTiedToDifficultyDesc>
   <StudySpeedTiedToDifficultyTitle>Difficulty settings slows down tech studying.</StudySpeedTiedToDifficultyTitle>
   <StudySpeedTiedToDifficultyDesc>If checked, the base speed for studying new techs is tied to the difficulty settings, dropping 10% on Medium up to 20% on Hard.</StudySpeedTiedToDifficultyDesc>
-
+  <!--NEW--><OptimizationExperimentalGrowingCacheTitle>Experimental: Expand known growable cache into memory</OptimizationExperimentalGrowingCacheTitle>
+  <!--NEW--><OptimizationExperimentalGrowingCacheDesc>Requires restart if switched on! This experimental setting will enable expansion of growable cache into memory and will update cache only when pawn is spawned or learned something new instead of reevaluating known list each job search.</OptimizationExperimentalGrowingCacheDesc>
+  <!--NEW--><OptimizationExperimentalWeaponCacheTitle>Experimental: Expand known weapons caches into memory</OptimizationExperimentalWeaponCacheTitle>
+  <!--NEW--><OptimizationExperimentalWeaponCacheDesc>Requires restart if switched on! This experimental settings will enable expansion of global and per-pawn known weapon caches into memory instead of recalculating them each request.</OptimizationExperimentalWeaponCacheDesc>
+  
   <!--Things-->
   <BookStoreEmpty>Empty</BookStoreEmpty>
   <BookStoreCapacity>Archived technologies: {0}/{1}</BookStoreCapacity>

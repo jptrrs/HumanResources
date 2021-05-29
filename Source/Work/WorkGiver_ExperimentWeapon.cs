@@ -12,7 +12,7 @@ namespace HumanResources
     {
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
+            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.KnownWeaponsCached;
             if (knownWeapons != null)
             {
                 IEnumerable<ThingDef> available = unlocked.weapons;
@@ -25,7 +25,7 @@ namespace HumanResources
         protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            IEnumerable<ThingDef> known = techComp.knownWeapons;
+            IEnumerable<ThingDef> known = techComp.KnownWeaponsCached;
             IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
             IEnumerable<ThingDef> available = unlocked.weapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;

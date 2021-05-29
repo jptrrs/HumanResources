@@ -12,7 +12,11 @@ namespace HumanResources
 
         public static void Prefix(Bill bill, Pawn pawn)
         {
-            if ((bill.recipe == TechDefOf.TrainWeaponMelee || bill.recipe == TechDefOf.TrainWeaponShooting || bill.recipe == TechDefOf.ExperimentWeaponShooting || bill.recipe == TechDefOf.ExperimentWeaponMelee) && pawn.TryGetComp<CompKnowledge>()?.knownWeapons != null)
+            if ((bill.recipe == TechDefOf.TrainWeaponMelee
+                 || bill.recipe == TechDefOf.TrainWeaponShooting
+                 || bill.recipe == TechDefOf.ExperimentWeaponShooting
+                 || bill.recipe == TechDefOf.ExperimentWeaponMelee)
+                && pawn.TryGetComp<CompKnowledge>()?.KnownWeaponsCached != null)
             {
                 Trainee = pawn;
             }

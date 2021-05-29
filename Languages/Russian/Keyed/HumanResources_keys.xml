@@ -63,7 +63,11 @@
 	<ResearchSpeedTiedToDifficultyDesc>Если включено, то скорость исследования становится зависимой от настроек сложности игры.\nБез изменений на низком уровне сложности и вплоть до -30% на высоком.\nЕсли выключено, скорость исследования фиксируется на отметке 90% от базового значения игры.</ResearchSpeedTiedToDifficultyDesc>
 	<StudySpeedTiedToDifficultyTitle>Сложность => скорость изучения</StudySpeedTiedToDifficultyTitle>
 	<StudySpeedTiedToDifficultyDesc>Если включено, то скорость изучения новых технологий становится зависимой от настроек сложности.\nНа среднем уровне сложности: -10%\nНа высоком уровне сложности: -20%</StudySpeedTiedToDifficultyDesc>
-
+	<OptimizationExperimentalGrowingCacheTitle>Экспериментально: Расширяет известные растения в память</OptimizationExperimentalGrowingCacheTitle>
+	<OptimizationExperimentalGrowingCacheDesc>Требует перезапуск, если переведено во включенное состояние! Данная экспериментальная опция включает кэш для известных растений и обновляет его только при порождении пешки или получении нового знания, вместо синтеза каждый поиск работы.</OptimizationExperimentalGrowingCacheDesc>
+	<OptimizationExperimentalWeaponCacheTitle>Экспериментально: Расширяет известное оружие в память</OptimizationExperimentalWeaponCacheTitle>
+	<OptimizationExperimentalWeaponCacheDesc>Требует перезапуск, если переведено во включенное состояние! Данная экспериментальная опция включает кэш для известного вооружения и обновляет его только в случае изменения конфигурации доступного к изучению оружия.</OptimizationExperimentalWeaponCacheDesc>
+	
 	<!--Things-->
 	<BookStoreEmpty>Пусто</BookStoreEmpty>
 	<BookStoreCapacity>Технологий в архиве: {0}/{1}</BookStoreCapacity>
