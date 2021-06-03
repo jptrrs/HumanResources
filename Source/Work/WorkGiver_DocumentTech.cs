@@ -125,7 +125,7 @@ namespace HumanResources
 			return null;
 		}
 
-		public static Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
+		public static new Job FinishUftJob(Pawn pawn, UnfinishedThing uft, Bill_ProductionWithUft bill)
 		{
 			if (!pawn.TryGetComp<CompKnowledge>().expertise.Any(x => !x.Key.IsFinished && x.Value >= 1f && x.Key.LabelCap == uft.Stuff.stuffProps.stuffAdjective))
 			{

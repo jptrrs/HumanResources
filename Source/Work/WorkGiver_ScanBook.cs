@@ -13,7 +13,7 @@ namespace HumanResources
 
     class WorkGiver_ScanBook : WorkGiver_Knowledge
 	{
-		public List<ThingCount> chosenIngThings = new List<ThingCount>();
+		public new List<ThingCount> chosenIngThings = new List<ThingCount>();
 		protected static MethodInfo
             GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell"),
             BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
@@ -41,7 +41,7 @@ namespace HumanResources
             return false;
         };
 
-        private static List<Thing>
+        private static new List<Thing>
             relevantThings = new List<Thing>(),
             newRelevantThings = new List<Thing>();
 

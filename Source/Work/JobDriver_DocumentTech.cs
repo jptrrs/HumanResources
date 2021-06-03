@@ -27,7 +27,7 @@ namespace HumanResources
 			return base.TryMakePreToilReservations(errorOnFailed);
 		}
 
-		protected override IEnumerable<Toil> MakeNewToils()
+		public override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
 			{

@@ -12,7 +12,7 @@ namespace JPTools
         private PatchOperation match, nomatch;
 #pragma warning restore CS0649
 
-        protected override bool ApplyWorker(XmlDocument xml)
+        public override bool ApplyWorker(XmlDocument xml)
         {
             bool flag = false;
             for (int i = 0; i < mods.Count; i++)

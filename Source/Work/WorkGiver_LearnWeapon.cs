@@ -11,7 +11,7 @@ namespace HumanResources
     using static ModBaseHumanResources;
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
-        public List<ThingCount> chosenIngThings = new List<ThingCount>();
+        public new List<ThingCount> chosenIngThings = new List<ThingCount>();
         protected MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
         protected FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
