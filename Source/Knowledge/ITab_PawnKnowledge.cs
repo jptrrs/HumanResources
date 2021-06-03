@@ -97,7 +97,7 @@ namespace HumanResources
         private Texture2D SkillBarFillTex => (Texture2D)SkillBarFillTexInfo.GetValue(this);
 
 
-        public override void FillTab()
+        protected override void FillTab()
         {
             float padding = Mathf.Max(margin, 10f);
             Rect canvas = new Rect(margin, 2 * margin, size.x - margin - 1f, size.y - 2 * margin);
@@ -110,7 +110,7 @@ namespace HumanResources
             GUI.EndGroup();
         }
 
-        public override void UpdateSize()
+        protected override void UpdateSize()
         {
             base.UpdateSize();
             Vector2 margins = new Vector2(17f, 17f) * 2f;
@@ -160,7 +160,7 @@ namespace HumanResources
             GUI.color = Color.white;
             if (Mouse.IsOver(groupBar)) GUI.DrawTexture(groupBar, TexUI.HighlightTex);
             Widgets.FillableBar(groupBar, skillRatio, SkillBarFillTex, null, false);
-            TooltipHandler.TipRegionByKey(groupBar, "ClickToGroupAssign".Translate());
+            TooltipHandler.TipRegionByKey(groupBar, "ClickToGroupAssign");
             if (Widgets.ButtonInvisible(groupBar))
             {
                 foreach (var node in expertiseList) node.UpdateAssignment();

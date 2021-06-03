@@ -509,7 +509,7 @@ namespace HumanResources
                 if (cloud)
                 {
                     GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
-                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase".Translate());
+                    TooltipHandler.TipRegionByKey(inner, "bookInDatabase");
                 }
                 if (book)
                 {
@@ -524,7 +524,7 @@ namespace HumanResources
                     var material = TechDefOf.TechBook.graphic.MatSingle;
                     material.color = techColor;
                     Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
-                    TooltipHandler.TipRegionByKey(inner, "bookInLibrary".Translate());
+                    TooltipHandler.TipRegionByKey(inner, "bookInLibrary");
                 }
             }
             //origin tooltip if necessary
@@ -534,7 +534,7 @@ namespace HumanResources
                 bool fromFaction = unlocked.factionTechs.Contains(tech);
                 bool startingTech = fromScenario || fromFaction;
                 string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
-                TooltipHandler.TipRegionByKey(rect, "bookFromStart".Translate(source));
+                TooltipHandler.TipRegionByKey(rect, "bookFromStart", source);
             }
             GUI.color = backup;
             return;
