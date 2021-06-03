@@ -476,7 +476,7 @@ namespace HumanResources
             Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
             GUI.DrawTexture(box, thingDef.uiIcon);
             if (Widgets.ButtonInvisible(clickBox)) Dequeue(tech);
-            TooltipHandler.TipRegionByKey(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)}\n({"ClickToRemove".Translate()})");
+            TooltipHandler.TipRegion(clickBox, $"{"AssignedToResearch".Translate(thingDef.LabelCap)}\n({"ClickToRemove".Translate()})");
             return height / 2;
         }
 
