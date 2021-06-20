@@ -748,7 +748,7 @@ namespace HumanResources
         {
             if (tech == null)
             {
-                Log.Error("Tryed to upload a null tech.", false);
+                Log.Error("Tried to upload a null tech.", false);
                 return;
             }
             float num = Find.ResearchManager.GetProgress(tech);
