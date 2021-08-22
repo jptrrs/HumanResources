@@ -22,7 +22,7 @@ namespace HumanResources
             return base.TryMakePreToilReservations(errorOnFailed);
         }
 
-        public override void WatchTickAction()
+        protected override void WatchTickAction()
         {
             ticksSpentAlready++;
             LearningUtility.WeaponTrainingAnimation(pawn, pawn.jobs.curJob.GetTarget(TargetIndex.A), verbToUse, ticksSpentAlready);

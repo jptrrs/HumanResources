@@ -24,12 +24,11 @@ namespace HumanResources
             return true;
         }
 
-        protected bool CheckJobOnThing(Pawn pawn, Thing t, bool forced = false)
+        protected bool CheckJobOnThing(Pawn pawn, Thing thing, bool forced = false)
         {
-            IBillGiver billGiver = t as IBillGiver;
-            if (billGiver != null && ThingIsUsableBillGiver(t) && billGiver.CurrentlyUsableForBills() && billGiver.BillStack.AnyShouldDoNow && pawn.CanReserve(t, 1, -1, null, forced) && !t.IsBurning() && !t.IsForbidden(pawn))
+            if (thing is IBillGiver billGiver && ThingIsUsableBillGiver(thing) && billGiver.CurrentlyUsableForBills() && billGiver.BillStack.AnyShouldDoNow && pawn.CanReserve(thing, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
             {
-                if (!pawn.CanReach(t, PathEndMode.OnCell, Danger.Some, false, TraverseMode.ByPawn)) return false;
+                if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Some)) return false;
                 billGiver.BillStack.RemoveIncompletableBills();
                 return true;
             }

@@ -26,6 +26,8 @@ namespace HumanResources
             MoreIcon = (Texture2D)AccessTools.Field(AssetsType, "MoreIcon").GetValue(Assets),
             Lock = (Texture2D)AccessTools.Field(AssetsType, "Lock").GetValue(Assets),
             EW = (Texture2D)AccessTools.Field(LinesType, "EW").GetValue(Assets);
+
+        static ResearchTree_Assets() {}
     }
 }
         

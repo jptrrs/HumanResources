@@ -7,7 +7,7 @@ namespace HumanResources
 {
 	public class JobDriver_DocumentTechDigital : JobDriver_DocumentTech
 	{
-		public override IEnumerable<Toil> MakeNewToils()
+		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			AddEndCondition(delegate
 			{

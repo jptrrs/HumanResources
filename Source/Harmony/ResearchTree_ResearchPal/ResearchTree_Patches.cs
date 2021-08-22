@@ -391,7 +391,7 @@ namespace HumanResources
                     Rect box = new Rect(position, size);
                     Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
                     Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, Rot4.South, cameraZoom: 1.4f));
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     if (Mouse.IsOver(innerBox))
                     {

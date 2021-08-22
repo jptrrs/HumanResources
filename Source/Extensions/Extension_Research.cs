@@ -110,7 +110,6 @@ namespace HumanResources
                 category = ThingCategory.Item,
                 thingCategories = new List<ThingCategoryDef>() { tCat },
                 techLevel = tech.techLevel,
-                menuHidden = true,
                 stuffProps = new StuffProperties()
                 {
                     categories = new List<StuffCategoryDef>() { sCat },
@@ -459,7 +458,7 @@ namespace HumanResources
                     Rect box = new Rect(position, size);
                     Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
                     Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, Rot4.South, cameraZoom: 1.2f));
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
                     TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
                     startPos += height / 2;

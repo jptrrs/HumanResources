@@ -18,9 +18,10 @@ namespace HumanResources
 			if (faction?.def.techLevel != null) defaultLevel = faction.def.techLevel;
 			return base.GenerateThings(forTile, faction);
 		}
-
-		public override Thing MakeThing(ThingDef def)
+		        
+        protected override Thing MakeThing(ThingDef def, Faction faction = null)
 		{
+			if (faction is null) faction = Faction.OfPlayer;
 			if (!def.tradeability.TraderCanSell())
 			{
 				Log.Error("Tried to make non-trader-sellable thing for trader stock: " + def, false);
@@ -52,7 +53,7 @@ namespace HumanResources
 			return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef == TechDefOf.TechBook;
 		}
 
-		public override float SelectionWeight(ThingDef thingDef)
+		protected override float SelectionWeight(ThingDef thingDef)
 		{
 			return SelectionWeightMarketValueCurve.Evaluate(thingDef.BaseMarketValue);
 		}
