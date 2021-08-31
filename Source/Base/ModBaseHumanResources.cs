@@ -98,16 +98,16 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //b. Also removing atipical weapons
+            //c. Also removing atipical weapons
             List<string> ForbiddenWeaponTags = TechDefOf.WeaponsNotBasic.weaponTags;
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
             garbage.Add(TechDefOf.WeaponsNotBasic);
 
-            //c. Classifying pawn backstories
+            //d. Classifying pawn backstories
             PawnBackgroundUtility.BuildCache();
 
-            //d. Telling humans what's going on
+            //e. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose || FullStartupReport)
@@ -180,6 +180,7 @@ namespace HumanResources
                 AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { def });
             }
         }
+
 
         public override void SceneLoaded (Scene scene)
         {

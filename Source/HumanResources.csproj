@@ -33,7 +33,7 @@
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\1.2\Assemblies\</OutputPath>
+    <OutputPath>..\1.3\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -45,7 +45,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\1.2\Assemblies\</OutputPath>
+    <OutputPath>..\1.3\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>none</ErrorReport>
     <WarningLevel>0</WarningLevel>
@@ -65,9 +65,18 @@
     <ErrorReport>none</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.2|AnyCPU'">
+    <OutputPath>bin\1.2\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <WarningLevel>0</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>none</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.1.1\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
@@ -75,7 +84,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
-      <HintPath>..\..\..\..\..\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -343,6 +352,7 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
+    <None Include="Books+Buildings\StockGenerator_TechBooks_RW1.2.cs" />
     <Compile Include="Extensions\Extension_Research _RW1.3.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
@@ -354,6 +364,7 @@
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
     <None Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip_RW1.2.cs" />
     <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob_RW1.3.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches_RW1.3.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />
@@ -392,7 +403,7 @@
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
+    <None Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyAdded.cs" />
     <Compile Include="Harmony\ResearchManager_Patches.cs" />
     <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
@@ -428,6 +439,7 @@
     <Compile Include="Work\WorkGiver_LearnWeapon.cs" />
     <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
     <Compile Include="Work\WorkGiver_ResearchTech.cs" />
+    <None Include="packages.config" />
     <None Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_LearnTech.cs" />
   </ItemGroup>
@@ -437,9 +449,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
