@@ -343,11 +343,17 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
+    <Compile Include="Extensions\Extension_Research _RW1.3.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
+    <Compile Include="Harmony\EquipmentUtility_CanEquip_RW1.3.cs" />
+    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
+    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
+    <None Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip_RW1.2.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob_RW1.3.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />
@@ -370,7 +376,7 @@
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
     <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip_NewTmp.cs" />
+    <None Include="Harmony\EquipmentUtility_CanEquip_RW1.2.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
@@ -392,8 +398,7 @@
     <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
-    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
-    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <None Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books+Buildings\ITab_Inventory.cs" />
     <Compile Include="Tools\PatchOperationFindModById.cs" />
@@ -411,18 +416,19 @@
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
+    <None Include="Extensions\Extension_Research.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Work\WorkGiver_Knowledge_RW1.3.cs" />
     <Compile Include="Work\WorkGiver_ScanBook.cs" />
     <Compile Include="Work\WorkGiver_DocumentTech.cs" />
     <Compile Include="Work\WorkGiver_ExperimentWeapon.cs" />
     <Compile Include="Work\WorkGiver_LearnWeapon.cs" />
     <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
     <Compile Include="Work\WorkGiver_ResearchTech.cs" />
-    <Compile Include="Work\WorkGiver_Knowledge.cs" />
+    <None Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_LearnTech.cs" />
   </ItemGroup>
   <ItemGroup>
