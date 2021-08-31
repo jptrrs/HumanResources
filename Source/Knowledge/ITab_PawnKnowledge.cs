@@ -18,7 +18,7 @@ namespace HumanResources
             scrollBarWidth = 17f,
             tabSizeAdjust = 12f;
         private static bool
-            commomWeapons = false,
+            commonWeapons = false,
             fullTechs = false,
             fullWeapons = false,
             groupTechs = false,
@@ -36,11 +36,10 @@ namespace HumanResources
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
         private static Func<ThingDef, bool> weaponsFilter = (x) =>
         {
-            bool valid = !x.menuHidden;
-            bool commom = commomWeapons ? true : !x.NotReallyAWeapon();
+            bool commom = commonWeapons ? true : !x.NotReallyAWeapon();
             bool melee = meleeWeapons ? true : !x.IsMeleeWeapon;
             bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
-            return valid & commom & melee & ranged;
+            return commom & melee & ranged;
         };
         private static FieldInfo SkillBarFillTexInfo = AccessTools.Field(typeof(SkillUI),"SkillBarFillTex");
         private Vector2 viewSize;
@@ -286,7 +285,7 @@ namespace HumanResources
             float rightBaselineX = rightColumn.max.x - margin;
             float rightBaselineY = scrollrect.max.y + padding;
             float next = rightBaselineX;
-            next = DrawToggle(next, rightBaselineY, "ShowCommon", ref commomWeapons, ContentFinder<Texture2D>.Get("UI/commomWeapons", true), null, true);
+            next = DrawToggle(next, rightBaselineY, "ShowCommon", ref commonWeapons, ContentFinder<Texture2D>.Get("UI/commomWeapons", true), null, true);
             next = DrawToggle(next, rightBaselineY, "ShowRanged", ref rangedWeapons, ContentFinder<Texture2D>.Get("UI/ranged", true), null, true);
             next = DrawToggle(next, rightBaselineY, "ShowMelee", ref meleeWeapons, ContentFinder<Texture2D>.Get("UI/melee", true), null, true);
         }
@@ -331,7 +330,7 @@ namespace HumanResources
             Rect box = new Rect(position, buttonSize);
             var curFont = Text.Font;
             Text.Font = GameFont.Tiny;
-            TooltipHandler.TipRegionByKey(box, techLevel.ToStringHuman());
+            TooltipHandler.TipRegion(box, techLevel.ToStringHuman());
             Text.Font = curFont;
             Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
             if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
