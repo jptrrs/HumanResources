@@ -8,6 +8,43 @@
   </HugsLib.UpdateFeatureDef>
 
   <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_1_0</defName>
+    <assemblyVersion>1.0</assemblyVersion>
+    <targetAudience>NewPlayers</targetAudience>
+    <content>
+      |&lt;b&gt;WELCOME TO HUMAN RESOURCES!&lt;/b&gt;
+      |People now only know what they have learned! Here's a quick guide to get you started:
+      |
+      |img:TechButton
+      |Check out the new tab for your colonists. It displays the sum of their knowledge, and that represents the limit of what they are able to build, repair, craft, grow and also the weapons they are able to equip. A starting knowledge set is generated for every pawn based on background, age and faction. From there, its your task to educate them!
+      |
+      |img:Study+Shelf
+      |Build a &lt;i&gt;study desk&lt;/i&gt; and a &lt;i&gt;bookshelf&lt;/i&gt; as soon as you can. This allows your colonists to &lt;i&gt;document&lt;/i&gt; their knowledge into books and then &lt;i&gt;study&lt;/i&gt; books to acquire new knowledge (when assigned to the &lt;i&gt;study&lt;/i&gt; work type).
+      |
+      |img:HomeworkIndicator,HomeworkOnTree
+      |You must assign them study and document tasks individually. You can do that by clicking directly on the desired technologies on their Tech tabs or on the main Research screen, where you can also assign &lt;i&gt;research&lt;/i&gt; tasks.
+      |
+      |img:ResearchBenches
+      |For research, you'll still need research benches, but they have been slimmed down to better fit alongside your library. Keep in mind what your researchers learn remain only in their heads until they can write a book on their discoveries. Only when that book is archived on a bookshelf you will really have unlocked that technology.
+      |
+      |img:NetworkServer,NetworkTerminal
+      |Physical books will only get you so far. To deal with space-age knowledge, you'll need information-age infrastructure. On the late game, get ready to build your very own &lt;i&gt;network server&lt;/i&gt; to host your library and the accompanying &lt;i&gt;network terminal&lt;/i&gt; for uploading and downloading digital knowledge!
+      |
+      |img:Target+Dummy
+      |When you discover new weapons, your colonists will need to train at these facilities in order to learn how to use them (for that, they must also be assigned to &lt;i&gt;study&lt;/i&gt;). The &lt;i&gt;training dummy&lt;/i&gt; is for meleee weapons and the &lt;i&gt;target stand&lt;/i&gt; is for ranged ones.
+      |You can also task them with &lt;i&gt;practicing&lt;/i&gt; a weapon - which will allow them to sharpen their melee or shooting skills - or &lt;i&gt;experimenting with an unknown weapon&lt;/i&gt; - which is &lt;b&gt;a very risky business!&lt;/b&gt; If sucessful, this will allow your colonists to equip a weapon that's more advanced than the current colony knowledge, but at a high risk of damaging the weapon in the process... or getting hurt themselves!
+      |
+      |For more details on how to play with this mod and how it works, check out the wiki on our GitHub page. The link is in the description.
+      |
+      |Enjoy!
+      |
+      |img:Passion|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt;
+      |If you are able to contribute, you can buy me a coffee on &lt;i&gt;https://ko-fi.com/jptrrs&lt;/i&gt;, or follow the link above for our Patreon page, where you can also find &lt;b&gt;more mods&lt;/b&gt; and &lt;b&gt;add-ons&lt;/b&gt; that aren't on Steam!
+      |Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+
+  <!--<HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
 	<defName>HumanResources_0_1</defName>
 	<assemblyVersion>0.1</assemblyVersion>
   <targetAudience>NewPlayers</targetAudience>
@@ -121,6 +158,6 @@
       |
       |img:Passion|caption:&lt;i&gt;Check out our Patreon page for more mods and add-ons that aren't on Steam!&lt;/i&gt; Follow the link above or go to https://www.patreon.com/jptrrs.
     </content>
-  </HugsLib.UpdateFeatureDef>
+  </HugsLib.UpdateFeatureDef>-->
 
 </Defs>
