@@ -129,7 +129,7 @@ namespace HumanResources
         #region "patchworks"
         public static void Execute(Harmony instance, string modName, bool altRPal = false)
         {
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
             ModName = modName;
             AltRPal = altRPal;
 

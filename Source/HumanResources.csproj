@@ -355,6 +355,7 @@
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Graphic\ExpertiseNode_RW1.3.cs" />
+    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches_RW1.3.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip_RW1.3.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
@@ -389,7 +390,7 @@
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+    <None Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <None Include="Harmony\EquipmentUtility_CanEquip_RW1.1.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
