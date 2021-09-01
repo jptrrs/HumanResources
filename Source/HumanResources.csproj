@@ -156,10 +156,6 @@
       <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.DSPGraphModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.FileSystemHttpModule">
-      <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.FileSystemHttpModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
       <HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
       <Private>False</Private>
@@ -358,6 +354,7 @@
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
+    <Compile Include="Graphic\ExpertiseNode_RW1.3.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip_RW1.3.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
@@ -420,7 +417,7 @@
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
-    <Compile Include="Graphic\ExpertiseNode.cs" />
+    <None Include="Graphic\ExpertiseNode.cs" />
     <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
     <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />
