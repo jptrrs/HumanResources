@@ -15,8 +15,8 @@ Please, start a new one.
 #### Warning #2: This mod relies on [ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759) (or one of its branches, [ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822) or [ResearchPal - Forked](https://steamcommunity.com/sharedfiles/filedetails/?id=2351393394])). 
 If you don't use one of them yet, what are you doing with your life? They're pretty much mandatory mods. Please, choose one and install it. We could have incorporated Fluffy's code into ours, but we'd rather mantain a lean mod and give you an incentive to get to know and support his work.
 
-#### Warning #3: This is a public test phase for an unifinished mod. 
-Expect many issues and incompatibilities. We're counting on your collaboration to identify them and suggest improvements. Bear in mind the final product might be very different, and changes made during this process might break your game. If you're planning on starting a long-term playthrough (and we encourage you to do so, so we can test long-term effects), be prepared to make a local copy to avoid game-breaking updates.
+#### Warning #3: This mod was designed to kick your ass! 
+It's supposed to turn RimWorld into something [url=youtu.be/JVI_Mo02auo]like this[/url]. If you can't handle it, maybe it's not for you.
 
 This is how it works:
 
@@ -41,31 +41,23 @@ research tech > | document it into a book > | add book to library > | study tech
 :---|:---|:---|:---|:---
 (research bench)|(study bench)|(book shelf)|(study bench)|(build/repair/grow/craft)
 
-### [Full details and guide on how to use this mod here](https://github.com/jptrrs/HumanResources/wiki)
+**[Full details and guide on how to use this mod here](https://github.com/jptrrs/HumanResources/wiki)**
 
 <!--[![](https://i.imgur.com/EEgQ2Ss.png)](http://ko-fi.com/jptrrs)-->
-
 ## Compatibility
-This was not designed to be added to an ongoing game, please only enable it if you're planning on starting a new one. About other mods, **we simply cannot test it with every one out there**. All we can do is design for maximum compatibility and hope for the best. If you're unsure, please give it a shot. If you stumble on any problem, let us know and we'll do what we can to fix it. 
+**We simply cannot test it with every mod out there**. All we can do is design for maximum compatibility and hope for the best. If you're unsure, please give it a shot. If you stumble on any problem, [let us know](https://steamcommunity.com/workshop/filedetails/discussion/2119687603/2295094308095765898/) and we'll do what we can to fix it.
 
-#### Depends on:
-* **[ResearchTree](https://steamcommunity.com/sharedfiles/filedetails/?id=1266570759)** or its branches, **[ResearchPal](https://steamcommunity.com/sharedfiles/filedetails/?id=946390822) or [ResearchPal - Forked](https://steamcommunity.com/sharedfiles/filedetails/?id=2351393394])**. Please pick one. 
-* **[HugsLib](https://steamcommunity.com/sharedfiles/filedetails/?id=818773962)**
+**[Check the full compatibility notes for various mods.](https://github.com/jptrrs/HumanResources/wiki/Compatibility-Notes)**
 
-#### Integrates with:
-* **[Go Explore](https://steamcommunity.com/sharedfiles/filedetails/?id=1814100216):** When a pawn succeds on a _Research Request_ event, instead of your faction progressing toward the discovered tech, that is added to the pawns individual expertise. In order for the colony to benefit as a whole, he will have to write a book about it!
-* more to come, depending on what's requested by the players during this alpha phase.
+Please report issues with [Combat Extended](steamcommunity.com/sharedfiles/filedetails/?id=1631756268) to its authors, as it is too hard to patch for.
 
-#### Not compatible with:
-* [Tech Advancing](https://steamcommunity.com/sharedfiles/filedetails/?id=735268789)
-* [Tech Sales](https://steamcommunity.com/sharedfiles/filedetails/1935360087)
+## Available Languages
+EN, FR, JP, PT, PT-BR, RU, ZH.
+(Help translate it into yours, just drop me a line.)
 
 ## Acknowledgements
-Borrowed code from Fluffy's [Research Tree](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778), Jecrell's [RimWriter](https://steamcommunity.com/sharedfiles/filedetails/?id=1521844535) & notfood's _ThingDef injection_ for [Psychology](https://steamcommunity.com/sharedfiles/filedetails/?id=1552507180).\
-*Training Dummy* and *Target Stand* originally designed by Shinzy for [Practise Target](https://steamcommunity.com/sharedfiles/filedetails/?id=1737269778).\
-Some textures based on [designs by Freepik](http://www.freepik.com).\
-Code contributions by MinerSebas.
-Translated into Chinese by leafzxg and Miyuri.\
-Translated into Japanese by Miyuri.\
-Made possible thanks to the help of Brrains and erdelf on the Harmony Discord channel.\
+Borrowed code from Fluffy's [Research Tree](steamcommunity.com/sharedfiles/filedetails/946390822), Jecrell's [RimWriter](steamcommunity.com/sharedfiles/filedetails/1521844535) & notfood's *ThingDef injection* for [Psychology](steamcommunity.com/sharedfiles/filedetails/1552507180). *Training Dummy* and *Target Stand* originally designed by Shinzy for [Practise Target](steamcommunity.com/sharedfiles/filedetails/1737269778). Some textures based on [designs by Freepik](www.freepik.com). 
+Code contributions by  ElliottCable, Maeyanie, Mehni, MinerSebas, Reiquard and Toby222.
+Translations by leafzxg (ZH), Miyuri (ZH/JP), Rémi Dupouy (FR), Qux (FR), WolF8RocK (RU) and Reiquard (RU).
+Made possible thanks to the help of Brrains and erdelf on the Harmony Discord channel.
 **Many thanks to all these awesome people!**
