@@ -133,9 +133,19 @@ namespace HumanResources
             ModName = modName;
             AltRPal = altRPal;
 
+            Log.Message("executing patches...");
+
             //ResearchProjectDef_Extensions
-            instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:GetUnlockDefsAndDescs"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetUnlockDefsAndDescs)))).Patch();
+            if (altRPal)
+            {
+                instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:GetUnlockDefs"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetUnlockDefs)))).Patch();
+            }
+            else
+            {
+                instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:GetUnlockDefsAndDescs"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetUnlockDefsAndDescs)))).Patch();
+            }
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:GetRecipesUnlocked"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetRecipesUnlocked)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:GetThingsUnlocked"),
@@ -178,10 +188,11 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging", new Type[] { typeof(bool) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "LeftClick"),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));              
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
+                UnlockItemTooltipInfo = AccessTools.Method(ResearchNodeType(), "UnlockItemTooltip");
             }
             else
             {
@@ -391,7 +402,7 @@ namespace HumanResources
                     Rect box = new Rect(position, size);
                     Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
                     Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, Rot4.South, cameraZoom: 1.4f));
                     CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
                     if (Mouse.IsOver(innerBox))
                     {
@@ -752,7 +763,8 @@ namespace HumanResources
             ResearchNodeInfo,
             BuildingPresentInfo,
             HighlightInfo,
-            AppendSInfo;
+            AppendSInfo,
+            UnlockItemTooltipInfo;
 
         private static bool searchActive
         {
@@ -842,6 +854,33 @@ namespace HumanResources
         {
             if (searchActive != state) searchActive = state;
         }
+
+        //the 1/9/2021 update simplified GetUnlockDefsAndDescs, changing the return type, so these 3 additional methods are now needed. Branching changes ensued.
+        public static List<Def> GetUnlockDefs(ResearchProjectDef research) { throw stubMsg; }
+
+        public static List<Def> GetUnlockDefsProxy(ResearchProjectDef research)
+        {
+            return AltRPal ? GetUnlockDefs(research) : GetUnlockDefsAndDescs(research).Select(p => p.First).ToList();
+        }
+
+        public static List<Pair<Def, string>> GetUnlockDefsAndDescsProxy(ResearchProjectDef research)
+        {
+            List<Pair<Def, string>> result = new List<Pair<Def, string>>();
+            if (AltRPal)
+            {
+                bool cached = ResearchNodesCache.ContainsKey(research);
+                foreach (Def def in GetUnlockDefs(research))
+                {
+                    string tip = def.LabelCap;
+                    if (cached) tip = (string)UnlockItemTooltipInfo.Invoke(ResearchNodesCache[research], new object[] { def });
+                    result.Add(new Pair<Def, string>(def, tip));
+                }
+                return result;
+            }
+            return GetUnlockDefsAndDescs(research);
+        }
+
+
         #endregion
     }
 }

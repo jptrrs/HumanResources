@@ -5,6 +5,7 @@ using Verse;
 
 namespace HumanResources
 {
+	//Changed in RW 1.3
 	public class StockGenerator_TechBooks : StockGenerator_MiscItems
 	{
 #pragma warning disable 0649

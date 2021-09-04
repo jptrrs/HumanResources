@@ -14,6 +14,7 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW1.3
     public class ExpertiseNode
     {
         //pulled from Node
@@ -311,7 +312,7 @@ namespace HumanResources
                 // draw unlock icons
                 if (detailedMode)
                 {
-                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescsProxy(Tech);
+                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Tech);
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(

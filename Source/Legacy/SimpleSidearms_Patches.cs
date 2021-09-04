@@ -5,16 +5,17 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW 1.3
     public static class SimpleSidearms_Patches
     {
         public static void Execute(Harmony instance)
         {
-            Type StatCalculatorType = AccessTools.TypeByName("PeteTimesSix.SimpleSidearms.Utilities.StatCalculator");
+            Type StatCalculatorType = AccessTools.TypeByName("SimpleSidearms.utilities.StatCalculator");
             MethodBase canCarrySidearmBase = AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() });
             instance.Patch(AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() }),
                 new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(canCarrySidearmÌnstance_Prefix)), null, null);
 
-            Type WeaponAssingmentType = AccessTools.TypeByName("PeteTimesSix.SimpleSidearms.Utilities.WeaponAssingment");
+            Type WeaponAssingmentType = AccessTools.TypeByName("SimpleSidearms.utilities.WeaponAssingment");
             instance.Patch(AccessTools.Method(WeaponAssingmentType, "equipSpecificWeapon"),
                 new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(equipSpecificWeapon_Prefix)), null, null);
         }

@@ -7,7 +7,7 @@ using Verse.AI;
 namespace HumanResources
 {
     //Checks if pawn knows a weapon before equiping it via ordered job.
-    [HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.TryTakeOrderedJob), new Type[] { typeof(Job), typeof(JobTag) })]
+    [HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.TryTakeOrderedJob))]
     public static class Pawn_JobTracker_TryTakeOrderedJob
     {
         public static bool Prefix(Job job, Pawn ___pawn)

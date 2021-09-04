@@ -6,6 +6,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
+    //Changed in RW 1.3
     class WorkGiver_Knowledge : WorkGiver_DoBill
     {
         protected Job actualJob = null;
@@ -28,7 +29,7 @@ namespace HumanResources
         {
             if (thing is IBillGiver billGiver && ThingIsUsableBillGiver(thing) && billGiver.CurrentlyUsableForBills() && billGiver.BillStack.AnyShouldDoNow && pawn.CanReserve(thing, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
             {
-                if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Some)) return false;
+                if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Some, false, TraverseMode.ByPawn)) return false;
                 billGiver.BillStack.RemoveIncompletableBills();
                 return true;
             }

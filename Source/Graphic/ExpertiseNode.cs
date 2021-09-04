@@ -311,7 +311,7 @@ namespace HumanResources
                 // draw unlock icons
                 if (detailedMode)
                 {
-                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescs(Tech);
+                    var unlocks = ResearchTree_Patches.GetUnlockDefsAndDescsProxy(Tech);
                     for (var i = 0; i < unlocks.Count; i++)
                     {
                         var iconRect = new Rect(

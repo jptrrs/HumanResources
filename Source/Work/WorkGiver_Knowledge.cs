@@ -28,7 +28,7 @@ namespace HumanResources
         {
             if (thing is IBillGiver billGiver && ThingIsUsableBillGiver(thing) && billGiver.CurrentlyUsableForBills() && billGiver.BillStack.AnyShouldDoNow && pawn.CanReserve(thing, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
             {
-                if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Some, false, TraverseMode.ByPawn)) return false;
+                if (!pawn.CanReach(thing, PathEndMode.OnCell, Danger.Some)) return false;
                 billGiver.BillStack.RemoveIncompletableBills();
                 return true;
             }

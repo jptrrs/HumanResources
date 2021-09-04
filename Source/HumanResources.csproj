@@ -352,21 +352,21 @@
     <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
-    <None Include="Books+Buildings\StockGenerator_TechBooks_RW1.2.cs" />
-    <Compile Include="Extensions\Extension_Research _RW1.3.cs" />
+    <None Include="Legacy\StockGenerator_TechBooks.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
-    <Compile Include="Graphic\ExpertiseNode_RW1.3.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches_RW1.3.cs" />
+    <Compile Include="Graphic\ExpertiseNode.cs" />
+    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip_RW1.3.cs" />
+    <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
-    <None Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquip_RW1.2.cs" />
-    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob_RW1.3.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches_RW1.3.cs" />
+    <None Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />
@@ -389,13 +389,13 @@
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
     <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
-    <None Include="Harmony\EquipmentUtility_CanEquip_RW1.2.cs" />
+    <None Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
     <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
-    <None Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
-    <None Include="Harmony\EquipmentUtility_CanEquip_RW1.1.cs" />
+    <None Include="Legacy\SimpleSidearms_Patches.cs" />
+    <None Include="Legacy\EquipmentUtility_CanEquip_RW1.1.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
@@ -405,13 +405,13 @@
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
-    <None Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
+    <None Include="Legacy\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyAdded.cs" />
     <Compile Include="Harmony\ResearchManager_Patches.cs" />
     <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
-    <None Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <None Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books+Buildings\ITab_Inventory.cs" />
     <Compile Include="Tools\PatchOperationFindModById.cs" />
@@ -422,19 +422,19 @@
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
-    <None Include="Graphic\ExpertiseNode.cs" />
+    <None Include="Legacy\ExpertiseNode.cs" />
     <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
     <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
     <Compile Include="Base\UnlockManager.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <None Include="Extensions\Extension_Research.cs" />
+    <None Include="Legacy\Extension_Research.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Work\WorkGiver_Knowledge_RW1.3.cs" />
+    <Compile Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_ScanBook.cs" />
     <Compile Include="Work\WorkGiver_DocumentTech.cs" />
     <Compile Include="Work\WorkGiver_ExperimentWeapon.cs" />
@@ -442,7 +442,7 @@
     <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
     <Compile Include="Work\WorkGiver_ResearchTech.cs" />
     <None Include="packages.config" />
-    <None Include="Work\WorkGiver_Knowledge.cs" />
+    <None Include="Legacy\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_LearnTech.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -452,6 +452,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!--<Target Name="CopyXML" AfterTargets="Build">-->
   <Target Name="ModFiles" AfterTargets="Build">
