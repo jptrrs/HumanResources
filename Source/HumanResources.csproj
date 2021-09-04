@@ -55,7 +55,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.3\Assemblies\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <WarningLevel>0</WarningLevel>
@@ -66,7 +66,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.2|AnyCPU'">
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.3\Assemblies\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <WarningLevel>0</WarningLevel>
@@ -87,16 +87,17 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JPTools">
+      <HintPath>..\..\JPTools\Assemblies\JPTools.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Xml" />
-    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Unity.TextMeshPro">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -353,20 +354,20 @@
     <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
     <None Include="Legacy\StockGenerator_TechBooks.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
+    <None Include="Extensions\Extension_Research.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
-    <Compile Include="Graphic\ExpertiseNode.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+    <None Include="Graphic\ExpertiseNode.cs" />
+    <None Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
-    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
-    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
+    <None Include="Harmony\EquipmentUtility_CanEquip.cs" />
+    <None Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
+    <None Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
     <None Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
-    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
+    <None Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <None Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\StatsToDraw_Patch.cs" />
@@ -379,7 +380,7 @@
     <Compile Include="Base\TechWorkDefOf.cs" />
     <Compile Include="Base\TechDefOf.cs" />
     <Compile Include="Books+Buildings\Building_BookStore.cs" />
-    <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
+    <None Include="Books+Buildings\StockGenerator_TechBooks.cs" />
     <Compile Include="Books+Buildings\CompTitleMaker.cs" />
     <Compile Include="Books+Buildings\CompProperties_TitleMaker.cs" />
     <Compile Include="Books+Buildings\CompProperties_StorageGraphic.cs" />
@@ -414,7 +415,6 @@
     <None Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Books+Buildings\ITab_Inventory.cs" />
-    <Compile Include="Tools\PatchOperationFindModById.cs" />
     <Compile Include="Work\JobDriver_ScanBook.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\LearningUtility.cs" />
@@ -434,7 +434,7 @@
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Work\WorkGiver_Knowledge.cs" />
+    <None Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_ScanBook.cs" />
     <Compile Include="Work\WorkGiver_DocumentTech.cs" />
     <Compile Include="Work\WorkGiver_ExperimentWeapon.cs" />
