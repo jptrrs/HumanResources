@@ -457,6 +457,7 @@
   <!--<Target Name="CopyXML" AfterTargets="Build">-->
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>
+      <Assembly Include="$(TargetDir)\*.dll" />
       <About Include="..\About\*.*" />
       <Defs Include="..\Defs\**\*.*" />
       <Languages Include="..\Languages\**\*.*" />
@@ -464,6 +465,8 @@
       <Patches Include="..\Patches\*.*" />
       <Textures Include="..\Textures\**\*.*" />
     </ItemGroup>
+    <Message Text="Retrieving assemblies..." Importance="High" />
+    <Copy SourceFiles="@(About)" DestinationFolder="$(SolutionDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Message Text="Updating 'About' folder..." Importance="High" />
     <Copy SourceFiles="@(About)" DestinationFolder="$(TargetDir)\..\..\About\" SkipUnchangedFiles="true" />
     <Message Text="Updating 'Defs' folder..." Importance="High" />
