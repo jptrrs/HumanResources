@@ -868,9 +868,12 @@ namespace HumanResources
             List<Pair<Def, string>> result = new List<Pair<Def, string>>();
             if (AltRPal)
             {
+                bool cached = ResearchNodesCache.ContainsKey(research);
                 foreach (Def def in GetUnlockDefs(research))
                 {
-                    result.Add(new Pair<Def, string>(def, (string)UnlockItemTooltipInfo.Invoke(ResearchNodesCache[research], new object[] { def })));
+                    string tip = def.LabelCap;
+                    if (cached) tip = (string)UnlockItemTooltipInfo.Invoke(ResearchNodesCache[research], new object[] { def });
+                    result.Add(new Pair<Def, string>(def, tip));
                 }
                 return result;
             }
