@@ -133,8 +133,6 @@ namespace HumanResources
             ModName = modName;
             AltRPal = altRPal;
 
-            Log.Message("executing patches...");
-
             //ResearchProjectDef_Extensions
             if (altRPal)
             {
