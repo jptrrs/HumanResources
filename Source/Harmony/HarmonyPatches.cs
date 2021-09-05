@@ -123,7 +123,7 @@ namespace HumanResources
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x => 
             x.PackageIdPlayerFacing.StartsWith("loconeko.roadsoftherim") || 
-            x.PackageIdPlayerFacing.StartsWith("mlie.roadsoftherim") ||
+            x.PackageIdPlayerFacing.StartsWith("Mlie.RoadsOfTheRim") || 
             x.PackageIdPlayerFacing.StartsWith("fluffy.backuppower") || 
             x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") ||
             x.PackageIdPlayerFacing.StartsWith("Ogliss.AdMech.Armoury")))
