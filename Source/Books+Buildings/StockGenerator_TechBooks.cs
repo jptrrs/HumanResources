@@ -23,7 +23,7 @@ namespace HumanResources
 		{
 			if (!def.tradeability.TraderCanSell())
 			{
-				Log.Error("Tried to make non-trader-sellable thing for trader stock: " + def, false);
+				Log.Error("Tried to make non-trader-sellable thing for trader stock: " + def);
 				return null;
 			}
 			ThingDef stuff = null;

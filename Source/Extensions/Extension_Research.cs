@@ -218,7 +218,7 @@ namespace HumanResources
                 if (success && FullStartupReport)
                 {
                     GatherSuccessDetails(tech, matchesCount, thingsCount, recipesCount, recipeThingsCount, recipeSkillsCount, terrainsCount, keywords, usedPreReq, relevantSkills, report);
-                    Log.Message($"{tech.LabelCap}: {report}", true);
+                    Log.Message($"{tech.LabelCap}: {report}");
                 }
             }
             NoMatchesWarning(tech, usedPreReq, relevantSkills, success, report);
@@ -747,7 +747,7 @@ namespace HumanResources
         {
             if (tech == null)
             {
-                Log.Error("Tried to upload a null tech.", false);
+                Log.Error("Tried to upload a null tech.");
                 return;
             }
             float num = Find.ResearchManager.GetProgress(tech);
