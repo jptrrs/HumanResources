@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -28,19 +29,23 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.3\Assemblies\</OutputPath>
+    <OutputPath>..\1.3\Assemblies\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>
     </NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <RimWorldPath>..\..\References\RimWorld 1.3\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
@@ -50,10 +55,13 @@
     <ErrorReport>none</ErrorReport>
     <WarningLevel>0</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <RimWorldPath>..\..\References\RimWorld 1.3\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
     <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -64,7 +72,10 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RimWorldPath>..\..\References\RimWorld 1.1\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.2|AnyCPU'">
     <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -73,377 +84,165 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
+    <RimWorldPath>..\..\References\RimWorld 1.2\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.2\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
+  
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.1.1\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>$(RimWorldPath)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HintPath>
+      <HintPath>$(HugsLibPath)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JPTools">
       <HintPath>..\..\JPTools\Assemblies\JPTools.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AIModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ARModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ARModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ClothModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.DSPGraphModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.GridModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.GridModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.InputModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ProfilerModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.StreamingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.SubsystemsModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.SubsystemsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextCoreModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TLSModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.TLSModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UmbraModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UNETModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UNETModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityTestProtocolModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.VFXModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.VFXModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.VideoModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.VRModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.VRModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.WindModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.WindModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.XRModule">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\TechDatabase.cs" />
-    <Compile Include="Base\TechTracker.cs" />
-    <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
-    <Compile Include="Books+Buildings\CompProperties_NetworkAccess.cs" />
-    <Compile Include="Books+Buildings\CompNetworkAccess.cs" />
-    <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
-    <Compile Include="Books+Buildings\CompProperties_ShootingArea.cs" />
-    <Compile Include="Books+Buildings\CompShootingArea.cs" />
-    <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
     <Compile Include="Base\BackupState.cs" />
-    <None Include="Legacy\StockGenerator_TechBooks.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
-    <Compile Include="Extensions\TechMapping.cs" />
-    <Compile Include="Extensions\SkillMapping.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
-    <Compile Include="Graphic\ExpertiseNode.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
-    <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
-    <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
-    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
-    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
-    <None Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
-    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
-    <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
-    <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
-    <Compile Include="Harmony\StatsToDraw_Patch.cs" />
-    <Compile Include="Harmony\ThingOwner_NotifyRemoved.cs" />
-    <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
-    <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
-    <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
+    <Compile Include="Base\TechDatabase.cs" />
+    <Compile Include="Base\TechDefOf.cs" />
     <Compile Include="Base\TechJobDefOf .cs" />
     <Compile Include="Base\TechStrings.cs" />
+    <Compile Include="Base\TechTracker.cs" />
     <Compile Include="Base\TechWorkDefOf.cs" />
-    <Compile Include="Base\TechDefOf.cs" />
+    <Compile Include="Base\UnlockManager.cs" />
     <Compile Include="Books+Buildings\Building_BookStore.cs" />
-    <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
-    <Compile Include="Books+Buildings\CompTitleMaker.cs" />
-    <Compile Include="Books+Buildings\CompProperties_TitleMaker.cs" />
+    <Compile Include="Books+Buildings\Building_NetworkServer.cs" />
+    <Compile Include="Books+Buildings\CompNetworkAccess.cs" />
+    <Compile Include="Books+Buildings\CompProperties_NetworkAccess.cs" />
+    <Compile Include="Books+Buildings\CompProperties_ShootingArea.cs" />
     <Compile Include="Books+Buildings\CompProperties_StorageGraphic.cs" />
+    <Compile Include="Books+Buildings\CompProperties_TitleMaker.cs" />
+    <Compile Include="Books+Buildings\CompShootingArea.cs" />
     <Compile Include="Books+Buildings\CompStorageGraphic.cs" />
-    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Books+Buildings\CompTitleMaker.cs" />
+    <Compile Include="Books+Buildings\ITab_Inventory.cs" />
+    <Compile Include="Books+Buildings\PlaceWorker_ShootingRange.cs" />
+    <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
+    <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
+    <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Extensions\SkillMapping.cs" />
+    <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
+    <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
+    <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
-    <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
-    <None Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
-    <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
-    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
-    <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
-    <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
-    <None Include="Legacy\SimpleSidearms_Patches.cs" />
-    <None Include="Legacy\EquipmentUtility_CanEquip_RW1.1.cs" />
-    <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
-    <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
-    <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Compatibility\GoExplore_Patches.cs" />
+    <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
-    <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
+    <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
+    <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
+    <Compile Include="Harmony\HarmonyPatches.cs" />
+    <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
+    <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
+    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
+    <Compile Include="Harmony\ResearchManager_Patches.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Constants.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Tree.cs" />
-    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
-    <None Include="Legacy\ResearchTree_Patches.cs" />
+    <Compile Include="Harmony\StatsToDraw_Patch.cs" />
+    <Compile Include="Harmony\ThingFilterUI_DoThingFilterConfigWindow.cs" />
     <Compile Include="Harmony\ThingOwner_NotifyAdded.cs" />
-    <Compile Include="Harmony\ResearchManager_Patches.cs" />
-    <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
-    <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
-    <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
-    <None Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <Compile Include="Harmony\ThingOwner_NotifyRemoved.cs" />
+    <Compile Include="Harmony\ThingOwner_TryAddOrTransfer.cs" />
+    <Compile Include="Harmony\ThingOwnerUtility_GetAllThingsRecursively.cs" />
+    <Compile Include="Harmony\Toils_Recipe_Patch.cs" />
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
-    <Compile Include="Books+Buildings\ITab_Inventory.cs" />
-    <Compile Include="Work\JobDriver_ScanBook.cs" />
-    <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
-    <Compile Include="Work\LearningUtility.cs" />
-    <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
-    <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
-    <Compile Include="Work\JobDriver_DocumentTech.cs" />
-    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
-    <None Include="Legacy\ExpertiseNode.cs" />
-    <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
-    <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
-    <Compile Include="Base\UnlockManager.cs" />
+    <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
+    <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
+    <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
+    <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
+    <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
+    <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Work\JobDriver_DocumentTech.cs" />
+    <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <None Include="Legacy\Extension_Research.cs" />
-    <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
-    <Compile Include="Knowledge\CompKnowledge.cs" />
-    <Compile Include="Base\ModBaseHumanResources.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Work\WorkGiver_Knowledge.cs" />
-    <Compile Include="Work\WorkGiver_ScanBook.cs" />
+    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
+    <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
+    <Compile Include="Work\JobDriver_ScanBook.cs" />
+    <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
+    <Compile Include="Work\LearningUtility.cs" />
     <Compile Include="Work\WorkGiver_DocumentTech.cs" />
     <Compile Include="Work\WorkGiver_ExperimentWeapon.cs" />
+    <Compile Include="Work\WorkGiver_Knowledge.cs" />
+    <Compile Include="Work\WorkGiver_LearnTech.cs" />
     <Compile Include="Work\WorkGiver_LearnWeapon.cs" />
     <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
     <Compile Include="Work\WorkGiver_ResearchTech.cs" />
+    <Compile Include="Work\WorkGiver_ScanBook.cs" />
     <None Include="packages.config" />
-    <None Include="Legacy\WorkGiver_Knowledge.cs" />
-    <Compile Include="Work\WorkGiver_LearnTech.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2'">
+    <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
+    <Compile Include="Graphic\ExpertiseNode.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
+    <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
+    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
+    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+    <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
+    <Compile Include="Work\WorkGiver_Knowledge.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.1' OR '$(Configuration)' == '1.2'">
+    <Compile Include="Legacy\ExpertiseNode.cs" />
+    <Compile Include="Legacy\Extension_Research.cs" />
+    <Compile Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
+    <Compile Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <Compile Include="Legacy\ResearchTree_Patches.cs" />
+    <Compile Include="Legacy\SimpleSidearms_Patches.cs" />
+    <Compile Include="Legacy\StockGenerator_TechBooks.cs" />
+    <Compile Include="Legacy\WorkGiver_Knowledge.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.1'">
+    <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.1.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.2'">
+    <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -453,9 +252,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <PropertyGroup>
+    <ModFolder>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
+  </PropertyGroup>
+  
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>
-      <Assembly Include="$(TargetDir)\*.dll" />
+      <Assembly Include="..\*.*\**\*.dll" />
       <About Include="..\About\*.*" />
       <Defs Include="..\Defs\**\*.*" />
       <Languages Include="..\Languages\**\*.*" />
@@ -463,22 +267,24 @@
       <Patches Include="..\Patches\*.*" />
       <Textures Include="..\Textures\**\*.*" />
     </ItemGroup>
-    <Message Text="Retrieving assemblies..." Importance="High" />
-    <Copy SourceFiles="@(About)" DestinationFolder="$(SolutionDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Message Text="Updating mod files @ $(ModFolder)" Importance="High" />
+    <Message Text="Updating assemblies..." Importance="High" />
+    <Copy SourceFiles="@(Assembly)" DestinationFolder="$(ModFolder)\$(SolutionName)\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Message Text="Updating 'About' folder..." Importance="High" />
-    <Copy SourceFiles="@(About)" DestinationFolder="$(TargetDir)\..\..\About\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(About)" DestinationFolder="$(ModFolder)\$(SolutionName)\About\" SkipUnchangedFiles="true" />
     <Message Text="Updating 'Defs' folder..." Importance="High" />
-    <Copy SourceFiles="@(Defs)" DestinationFolder="$(TargetDir)\..\..\Defs\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Defs)" DestinationFolder="$(ModFolder)\$(SolutionName)\Defs\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Message Text="Updating 'Languages' folder..." Importance="High" />
-    <Copy SourceFiles="@(Languages)" DestinationFolder="$(TargetDir)\..\..\Languages\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Languages)" DestinationFolder="$(ModFolder)\$(SolutionName)\Languages\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Message Text="Updating 'News' folder..." Importance="High" />
-    <Copy SourceFiles="@(News)" DestinationFolder="$(TargetDir)\..\..\News\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(News)" DestinationFolder="$(ModFolder)\$(SolutionName)\News\" SkipUnchangedFiles="true" />
     <Message Text="Updating 'Patches' folder..." Importance="High" />
-    <Copy SourceFiles="@(Patches)" DestinationFolder="$(TargetDir)\..\..\Patches\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Patches)" DestinationFolder="$(ModFolder)\$(SolutionName)\Patches\" SkipUnchangedFiles="true" />
     <Message Text="Updating 'Textures' folder..." Importance="High" />
-    <Copy SourceFiles="@(Textures)" DestinationFolder="$(TargetDir)\..\..\Textures\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Textures)" DestinationFolder="$(ModFolder)\$(SolutionName)\Textures\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Message Text="Updating license file..." Importance="High" />
-    <Copy SourceFiles="..\LICENSE" DestinationFolder="$(TargetDir)\..\..\" SkipUnchangedFiles="true" />
-    <Message Text="Mod files updated" Importance="High" />
+    <Copy SourceFiles="..\LICENSE" DestinationFolder="$(ModFolder)\$(SolutionName)\" SkipUnchangedFiles="true" />
+    <Message Text="Mod files updated." Importance="High" />
   </Target>
+  
 </Project>
