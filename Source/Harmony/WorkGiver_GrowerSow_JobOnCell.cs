@@ -2,7 +2,6 @@
 using RimWorld;
 using System;
 using System.Linq;
-using System.Reflection;
 using Verse;
 using Verse.AI;
 
@@ -20,7 +19,7 @@ namespace HumanResources
                 if (!requisites.NullOrEmpty())
                 {
                     var knownPlants = pawn.TryGetComp<CompKnowledge>().knownPlants;
-                    if (Prefs.LogVerbose) Log.Warning("[HumanResources] "+pawn + "'s plant knowledge: " + knownPlants);
+                    if (Prefs.LogVerbose) Log.Warning("[HumanResources] " + pawn + "'s plant knowledge: " + knownPlants);
                     bool flag = false;
                     if (!knownPlants.EnumerableNullOrEmpty()) flag = knownPlants.Contains(___wantedPlantDef);
                     if (!flag)

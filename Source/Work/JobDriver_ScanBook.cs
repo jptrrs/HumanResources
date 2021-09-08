@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using Verse;
-using RimWorld;
-using Verse.AI;
+﻿using RimWorld;
 using System;
+using System.Collections.Generic;
+using Verse;
+using Verse.AI;
 
 namespace HumanResources
 {
-	public class JobDriver_ScanBook : JobDriver_Knowledge
-	{
+    public class JobDriver_ScanBook : JobDriver_Knowledge
+    {
         private bool bookOut = false;
         private Building_BookStore shelf;
         private Thing book;
         private bool inShelf => shelf != null;
 
-		public override bool TryMakePreToilReservations(bool errorOnFailed)
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (job.targetQueueB != null && job.targetQueueB.Count == 1 && job.targetQueueB[0].Thing != null)
             {
@@ -29,7 +29,7 @@ namespace HumanResources
             }
             else return false;
             return base.TryMakePreToilReservations(errorOnFailed);
-		}
+        }
 
         public override IEnumerable<Toil> MakeNewToils()
         {
@@ -114,13 +114,13 @@ namespace HumanResources
             yield break;
         }
 
-		public Toil TakeFromShelf(TargetIndex index)
-		{
-			Toil toil = new Toil();
-			toil.initAction = delegate ()
-			{
-				Pawn actor = toil.actor;
-				Job curJob = actor.jobs.curJob;
+        public Toil TakeFromShelf(TargetIndex index)
+        {
+            Toil toil = new Toil();
+            toil.initAction = delegate ()
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.jobs.curJob;
                 List<LocalTargetInfo> targetQueue = curJob.GetTargetQueue(index);
                 if (curJob.GetTarget(index).Thing == shelf)
                 {
@@ -142,8 +142,8 @@ namespace HumanResources
                 {
                     throw new Exception("Tried taking book from shelf, but shelf isn't on queue for the job.");
                 }
-			};
-			return toil;
-		}
-	}
+            };
+            return toil;
+        }
+    }
 }

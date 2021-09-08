@@ -1,6 +1,6 @@
-﻿using Verse;
+﻿using RimWorld;
+using Verse;
 using Verse.AI;
-using RimWorld;
 
 namespace HumanResources
 {
@@ -10,25 +10,25 @@ namespace HumanResources
 
         protected Thing desk
         {
-			get
-			{
-				return job.GetTarget(TargetIndex.A).Thing;
-			}
-		}
+            get
+            {
+                return job.GetTarget(TargetIndex.A).Thing;
+            }
+        }
 
-		protected CompKnowledge techComp
-		{
-			get
-			{
-				return pawn.TryGetComp<CompKnowledge>();
-			}
-		}
+        protected CompKnowledge techComp
+        {
+            get
+            {
+                return pawn.TryGetComp<CompKnowledge>();
+            }
+        }
 
-		public override void ExposeData()
-		{
-			Scribe_Defs.Look<ResearchProjectDef>(ref project, "project");
-			base.ExposeData();
-		}
+        public override void ExposeData()
+        {
+            Scribe_Defs.Look<ResearchProjectDef>(ref project, "project");
+            base.ExposeData();
+        }
 
         public void Notify_IterationCompleted(Pawn billDoer, Bill_Production bill)
         {
@@ -44,5 +44,5 @@ namespace HumanResources
                 }
             }
         }
-	}
+    }
 }

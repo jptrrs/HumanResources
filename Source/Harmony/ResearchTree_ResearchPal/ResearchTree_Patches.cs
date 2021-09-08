@@ -186,7 +186,7 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "HandleDragging", new Type[] { typeof(bool) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "LeftClick"),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));              
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
@@ -438,7 +438,7 @@ namespace HumanResources
             }
             return false;
         }
-        
+
         public static bool EdgeColor_Prefix(object __instance, ref Color __result)
         {
             if (HighlightedProxy(__instance))
@@ -481,7 +481,7 @@ namespace HumanResources
             __result = text.ToString();
             return false;
         }
-       
+
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
 
         public static void MainTabWindow_SetRects_Postfix(object __instance)
@@ -507,7 +507,7 @@ namespace HumanResources
 
         public static void Node_SetRects_Postfix(object __instance)
         {
-            if (nodeSizeHacked) 
+            if (nodeSizeHacked)
             {
                 NodeSizeInfo.SetValue(__instance, newNodeSize);
                 Vector2 rightedge = (Vector2)_rightInfo.GetValue(__instance);
@@ -753,7 +753,7 @@ namespace HumanResources
 
         #region VinaLx.ResearchPalForked adaptation
 
-        public static bool 
+        public static bool
             AltRPal = false,
             expertiseDisplayed = false;
 
@@ -817,7 +817,7 @@ namespace HumanResources
 
         public static bool Highlighted() { throw stubMsg; }
 
-        public static void HighlightedProxy(object node, bool setting, int reason = 7 )
+        public static void HighlightedProxy(object node, bool setting, int reason = 7)
         {
             //Set
             if (AltRPal) HighlightInfo.Invoke(node, new object[] { reason });

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using HarmonyLib;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace HumanResources
@@ -18,14 +16,14 @@ namespace HumanResources
 
         //tracking techology bases
         public IEnumerable<ResearchProjectDef> scenarioTechs, factionTechs;
-        
+
         //tracking weapons
         public List<ThingDef> weapons = new List<ThingDef>();
         public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
 
         //reflection info
-        private static FieldInfo 
+        private static FieldInfo
             ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef"),
             ScenPartResearchDefInfo = AccessTools.Field(typeof(ScenPart_StartingResearch), "project");
 

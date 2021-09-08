@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HarmonyLib;
 using RimWorld;
-using Verse;
-using HarmonyLib;
-using System.Reflection;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using UnityEngine;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using UnityEngine;
+using Verse;
 
 namespace HumanResources
 {
     using static ModBaseHumanResources;
-    using static TechTracker;
-    using static ResearchTreeHelper;
     using static ResearchTree_Patches;
+    using static ResearchTreeHelper;
+    using static TechTracker;
 
     public static class Extension_Research
     {
@@ -67,7 +67,7 @@ namespace HumanResources
             }
         }
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
-        { 
+        {
             get
             {
                 float delta = 1 - Find.Storyteller.difficulty.researchSpeedFactor;
@@ -88,7 +88,7 @@ namespace HumanResources
             get
             {
                 float baseValue = 1.1f;
-                return StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
+                return StudySpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
 
@@ -234,7 +234,7 @@ namespace HumanResources
                     bool check = false;
                     try { check = skill.Criteria(thing); } catch { }
                     SetSkillRelevance(skill, check);
-                    found |= check; 
+                    found |= check;
                 }
                 //measures for weapons
                 if (thing.IsWeapon) tech.RegisterWeapon(thing);
@@ -408,8 +408,8 @@ namespace HumanResources
         }
         private static float StuffMarketValueFactor(this ResearchProjectDef tech)
         {
-			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
-		}
+            return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+        }
 
         #endregion
 
@@ -669,7 +669,7 @@ namespace HumanResources
         {
             return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.physical;
         }
-        
+
         public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
         {
             return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.digital;

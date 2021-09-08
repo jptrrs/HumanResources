@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -259,7 +259,7 @@ namespace HumanResources
             {
                 StringBuilder stringBuilder = new StringBuilder();
                 string factionName = faction.label.ToLower() ?? pawn.Possessive().ToLower() + faction;
-                if (TechPoolIncludesStarting) 
+                if (TechPoolIncludesStarting)
                 {
                     stringBuilder.Append($"default for {factionName}");
                 }
@@ -275,13 +275,13 @@ namespace HumanResources
                 {
                     stringBuilder.AppendWithComma($"{childhoodLevel.ToString().ToLower()} childhood & {techLevel.ToString().ToLower()} background");
                 }
-                Log.Message($"... Including technologies from: "+stringBuilder.ToString()+ ".");
+                Log.Message($"... Including technologies from: " + stringBuilder.ToString() + ".");
                 stringBuilder.Clear();
                 string guruText = guru ? " (allowing advanced knowledge)" : "";
                 stringBuilder.Append($"... As {pawn.ageTracker.CurLifeStage.label}, {pawn.ProSubj()} gets {slots} slots. {pawn.Possessive().CapitalizeFirst()} highest relevant skills are {highestSkill.label}{guruText} & {secondSkill.label}.");
                 Log.Message(stringBuilder.ToString());
             }
-            
+
             //4. Finally, Distribute knowledge
             bool strict = false;
             bool useChildhood = childhoodSkill != null && TechPoolIncludesBackground && SkillIsRelevant(childhoodSkill, childhoodLevel) && slots > 1;

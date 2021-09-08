@@ -80,11 +80,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\References\RimWorld 1.1\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JPTools">
@@ -359,7 +359,7 @@
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
-    <None Include="Graphic\ExpertiseNode.cs" />
+    <Compile Include="Graphic\ExpertiseNode.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
@@ -452,7 +452,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>

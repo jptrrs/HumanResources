@@ -10,7 +10,7 @@ namespace HumanResources
         private static Thing last;
         public static void Postfix(Thing item, IThingHolder ___owner)
         {
-            if (item != last &&  ___owner is Building_BookStore bookStore)
+            if (item != last && ___owner is Building_BookStore bookStore)
             {
                 bookStore.CheckBookOut(item);
                 last = item;

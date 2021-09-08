@@ -96,7 +96,7 @@ namespace HumanResources
             bool hold = leased && !misplaced;
             //Log.Message($"checking book out: {(leased ? "leased," : "")} {(misplaced? "misplaced,":"")} => {(release? "release," : "no release")} {(hold? "hold":"eject")}");
             if (release)
-            {   
+            {
                 unlocked.libraryFreeSpace++;
                 borrowed.Remove(book);
             }
@@ -204,7 +204,7 @@ namespace HumanResources
             {
                 book.TryGetTech()?.Unlock(this, true);
             }
-             this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
+            this.TryGetComp<CompStorageGraphic>().UpdateGraphics();
             base.SpawnSetup(map, respawningAfterLoad);
         }
 

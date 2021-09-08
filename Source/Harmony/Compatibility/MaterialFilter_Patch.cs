@@ -16,11 +16,11 @@ namespace HumanResources
 
         public static bool CreateSpecialThingFilterDef_Prefix(StuffCategoryDef stuffToFilter)
         {
-            if (stuffToFilter == TechDefOf.Neolithic || 
-                stuffToFilter == TechDefOf.Medieval || 
-                stuffToFilter == TechDefOf.Industrial || 
-                stuffToFilter == TechDefOf.Spacer || 
-                stuffToFilter == TechDefOf.Ultra || 
+            if (stuffToFilter == TechDefOf.Neolithic ||
+                stuffToFilter == TechDefOf.Medieval ||
+                stuffToFilter == TechDefOf.Industrial ||
+                stuffToFilter == TechDefOf.Spacer ||
+                stuffToFilter == TechDefOf.Ultra ||
                 stuffToFilter == TechDefOf.Archotech
                 )
             {

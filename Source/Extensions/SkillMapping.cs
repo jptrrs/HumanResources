@@ -17,7 +17,7 @@ namespace HumanResources
             AnimalHints = new List<string>() { "animal" },
             CraftingHints = new List<string>() { "tool", "armor", "armour", "cloth" },
             IntellectualHints = new List<string>() { "manage" },
-            MiningHints = new List<string>() { "scanner", "explosive","terraform" },
+            MiningHints = new List<string>() { "scanner", "explosive", "terraform" },
             MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
             PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" };
 

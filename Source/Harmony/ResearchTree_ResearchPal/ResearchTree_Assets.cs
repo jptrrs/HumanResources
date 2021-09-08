@@ -1,9 +1,8 @@
 ﻿using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
-using RimWorld;
 using Verse;
 
 namespace HumanResources
@@ -11,14 +10,14 @@ namespace HumanResources
     [StaticConstructorOnStartup]
     public static class ResearchTree_Assets
     {
-        private static Type 
+        private static Type
             AssetsType = ResearchTree_Patches.AssetsType(),
             LinesType = ResearchTree_Patches.LinesType();
-        public static object Assets; 
-        public static Dictionary<TechLevel, Color> 
-            ColorCompleted = (Dictionary<TechLevel, Color>) AccessTools.Field(AssetsType, "ColorCompleted").GetValue(Assets),
+        public static object Assets;
+        public static Dictionary<TechLevel, Color>
+            ColorCompleted = (Dictionary<TechLevel, Color>)AccessTools.Field(AssetsType, "ColorCompleted").GetValue(Assets),
             ColorAvailable = (Dictionary<TechLevel, Color>)AccessTools.Field(AssetsType, "ColorAvailable").GetValue(Assets),
-            ColorUnavailable = (Dictionary<TechLevel, Color>) AccessTools.Field(AssetsType, "ColorUnavailable").GetValue(Assets);
+            ColorUnavailable = (Dictionary<TechLevel, Color>)AccessTools.Field(AssetsType, "ColorUnavailable").GetValue(Assets);
         public static Texture2D
             Button = (Texture2D)AccessTools.Field(AssetsType, "Button").GetValue(Assets),
             ButtonActive = (Texture2D)AccessTools.Field(AssetsType, "ButtonActive").GetValue(Assets),
@@ -28,4 +27,4 @@ namespace HumanResources
             EW = (Texture2D)AccessTools.Field(LinesType, "EW").GetValue(Assets);
     }
 }
-        
+

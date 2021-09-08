@@ -79,7 +79,7 @@ namespace HumanResources
 
         protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
         {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();  
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
             IEnumerable<ThingDef> known = techComp.knownWeapons;
             IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
             IEnumerable<ThingDef> allowed = unlocked.weapons.Concat(craftable);

@@ -1,17 +1,17 @@
-﻿using RimWorld;
-using Verse;
-using UnityEngine;
+﻿using HarmonyLib;
+using RimWorld;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using HarmonyLib;
+using UnityEngine;
+using Verse;
 
 namespace HumanResources
 {
     public class ITab_PawnKnowledge : ITab
     {
-        private const int 
+        private const int
             iconSize = 29,
             rowHeight = 32;
         private const float
@@ -41,7 +41,7 @@ namespace HumanResources
             bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
             return commom & melee & ranged;
         };
-        private static FieldInfo SkillBarFillTexInfo = AccessTools.Field(typeof(SkillUI),"SkillBarFillTex");
+        private static FieldInfo SkillBarFillTexInfo = AccessTools.Field(typeof(SkillUI), "SkillBarFillTex");
         private Vector2 viewSize;
         public ITab_PawnKnowledge()
         {
@@ -289,7 +289,7 @@ namespace HumanResources
             next = DrawToggle(next, rightBaselineY, "ShowRanged", ref rangedWeapons, ContentFinder<Texture2D>.Get("UI/ranged", true), null, true);
             next = DrawToggle(next, rightBaselineY, "ShowMelee", ref meleeWeapons, ContentFinder<Texture2D>.Get("UI/melee", true), null, true);
         }
-        
+
         private void DrawRow(ThingDef thing, int row, float width, int col)
         {
             int shift = fullWeapons ? margin : 0;

@@ -1,14 +1,12 @@
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
 
 namespace HumanResources
 {
-    using static ModBaseHumanResources;
-
     public static class Extensions
-	{
+    {
         //Bill
         public static bool Allows(this Bill bill, IEnumerable<ResearchProjectDef> homework)
         {
@@ -69,4 +67,4 @@ namespace HumanResources
         //    return default(TKey);
         //}
     }
-} 
+}

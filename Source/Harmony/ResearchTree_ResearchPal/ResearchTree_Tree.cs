@@ -1,10 +1,7 @@
 ﻿using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
-using RimWorld;
-using Verse;
 
 namespace HumanResources
 {
@@ -15,4 +12,4 @@ namespace HumanResources
         public static List<TechLevel> RelevantTechLevels = (List<TechLevel>)AccessTools.Property(AssetsType, "RelevantTechLevels").GetValue(Assets);
     }
 }
-        
+

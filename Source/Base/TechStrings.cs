@@ -9,7 +9,7 @@ namespace HumanResources
         public static string
             headerWrite = TechWorkDefOf.DocumentTech.verb.CapitalizeFirst(),
             headerRead = TechWorkDefOf.LearnTech.verb.CapitalizeFirst(),
-            headerResearch =  WorkTypeDefOf.Research.labelShort.CapitalizeFirst(),
+            headerResearch = WorkTypeDefOf.Research.labelShort.CapitalizeFirst(),
             gerundResearch = WorkTypeDefOf.Research.gerundLabel,
             bookTraderTag = "TechBook";
 

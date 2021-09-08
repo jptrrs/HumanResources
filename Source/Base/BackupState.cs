@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HumanResources
+﻿namespace HumanResources
 {
     public enum BackupState { digital, physical, both };
 }

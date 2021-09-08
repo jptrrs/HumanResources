@@ -1,62 +1,62 @@
-﻿using System.Collections.Generic;
-using Verse;
+﻿using HarmonyLib;
 using RimWorld;
-using System.Linq;
-using Verse.AI;
-using System.Reflection;
-using HarmonyLib;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Verse;
+using Verse.AI;
 
 namespace HumanResources
 {
-	public class JobDriver_DocumentTech : JobDriver_Knowledge
-	{
+    public class JobDriver_DocumentTech : JobDriver_Knowledge
+    {
         protected ThingDef techStuff;
 
-		public override void ExposeData()
-		{
-			Scribe_Defs.Look<ThingDef>(ref techStuff, "techStuff");
-			base.ExposeData();
-		}
+        public override void ExposeData()
+        {
+            Scribe_Defs.Look<ThingDef>(ref techStuff, "techStuff");
+            base.ExposeData();
+        }
 
-		public override bool TryMakePreToilReservations(bool errorOnFailed)
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
             if (project == null) return false;
-			techStuff = TechTracker.FindTech(project).Stuff;
-			return base.TryMakePreToilReservations(errorOnFailed);
-		}
+            techStuff = TechTracker.FindTech(project).Stuff;
+            return base.TryMakePreToilReservations(errorOnFailed);
+        }
 
-		public override IEnumerable<Toil> MakeNewToils()
-		{
-			AddEndCondition(delegate
-			{
-				Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
-				if (thing is Building && !thing.Spawned)
-				{
-					return JobCondition.Incompletable;
-				}
-				return JobCondition.Ongoing;
-			});
-			this.FailOnBurningImmobile(TargetIndex.A);
-			this.FailOn(delegate ()
-			{
-				IBillGiver billGiver = job.GetTarget(TargetIndex.A).Thing as IBillGiver;
-				if (billGiver != null)
-				{
-					if (job.bill.DeletedOrDereferenced) return true;
-					if (!billGiver.CurrentlyUsableForBills()) return true;
-					if (project == null)
-					{
-						Log.Error("[HumanResources] Tried to document a null project.");
-						TryMakePreToilReservations(true);
-						return true;
-					}
-					if (!techComp.homework.Contains(project)) return true;
-				}
-				return false;
-			});
-			Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
+        public override IEnumerable<Toil> MakeNewToils()
+        {
+            AddEndCondition(delegate
+            {
+                Thing thing = GetActor().jobs.curJob.GetTarget(TargetIndex.A).Thing;
+                if (thing is Building && !thing.Spawned)
+                {
+                    return JobCondition.Incompletable;
+                }
+                return JobCondition.Ongoing;
+            });
+            this.FailOnBurningImmobile(TargetIndex.A);
+            this.FailOn(delegate ()
+            {
+                IBillGiver billGiver = job.GetTarget(TargetIndex.A).Thing as IBillGiver;
+                if (billGiver != null)
+                {
+                    if (job.bill.DeletedOrDereferenced) return true;
+                    if (!billGiver.CurrentlyUsableForBills()) return true;
+                    if (project == null)
+                    {
+                        Log.Error("[HumanResources] Tried to document a null project.");
+                        TryMakePreToilReservations(true);
+                        return true;
+                    }
+                    if (!techComp.homework.Contains(project)) return true;
+                }
+                return false;
+            });
+            Toil gotoBillGiver = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell);
             yield return new Toil
             {
                 initAction = delegate ()
@@ -72,23 +72,23 @@ namespace HumanResources
                 }
             };
             yield return Toils_Jump.JumpIf(gotoBillGiver, () => job.GetTargetQueue(TargetIndex.B).NullOrEmpty<LocalTargetInfo>());
-			Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
-			yield return extract;
-			Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
-			yield return getToHaulTarget;
-			yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
-			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell).FailOnDestroyedOrNull(TargetIndex.B);
-			Toil findPlaceTarget = Toils_JobTransforms.SetTargetToIngredientPlaceCell(TargetIndex.A, TargetIndex.B, TargetIndex.C);
-			yield return findPlaceTarget;
-			yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.C, findPlaceTarget, false, false);
-			yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
-			extract = null;
-			getToHaulTarget = null;
-			findPlaceTarget = null;
-			yield return gotoBillGiver;
+            Toil extract = Toils_JobTransforms.ExtractNextTargetFromQueue(TargetIndex.B, true);
+            yield return extract;
+            Toil getToHaulTarget = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.B).FailOnSomeonePhysicallyInteracting(TargetIndex.B);
+            yield return getToHaulTarget;
+            yield return Toils_Haul.StartCarryThing(TargetIndex.B, true, false, true);
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.InteractionCell).FailOnDestroyedOrNull(TargetIndex.B);
+            Toil findPlaceTarget = Toils_JobTransforms.SetTargetToIngredientPlaceCell(TargetIndex.A, TargetIndex.B, TargetIndex.C);
+            yield return findPlaceTarget;
+            yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.C, findPlaceTarget, false, false);
+            yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);
+            extract = null;
+            getToHaulTarget = null;
+            findPlaceTarget = null;
+            yield return gotoBillGiver;
             yield return MakeUnfinishedThingIfNeeded();
             yield return Toils_Recipe.DoRecipeWork().FailOnDespawnedNullOrForbiddenPlacedThings().FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
-			yield return FinishRecipeAndStartStoringProduct();
+            yield return FinishRecipeAndStartStoringProduct();
             if (!job.RecipeDef.products.NullOrEmpty<ThingDefCountClass>() || !job.RecipeDef.specialProducts.NullOrEmpty<SpecialProductType>())
             {
                 yield return Toils_Reserve.Reserve(TargetIndex.B);
@@ -134,7 +134,7 @@ namespace HumanResources
                 };
             }
             yield break;
-		}
+        }
 
         private Toil FinishRecipeAndStartStoringProduct()
         {
@@ -224,35 +224,35 @@ namespace HumanResources
 
         private Toil MakeUnfinishedThingIfNeeded()
         {
-			Toil toil = new Toil();
-			toil.initAction = delegate ()
-			{
-				Pawn actor = toil.actor;
-				Job curJob = actor.jobs.curJob;
-				if (!curJob.RecipeDef.UsesUnfinishedThing)
-				{
-					return;
-				}
-				if (curJob.GetTarget(TargetIndex.B).Thing != null && curJob.GetTarget(TargetIndex.B).Thing is UnfinishedThing)
-				{
-					return;
-				}
-				UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, techStuff);
-				unfinishedThing.Creator = actor;
-				unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill; // <- when pawn is a prisoner, the recipe doesn't seem to register this.
-				unfinishedThing.ingredients = new List<Thing>
-				{
-					new Thing()
-					{
-						def = unfinishedThing.Stuff,
-						stackCount = 0
-					}
-				};
-				GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
-				curJob.SetTarget(TargetIndex.B, unfinishedThing);
-				actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
-			};
-			return toil;
-		}
-	}
+            Toil toil = new Toil();
+            toil.initAction = delegate ()
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.jobs.curJob;
+                if (!curJob.RecipeDef.UsesUnfinishedThing)
+                {
+                    return;
+                }
+                if (curJob.GetTarget(TargetIndex.B).Thing != null && curJob.GetTarget(TargetIndex.B).Thing is UnfinishedThing)
+                {
+                    return;
+                }
+                UnfinishedThing unfinishedThing = (UnfinishedThing)ThingMaker.MakeThing(curJob.RecipeDef.unfinishedThingDef, techStuff);
+                unfinishedThing.Creator = actor;
+                unfinishedThing.BoundBill = (Bill_ProductionWithUft)curJob.bill; // <- when pawn is a prisoner, the recipe doesn't seem to register this.
+                unfinishedThing.ingredients = new List<Thing>
+                {
+                    new Thing()
+                    {
+                        def = unfinishedThing.Stuff,
+                        stackCount = 0
+                    }
+                };
+                GenSpawn.Spawn(unfinishedThing, curJob.GetTarget(TargetIndex.A).Cell, actor.Map, WipeMode.Vanish);
+                curJob.SetTarget(TargetIndex.B, unfinishedThing);
+                actor.Reserve(unfinishedThing, curJob, 1, -1, null, true);
+            };
+            return toil;
+        }
+    }
 }

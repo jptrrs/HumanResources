@@ -124,7 +124,7 @@ namespace HumanResources
         {
             if (saveCurrent && pawn.equipment?.Primary != null)
             {
-                pawn.CurJob.targetC = new LocalTargetInfo(pawn.equipment.Primary); 
+                pawn.CurJob.targetC = new LocalTargetInfo(pawn.equipment.Primary);
                 pawn.equipment.TryTransferEquipmentToContainer(pawn.equipment.Primary, pawn.inventory.innerContainer);
             }
             ThingWithComps targetThing = (ThingWithComps)job.GetTarget(target).Thing;
@@ -246,7 +246,7 @@ namespace HumanResources
                     {
                         Equip(TargetIndex.B, true);
                     },
-                    defaultCompleteMode = ToilCompleteMode.Instant 
+                    defaultCompleteMode = ToilCompleteMode.Instant
                 };
 
                 yield return Toils_Jump.JumpIfHaveTargetInQueue(TargetIndex.B, extract);

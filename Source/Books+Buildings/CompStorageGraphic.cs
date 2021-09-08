@@ -54,7 +54,7 @@ namespace HumanResources
                     else
                     {
                         cachedGraphic = Props.graphicEmpty.GraphicColoredFor(parent);
-                    }                    
+                    }
                 }
                 return cachedGraphic;
             }

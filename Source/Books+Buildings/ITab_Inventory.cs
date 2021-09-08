@@ -1,9 +1,9 @@
-﻿using RimWorld.Planet;
+﻿using RimWorld;
+using RimWorld.Planet;
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using RimWorld;
 
 namespace HumanResources
 {
@@ -13,7 +13,7 @@ namespace HumanResources
     {
         public static readonly Texture2D Drop = ContentFinder<Texture2D>.Get("UI/Buttons/Drop", true);
     }
-    
+
     public class ITab_Inventory : ITab
     {
         private Vector2 scrollPosition = Vector2.zero;
@@ -63,7 +63,7 @@ namespace HumanResources
                 return selStorage.Spawned && selStorage.Faction == Faction.OfPlayer;
             }
         }
-        
+
         public ITab_Inventory()
         {
             size = new Vector2(460f, 450f);
@@ -121,7 +121,7 @@ namespace HumanResources
             }
             Rect rect4 = rect;
             rect4.xMin = rect4.xMax - 60f;
-            
+
             CaravanThingsTabUtility.DrawMass(thing, rect4);
             rect.width -= 60f;
             if (Mouse.IsOver(rect))
@@ -156,12 +156,12 @@ namespace HumanResources
             TooltipHandler.TipRegion(rect, text2);
             y += 28f;
         }
-        
+
         private void InterfaceDrop(Thing t)
         {
             ThingWithComps thingWithComps = t as ThingWithComps;
             selStorage.TryDrop(t);
         }
-        
+
     }
 }

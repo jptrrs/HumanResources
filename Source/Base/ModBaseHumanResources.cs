@@ -28,7 +28,7 @@ namespace HumanResources
             FullStartupReport,
             IndividualTechsReport;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
-        public static List<ThingDef> 
+        public static List<ThingDef>
             SimpleWeapons = new List<ThingDef>(),
             UniversalCrops = new List<ThingDef>(),
             UniversalWeapons = new List<ThingDef>();
@@ -182,7 +182,7 @@ namespace HumanResources
         }
 
 
-        public override void SceneLoaded (Scene scene)
+        public override void SceneLoaded(Scene scene)
         {
             if (GenScene.InPlayScene) GameJustLoaded = true;
         }
@@ -260,7 +260,7 @@ namespace HumanResources
             }
         }
 
-        public void ResetControl ( SettingHandle hanlde)
+        public void ResetControl(SettingHandle hanlde)
         {
             MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
             ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });

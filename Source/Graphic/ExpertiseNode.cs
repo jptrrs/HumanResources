@@ -1,15 +1,14 @@
 ﻿// ResearchNode.cs
 // Copyright Karel Kroeze, 2020-2020
 
+using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using HarmonyLib;
-using RimWorld;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Verse;
 
 namespace HumanResources
@@ -420,7 +419,7 @@ namespace HumanResources
             }
         }
 
-        public virtual bool Assigned 
+        public virtual bool Assigned
         {
             get
             {
@@ -429,7 +428,7 @@ namespace HumanResources
             }
         }
 
-        public virtual bool Known 
+        public virtual bool Known
         {
             get
             {

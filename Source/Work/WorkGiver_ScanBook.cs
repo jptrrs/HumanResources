@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HarmonyLib;
+using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -12,12 +12,12 @@ namespace HumanResources
     using static ModBaseHumanResources;
 
     class WorkGiver_ScanBook : WorkGiver_Knowledge
-	{
-		public new List<ThingCount> chosenIngThings = new List<ThingCount>();
-		protected static MethodInfo
+    {
+        public new List<ThingCount> chosenIngThings = new List<ThingCount>();
+        protected static MethodInfo
             GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell"),
             BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
-		protected static FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
+        protected static FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
         private static Func<Thing, Bill, List<Thing>> ContainsSelected = (thing, bill) =>
         {
@@ -84,46 +84,46 @@ namespace HumanResources
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-			var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
-			return unlocked.TechsArchived.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
-		}
+            var progress = (Dictionary<ResearchProjectDef, float>)Extension_Research.progressInfo.GetValue(Find.ResearchManager);
+            return unlocked.TechsArchived.Count >= progress.Keys.Where(x => x.IsFinished).EnumerableCount();
+        }
 
-		protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
-		{
-			IntRange range = (IntRange)rangeInfo.GetValue(this);
-			if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
-			{
-				bill.lastIngredientSearchFailTicks = 0;
-				if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
-				{
-					Job result = TryStartNewDoBillJob(pawn, bill, giver);
-					chosenIngThings.Clear();
-					return result;
-				}
-			}
-			chosenIngThings.Clear();
-			return null;
-		}
+        protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
+        {
+            IntRange range = (IntRange)rangeInfo.GetValue(this);
+            if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
+            {
+                bill.lastIngredientSearchFailTicks = 0;
+                if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
+                {
+                    Job result = TryStartNewDoBillJob(pawn, bill, giver);
+                    chosenIngThings.Clear();
+                    return result;
+                }
+            }
+            chosenIngThings.Clear();
+            return null;
+        }
 
-		protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
-		{
-			Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
-			if (job != null)
-			{
-				return job;
-			}
-			Job job2 = new Job(TechJobDefOf.ScanBook, (Thing)giver);
-			job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
-			job2.countQueue = new List<int>(chosenIngThings.Count);
-			for (int i = 0; i < chosenIngThings.Count; i++)
-			{
-				job2.targetQueueB.Add(chosenIngThings[i].Thing);
-				job2.countQueue.Add(chosenIngThings[i].Count);
-			}
-			job2.haulMode = HaulMode.ToCellNonStorage;
-			job2.bill = bill;
-			return job2;
-		}
+        protected virtual Job TryStartNewDoBillJob(Pawn pawn, Bill bill, IBillGiver giver)
+        {
+            Job job = WorkGiverUtility.HaulStuffOffBillGiverJob(pawn, giver, null);
+            if (job != null)
+            {
+                return job;
+            }
+            Job job2 = new Job(TechJobDefOf.ScanBook, (Thing)giver);
+            job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
+            job2.countQueue = new List<int>(chosenIngThings.Count);
+            for (int i = 0; i < chosenIngThings.Count; i++)
+            {
+                job2.targetQueueB.Add(chosenIngThings[i].Thing);
+                job2.countQueue.Add(chosenIngThings[i].Count);
+            }
+            job2.haulMode = HaulMode.ToCellNonStorage;
+            job2.bill = bill;
+            return job2;
+        }
 
         private static Thing FindNearest(List<Thing> availableThings, IntVec3 rootCell)
         {
@@ -187,7 +187,7 @@ namespace HumanResources
                     {
                         newRelevantThings.Add(thing);
                     }
-                  }
+                }
                 List<Thing> buildings = r.ListerThings.ThingsMatching(ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial));
                 for (int i = 0; i < buildings.Count; i++)
                 {
@@ -224,9 +224,9 @@ namespace HumanResources
             {
                 return chosenIngThings.Any();
             }
-			if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksToScan".Translate(pawn), null);
-			if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
-			return false;
-		}
-	}
+            if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksToScan".Translate(pawn), null);
+            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            return false;
+        }
+    }
 }
