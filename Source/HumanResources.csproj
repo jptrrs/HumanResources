@@ -42,7 +42,7 @@
     <NoWarn>
     </NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
-    <RimWorldPath>..\..\References\RimWorld 1.3\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <RimWorldPath>..\..\References\RimWorld 1.3\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   
@@ -55,7 +55,7 @@
     <ErrorReport>none</ErrorReport>
     <WarningLevel>0</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <RimWorldPath>..\..\References\RimWorld 1.3\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <RimWorldPath>..\..\References\RimWorld 1.3\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   <PropertyGroup>
@@ -72,7 +72,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RimWorldPath>..\..\References\RimWorld 1.1\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <RimWorldPath>..\..\References\RimWorld 1.1\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   
@@ -84,7 +84,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
-    <RimWorldPath>..\..\References\RimWorld 1.2\publicized_assemblies\Assembly-CSharp_publicized.dll</RimWorldPath>
+    <RimWorldPath>..\..\References\RimWorld 1.2\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.2\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   
@@ -253,10 +253,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
+  <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
     <ModFolder>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
   </PropertyGroup>
-  
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>
       <Assembly Include="..\*.*\**\*.dll" />
