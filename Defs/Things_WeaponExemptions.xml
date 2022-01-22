@@ -14,12 +14,14 @@
     </weaponTags>
   </ThingDef>
 
-  <!--This is just to sort out weapons that should not ever require training-->
+  <!--This is just to sort out weapons that should never require training-->
   <ThingDef>
     <thingClass>Thing</thingClass>
     <defName>WeaponsAlwaysBasic</defName>
     <label>WeaponsAlwaysBasic</label>
     <weaponTags>
+      <li>TurretGun</li>
+      <li>Artillery</li>
       <li>ImprovisedMelee</li>
     </weaponTags>
     <!--These will only be used if RequireTrainingForSingleUseWeapons is unchecked on options-->

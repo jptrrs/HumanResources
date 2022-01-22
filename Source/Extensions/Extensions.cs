@@ -49,6 +49,7 @@ namespace HumanResources
         //ThingDef
         public static bool IsExempted(this ThingDef weapon)
         {
+            if (weapon.NotReallyAWeapon()) return true;
             return !ModBaseHumanResources.RequireTrainingForSingleUseWeapons && !weapon.thingSetMakerTags.NullOrEmpty() && weapon.thingSetMakerTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.thingSetMakerTags.Contains(tag));
         }
 
