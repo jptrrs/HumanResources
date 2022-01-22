@@ -42,7 +42,7 @@
           </value>
         </li>
         <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+          <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
           <value>
             <li>PowerWeapon</li>
           </value>

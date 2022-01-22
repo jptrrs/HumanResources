@@ -15,7 +15,7 @@ namespace HumanResources
             IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>()?.knownWeapons;
             if (knownWeapons != null)
             {
-                IEnumerable<ThingDef> available = unlocked.weapons;
+                IEnumerable<ThingDef> available = unlocked.hardWeapons;
                 IEnumerable<ThingDef> studyMaterial = available.Except(knownWeapons);
                 return !studyMaterial.Any();
             }
@@ -27,7 +27,7 @@ namespace HumanResources
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
             IEnumerable<ThingDef> known = techComp.knownWeapons;
             IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
-            IEnumerable<ThingDef> available = unlocked.weapons.Concat(craftable);
+            IEnumerable<ThingDef> available = unlocked.hardWeapons.Concat(craftable);
             IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
             IEnumerable<ThingDef> feared = techComp.fearedWeapons;
             IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));

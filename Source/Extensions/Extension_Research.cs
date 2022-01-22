@@ -50,10 +50,10 @@ namespace HumanResources
 
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
-            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
+            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag));
             bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
-            bool exempted = x.IsExempted();
-            return !basic && !tool && !exempted;
+            //bool exempted = x.IsExempted();
+            return !basic && !tool /*&& !exempted*/;
         };
         #endregion
 
@@ -236,11 +236,20 @@ namespace HumanResources
                     SetSkillRelevance(skill, check);
                     found |= check;
                 }
-                //measures for weapons
-                if (thing.IsWeapon) tech.RegisterWeapon(thing);
-                if (thing.building != null && thing.building.turretGunDef != null && !FindTechs(thing.building.turretGunDef).Any()) tech.RegisterWeapon(thing);
+                WeaponsRegistration(thing, tech);
             }
             return found;
+        }
+
+        private static void WeaponsRegistration(ThingDef thing, ResearchProjectDef tech)
+        {
+            if (thing.IsWeapon) tech.RegisterWeapon(thing);
+            ThingDef turretGunDef = thing.building?.turretGunDef;
+            if (turretGunDef != null && !FindTechs(turretGunDef).Any())
+            {
+                tech.RegisterWeapon(turretGunDef);
+                MountedWeapons.AddDistinct(turretGunDef);
+            }
         }
 
         public static bool Matches(this ResearchProjectDef tech, string query)
@@ -370,6 +379,8 @@ namespace HumanResources
             report.Clear();
             if (matchesCount > 0) { report.Append($"keyword{(matchesCount > 1 ? "s" : "")}: {keywords.ToStringSafeEnumerable()}"); }
             if (thingsCount > 0) { report.AppendWithComma(thingsCount + " thing" + (thingsCount > 1 ? "s" : "")); }
+            int weaponsCount = tech.UnlockedWeapons().Count;
+            if (weaponsCount > 0) { report.AppendWithComma($"{weaponsCount} weapon{(matchesCount > 1 ? "s" : "")} ({tech.UnlockedWeapons().ToStringSafeEnumerable()})"); }
             if (recipesCount > 0)
             {
                 report.AppendWithComma($"{recipesCount} recipe{(recipesCount > 1 ? "s" : "")} ");
@@ -401,10 +412,10 @@ namespace HumanResources
 
         private static void RegisterWeapon(this ResearchProjectDef tech, ThingDef weapon)
         {
-            if (ShouldLockWeapon(weapon))
-            {
+            //if (ShouldLockWeapon(weapon))
+            //{
                 FindTech(tech).Weapons.Add(weapon);
-            }
+            //}
         }
         private static float StuffMarketValueFactor(this ResearchProjectDef tech)
         {

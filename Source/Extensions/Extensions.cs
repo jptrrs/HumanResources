@@ -47,15 +47,24 @@ namespace HumanResources
         }
 
         //ThingDef
-        public static bool IsExempted(this ThingDef weapon)
+        public static bool IsEasy(this ThingDef weapon)
         {
-            if (weapon.NotReallyAWeapon()) return true;
-            return !ModBaseHumanResources.RequireTrainingForSingleUseWeapons && !weapon.thingSetMakerTags.NullOrEmpty() && weapon.thingSetMakerTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.thingSetMakerTags.Contains(tag));
+            return !weapon.weaponTags.NullOrEmpty() && weapon.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag));
         }
 
-        public static bool NotReallyAWeapon(this ThingDef weapon)
+        public static bool IsSingleUseWeapon(this ThingDef weapon)
         {
-            return weapon.weaponTags.NullOrEmpty() || weapon.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
+            return !weapon.thingSetMakerTags.NullOrEmpty() && weapon.thingSetMakerTags.Any(tag => TechDefOf.EasyWeapons.thingSetMakerTags.Contains(tag));
+        }
+
+        public static bool ExemptIfSingleUse(this ThingDef weapon)
+        {
+            return !ModBaseHumanResources.RequireTrainingForSingleUseWeapons && weapon.IsSingleUseWeapon();
+        }
+
+        public static bool NotThatHard(this ThingDef weapon)
+        {
+            return weapon.ExemptIfSingleUse() || weapon.IsEasy();
         }
 
         ////Dictionary

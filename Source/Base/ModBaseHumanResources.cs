@@ -30,6 +30,7 @@ namespace HumanResources
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef>
             SimpleWeapons = new List<ThingDef>(),
+            MountedWeapons = new List<ThingDef>(),
             UniversalCrops = new List<ThingDef>(),
             UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
@@ -99,10 +100,10 @@ namespace HumanResources
             };
 
             //c. Also removing atipical weapons
-            List<string> ForbiddenWeaponTags = TechDefOf.WeaponsNotBasic.weaponTags;
-            UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
+            List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
+            UniversalWeapons.RemoveAll(x => SplitSimpleWeaponsAndTurrets(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
-            garbage.Add(TechDefOf.WeaponsNotBasic);
+            garbage.Add(TechDefOf.HardWeapons);
 
             //d. Classifying pawn backstories
             PawnBackgroundUtility.BuildCache();
@@ -117,6 +118,7 @@ namespace HumanResources
                 Log.Message($"[HumanResources] Basic weapons: {UniversalWeapons.ToStringSafeEnumerable()}");
                 Log.Message($"[HumanResources] Basic weapons that require training: {SimpleWeapons.ToStringSafeEnumerable()}");
                 Log.Warning($"[HumanResources] Basic weapons tags: {SimpleWeapons.Where(x => !x.weaponTags.NullOrEmpty()).SelectMany(x => x.weaponTags).Distinct().ToStringSafeEnumerable()}");
+                Log.Message($"[HumanResources] Mounted weapons: {MountedWeapons.ToStringSafeEnumerable()}");
                 if (FullStartupReport)
                 {
                     Log.Warning("[HumanResources] Backstories classified by TechLevel:");
@@ -266,27 +268,31 @@ namespace HumanResources
             ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
         }
 
-        private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
+        private static bool SplitSimpleWeaponsAndTurrets(ThingDef t, List<string> forbiddenWeaponTags)
         {
-            bool flag = false;
-            if (!t.IsExempted())
+            if (t.NotThatHard()) return false;
+            bool tagged = !t.weaponTags.NullOrEmpty();
+            if (tagged && t.weaponTags.Contains("TurretGun"))
             {
-                foreach (string tag in forbiddenWeaponTags)
-                {
-                    if (!t.weaponTags.NullOrEmpty() && t.weaponTags.Any(x => x.Contains(tag)))
-                    {
-                        flag = true;
-                        SimpleWeapons.Add(t);
-                        break;
-                    }
-                }
-                if (!flag && t.IsRangedWeapon && t.defName.ToLower().Contains("gun"))
+                return true;
+            }
+            bool flag = false;
+            foreach (string tag in forbiddenWeaponTags)
+            {
+                if (tagged && t.weaponTags.Any(x => x.Contains(tag)))
                 {
                     flag = true;
                     SimpleWeapons.Add(t);
+                    break;
                 }
             }
-            return flag;
+            if (flag) return true;
+            if (t.ExemptIfSingleUse() || (t.IsRangedWeapon && t.defName.ToLower().Contains("gun")))
+            {
+                SimpleWeapons.Add(t);
+                return true;
+            }
+            return false;
         }
     }
 }

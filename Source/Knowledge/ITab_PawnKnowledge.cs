@@ -36,7 +36,7 @@ namespace HumanResources
         private static Dictionary<TechLevel, bool> TechLevelVisibility = new Dictionary<TechLevel, bool>();
         private static Func<ThingDef, bool> weaponsFilter = (x) =>
         {
-            bool commom = commonWeapons ? true : !x.NotReallyAWeapon();
+            bool commom = commonWeapons ? true : !x.NotThatHard();
             bool melee = meleeWeapons ? true : !x.IsMeleeWeapon;
             bool ranged = rangedWeapons ? true : !x.IsRangedWeapon;
             return commom & melee & ranged;

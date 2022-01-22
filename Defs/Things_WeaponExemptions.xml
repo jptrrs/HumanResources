@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
    
-  <!--This is just to sort out weapons that aren't unlocked by research but should require training-->
+  <!--This is just to sort out weapons that aren't unlocked by research but should require training nonetheless-->
   <ThingDef>
     <thingClass>Thing</thingClass>
-    <defName>WeaponsNotBasic</defName>
-    <label>WeaponsNotBasic</label>
+    <defName>HardWeapons</defName>
+    <label>HardWeapons</label>
     <weaponTags>
       <li>Gun</li>
       <li>Bladelink</li>
@@ -14,13 +14,12 @@
     </weaponTags>
   </ThingDef>
 
-  <!--This is just to sort out weapons that should never require training-->
+  <!--This is just to sort out weapons that should never require training, even if unlocked by research-->
   <ThingDef>
     <thingClass>Thing</thingClass>
-    <defName>WeaponsAlwaysBasic</defName>
-    <label>WeaponsAlwaysBasic</label>
+    <defName>EasyWeapons</defName>
+    <label>EasyWeapons</label>
     <weaponTags>
-      <li>TurretGun</li>
       <li>Artillery</li>
       <li>ImprovisedMelee</li>
     </weaponTags>

@@ -12,7 +12,12 @@ namespace HumanResources
         public static bool Prefix(Job job, Pawn ___pawn)
         {
             if (___pawn.RaceProps.Humanlike && ___pawn.Faction != null && ___pawn.Faction.IsPlayer && ___pawn.TryGetComp<CompKnowledge>() != null && job.def == JobDefOf.Equip) return HarmonyPatches.CheckKnownWeapons(___pawn, job.targetA.Thing);
-            else return true;
+            //else return true;
+            else
+            {
+                if (job.def == JobDefOf.Repair) Log.Warning("Uncovered repair!");
+            }
+            return true;
         }
     }
 }

@@ -7,7 +7,7 @@
       <li>vanya.polarisbloc.mechenemy</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
       <value>
         <li>MTVMelee</li>
         <li>MTVCARifle</li>
@@ -33,7 +33,7 @@
       <li>vanya.polarisbloc.securityforce</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
       <value>
         <li>Polarisbloc_CaniculaRifle</li>
         <li>Polarisbloc_CaniculaSniper</li>

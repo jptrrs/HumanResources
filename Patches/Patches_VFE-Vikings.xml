@@ -6,7 +6,7 @@
       <li>oskarpotocki.vfe.vikings</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
       <value>
         <li>VikingMeleeBasic</li>
         <li>CryptoWeaponAdvanced</li>

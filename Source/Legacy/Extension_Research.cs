@@ -52,7 +52,7 @@ namespace HumanResources
 
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
-            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.WeaponsAlwaysBasic.weaponTags.Contains(tag));
+            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag));
             bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
             bool exempted = x.IsExempted();
             return !basic && !tool && !exempted;

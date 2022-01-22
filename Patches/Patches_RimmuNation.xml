@@ -6,7 +6,7 @@
       <li>cp.rimmunation.weapons</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName = "WeaponsNotBasic"]/weaponTags</xpath>
+      <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
       <value>
         <li>RN_HK417HRT</li>
         <li>RN_Shotgun</li>

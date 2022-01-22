@@ -7,7 +7,7 @@
 			<li>thiritevhcompilationhnyaamz899.babyhandhchildren</li>
 		</mods>
 		<match Class="PatchOperationAdd">
-			<xpath>Defs/ThingDef[defName = "WeaponsAlwaysBasic"]/weaponTags</xpath>
+			<xpath>Defs/ThingDef[defName = "EasyWeapons"]/weaponTags</xpath>
 			<value>
 				<li>Toy</li>
 			</value>
@@ -20,7 +20,7 @@
 			<li>babies.and.children</li>
 		</mods>
 		<match Class="PatchOperationAdd">
-			<xpath>Defs/ThingDef[defName = "WeaponsAlwaysBasic"]/thingSetMakerTags</xpath>
+			<xpath>Defs/ThingDef[defName = "EasyWeapons"]/thingSetMakerTags</xpath>
 			<value>
 				<li>Toy</li>
 			</value>

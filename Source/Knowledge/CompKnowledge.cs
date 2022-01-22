@@ -64,7 +64,7 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(techLevelWeapons).ToList();
+        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(unlocked.easyWeapons).Concat(techLevelWeapons).ToList();
 
         public IEnumerable<ThingDef> techLevelWeapons => SimpleWeapons.Where(x => x.techLevel <= startingTechLevel);
 

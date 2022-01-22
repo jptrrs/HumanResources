@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +22,9 @@ namespace HumanResources
         public List<ThingDef> weapons = new List<ThingDef>();
         public bool knowAllStartingWeapons;
         public IEnumerable<ThingDef> startingWeapons;
+
+        public IEnumerable<ThingDef> hardWeapons => weapons.Where(x => !x.NotThatHard());
+        public IEnumerable<ThingDef> easyWeapons => weapons.Where(x => x.NotThatHard());
 
         //reflection info
         private static FieldInfo
@@ -99,6 +103,5 @@ namespace HumanResources
         {
             weapons.AddRange(newWeapons.Except(weapons).Where(x => x.IsWeapon));
         }
-
     }
 }
