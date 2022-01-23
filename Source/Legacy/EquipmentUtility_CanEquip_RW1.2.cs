@@ -6,7 +6,7 @@ using Verse;
 namespace HumanResources
 {
     //Changed in RW 1.3
-    //Checks if pawn knows a weapon before equiping it. (1.2 only)
+    //Checks if the pawn knows a weapon before equiping it. (1.2 only)
     [HarmonyPatch(typeof(EquipmentUtility), "CanEquip_NewTmp", new Type[] { typeof(Thing), typeof(Pawn), typeof(string), typeof(bool) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
     public static class EquipmentUtility_CanEquip_NewTmp
     {
