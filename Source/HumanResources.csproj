@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -29,7 +28,6 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>false</DebugSymbols>
@@ -45,7 +43,6 @@
     <RimWorldPath>..\..\References\RimWorld 1.3\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
-  
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
@@ -61,7 +58,6 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
     <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -75,7 +71,6 @@
     <RimWorldPath>..\..\References\RimWorld 1.1\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.2|AnyCPU'">
     <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -87,7 +82,6 @@
     <RimWorldPath>..\..\References\RimWorld 1.2\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.2\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
-  
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.1.1\lib\net472\0Harmony.dll</HintPath>
@@ -190,7 +184,6 @@
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
-    <Compile Include="Harmony\WorkGiver_Repair_HasJobOnThing.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
     <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
@@ -222,7 +215,7 @@
     <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
-    <Compile Include="Harmony\Pawn_JobTracker_TryTakeOrderedJob.cs" />
+    <Compile Include="Harmony\RepairUtility_PawnCanRepairEver.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
@@ -237,6 +230,7 @@
     <Compile Include="Legacy\SimpleSidearms_Patches.cs" />
     <Compile Include="Legacy\StockGenerator_TechBooks.cs" />
     <Compile Include="Legacy\WorkGiver_Knowledge.cs" />
+    <Compile Include="Legacy\WorkGiver_Repair_HasJobOnThing.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.1'">
     <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.1.cs" />
@@ -252,7 +246,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
     <ModFolder>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
@@ -286,5 +279,4 @@
     <Copy SourceFiles="..\LICENSE" DestinationFolder="$(ModFolder)\$(SolutionName)\" SkipUnchangedFiles="true" />
     <Message Text="Mod files updated." Importance="High" />
   </Target>
-  
 </Project>
