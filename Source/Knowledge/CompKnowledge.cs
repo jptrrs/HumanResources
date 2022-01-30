@@ -64,9 +64,9 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(unlocked.easyWeapons).Concat(techLevelWeapons).ToList();
+        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(unlocked.easyWeapons)/*.Concat(techLevelWeapons)*/.ToList();
 
-        public IEnumerable<ThingDef> techLevelWeapons => SimpleWeapons.Where(x => x.techLevel <= startingTechLevel);
+        //public IEnumerable<ThingDef> techLevelWeapons => SimpleWeapons.Where(x => x.techLevel <= startingTechLevel);
 
         private Pawn pawn
         {
@@ -114,7 +114,6 @@ namespace HumanResources
             }
         }
 
-        //Null Exception on some Where during pawn generation.
         public void AcquireWeaponKnowledge(FactionDef faction)
         {
             string test = unlocked.startingWeapons.EnumerableNullOrEmpty() ? "bad" : "ok";
