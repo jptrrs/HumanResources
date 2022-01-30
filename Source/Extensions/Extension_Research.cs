@@ -254,11 +254,11 @@ namespace HumanResources
         public static bool Matches(this ResearchProjectDef tech, string query)
         {
             var culture = CultureInfo.CurrentUICulture;
+            if (culture == null) return false;
             query = query.ToLower(culture);
-
             return
                 tech.LabelCap.RawText.ToLower(culture).Contains(query) ||
-                ResearchTree_Patches.GetUnlockDefsProxy(tech).Any(unlock => unlock.LabelCap.RawText.ToLower(culture).Contains(query)) ||
+                ResearchTree_Patches.GetUnlockDefsProxy(tech).Any(unlock => unlock.LabelCap != null && unlock.LabelCap.RawText.ToLower(culture).Contains(query)) ||
                 tech.description.ToLower(culture).Contains(query);
         }
 
