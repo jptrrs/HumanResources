@@ -66,7 +66,7 @@ namespace HumanResources
             IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
                                             where def.race?.intelligence == Intelligence.Humanlike && (zombieThinkTree == null || def.race.thinkTreeMain != zombieThinkTree)
                                             select def);
-            List<string> registered = new List<string>();
+            //List<string> registered = new List<string>();
             foreach (ThingDef t in things)
             {
                 if (t.inspectorTabsResolved == null)
@@ -79,17 +79,28 @@ namespace HumanResources
                     t.comps = new List<CompProperties>(1);
                 }
                 t.comps.Add(new CompProperties_Knowledge());
-                registered.Add(t.defName);
+                //registered.Add(t.defName);
             }
             InspectPaneUtility.Reset();
 
             //3. Preparing knowledge support infrastructure
 
-            //a. Things everyone knows
-            UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon));
+            //a. Provisions to deal with turrets & artilleries
+            List<ThingDef> turretGuns = new List<ThingDef>();
+            foreach (var (t, foundGun) in from ThingDef t in DefDatabase<ThingDef>.AllDefs
+                                          let foundGun = t.GetTurretGun()
+                                          where foundGun != null
+                                          select (t, foundGun))
+            {
+                if (t.IsMannable()) MountedWeapons.Add(foundGun);
+                else turretGuns.Add(foundGun);
+            }
+
+            //b. Things everyone knows
+            UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon).Except(turretGuns));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
-            //b. Minus things unlocked on research
+            //c. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
@@ -99,16 +110,16 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //c. Also removing atipical weapons
+            //d. Also removing atipical weapons
             List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
-            UniversalWeapons.RemoveAll(x => SplitSimpleWeaponsAndTurrets(x, ForbiddenWeaponTags));
+            UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
             garbage.Add(TechDefOf.HardWeapons);
 
-            //d. Classifying pawn backstories
+            //e. Classifying pawn backstories
             PawnBackgroundUtility.BuildCache();
 
-            //e. Telling humans what's going on
+            //f. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose || FullStartupReport)
@@ -268,14 +279,10 @@ namespace HumanResources
             ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
         }
 
-        private static bool SplitSimpleWeaponsAndTurrets(ThingDef t, List<string> forbiddenWeaponTags)
+        private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
         {
             if (t.NotThatHard()) return false;
             bool tagged = !t.weaponTags.NullOrEmpty();
-            if (tagged && t.weaponTags.Contains("TurretGun"))
-            {
-                return true;
-            }
             bool flag = false;
             foreach (string tag in forbiddenWeaponTags)
             {

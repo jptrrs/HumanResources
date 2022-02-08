@@ -20,7 +20,7 @@
     <defName>EasyWeapons</defName>
     <label>EasyWeapons</label>
     <weaponTags>
-      <li>Artillery</li>
+      <!--<li>Artillery</li>-->
       <li>ImprovisedMelee</li>
     </weaponTags>
     <!--These will only be used if RequireTrainingForSingleUseWeapons is unchecked on options-->

@@ -574,6 +574,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{844E
 		Patches\Patches_Rimsenal.xml = Patches\Patches_Rimsenal.xml
 		Patches\Patches_Stargate.xml = Patches\Patches_Stargate.xml
 		Patches\Patches_VFE-Insectoid.xml = Patches\Patches_VFE-Insectoid.xml
+		Patches\Patches_MoreMechanoids.xml = Patches\Patches_MoreMechanoids.xml
 		Patches\Patches_VFE-Medieval.xml = Patches\Patches_VFE-Medieval.xml
 		Patches\Patches_VFE-Settlers.xml = Patches\Patches_VFE-Settlers.xml
 		Patches\Patches_VFE-Vikings.xml = Patches\Patches_VFE-Vikings.xml

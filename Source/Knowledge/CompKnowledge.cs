@@ -64,7 +64,7 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(unlocked.easyWeapons)/*.Concat(techLevelWeapons)*/.ToList();
+        public List<ThingDef> knownWeapons => proficientWeapons.Concat(UniversalWeapons).Concat(unlocked.easyWeapons)/*.Concat(techLevelWeapons)*/.Distinct().ToList();
 
         //public IEnumerable<ThingDef> techLevelWeapons => SimpleWeapons.Where(x => x.techLevel <= startingTechLevel);
 
@@ -72,10 +72,7 @@ namespace HumanResources
         {
             get
             {
-                if (parent is Pawn p)
-                {
-                    return p;
-                }
+                if (parent is Pawn p) return p;
                 else
                 {
                     Log.Error($"[HumanResources] {parent.Label.CapitalizeFirst()} is trying to pose as human, but his disguise can't fool us!");
@@ -95,10 +92,7 @@ namespace HumanResources
                 expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
                 if (Prefs.LogVerbose) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} knowledge is going to be {expertise.Keys.ToStringSafeEnumerable()}.");
             }
-            else
-            {
-                Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
-            }
+            else Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
             AcquireWeaponKnowledge(faction);
             if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} weapon proficiency is going to be: {proficientWeapons.ToStringSafeEnumerable()}");
             AcquirePlantKnowledge();

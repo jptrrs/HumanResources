@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <!--Vanilla Factions Expanded - Medieval-->
+  <Operation Class="JPTools.PatchOperationFindModById">
+    <mods>
+      <li>orion.moremechanoids</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName = "HardWeapons"]/weaponTags</xpath>
+      <value>
+        <li>MechanoidFlamethrower</li>
+        <li>MechanoidBoom</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

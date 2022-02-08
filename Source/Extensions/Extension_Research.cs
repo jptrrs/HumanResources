@@ -51,7 +51,7 @@ namespace HumanResources
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
             bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic"));
-            bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
+            bool tool = x.defName.ToLower().Contains("tool");
             return !basic && !tool;
         };
         #endregion
@@ -243,12 +243,8 @@ namespace HumanResources
         private static void WeaponsRegistration(ThingDef thing, ResearchProjectDef tech)
         {
             if (thing.IsWeapon) tech.RegisterWeapon(thing);
-            ThingDef turretGunDef = thing.building?.turretGunDef;
-            if (turretGunDef != null && !FindTechs(turretGunDef).Any())
-            {
-                tech.RegisterWeapon(turretGunDef);
-                MountedWeapons.AddDistinct(turretGunDef);
-            }
+            ThingDef turretGun = thing.GetTurretGun();
+            if (turretGun != null && MountedWeapons.Contains(turretGun)) tech.RegisterWeapon(turretGun);
         }
 
         public static bool Matches(this ResearchProjectDef tech, string query)

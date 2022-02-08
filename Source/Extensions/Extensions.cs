@@ -64,7 +64,17 @@ namespace HumanResources
 
         public static bool NotThatHard(this ThingDef weapon)
         {
-            return weapon.ExemptIfSingleUse() || weapon.IsEasy();
+            return weapon.ExemptIfSingleUse() || weapon.IsEasy() || ModBaseHumanResources.MountedWeapons.Contains(weapon);
+        }
+
+        public static ThingDef GetTurretGun(this ThingDef thing)
+        {
+            return thing.building?.turretGunDef;
+        }
+
+        public static bool IsMannable(this ThingDef def)
+        {
+            return def.hasInteractionCell && def.HasComp(typeof(CompMannable));
         }
 
         ////Dictionary

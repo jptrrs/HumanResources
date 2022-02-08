@@ -6,7 +6,7 @@ using Verse;
 
 namespace HumanResources
 {
-    //Checks if the pawn knows a turret before manning it
+    //Checks if the pawn knows a atillery piece before manning it
     [HarmonyPatch(typeof(CompMannable), nameof(CompMannable.CompFloatMenuOptions), new Type[] { typeof(Pawn) })]
     public static class CompMannable_CompFloatMenuOptions
     {
