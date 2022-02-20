@@ -122,6 +122,7 @@ namespace HumanResources
             return false;
         };
 
+        static FieldInfo[] FieldInfos = new FieldInfo[] { };
 
         //public static Type EdgeTypeSpec() => EdgeType<Type, Type>().MakeGenericType(new Type[] { NodeType(), NodeType() });
         #endregion
@@ -129,9 +130,11 @@ namespace HumanResources
         #region "patchworks"
         public static void Execute(Harmony instance, string modName, bool altRPal = false)
         {
-            //Harmony.DEBUG = true;
+            Harmony.DEBUG = true;
             ModName = modName;
             AltRPal = altRPal;
+            List<string> FailedFields = new List<string>();
+            List<string> FailedProperties = new List<string>();
 
             //ResearchProjectDef_Extensions
             if (altRPal)
@@ -152,19 +155,22 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetPlantsUnlocked)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:Ancestors"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Ancestors)))).Patch();
-            if (altRPal) ResearchNodeInfo = AccessTools.Method(modName + ".ResearchProjectDef_Extensions:ResearchNode");
+            if (altRPal)
+            {
+                ResearchNodeInfo = AccessTools.Method(modName + ".ResearchProjectDef_Extensions:ResearchNode");
+            }
 
             //Node
             IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
-            RectInfo = AccessTools.Property(NodeType(), "Rect");
-            RightInfo = AccessTools.Property(NodeType(), "Right");
-            _rightInfo = AccessTools.Field(NodeType(), "_right");
-            largeLabelInfo = AccessTools.Field(NodeType(), "_largeLabel");
-            LabelRectInfo = AccessTools.Property(NodeType(), "LabelRect");
-            CostLabelRectInfo = AccessTools.Property(NodeType(), "CostLabelRect");
-            CostIconRectInfo = AccessTools.Property(NodeType(), "CostIconRect");
-            IconsRectInfo = AccessTools.Property(NodeType(), "IconsRect");
-            XInfo = AccessTools.Property(NodeType(), "X");
+            RectInfo = GetPropertyOrFeedback(NodeType(), "Rect", ref FailedProperties);
+            RightInfo = GetPropertyOrFeedback(NodeType(), "Right", ref FailedProperties);
+            _rightInfo = GetFieldOrFeedback(NodeType(), "_right", ref FailedFields);
+            largeLabelInfo = GetFieldOrFeedback(NodeType(), "_largeLabel", ref FailedFields);
+            LabelRectInfo = GetPropertyOrFeedback(NodeType(), "LabelRect", ref FailedProperties);
+            CostLabelRectInfo = GetPropertyOrFeedback(NodeType(), "CostLabelRect", ref FailedProperties);
+            CostIconRectInfo = GetPropertyOrFeedback(NodeType(), "CostIconRect", ref FailedProperties);
+            IconsRectInfo = GetPropertyOrFeedback(NodeType(), "IconsRect", ref FailedProperties);
+            XInfo = GetPropertyOrFeedback(NodeType(), "X", ref FailedProperties);
             if (altRPal)
             {
                 instance.CreateReversePatcher(AccessTools.Method(modName + ".Node:Highlighted"),
@@ -173,8 +179,8 @@ namespace HumanResources
             }
             else
             {
-                EdgeColorInfo = AccessTools.Property(NodeType(), "EdgeColor");
-                HighlightedInfo = AccessTools.Property(NodeType(), "Highlighted");
+                EdgeColorInfo = GetPropertyOrFeedback(NodeType(), "EdgeColor", ref FailedProperties);
+                HighlightedInfo = GetPropertyOrFeedback(NodeType(), "Highlighted", ref FailedProperties);
             }
             instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
@@ -189,7 +195,7 @@ namespace HumanResources
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
-                isMatchedInfo = AccessTools.Field(ResearchNodeType(), "isMatched");
+                isMatchedInfo = GetFieldOrFeedback(ResearchNodeType(), "isMatched", ref FailedFields);
                 UnlockItemTooltipInfo = AccessTools.Method(ResearchNodeType(), "UnlockItemTooltip");
             }
             else
@@ -201,7 +207,7 @@ namespace HumanResources
                 instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(EdgeColor_Prefix))));
                 GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
-                AvailableInfo = AccessTools.Property(ResearchNodeType(), "Available");
+                AvailableInfo = GetPropertyOrFeedback(ResearchNodeType(), "Available", ref FailedProperties);
             }
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "TechprintAvailable", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch();
@@ -213,9 +219,9 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
             instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
-            ChildrenInfo = AccessTools.Property(ResearchNodeType(), "Children");
-            ColorInfo = AccessTools.Property(ResearchNodeType(), "Color");
-            ResearchInfo = AccessTools.Field(ResearchNodeType(), "Research");
+            ChildrenInfo = GetPropertyOrFeedback(ResearchNodeType(), "Children", ref FailedProperties);
+            ColorInfo = GetPropertyOrFeedback(ResearchNodeType(), "Color", ref FailedProperties);
+            ResearchInfo = GetFieldOrFeedback(ResearchNodeType(), "Research", ref FailedFields);
             GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
 
             //Def_Extensions
@@ -225,18 +231,19 @@ namespace HumanResources
             //Edge
             instance.Patch(AccessTools.Method(EdgeType<Type, Type>(), "Draw"), null,
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Edge_Draw_Postfix))));
-            InInfo = AccessTools.Property(EdgeType<Type, Type>(), "In");
-            OutInfo = AccessTools.Property(EdgeType<Type, Type>(), "Out");
+            InInfo = GetPropertyOrFeedback(EdgeType<Type, Type>(), "In", ref FailedProperties);
+            OutInfo = GetPropertyOrFeedback(EdgeType<Type, Type>(), "Out", ref FailedProperties);
             if (altRPal) InResearchInfo = AccessTools.Method(EdgeType<Type, Type>(), "InResearch");
 
             //MainTabWindow_ResearchTree
             if (AltRPal)
             {
-                searchActiveInfo = AccessTools.Field(MainTabType(), "_searchActive");
+                searchActiveInfo = GetFieldOrFeedback(MainTabType(), "_searchActive", ref FailedFields);
+                if (Prefs.DevMode) FieldInfos.AddItem(searchActiveInfo);
             }
             else
             {
-                ZoomLevelInfo = AccessTools.Property(MainTabType(), "ZoomLevel");
+                ZoomLevelInfo = GetPropertyOrFeedback(MainTabType(), "ZoomLevel", ref FailedProperties);
 
                 //fix for tree overlapping search bar on higher UI scales
                 instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
@@ -253,7 +260,7 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
             instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
-            InstanceInfo = AccessTools.Property(MainTabType(), "Instance");
+            InstanceInfo = GetPropertyOrFeedback(MainTabType(), "Instance", ref FailedProperties);
             Type windowNodeType = AltRPal ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
 
@@ -272,7 +279,7 @@ namespace HumanResources
                     StopFixedHighlightsInfo = AccessTools.Method(TreeType(), "StopFixedHighlights");
                 }
             }
-            NodesInfo = AccessTools.Property(TreeType(), "Nodes");
+            //NodesInfo = GetPropertyOrFeedback(TreeType(), "Nodes", ref FailedProperties);
 
             //Queue
             if (altRPal)
@@ -295,28 +302,45 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
 
             //Constants
-            EpsilonInfo = AccessTools.Field(ConstantsType(), "Epsilon");
-            DetailedModeZoomLevelCutoffInfo = AccessTools.Field(ConstantsType(), "DetailedModeZoomLevelCutoff");
-            MarginInfo = AccessTools.Field(ConstantsType(), "Margin");
-            QueueLabelSizeInfo = AccessTools.Field(ConstantsType(), "QueueLabelSize");
-            IconSizeInfo = AccessTools.Field(ConstantsType(), "IconSize");
-            NodeMarginsInfo = AccessTools.Field(ConstantsType(), "NodeMargins");
-            NodeSizeInfo = AccessTools.Field(ConstantsType(), "NodeSize");
-            TopBarHeightInfo = AccessTools.Field(ConstantsType(), "TopBarHeight");
+            EpsilonInfo = GetFieldOrFeedback(ConstantsType(), "Epsilon", ref FailedFields);
+            DetailedModeZoomLevelCutoffInfo = GetFieldOrFeedback(ConstantsType(), "DetailedModeZoomLevelCutoff", ref FailedFields);
+            MarginInfo = GetFieldOrFeedback(ConstantsType(), "Margin", ref FailedFields);
+            QueueLabelSizeInfo = GetFieldOrFeedback(ConstantsType(), "QueueLabelSize", ref FailedFields);
+            IconSizeInfo = GetFieldOrFeedback(ConstantsType(), "IconSize", ref FailedFields);
+            NodeMarginsInfo = GetFieldOrFeedback(ConstantsType(), "NodeMargins", ref FailedFields);
+            NodeSizeInfo = GetFieldOrFeedback(ConstantsType(), "NodeSize", ref FailedFields);
+            TopBarHeightInfo = GetFieldOrFeedback(ConstantsType(), "TopBarHeight", ref FailedFields);
             if (altRPal) TopBarHeightInfo.SetValue(instance, NodeSize.y * 0.6f + 2 * Margin);
 
             //Assets
             if (altRPal)
             {
-                NormalHighlightColorInfo = AccessTools.Field(AssetsType(), "NormalHighlightColor"); //default blue
-                HoverPrimaryColorInfo = AccessTools.Field(AssetsType(), "HoverPrimaryColor"); //violet
-                FixedPrimaryColorInfo = AccessTools.Field(AssetsType(), "FixedPrimaryColor"); //cyan
+                NormalHighlightColorInfo = GetFieldOrFeedback(AssetsType(), "NormalHighlightColor", ref FailedFields); //default blue
+                HoverPrimaryColorInfo = GetFieldOrFeedback(AssetsType(), "HoverPrimaryColor", ref FailedFields); //violet
+                FixedPrimaryColorInfo = GetFieldOrFeedback(AssetsType(), "FixedPrimaryColor", ref FailedFields); //cyan
                 NormalHighlightColorInfo.SetValue(instance, ShadedColor); //mustard
                 HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
 
+            if (!FailedFields.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these fields: {FailedFields.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
+            if (!FailedProperties.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these propeties: {FailedProperties.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
+
             //Harmony.DEBUG = false;
+        }
+
+        private static FieldInfo GetFieldOrFeedback(Type type, string name, ref List<string> failedList)
+        {
+            var field = AccessTools.Field(type, name);
+            if (field == null) failedList.Add($"{type}.{name}");
+            return field;
+        }
+
+        private static PropertyInfo GetPropertyOrFeedback(Type type, string name, ref List<string> failedList)
+        {
+            var property = AccessTools.Property(type, name);
+            if (property == null) failedList.Add($"{type}.{name}");
+            return property;
         }
 
         #endregion
