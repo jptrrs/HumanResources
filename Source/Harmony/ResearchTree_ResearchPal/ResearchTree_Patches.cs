@@ -122,15 +122,12 @@ namespace HumanResources
             return false;
         };
 
-        static FieldInfo[] FieldInfos = new FieldInfo[] { };
-
-        //public static Type EdgeTypeSpec() => EdgeType<Type, Type>().MakeGenericType(new Type[] { NodeType(), NodeType() });
         #endregion
 
         #region "patchworks"
         public static void Execute(Harmony instance, string modName, bool altRPal = false)
         {
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
             ModName = modName;
             AltRPal = altRPal;
             List<string> FailedFields = new List<string>();
@@ -239,7 +236,6 @@ namespace HumanResources
             if (AltRPal)
             {
                 searchActiveInfo = GetFieldOrFeedback(MainTabType(), "_searchActive", ref FailedFields);
-                if (Prefs.DevMode) FieldInfos.AddItem(searchActiveInfo);
             }
             else
             {
