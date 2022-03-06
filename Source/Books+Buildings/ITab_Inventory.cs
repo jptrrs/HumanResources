@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using RimWorld.Planet;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -20,19 +21,16 @@ namespace HumanResources
 
         private float scrollViewHeight;
 
-        private const float TopPadding = 20f;
+        private static readonly Color 
+            ThingLabelColor = new Color(0.9f, 0.9f, 0.9f, 1f),
+            HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
-        private static readonly Color ThingLabelColor = new Color(0.9f, 0.9f, 0.9f, 1f);
-
-        private static readonly Color HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
-
-        private const float ThingIconSize = 28f;
-
-        private const float ThingRowHeight = 28f;
-
-        private const float ThingLeftX = 36f;
-
-        private const float StandardLineHeight = 22f;
+        private const float 
+            ThingIconSize = 28f,
+            ThingRowHeight = 28f,
+            ThingLeftX = 36f,
+            StandardLineHeight = 22f,
+            TopPadding = 20f;
 
         private static List<Thing> workingInvList = new List<Thing>();
 
@@ -86,11 +84,11 @@ namespace HumanResources
             if (selStorage.TryGetInnerInteractableThingOwner() is ThingOwner t)
             {
                 Widgets.ListSeparator(ref num, viewRect.width, "Inventory".Translate());
-                ITab_Inventory.workingInvList.Clear();
-                ITab_Inventory.workingInvList.AddRange(t);
-                for (int i = 0; i < ITab_Inventory.workingInvList.Count; i++)
+                workingInvList.Clear();
+                workingInvList.AddRange(t.OrderBy(x => x.Stuff.techLevel).ThenBy(x => x.Stuff.label));
+                for (int i = 0; i < workingInvList.Count; i++)
                 {
-                    DrawThingRow(ref num, viewRect.width, ITab_Inventory.workingInvList[i], true);
+                    DrawThingRow(ref num, viewRect.width, workingInvList[i], true);
                 }
             }
             if (Event.current.type == EventType.Layout)
@@ -126,7 +124,7 @@ namespace HumanResources
             rect.width -= 60f;
             if (Mouse.IsOver(rect))
             {
-                GUI.color = ITab_Inventory.HighlightColor;
+                GUI.color = HighlightColor;
                 GUI.DrawTexture(rect, TexUI.HighlightTex);
             }
             if (thing.def.DrawMatSingle != null && thing.def.DrawMatSingle.mainTexture != null)
@@ -134,7 +132,7 @@ namespace HumanResources
                 Widgets.ThingIcon(new Rect(4f, y, 28f, 28f), thing, 1f);
             }
             Text.Anchor = TextAnchor.MiddleLeft;
-            GUI.color = ITab_Inventory.ThingLabelColor;
+            GUI.color = ThingLabelColor;
             Rect rect5 = new Rect(36f, y, rect.width - 36f, rect.height);
             string text = thing.LabelCap;
             Text.WordWrap = false;
