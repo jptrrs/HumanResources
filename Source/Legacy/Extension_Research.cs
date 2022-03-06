@@ -52,10 +52,9 @@ namespace HumanResources
 
         private static Func<ThingDef, bool> ShouldLockWeapon = (x) =>
         {
-            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic")) || x.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag));
-            bool tool = x.defName.Contains("Tool") || x.defName.Contains("tool");
-            bool exempted = x.IsExempted();
-            return !basic && !tool && !exempted;
+            bool basic = x.weaponTags.NullOrEmpty() || x.weaponTags.Any(t => t.Contains("Basic"));
+            bool tool = x.defName.ToLower().Contains("tool");
+            return !basic && !tool;
         };
         #endregion
 
@@ -239,18 +238,23 @@ namespace HumanResources
                     SetSkillRelevance(skill, check);
                     found |= check; 
                 }
-                //measures for weapons
-                if (thing.IsWeapon) tech.RegisterWeapon(thing);
-                if (thing.building != null && thing.building.turretGunDef != null && !FindTechs(thing.building.turretGunDef).Any()) tech.RegisterWeapon(thing);
+                WeaponsRegistration(thing, tech);
             }
             return found;
+        }
+
+        private static void WeaponsRegistration(ThingDef thing, ResearchProjectDef tech)
+        {
+            if (thing.IsWeapon) tech.RegisterWeapon(thing);
+            ThingDef turretGun = thing.GetTurretGun();
+            if (turretGun != null && MountedWeapons.Contains(turretGun)) tech.RegisterWeapon(turretGun);
         }
 
         public static bool Matches(this ResearchProjectDef tech, string query)
         {
             var culture = CultureInfo.CurrentUICulture;
+            if (culture == null) return false;
             query = query.ToLower(culture);
-
             return
                 tech.LabelCap.RawText.ToLower(culture).Contains(query) ||
                 ResearchTree_Patches.GetUnlockDefsAndDescs(tech).Any(unlock => unlock.First.LabelCap.RawText.ToLower(culture).Contains(query)) ||
@@ -373,6 +377,8 @@ namespace HumanResources
             report.Clear();
             if (matchesCount > 0) { report.Append($"keyword{(matchesCount > 1 ? "s" : "")}: {keywords.ToStringSafeEnumerable()}"); }
             if (thingsCount > 0) { report.AppendWithComma(thingsCount + " thing" + (thingsCount > 1 ? "s" : "")); }
+            int weaponsCount = tech.UnlockedWeapons().Count;
+            if (weaponsCount > 0) { report.AppendWithComma($"{weaponsCount} weapon{(matchesCount > 1 ? "s" : "")} ({tech.UnlockedWeapons().ToStringSafeEnumerable()})"); }
             if (recipesCount > 0)
             {
                 report.AppendWithComma($"{recipesCount} recipe{(recipesCount > 1 ? "s" : "")} ");

@@ -123,9 +123,6 @@ namespace HumanResources
             }
             return false;
         };
-
-
-        //public static Type EdgeTypeSpec() => EdgeType<Type, Type>().MakeGenericType(new Type[] { NodeType(), NodeType() });
         #endregion
 
         #region "patchworks"

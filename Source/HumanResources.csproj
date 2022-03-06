@@ -47,7 +47,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.3\Assemblies\</OutputPath>
+    <OutputPath>..\1.3\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>none</ErrorReport>
     <WarningLevel>0</WarningLevel>
@@ -59,7 +59,7 @@
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.1\Assemblies\</OutputPath>
+    <OutputPath>..\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <WarningLevel>0</WarningLevel>
@@ -72,7 +72,7 @@
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.1\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.2|AnyCPU'">
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\HumanResources\1.2\Assemblies\</OutputPath>
+    <OutputPath>..\1.2\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <WarningLevel>0</WarningLevel>
@@ -167,7 +167,6 @@
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
-    <Compile Include="Harmony\CompMannable_CompFloatMenuOptions.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
@@ -203,7 +202,6 @@
     <Compile Include="Work\LearningUtility.cs" />
     <Compile Include="Work\WorkGiver_DocumentTech.cs" />
     <Compile Include="Work\WorkGiver_ExperimentWeapon.cs" />
-    <Compile Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Work\WorkGiver_LearnTech.cs" />
     <Compile Include="Work\WorkGiver_LearnWeapon.cs" />
     <Compile Include="Work\WorkGiver_PracticeWeapon.cs" />
@@ -222,6 +220,7 @@
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
     <Compile Include="Work\WorkGiver_Knowledge.cs" />
+    <Compile Include="Harmony\CompMannable_CompFloatMenuOptions.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.1' OR '$(Configuration)' == '1.2'">
     <Compile Include="Legacy\ExpertiseNode.cs" />

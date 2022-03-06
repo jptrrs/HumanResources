@@ -44,6 +44,22 @@
     </content>
   </HugsLib.UpdateFeatureDef>
 
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_1_1</defName>
+    <assemblyVersion>1.1</assemblyVersion>
+    <content>
+      |&lt;b&gt;Weapons proficiency revision!&lt;/b&gt;
+      |- &lt;i&gt;Clutter cleared:&lt;/i&gt;   I've changed the rules for displaying weapons on the proficiency list at the Tech tab. Artillery and commom weapons (such as bottles) will now only show up when filtered for. Turret guns were excluded, since they can't really be equipped.
+      |- &lt;i&gt;No more free bows and arrows.&lt;/i&gt;  Colonists no longer start knowing how to wield simple weapons that didn't require training from inferior tech levels. Instead...
+      |- &lt;i&gt;Tech-enabled common weapons.&lt;/i&gt;  Now there is a middle-ground between training-required weapons and those simply known by anyone. These "easy" weapons will become available to your colonists as soon as their corresponding technology is added to your library, no training required. &lt;i&gt;All Artillery and mounted weapons&lt;/i&gt; will now follow that logic. If you know any modded weapons that also fit that bill, let me know and I might include them.
+      |There were other unrelated bugfixes and improvements. Check the change notes on our Steam page for a complete list.
+      |
+      |img:Passion|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt;
+      |If you are able to contribute, you can buy me a coffee on &lt;i&gt;https://ko-fi.com/jptrrs&lt;/i&gt;, or follow the link above for our Patreon page, where you can also find &lt;b&gt;more mods&lt;/b&gt; and &lt;b&gt;add-ons&lt;/b&gt; that aren't on Steam!
+      |Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+
   <!--<HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
 	<defName>HumanResources_0_1</defName>
 	<assemblyVersion>0.1</assemblyVersion>
