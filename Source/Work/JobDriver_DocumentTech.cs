@@ -98,42 +98,48 @@ namespace HumanResources
                 Toil prepare = Toils_General.Wait(250);
                 prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
                 yield return prepare;
-                yield return new Toil
+                Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
+                yield return shelf.DepositHauledBook();
+            }
+            yield break;
+        }
+
+        private Toil TransfertoBookStore()
+        {
+            return new Toil
+            {
+                initAction = delegate
                 {
-                    initAction = delegate
+                    Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
+                    CurToil.FailOn(() => shelf == null);
+                    Thing book = pawn.carryTracker.CarriedThing;
+                    if (pawn.carryTracker.CarriedThing == null)
                     {
-                        Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
-                        CurToil.FailOn(() => shelf == null);
-                        Thing book = pawn.carryTracker.CarriedThing;
-                        if (pawn.carryTracker.CarriedThing == null)
+                        Log.Error($"[HumanResources] {pawn} tried to place a book on shelf but is not hauling anything.");
+                        return;
+                    }
+                    if (shelf.Accepts(book))
+                    {
+                        bool flag = false;
+                        if (book.holdingOwner != null)
                         {
-                            Log.Error($"[HumanResources] {pawn} tried to place a book on shelf but is not hauling anything.");
-                            return;
-                        }
-                        if (shelf.Accepts(book))
-                        {
-                            bool flag = false;
-                            if (book.holdingOwner != null)
-                            {
-                                book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
-                                flag = true;
-                            }
-                            else
-                            {
-                                flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
-                            }
-                            pawn.carryTracker.innerContainer.Remove(book);
+                            book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
+                            flag = true;
                         }
                         else
                         {
-                            Log.Error($"[HumanResources] {pawn} tried to place a book in {shelf}, but it won't accept it.");
-                            return;
+                            flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
                         }
-                        pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+                        pawn.carryTracker.innerContainer.Remove(book);
                     }
-                };
-            }
-            yield break;
+                    else
+                    {
+                        Log.Error($"[HumanResources] {pawn} tried to place a book in {shelf}, but it won't accept it.");
+                        return;
+                    }
+                    pawn.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+                }
+            };
         }
 
         private Toil FinishRecipeAndStartStoringProduct()

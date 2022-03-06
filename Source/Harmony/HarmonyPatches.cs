@@ -118,6 +118,13 @@ namespace HumanResources
                 VFEM = true;
             }
 
+            //Pick Up and Haul integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Mehni.PickUpAndHaul")))
+            {
+                Log.Message("[HumanResources] Pick Up And Haul detected! Adapting...");
+                PUAH_Patch.Execute(Instance);
+            }
+
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x =>
             x.PackageIdPlayerFacing.StartsWith("loconeko.roadsoftherim") ||
@@ -128,6 +135,7 @@ namespace HumanResources
             {
                 RunSpecialCases = true;
             }
+
         }
 
         public static bool CheckKnownWeapons(Pawn pawn, Thing thing)

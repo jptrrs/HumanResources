@@ -159,6 +159,7 @@
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
     <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
+    <Compile Include="Harmony\Compatibility\PUAH_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
     <Compile Include="Harmony\Compatibility\GoExplore_Patches.cs" />
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />

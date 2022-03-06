@@ -1,7 +1,9 @@
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
+using Verse.AI;
 
 namespace HumanResources
 {
@@ -76,6 +78,42 @@ namespace HumanResources
         {
             return def.hasInteractionCell && def.HasComp(typeof(CompMannable));
         }
+
+        //BookStore
+        public static Toil DepositHauledBook(this Building_BookStore shelf)
+        {
+            var toil = new Toil();
+            Pawn actor = toil.actor;
+            toil.initAction = delegate
+            {
+                Thing book = actor.carryTracker.CarriedThing;
+                if (actor.carryTracker.CarriedThing == null)
+                {
+                    Log.Error($"[HumanResources] {actor} tried to place a book on shelf but is not hauling anything.");
+                    return;
+                }
+                if (!shelf.Accepts(book))
+                {
+                    Log.Error($"[HumanResources] {actor} tried to place a book in {shelf}, but it won't accept it.");
+                    return;
+                }
+                bool flag = false;
+                if (book.holdingOwner != null)
+                {
+                    book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
+                    flag = true;
+                }
+                else
+                {
+                    flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
+                }
+                actor.carryTracker.innerContainer.Remove(book);
+                actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
+            };
+            toil.FailOn(() => shelf == null);
+            return toil;
+        }
+
 
         ////Dictionary
         //public static TKey ReverseLookup<TKey, TValue>(this IDictionary<TKey, TValue> source, TValue sample)
