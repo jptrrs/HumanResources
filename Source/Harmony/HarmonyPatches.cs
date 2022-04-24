@@ -14,6 +14,7 @@ namespace HumanResources
             PrisonLabor = false,
             VFEM = false,
             RunSpecialCases = false,
+            SemiRandom = false,
             VisibleBooksCategory = false;
 
         public static Harmony Instance
@@ -123,6 +124,14 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Pick Up And Haul detected! Adapting...");
                 PUAH_Patch.Execute(Instance);
+            }
+
+            //Semi-Random integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("CaptainMuscles.SemiRandomResearch")))
+            {
+                Log.Message("[HumanResources] Semi-Random Research detected! Integrating...");
+                SemiRandom_Patch.Execute(Instance);
+                SemiRandom = true;
             }
 
             //Provisions for specific research projects

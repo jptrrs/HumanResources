@@ -427,12 +427,13 @@ namespace HumanResources
             Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
             float startPos = rect.x - frameOffset.x;
             if (QueueAvailable && IsQueued(tech)) startPos += DrawQueueAssignment(tech, VFE_Supercomputer, height, frameOffset, startPos);
-            DrawPawnAssignments(tech, height, frameOffset, startPos);
+            tech.DrawPawnAssignments(height, frameOffset, startPos);
         }
 
-        public static void SelectMenu(this ResearchProjectDef tech, bool completed)
+        public static void SelectMenu(this ResearchProjectDef tech, bool completed, bool outsideTree = false)
         {
             Find.WindowStack.FloatMenu?.Close(false);
+            if (HarmonyPatches.SemiRandom && !completed && !outsideTree) return;
             List<FloatMenuOption> options = new List<FloatMenuOption>();
             if (tech.TechprintRequirementMet)
             {
@@ -452,10 +453,11 @@ namespace HumanResources
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        private static void DrawPawnAssignments(ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos)
+        public static void DrawPawnAssignments(this ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos, bool reverse = false)
         {
             Vector2 position;
             Vector2 size = new Vector2(height, height);
+            float spacing = height / 2;
             using (IEnumerator<Pawn> enumerator = currentPawns.Where(p => HasBeenAssigned(p, tech)).GetEnumerator())
             {
                 while (enumerator.MoveNext())
@@ -467,7 +469,7 @@ namespace HumanResources
                     GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, Rot4.South, cameraZoom: 1.2f));
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
                     TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
-                    startPos += height / 2;
+                    startPos = reverse ? startPos - spacing : startPos + spacing;
                 }
             }
         }
