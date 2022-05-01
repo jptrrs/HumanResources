@@ -110,8 +110,6 @@ namespace HumanResources
 
         public void AcquireWeaponKnowledge(FactionDef faction)
         {
-            string test = unlocked.startingWeapons.EnumerableNullOrEmpty() ? "bad" : "ok";
-            Log.Message($"Acquiring weapon knowledge, startingWeapons is {test}");
             if (proficientWeapons == null)
             {
                 proficientWeapons = new List<ThingDef>();

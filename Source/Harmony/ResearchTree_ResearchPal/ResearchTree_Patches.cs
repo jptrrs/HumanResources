@@ -320,7 +320,7 @@ namespace HumanResources
             }
 
             if (!FailedFields.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these fields: {FailedFields.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
-            if (!FailedProperties.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these propeties: {FailedProperties.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
+            if (!FailedProperties.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these properties: {FailedProperties.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
 
             //Harmony.DEBUG = false;
         }
