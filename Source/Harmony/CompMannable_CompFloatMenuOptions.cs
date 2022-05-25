@@ -14,7 +14,7 @@ namespace HumanResources
         {
             if (___parent is Building_TurretGun turret)
             {
-                ThingDef gundDef = turret.gun.def; 
+                ThingDef gundDef = turret.gun.def;
                 foreach (var entry in options)
                 {
                     if (entry.action != null && entry.orderInPriority == 0 && pawn.TechBound() && !HarmonyPatches.CheckKnownWeapons(pawn, gundDef))
@@ -27,7 +27,7 @@ namespace HumanResources
                     else yield return entry;
                 }
             }
-
+            else foreach (var entry in options) yield return entry;
         }
     }
 }
