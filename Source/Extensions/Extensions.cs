@@ -48,6 +48,11 @@ namespace HumanResources
             return (book.Stuff != null && book.Stuff.IsWithinCategory(TechDefOf.Knowledge)) ? TechTracker.FindTech(book.Stuff) : null;
         }
 
+        public static bool IsValidBook(this Thing item)
+        {
+            return item.def == TechDefOf.TechBook && item.Stuff != null && item.Stuff.IsWithinCategory(TechDefOf.Knowledge);
+        }
+
         //ThingDef
         public static bool IsEasy(this ThingDef weapon)
         {
@@ -86,6 +91,8 @@ namespace HumanResources
             Pawn actor = toil.actor;
             toil.initAction = delegate
             {
+                //Log.Message("DepositHauledBook started");
+
                 Thing book = actor.carryTracker.CarriedThing;
                 if (actor.carryTracker.CarriedThing == null)
                 {
@@ -100,11 +107,13 @@ namespace HumanResources
                 bool flag = false;
                 if (book.holdingOwner != null)
                 {
+                    //Log.Message("DepositHauledBook case 1");
                     book.holdingOwner.TryTransferToContainer(book, shelf.TryGetInnerInteractableThingOwner(), book.stackCount, true);
                     flag = true;
                 }
                 else
                 {
+                    //Log.Message("DepositHauledBook case 2");
                     flag = shelf.TryGetInnerInteractableThingOwner().TryAdd(book, true);
                 }
                 actor.carryTracker.innerContainer.Remove(book);

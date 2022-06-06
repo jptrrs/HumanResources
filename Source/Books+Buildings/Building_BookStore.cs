@@ -60,7 +60,7 @@ namespace HumanResources
         public bool StorageTabVisible => true;
         public virtual bool Accepts(Thing thing)
         {
-            if (thing.def == TechDefOf.TechBook && thing.Stuff != null && thing.Stuff.IsWithinCategory(TechDefOf.Knowledge))
+            if (thing.IsValidBook())
             {
                 bool allowed = storageSettings.AllowedToAccept(thing.Stuff);
                 bool fits = innerContainer.Count < dynamicCapacity;
