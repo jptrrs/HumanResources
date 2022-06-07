@@ -166,6 +166,7 @@
     <Compile Include="Harmony\Compatibility\Hospitality_Patches.cs" />
     <Compile Include="Harmony\Compatibility\MaterialFilter_Patch.cs" />
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
+    <Compile Include="Harmony\Compatibility\FluffyBreakdowns_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />

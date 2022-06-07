@@ -134,6 +134,13 @@ namespace HumanResources
                 SemiRandom = true;
             }
 
+            //Fluffy Breakdowns integration
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") || x.PackageIdPlayerFacing.StartsWith("theeyeofbrows.fluffybreakdowns")))
+            {
+                Log.Message("[HumanResources] Fluffy Breakdowns detected! Integrating...");
+                FluffyBreakdowns_Patches.Execute(Instance);
+            }
+
             //Provisions for specific research projects
             if (LoadedModManager.RunningModsListForReading.Any(x =>
             x.PackageIdPlayerFacing.StartsWith("loconeko.roadsoftherim") ||
