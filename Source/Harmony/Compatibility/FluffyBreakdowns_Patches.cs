@@ -11,19 +11,20 @@ namespace HumanResources
         public static void Execute(Harmony instance)
         {
             Type WorkGiverMaintenanceType = AccessTools.TypeByName("Fluffy_Breakdowns.WorkGiver_Maintenance");
-            instance.Patch(AccessTools.Method(WorkGiverMaintenanceType, "JobOnThing"),
-                null, new HarmonyMethod(typeof(FluffyBreakdowns_Patches), nameof(JobOnThing_Postfix)), null);
+            instance.Patch(AccessTools.Method(WorkGiverMaintenanceType, "HasJobOnThing"),
+                null, new HarmonyMethod(typeof(FluffyBreakdowns_Patches), nameof(HasJobOnThing_Postfix)), null);
         }
 
-        public static void JobOnThing_Postfix(Pawn pawn, Thing thing, ref Job __result)
+        public static void HasJobOnThing_Postfix(Pawn pawn, Thing thing, ref bool __result)
         {
-            if (!pawn.TechBound()) return;
-            var requisites = thing.def.entityDefToBuild?.researchPrerequisites;
+            if (!__result || !pawn.TechBound()) return;
+            var requisites = thing.def.researchPrerequisites;
+            Log.Message($"test : {requisites}");
             if (requisites.NullOrEmpty() || requisites.All(x => x.IsKnownBy(pawn))) return;
             var missing = requisites.Where(x => !x.IsKnownBy(pawn));
             string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;
             JobFailReason.Is("DoesntKnowHowToRepair".Translate(pawn, thing.def.label, preReqText));
-            __result = null;
+            __result = false;
         }
 
     }
