@@ -56,7 +56,7 @@ namespace HumanResources
         //ThingDef
         public static bool IsEasy(this ThingDef weapon)
         {
-            return weapon.weaponTags.NullOrEmpty() || weapon.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag));
+            return weapon.weaponTags.NullOrEmpty() || weapon.weaponTags.Any(tag => TechDefOf.EasyWeapons.weaponTags.Contains(tag)) || !(weapon.IsWithinCategory(TechDefOf.WeaponsMelee) || weapon.IsWithinCategory(TechDefOf.WeaponsRanged));
         }
 
         public static bool IsSingleUseWeapon(this ThingDef weapon)

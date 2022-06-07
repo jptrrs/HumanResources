@@ -79,7 +79,6 @@ namespace HumanResources
                     t.comps = new List<CompProperties>(1);
                 }
                 t.comps.Add(new CompProperties_Knowledge());
-                //registered.Add(t.defName);
             }
             InspectPaneUtility.Reset();
 
