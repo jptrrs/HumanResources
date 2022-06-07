@@ -95,11 +95,13 @@ namespace HumanResources
                 yield return Toils_Haul.StartCarryThing(TargetIndex.A, false, true, false);
                 findPlaceTarget = Toils_Haul.CarryHauledThingToContainer();
                 yield return findPlaceTarget;
-                Toil prepare = Toils_General.Wait(250);
-                prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
-                yield return prepare;
-                Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
-                yield return shelf.DepositHauledBook();
+                //Toil prepare = Toils_General.Wait(250);
+                //prepare.WithProgressBarToilDelay(TargetIndex.B, false, -0.5f);
+                ////test
+                //prepare.AddFinishAction(delegate { Log.Message("ready to deposit hauled book"); });
+                //yield return prepare;
+                //Building_BookStore shelf = (Building_BookStore)job.GetTarget(TargetIndex.B).Thing;
+                //yield return shelf.DepositHauledBook();
             }
             yield break;
         }
@@ -215,6 +217,8 @@ namespace HumanResources
                     curJob.targetB = destination as Thing;
                     curJob.targetA = list[0];
                     curJob.count = 1;
+                    //test
+                    Log.Message($"targets set for storage: A is {curJob.targetA}, B is {curJob.targetB}.");
                 }
                 else
                 {
