@@ -15,7 +15,8 @@ namespace HumanResources
     {
         #region "variables"
         public static object MainTabInstance;
-        public static ResearchProjectDef interest;
+        public static ResearchProjectDef Interest;
+        public static CompKnowledge Context;
         public static Color
             BrightColor = new Color(1f, 0.85f, 0.2f), //yellow
             ShadedColor = new Color(0.72f, 0.57f, 0.13f), //mustard
@@ -76,6 +77,7 @@ namespace HumanResources
         //Node:
             IsVisibleInfo,
             InEdgeColorInfo,
+        //MainWindow:
             MainTabCenterOnInfo,
         //Tree:
             HandleFixedHighlightInfo,
@@ -251,7 +253,7 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
             }
             instance.Patch(AccessTools.Method(MainTabType(), "DoWindowContents"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
+                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
             instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
@@ -275,7 +277,6 @@ namespace HumanResources
                     StopFixedHighlightsInfo = AccessTools.Method(TreeType(), "StopFixedHighlights");
                 }
             }
-            //NodesInfo = GetPropertyOrFeedback(TreeType(), "Nodes", ref FailedProperties);
 
             //Queue
             if (altRPal)
@@ -377,22 +378,25 @@ namespace HumanResources
         private static void DeInterest()
         {
             if (AltRPal) StopFixedHighlightsInfo.Invoke(MainTabInstance, new object[] { });
-            if (interest != null) interest = null;
+            if (Interest != null) Interest = null;
         }
 
         public static void DoWindowContents_Postfix(object __instance)
         {
             if (MainTabInstance == null) MainTabInstance = __instance;
-            if (interest != null)
+            if (Interest == null) return;
+            if (treeReady)
             {
-                if (treeReady)
-                {
-                    MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
-                    if (AltRPal) HandleFixedHighlightInfo.Invoke(__instance, new object[] { ResearchNodesCache[interest] });
-                    else HighlightedProxy(ResearchNodesCache[interest], true);
-                }
-                else Log.Warning("[HumanResources] Locate tech on the Research Tab failed: the tree isn't ready");
+                MainTabCenterOnInfo.Invoke(__instance, new object[] { ResearchNodesCache[Interest] });
+                HighlightedProxy(ResearchNodesCache[Interest], true, 4);
+                IEnumerable<object> expertiseDisplay = new object[] { };
+                ReflectKnowledge(Context, out expertiseDisplay);
+                if (!AltRPal) return;
+                UpdateMatches(expertiseDisplay);
+                expertiseDisplayed = true;
+                DeInterest();
             }
+            else Log.Warning("[HumanResources] Locate tech on the Research Tab failed: the tree isn't ready");
         }
 
         public static void DrawColouredIcon(this Def def, Rect canvas) { throw stubMsg; }
@@ -425,7 +429,7 @@ namespace HumanResources
                     if (Mouse.IsOver(innerBox))
                     {
                         DeInterest();
-                        ReflectKnowledge(__instance, techComp, out expertiseDisplay);
+                        ReflectKnowledge(techComp, out expertiseDisplay);
                         displayActive = true;
                     }
                     if (!techComp.homework.NullOrEmpty())
@@ -546,7 +550,7 @@ namespace HumanResources
             populating = true;
         }
 
-        private static void ReflectKnowledge(object instance, CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
+        private static void ReflectKnowledge(CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
         {
             Find.WindowStack.FloatMenu?.Close(false);
             bool valid = !techComp.expertise.EnumerableNullOrEmpty();
@@ -600,7 +604,7 @@ namespace HumanResources
                     progressBarRect.xMin += Research.ProgressPercent * progressBarRect.width;
                     GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 }
-                HighlightedProxy(__instance, interest == Research);
+                HighlightedProxy(__instance, Interest == Research);
 
                 //draw the research label
                 if (!completed && !available)
@@ -684,7 +688,7 @@ namespace HumanResources
 
                 if (mouseOver)
                 {
-                    if (interest != null && interest != Research) DeInterest();
+                    if (Interest != null && Interest != Research) DeInterest();
 
                     //highlight prerequisites if research available
                     if (available)

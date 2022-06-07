@@ -107,6 +107,13 @@ namespace HumanResources
             if (!fullTechs) DrawRightColumn(padding, canvas, expandTT, firstColumnWidth);
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
+            ResearchTree_Patches.Context = PawnToShowInfoAbout.TryGetComp<CompKnowledge>();
+        }
+
+        public  override void CloseTab()
+        {
+            ResearchTree_Patches.Context = null;
+            base.CloseTab();
         }
 
         public override void UpdateSize()
