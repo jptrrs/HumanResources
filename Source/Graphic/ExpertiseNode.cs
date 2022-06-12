@@ -234,7 +234,7 @@ namespace HumanResources
             return ResearchTree_Patches.TechprintAvailable(Tech);
         }
 
-        public void Draw(Rect visibleRect, bool forceDetailedMode = false)
+        public void Draw(Rect visibleRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
         {
             if (!IsVisible(visibleRect))
             {
@@ -285,9 +285,10 @@ namespace HumanResources
                 // draw research cost and icon
                 if (detailedMode)
                 {
+                    float cost = Tech.IndividualizedCost(pawnTechLevel);
                     Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = Tech.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, Tech.CostApparent.ToStringByStyle(ToStringStyle.Integer));
+                    Text.Font = cost > 1000000 ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label(CostLabelRect, cost.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
                 }
 
@@ -364,11 +365,11 @@ namespace HumanResources
             return ResearchTree_Patches.MissingFacilities(Tech);
         }
 
-        public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
+        public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
         {
             SetRects(pos, size);
             SetMarked(indicatorRect);
-            Draw(visibleRect, !forceDetailedMode);
+            Draw(visibleRect, pawnTechLevel, !forceDetailedMode);
             SetRects();
         }
 

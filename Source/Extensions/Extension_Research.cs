@@ -665,6 +665,11 @@ namespace HumanResources
             return hardCopy ? tech.IsOnline() : tech.IsPhysicallyArchived();
         }
 
+        public static float IndividualizedCost(this ResearchProjectDef tech, TechLevel techLevel)
+        {
+            return tech.baseCost * tech.CostFactor(techLevel);
+        }
+
         public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();

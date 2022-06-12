@@ -94,6 +94,7 @@ namespace HumanResources
             }
         }
         private Texture2D SkillBarFillTex => (Texture2D)SkillBarFillTexInfo.GetValue(this);
+        private TechLevel IndividualTechLevel => PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.techLevel ?? Faction.OfPlayer.def.techLevel;
 
 
         public override void FillTab()
@@ -248,7 +249,7 @@ namespace HumanResources
                 var nodeBox = new Rect(pos, nodeSize);
                 var indicatorPos = new Vector2(nodeBox.max.x + margin, pos.y + (nodeBox.height / 2) - (buttonSize.y / 2));
                 var indicatorBox = new Rect(indicatorPos, buttonSize);
-                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, showCompact);
+                node.DrawAt(pos, nodeSize, nodeBox, indicatorBox, IndividualTechLevel, showCompact);
                 pos.y += nodeSize.y + margin;
                 if (pos.y > maxView.y) maxView.y = pos.y;
                 if (indicatorBox.xMax > maxView.x) maxView.x = indicatorBox.xMax;
