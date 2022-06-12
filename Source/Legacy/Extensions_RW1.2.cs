@@ -7,6 +7,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
+    //Changed in RW 1.3 (TechBound now includes slaves)
     public static class Extensions
     {
         //Bill
@@ -34,7 +35,7 @@ namespace HumanResources
         //Pawn
         public static bool TechBound(this Pawn pawn)
         {
-            return (pawn.IsColonist || pawn.IsSlaveOfColony || (HarmonyPatches.PrisonLabor && pawn.IsPrisoner)) && pawn.TryGetComp<CompKnowledge>() != null;
+            return (pawn.IsColonist || (HarmonyPatches.PrisonLabor && pawn.IsPrisoner)) && pawn.TryGetComp<CompKnowledge>() != null;
         }
 
         public static bool IsGuest(this Pawn pawn)

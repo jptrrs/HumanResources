@@ -158,7 +158,6 @@
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
-    <Compile Include="Harmony\Compatibility\ChildrenSchoolLearning_Patch.cs" />
     <Compile Include="Harmony\Compatibility\SemiRandom_Patch.cs" />
     <Compile Include="Harmony\Compatibility\PUAH_Patch.cs" />
     <Compile Include="Harmony\Compatibility\DualWield_Patch.cs" />
@@ -186,12 +185,14 @@
     <Compile Include="Harmony\WorkGiver_ConstructFinishFrames_JobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredients.cs" />
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
+    <Compile Include="Harmony\WorkGiver_FixBrokenDownBuilding_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
     <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
+    <None Include="Legacy\Extensions_RW1.2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
