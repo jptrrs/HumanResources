@@ -231,6 +231,7 @@ namespace HumanResources
             next = DrawToggle(next, baselineY, "GroupBySkills", ref groupTechs, ContentFinder<Texture2D>.Get("UI/skills", true));
             foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
             {
+                //if (level == IndividualTechLevel) DrawTechLevelIndicator(next, baselineY);
                 next = DrawToggle(next, baselineY, level);
             }
         }
@@ -334,15 +335,32 @@ namespace HumanResources
         private float DrawToggle(float posX, float posY, TechLevel techLevel)
         {
             bool toggle = TechLevelVisibility[techLevel];
-            Vector2 position = new Vector2(posX, posY);
+            var bump = buttonSize.y / 5;
+            Vector2 position = new Vector2(posX, posY - bump);
             Rect box = new Rect(position, buttonSize);
-            var curFont = Text.Font;
-            Text.Font = GameFont.Tiny;
-            TooltipHandler.TipRegion(box, techLevel.ToStringHuman());
-            Text.Font = curFont;
             Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
             if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
+            string tip = techLevel.ToStringHuman();
+            if (techLevel == IndividualTechLevel)
+            {
+                tip += $"\nCurrent level for {PawnToShowInfoAbout}";
+                DrawTechLevelIndicator(posX, box.yMax);
+            }
+            var curFont = Text.Font;
+            Text.Font = GameFont.Tiny;
+            TooltipHandler.TipRegion(box, tip);
+            Text.Font = curFont;
             return posX + rowHeight;
+        }
+
+        private void DrawTechLevelIndicator(float posX, float posY)
+        {
+            var size = buttonSize / 3;
+            posX += size.x;
+            Vector2 position = new Vector2(posX, posY);
+            Rect box = new Rect(position, size);
+            GUI.color = Color.white;
+            GUI.DrawTexture(box, ContentFinder<Texture2D>.Get("UI/Misc/BarInstantMarker", true));
         }
 
         private bool DrawCommand(float posX, float posY, string tooltip, Texture2D face, bool left = false, Color? c = null)
