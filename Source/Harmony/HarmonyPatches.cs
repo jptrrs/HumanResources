@@ -90,13 +90,6 @@ namespace HumanResources
                 PrisonLabor = true;
             }
 
-            //Children, School and Learning integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Dylan.CSL")))
-            {
-                Log.Message("[HumanResources] Children, School and Learning detected! Integrating...");
-                ChildrenSchoolLearning_Patch.Execute(Instance);
-            }
-
             //Dual Wield integration
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Roolo.DualWield")))
             {

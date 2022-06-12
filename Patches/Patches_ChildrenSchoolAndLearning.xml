@@ -5,7 +5,13 @@
     <mods>
       <li>dylan.csl</li>
 		</mods>
-		<match Class="PatchOperationSequence">
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/WorkTypeDef[defName="HR_Learn"]/labelShort</xpath>
+      <value>
+        <labelShort>Study(HR)</labelShort>
+      </value>
+    </match>
+		<!--<match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/WorkGiverDef/workType[.="HR_Learn"]</xpath>
@@ -20,6 +26,6 @@
           </value>
         </li>
       </operations>
-		</match>
+		</match>-->
 	</Operation>
 </Patch>

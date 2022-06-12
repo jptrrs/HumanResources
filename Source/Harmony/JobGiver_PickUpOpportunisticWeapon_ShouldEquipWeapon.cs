@@ -11,7 +11,8 @@ namespace HumanResources
     {
         public static bool Prefix(Thing newWep, Pawn pawn)
         {
-            if (pawn.Faction?.IsPlayer == true && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, newWep);
+            //if (pawn.Faction?.IsPlayer == true && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, newWep);
+            if (pawn.TechBound()) return HarmonyPatches.CheckKnownWeapons(pawn, newWep);
             else return true;
         }
     }

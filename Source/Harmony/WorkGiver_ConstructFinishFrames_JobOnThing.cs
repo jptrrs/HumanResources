@@ -13,7 +13,8 @@ namespace HumanResources
     {
         public static bool Prefix(Pawn pawn, Thing t)
         {
-            if (pawn.Faction != null && pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
+            //if (pawn.Faction != null && pawn.Faction.IsPlayer && pawn.RaceProps.Humanlike && pawn.TryGetComp<CompKnowledge>() != null)
+            if (pawn.TechBound())
             {
                 if (t.Faction != pawn.Faction)
                 {
@@ -38,7 +39,6 @@ namespace HumanResources
                         string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;
                         JobFailReason.Is("DoesntKnowHowToBuild".Translate(pawn, t.def.entityDefToBuild.label, preReqText));
                     }
-                    //return pawn.TryGetComp<CompKnowledge>().expertise.Any(x => requisites.Contains(x.Key) && x.Value >= 1f);
                     return result;
                 }
             }

@@ -12,6 +12,7 @@
 		<relevantSkills>
 		  <li>Intellectual</li>
 		</relevantSkills>
+    <alwaysStartActive>true</alwaysStartActive>
 	</WorkTypeDef>
   
 </Defs>
