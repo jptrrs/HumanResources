@@ -31,6 +31,10 @@
   <Expand>展開</Expand>
   <!--EN: Collapse-->
   <Collapse>折り畳む</Collapse>
+
+  <!--NEW-->
+  <CurrentTechLevelFor>Current level for {0_nameDef}</CurrentTechLevelFor>
+  
   <!--EN: Catalog-->
   <TabCatalogue>目録</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->

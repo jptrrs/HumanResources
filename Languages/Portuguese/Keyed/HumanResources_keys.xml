@@ -16,6 +16,7 @@
   <ClickToGroupAssign>Marcar todas estas tecnologias ao mesmo tempo.</ClickToGroupAssign>
   <Expand>Expandir</Expand>
   <Collapse>Recolher</Collapse>
+  <CurrentTechLevelFor>Nível atual para {0_nameDef}</CurrentTechLevelFor>
   <TabCatalogue>Catálogo</TabCatalogue>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
   <AvailableOnNetwork>{0} tecnologias online</AvailableOnNetwork>

@@ -16,7 +16,8 @@
 	<ClickToGroupAssign>Назначить для исследования, документирования или изучения всех технологий этой группы</ClickToGroupAssign>
 	<Expand>Развернуть</Expand>
 	<Collapse>Свернуть</Collapse>
-	<TabCatalogue>Каталог</TabCatalogue>
+  <!--NEW--><CurrentTechLevelFor>Current level for {0_nameDef}</CurrentTechLevelFor>
+  <TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
 	<AvailableOnNetwork>^Number( {0} | '# технология' | '# технологии' | '# технологий')^ в облачном хранилище</AvailableOnNetwork>
 	<ClickToAssignForStudying>ЛКМ - назначить для изучения</ClickToAssignForStudying>

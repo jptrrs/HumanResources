@@ -231,7 +231,6 @@ namespace HumanResources
             next = DrawToggle(next, baselineY, "GroupBySkills", ref groupTechs, ContentFinder<Texture2D>.Get("UI/skills", true));
             foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
             {
-                //if (level == IndividualTechLevel) DrawTechLevelIndicator(next, baselineY);
                 next = DrawToggle(next, baselineY, level);
             }
         }
@@ -340,10 +339,10 @@ namespace HumanResources
             Rect box = new Rect(position, buttonSize);
             Color color = toggle ? Color.Lerp(ResearchTree_Assets.ColorCompleted[techLevel], Widgets.WindowBGFillColor, 0.2f) : ResearchTree_Assets.ColorAvailable[techLevel];
             if (Widgets.ButtonImage(box, ContentFinder<Texture2D>.Get("UI/dot", true), color, ResearchTree_Assets.ColorCompleted[techLevel])) TechLevelVisibility[techLevel] = !TechLevelVisibility[techLevel];
-            string tip = techLevel.ToStringHuman();
+            string tip = techLevel.ToStringHuman().CapitalizeFirst();
             if (techLevel == IndividualTechLevel)
             {
-                tip += $"\nCurrent level for {PawnToShowInfoAbout}";
+                tip += $"\n(" + "CurrentTechLevelFor".Translate(PawnToShowInfoAbout) + ")";
                 DrawTechLevelIndicator(posX, box.yMax);
             }
             var curFont = Text.Font;
