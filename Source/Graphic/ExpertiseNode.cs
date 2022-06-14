@@ -15,6 +15,8 @@ namespace HumanResources
 {
     public class ExpertiseNode
     {
+        public ResearchProjectDef Tech;
+
         //pulled from Node
         protected const float Offset = 2f;
         protected bool _largeLabel;
@@ -34,6 +36,51 @@ namespace HumanResources
             _topLeft = Vector2.zero,
             _right = Vector2.zero,
             _left = Vector2.zero;
+        private static Type pseudoParentType = ResearchTree_Patches.ResearchNodeType();
+
+        private MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(pseudoParentType, "GetResearchTooltipString");
+
+        //
+        private Pawn Pawn;
+
+        private bool 
+            knownSucessorSet = false,
+            knownSucessor;
+
+        public ExpertiseNode(ResearchProjectDef research, Pawn pawn)
+        {
+            Pawn = pawn;
+            Tech = research;
+            _pos = new Vector2(0, research.researchViewY + 1);
+        }
+
+        public virtual bool Assigned
+        {
+            get
+            {
+                if (Pawn.TechBound() && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Tech);
+                else return false;
+            }
+        }
+
+        public bool Available => !Tech.IsFinished && (DebugSettings.godMode || BuildingPresent());
+
+        public Color Color
+        {
+            get
+            {
+                if (Highlighted)
+                    return GenUI.MouseoverColor;
+                if (Completed)
+                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
+                if (Available)
+                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+            }
+        }
+
+        public bool Completed => Tech.IsFinished;
+
         public Rect CostIconRect
         {
             get
@@ -54,6 +101,22 @@ namespace HumanResources
                 return _costLabelRect;
             }
         }
+        public Color EdgeColor
+        {
+            get
+            {
+                if (Highlighted)
+                    return GenUI.MouseoverColor;
+                if (Completed)
+                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
+                if (Available)
+                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+            }
+        }
+
+        public virtual bool Highlighted { get; set; }
+
         public Rect IconsRect
         {
             get
@@ -64,6 +127,20 @@ namespace HumanResources
                 return _iconsRect;
             }
         }
+
+        public virtual Texture2D indicator => Completed ? ContentFinder<Texture2D>.Get("UI/write", true) : ContentFinder<Texture2D>.Get("UI/read");
+
+        public virtual bool Known
+        {
+            get
+            {
+                if (Pawn.TechBound()) return Tech.IsKnownBy(Pawn);
+                else return false;
+            }
+        }
+
+        public virtual string Label { get; }
+
         public Rect LabelRect
         {
             get
@@ -106,132 +183,11 @@ namespace HumanResources
                 _pos.y = value;
             }
         }
-        public virtual string Label { get; }
-        public virtual bool Highlighted { get; set; }
-        public void SetRects()
-        {
-            // origin
-            _topLeft = new Vector2(
-                (X - 1) * (ResearchTree_Constants.NodeSize.x + ResearchTree_Constants.NodeMargins.x),
-                (Yf - 1) * (ResearchTree_Constants.NodeSize.y + ResearchTree_Constants.NodeMargins.y));
-
-            SetRects(_topLeft, _size);
-        }
-        public void SetRects(Vector2 topLeft, Vector2 size)
-        {
-            _size = size;
-
-            // main rect
-            _rect = new Rect(topLeft, size);
-
-            // queue rect
-            _queueRect = new Rect(_rect.xMax - ResearchTree_Constants.QueueLabelSize / 2f,
-                                   _rect.yMin + (_rect.height - ResearchTree_Constants.QueueLabelSize) / 2f, ResearchTree_Constants.QueueLabelSize,
-                                   ResearchTree_Constants.QueueLabelSize);
-
-            // label rect
-            _labelRect = new Rect(_rect.xMin + 6f,
-                                   _rect.yMin + 3f,
-                                   _rect.width * 2f / 3f - 6f,
-                                   _rect.height * .5f - 3f);
-
-            // research cost rect
-            _costLabelRect = new Rect(_rect.xMin + _rect.width * 2f / 3f,
-                                       _rect.yMin + 3f,
-                                       _rect.width * 1f / 3f - 16f - 3f,
-                                       _rect.height * .5f - 3f);
-
-            // research icon rect
-            _costIconRect = new Rect(_costLabelRect.xMax,
-                                      _rect.yMin + (_costLabelRect.height - 16f) / 2,
-                                      16f,
-                                      16f);
-
-            // icon container rect
-            _iconsRect = new Rect(_rect.xMin,
-                                   _rect.yMin + _rect.height * .5f,
-                                   _rect.width,
-                                   _rect.height * .5f);
-
-            // lock icon rect
-            _lockRect = new Rect(0f, 0f, 32f, 32f);
-            _lockRect = _lockRect.CenteredOnXIn(_rect);
-            _lockRect = _lockRect.CenteredOnYIn(_rect);
-
-            // see if the label is too big
-            _largeLabel = Text.CalcHeight(Label, _labelRect.width) > _labelRect.height;
-
-            // done
-            _rectsSet = true;
-        }
-        public virtual bool IsVisible(Rect visibleRect)
-        {
-            return !(
-                Rect.xMin > visibleRect.xMax ||
-                Rect.xMax < visibleRect.xMin ||
-                Rect.yMin > visibleRect.yMax ||
-                Rect.yMax < visibleRect.yMin);
-        }
-        //
-
-        public ResearchProjectDef Tech;
-
-        private Pawn Pawn;
-
-        private static Type pseudoParentType = ResearchTree_Patches.ResearchNodeType();
-
-        private MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(pseudoParentType, "GetResearchTooltipString");
-
-        public virtual Texture2D indicator => Completed ? ContentFinder<Texture2D>.Get("UI/write", true) : ContentFinder<Texture2D>.Get("UI/read");
-
-        public ExpertiseNode(ResearchProjectDef research, Pawn pawn)
-        {
-            Pawn = pawn;
-            Tech = research;
-            _pos = new Vector2(0, research.researchViewY + 1);
-        }
-
-        public Color Color
-        {
-            get
-            {
-                if (Highlighted)
-                    return GenUI.MouseoverColor;
-                if (Completed)
-                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
-            }
-        }
-
-        public bool Completed => Tech.IsFinished;
-        public bool Available => !Tech.IsFinished && (DebugSettings.godMode || BuildingPresent());
-
-        public Color EdgeColor
-        {
-            get
-            {
-                if (Highlighted)
-                    return GenUI.MouseoverColor;
-                if (Completed)
-                    return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
-            }
-        }
-
         private CompKnowledge techComp => Pawn.TryGetComp<CompKnowledge>();
 
         public bool BuildingPresent()
         {
             return ResearchTree_Patches.BuildingPresentProxy(Tech);
-        }
-
-        public bool TechprintAvailable()
-        {
-            return ResearchTree_Patches.TechprintAvailable(Tech);
         }
 
         public void Draw(Rect visibleRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
@@ -246,6 +202,9 @@ namespace HumanResources
             var mouseOver = Mouse.IsOver(Rect);
             if (Event.current.type == EventType.Repaint)
             {
+                // for later:
+                float achieved = 0;
+
                 // researches that are completed or could be started immediately, and that have the required building(s) available
                 GUI.color = mouseOver ? GenUI.MouseoverColor : Color;
                 if (mouseOver || Highlighted) GUI.DrawTexture(Rect, ResearchTree_Assets.ButtonActive);
@@ -256,7 +215,8 @@ namespace HumanResources
                 GUI.color = Widgets.WindowBGFillColor;
                 if (techComp.expertise.ContainsKey(Tech))
                 {
-                    progressBarRect.xMin += techComp.expertise[Tech] * progressBarRect.width;
+                    achieved = techComp.expertise[Tech];
+                    progressBarRect.xMin += achieved * progressBarRect.width;
                 }
                 GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 Highlighted = false;
@@ -285,11 +245,7 @@ namespace HumanResources
                 // draw research cost and icon
                 if (detailedMode)
                 {
-                    float cost = Tech.IndividualizedCost(pawnTechLevel);
-                    Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = cost > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, cost.ToStringByStyle(ToStringStyle.Integer));
-                    GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
+                    DrawStats(pawnTechLevel, achieved);
                 }
 
                 Text.WordWrap = true;
@@ -360,9 +316,35 @@ namespace HumanResources
             }
         }
 
-        public List<ThingDef> MissingFacilities()
+        private void DrawStats(TechLevel pawnTechLevel, float achieved)
         {
-            return ResearchTree_Patches.MissingFacilities(Tech);
+            Texture icon = null;
+            string iconTip = null;
+            if (achieved < 1)
+            {
+                float cost = Tech.IndividualizedCost(pawnTechLevel, achieved, KnownSucessor);
+                Text.Anchor = TextAnchor.UpperRight;
+                Text.Font = cost > 1000000 ? GameFont.Tiny : GameFont.Small;
+                Widgets.Label(CostLabelRect, cost.ToStringByStyle(ToStringStyle.Integer));
+                string costTip = Tech.IndividualizedCostExplainer(pawnTechLevel, achieved, cost, KnownSucessor);
+                TooltipHandler.TipRegion(CostLabelRect, costTip);
+                icon = !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon;
+                iconTip = costTip;
+            }
+            else if(!Completed)
+            {
+                icon = ContentFinder<Texture2D>.Get("UI/exclamation", true);
+                iconTip = "MasteredButNotDocumented".Translate(Pawn);
+            }
+            else
+            {
+                icon = ContentFinder<Texture2D>.Get("UI/check", true);
+                iconTip = "MasteredAndArchived".Translate(Pawn);
+            }
+            GUI.DrawTexture(CostIconRect, icon, ScaleMode.ScaleToFit);
+            TooltipHandler.TipRegion(CostIconRect, iconTip);
+
+
         }
 
         public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
@@ -371,6 +353,116 @@ namespace HumanResources
             SetMarked(indicatorRect);
             Draw(visibleRect, pawnTechLevel, !forceDetailedMode);
             SetRects();
+        }
+
+        public virtual bool IsVisible(Rect visibleRect)
+        {
+            return !(
+                Rect.xMin > visibleRect.xMax ||
+                Rect.xMax < visibleRect.xMin ||
+                Rect.yMin > visibleRect.yMax ||
+                Rect.yMax < visibleRect.yMin);
+        }
+
+        public List<ThingDef> MissingFacilities()
+        {
+            return ResearchTree_Patches.MissingFacilities(Tech);
+        }
+
+        public void SetRects()
+        {
+            // origin
+            _topLeft = new Vector2(
+                (X - 1) * (ResearchTree_Constants.NodeSize.x + ResearchTree_Constants.NodeMargins.x),
+                (Yf - 1) * (ResearchTree_Constants.NodeSize.y + ResearchTree_Constants.NodeMargins.y));
+
+            SetRects(_topLeft, _size);
+        }
+        public void SetRects(Vector2 topLeft, Vector2 size)
+        {
+            _size = size;
+
+            // main rect
+            _rect = new Rect(topLeft, size);
+
+            // queue rect
+            _queueRect = new Rect(_rect.xMax - ResearchTree_Constants.QueueLabelSize / 2f,
+                                   _rect.yMin + (_rect.height - ResearchTree_Constants.QueueLabelSize) / 2f, ResearchTree_Constants.QueueLabelSize,
+                                   ResearchTree_Constants.QueueLabelSize);
+
+            // label rect
+            _labelRect = new Rect(_rect.xMin + 6f,
+                                   _rect.yMin + 3f,
+                                   _rect.width * 2f / 3f - 6f,
+                                   _rect.height * .5f - 3f);
+
+            // research cost rect
+            _costLabelRect = new Rect(_rect.xMin + _rect.width * 2f / 3f,
+                                       _rect.yMin + 3f,
+                                       _rect.width * 1f / 3f - 16f - 3f,
+                                       _rect.height * .5f - 3f);
+
+            // research icon rect
+            _costIconRect = new Rect(_costLabelRect.xMax,
+                                      _rect.yMin + (_costLabelRect.height - 16f) / 2,
+                                      16f,
+                                      16f);
+
+            // icon container rect
+            _iconsRect = new Rect(_rect.xMin,
+                                   _rect.yMin + _rect.height * .5f,
+                                   _rect.width,
+                                   _rect.height * .5f);
+
+            // lock icon rect
+            _lockRect = new Rect(0f, 0f, 32f, 32f);
+            _lockRect = _lockRect.CenteredOnXIn(_rect);
+            _lockRect = _lockRect.CenteredOnYIn(_rect);
+
+            // see if the label is too big
+            _largeLabel = Text.CalcHeight(Label, _labelRect.width) > _labelRect.height;
+
+            // done
+            _rectsSet = true;
+        }
+
+
+        //        CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
+        //        Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+        //            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
+        //            {
+        //                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
+        //                {
+        //                    amount *= 2;
+        //                    break;
+        //                }
+        //}
+        //if (researcher != null && researcher.Faction != null)
+        //{
+        //    amount /= tech.CostFactor(techComp.techLevel);
+        //}
+        public bool TechprintAvailable()
+        {
+            return ResearchTree_Patches.TechprintAvailable(Tech);
+        }
+
+        public void UpdateAssignment()
+        {
+            if (techComp != null)
+            {
+                if (Pawn.TechBound() && !Assigned && ((!techComp.expertise.ContainsKey(Tech) || techComp.expertise[Tech] < 1f) || !Completed)) techComp.AssignBranch(Tech);
+                else if (Assigned) techComp.CancelBranch(Tech);
+            }
+        }
+
+        private string AppropriateLeftClickTip()
+        {
+            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Tech)) return "ClickToUnassign";
+            var finished = Tech.IsFinished;
+            var known = Tech.IsKnownBy(Pawn);
+            if (!finished && known) return "ClickToAssignForDocumentation";
+            if (finished && !known) return "ClickToAssignForStudying";
+            return null;
         }
 
         private string GetResearchTooltipString()
@@ -384,14 +476,23 @@ namespace HumanResources
             return text.ToString();
         }
 
-        private string AppropriateLeftClickTip()
+        private bool KnownSucessor
         {
-            if (techComp != null && !techComp.homework.NullOrEmpty() && techComp.homework.Contains(Tech)) return "ClickToUnassign";
-            var finished = Tech.IsFinished;
-            var known = Tech.IsKnownBy(Pawn);
-            if (!finished && known) return "ClickToAssignForDocumentation";
-            if (finished && !known) return "ClickToAssignForStudying";
-            return null;
+            get
+            {
+                if (knownSucessorSet) return knownSucessor;
+                Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+                foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(Pawn)))
+                {
+                    if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(Tech))
+                    {
+                        knownSucessor = true;
+                        break;
+                    }
+                }
+                knownSucessorSet = true;
+                return knownSucessor;
+            }
         }
 
         private void SetMarked(Rect rect)
@@ -417,33 +518,6 @@ namespace HumanResources
                 }
                 TooltipHandler.TipRegionByKey(rect, assignment);
                 if (Widgets.ButtonImage(rect, face)) UpdateAssignment();
-            }
-        }
-
-        public virtual bool Assigned
-        {
-            get
-            {
-                if (Pawn.TechBound() && !techComp.homework.NullOrEmpty()) return techComp.homework.Contains(Tech);
-                else return false;
-            }
-        }
-
-        public virtual bool Known
-        {
-            get
-            {
-                if (Pawn.TechBound()) return Tech.IsKnownBy(Pawn);
-                else return false;
-            }
-        }
-
-        public void UpdateAssignment()
-        {
-            if (techComp != null)
-            {
-                if (Pawn.TechBound() && !Assigned && ((!techComp.expertise.ContainsKey(Tech) || techComp.expertise[Tech] < 1f) || !Completed)) techComp.AssignBranch(Tech);
-                else if (Assigned) techComp.CancelBranch(Tech);
             }
         }
     }

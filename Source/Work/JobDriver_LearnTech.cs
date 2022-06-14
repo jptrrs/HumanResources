@@ -107,7 +107,6 @@ namespace HumanResources
                 }
             });
             acquireKnowledge.FailOn(() => project == null);
-            //research.FailOn(() => !this.Project.CanBeResearchedAt(this.ResearchBench, false)); //need rework
             acquireKnowledge.FailOnCannotTouch(TargetIndex.A, PathEndMode.InteractionCell);
             acquireKnowledge.FailOnDespawnedOrNull(TargetIndex.A);
             acquireKnowledge.WithEffect(EffecterDefOf.Research, TargetIndex.A);
@@ -123,48 +122,5 @@ namespace HumanResources
             yield return Toils_General.Wait(2, TargetIndex.None);
             yield break;
         }
-
-        //public bool CanBeResearchedHere(ResearchProjectDef tech, Building_ResearchBench bench, bool ignoreResearchBenchPowerStatus)
-        //{
-        //	Log.Message("CanBeResearchedHere starting...");
-        //	if (tech.requiredResearchBuilding != null && bench.def != tech.requiredResearchBuilding)
-        //	{
-        //		return false;
-        //	}
-        //	Log.Message("step1");
-        //	if (!ignoreResearchBenchPowerStatus)
-        //	{
-        //		CompPowerTrader comp = bench.GetComp<CompPowerTrader>();
-        //		if (comp != null && !comp.PowerOn)
-        //		{
-        //			return false;
-        //		}
-        //	}
-        //	Log.Message("step2");
-        //	if (!tech.requiredResearchFacilities.NullOrEmpty<ThingDef>())
-        //	{
-        //		var affectedByFacilities = bench.TryGetComp<CompAffectedByFacilities>();
-        //		if (affectedByFacilities == null)
-        //		{
-        //			return false;
-        //		}
-        //		Log.Message("step3");
-
-        //		List<Thing> linkedFacilitiesListForReading = affectedByFacilities.LinkedFacilitiesListForReading;
-        //		int j;
-        //		int i;
-        //		for (i = 0; i < tech.requiredResearchFacilities.Count; i = j + 1)
-        //		{
-        //			if (linkedFacilitiesListForReading.Find((Thing x) => x.def == tech.requiredResearchFacilities[i] && affectedByFacilities.IsFacilityActive(x)) == null)
-        //			{
-        //				return false;
-        //			}
-        //			j = i;
-        //		}
-        //		Log.Message("step4");
-
-        //	}
-        //	return true;
-        //}
     }
 }
