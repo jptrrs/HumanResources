@@ -60,6 +60,23 @@
     </content>
   </HugsLib.UpdateFeatureDef>
 
+  <HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
+    <defName>HumanResources_1_2</defName>
+    <assemblyVersion>1.2</assemblyVersion>
+    <content>
+      |&lt;b&gt;Bridging the Gap revision!&lt;/b&gt;
+      |- &lt;i&gt;Slaves tightened up.&lt;/i&gt;   The same knowledge restrictions that apply to your regular colonists will now also affect your slaves. They had too much of a slack!
+      |- &lt;i&gt;Better feedback on Tech Levels and research costs.&lt;/i&gt;  Unlike vanilla, with &lt;i&gt;HR&lt;/i&gt; your faction's starting tech level doesn't affect your research costs. But the the Research Tree UI didn't get the memo. We've fixed this, so the techs' cost and tooltips are now accurate.
+      |img:TLindicator
+      |What &lt;b&gt;does&lt;/b&gt; affect your research is your researcher's personal tech level. To make that clearer, we've put this indicator on their &lt;i&gt;Tech&lt;/i&gt; tab to show where their expertise stands. Also, the cost for the individual techs displayed there will now be dynamically calculated, varying from pawn to pawn and according to the work they put in. Hover your mouse over that number to see a breakdown of those calculations.
+      |On top of that, we've added and improved compatibility to a couple of mods. Check the change notes on our Steam page for a complete breakdown.
+      |
+      |img:Passion|caption:&lt;b&gt;Please, consider supporting the making of this mod!&lt;/b&gt;
+      |If you are able to contribute, you can buy me a coffee on &lt;i&gt;https://ko-fi.com/jptrrs&lt;/i&gt;, or follow the link above for our Patreon page, where you can also find &lt;b&gt;more mods&lt;/b&gt; and &lt;b&gt;add-ons&lt;/b&gt; that aren't on Steam!
+      |Many, many thanks!
+    </content>
+  </HugsLib.UpdateFeatureDef>
+
   <!--<HugsLib.UpdateFeatureDef ParentName="HumanResources.UpdateFeatureBase">
 	<defName>HumanResources_0_1</defName>
 	<assemblyVersion>0.1</assemblyVersion>
