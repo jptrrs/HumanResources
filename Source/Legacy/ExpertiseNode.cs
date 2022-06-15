@@ -288,8 +288,8 @@ namespace HumanResources
                 if (detailedMode)
                 {
                     Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = Tech.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, Tech.CostApparent.ToStringByStyle(ToStringStyle.Integer));
+                    Text.Font = Tech.baseCost > 1000000 ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label(CostLabelRect, Tech.baseCost.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
                 }
 

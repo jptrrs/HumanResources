@@ -597,8 +597,8 @@ namespace HumanResources
                 if (detailedMode)
                 {
                     Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = Research.CostApparent > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label((Rect)CostLabelRectInfo.GetValue(__instance), Research.CostApparent.ToStringByStyle(ToStringStyle.Integer));
+                    Text.Font = Research.baseCost > 1000000 ? GameFont.Tiny : GameFont.Small;
+                    Widgets.Label((Rect)CostLabelRectInfo.GetValue(__instance), Research.baseCost.ToStringByStyle(ToStringStyle.Integer));
                     GUI.DrawTexture((Rect)CostIconRectInfo.GetValue(__instance), !completed && !available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon,
                                         ScaleMode.ScaleToFit);
                 }
@@ -733,7 +733,7 @@ namespace HumanResources
         }
         public static void EnqueueRange(IEnumerable<ResearchProjectDef> techs)
         {
-            foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.CostApparent).Select(x => ResearchNodesCache[x]))
+            foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.baseCost).Select(x => ResearchNodesCache[x]))
             {
                 if (AltRPal) AppendSInfo.Invoke(null, new object[] { node });
                 else EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });

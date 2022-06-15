@@ -192,6 +192,8 @@ namespace HumanResources
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(HandleDragging_Prefix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "LeftClick"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "TechLevelTooLowTooltip"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechLevelTooLowTooltip_Prefix))));
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = GetFieldOrFeedback(ResearchNodeType(), "isMatched", ref FailedFields);
@@ -318,6 +320,13 @@ namespace HumanResources
                 NormalHighlightColorInfo.SetValue(instance, ShadedColor); //mustard
                 HoverPrimaryColorInfo.SetValue(instance, BrightColor); //yellow
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
+            }
+
+            //Base game
+            if (altRPal)
+            {
+                instance.Patch(AccessTools.Method(typeof(TooltipHandler), "TipRegion", new Type[] { typeof(Rect), typeof(Func<string>), typeof(int) }),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TooltipHandler_TipRegion_Prefix))));
             }
 
             if (!FailedFields.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these fields: {FailedFields.ToStringSafeEnumerable()}. Likely an unforseen update on ResearchTree/Pal");
@@ -765,9 +774,10 @@ namespace HumanResources
         {
             DequeueInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
         }
+
         public static void EnqueueRange(IEnumerable<ResearchProjectDef> techs)
         {
-            foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.CostApparent).Select(x => ResearchNodesCache[x]))
+            foreach (var node in techs.OrderBy(x => XInfo.GetValue(ResearchNodesCache[x])).ThenBy(x => x.baseCost).Select(x => ResearchNodesCache[x]))
             {
                 if (AltRPal) AppendSInfo.Invoke(null, new object[] { node });
                 else EnqueueInfo.Invoke(MainTabInstance, new object[] { node, true });
@@ -877,6 +887,55 @@ namespace HumanResources
             if (searchActive != state) searchActive = state;
         }
 
+        public static bool TechLevelTooLowTooltip_Prefix(ResearchProjectDef ___Research, ref string __result)
+        {
+            __result = (___Research.GetHashCode() + 3).ToString();
+            return false;
+        }
+
+        //Tooltip censoring on the main tree
+        public static bool TooltipHandler_TipRegion_Prefix(Func<string> textGetter, int uniqueId)
+        {
+            return MainTabInstance == null || !textGetter.Invoke().Equals(uniqueId.ToString());
+        }
+
+        //private string ShortcutManualTooltip_Prefix()
+        //{
+        //    if (Event.current.shift)
+        //    {
+        //        StringBuilder builder = new StringBuilder();
+        //        if (PainterIs(Painter.Queue))
+        //        {
+        //            builder.AppendLine(ResourceBank.String.LClickRemoveFromQueue);
+        //        }
+        //        else
+        //        {
+        //            if (Available())
+        //            {
+        //                builder.AppendLine(ResourceBank.String.LClickReplaceQueue);
+        //                builder.AppendLine(ResourceBank.String.SLClickAddToQueue);
+        //                builder.AppendLine(ResourceBank.String.ALClickAddToQueue);
+        //            }
+        //            if (DebugSettings.godMode)
+        //            {
+        //                builder.AppendLine(ResourceBank.String.CLClickDebugInstant);
+        //            }
+        //        }
+        //        if (Available())
+        //        {
+        //            builder.AppendLine(ResourceBank.String.Drag);
+        //        }
+        //        builder.AppendLine(ResourceBank.String.RClickHighlight);
+        //        builder.AppendLine(ResourceBank.String.RClickIcon);
+        //        return builder.ToString();
+        //    }
+        //    else
+        //    {
+        //        return ResourceBank.String.ShiftForShortcutManual;
+        //    }
+        //}
+
+
         //the 1/9/2021 update simplified GetUnlockDefsAndDescs, changing the return type, so these 3 additional methods are now needed. Branching changes ensued.
         public static List<Def> GetUnlockDefs(ResearchProjectDef research) { throw stubMsg; }
 
@@ -901,7 +960,6 @@ namespace HumanResources
             }
             return GetUnlockDefsAndDescs(research);
         }
-
 
         #endregion
     }
