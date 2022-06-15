@@ -773,6 +773,7 @@ namespace HumanResources
         {
             return (bool)IsQueuedInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });
         }
+
         public static void Dequeue(ResearchProjectDef tech)
         {
             DequeueInfo.Invoke(MainTabInstance, new object[] { ResearchNodesCache[tech] });

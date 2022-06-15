@@ -180,6 +180,10 @@ namespace HumanResources
 
         private Pawn Pawn;
 
+        private bool
+            knownSucessorSet = false,
+            KnownSucessor;
+
         private static Type pseudoParentType = ResearchTree_Patches.ResearchNodeType();
 
         private MethodInfo GetResearchTooltipStringInfo = AccessTools.Method(pseudoParentType, "GetResearchTooltipString");
@@ -201,14 +205,11 @@ namespace HumanResources
                     return GenUI.MouseoverColor;
                 if (Completed)
                     return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
             }
         }
 
         public bool Completed => Tech.IsFinished;
-        public bool Available => !Tech.IsFinished && (DebugSettings.godMode || BuildingPresent());
 
         public Color EdgeColor
         {
@@ -218,9 +219,7 @@ namespace HumanResources
                     return GenUI.MouseoverColor;
                 if (Completed)
                     return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
             }
         }
 
@@ -236,7 +235,7 @@ namespace HumanResources
             return ResearchTree_Patches.TechprintAvailable(Tech);
         }
 
-        public void Draw(Rect visibleRect, bool forceDetailedMode = false)
+        public void Draw(Rect visibleRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
         {
             if (!IsVisible(visibleRect))
             {
@@ -248,6 +247,9 @@ namespace HumanResources
             var mouseOver = Mouse.IsOver(Rect);
             if (Event.current.type == EventType.Repaint)
             {
+                // for later:
+                float achieved = 0;
+
                 // researches that are completed or could be started immediately, and that have the required building(s) available
                 GUI.color = mouseOver ? GenUI.MouseoverColor : Color;
                 if (mouseOver || Highlighted) GUI.DrawTexture(Rect, ResearchTree_Assets.ButtonActive);
@@ -258,16 +260,14 @@ namespace HumanResources
                 GUI.color = Widgets.WindowBGFillColor;
                 if (techComp.expertise.ContainsKey(Tech))
                 {
-                    progressBarRect.xMin += techComp.expertise[Tech] * progressBarRect.width;
+                    achieved = techComp.expertise[Tech];
+                    progressBarRect.xMin += achieved * progressBarRect.width;
                 }
                 GUI.DrawTexture(progressBarRect, BaseContent.WhiteTex);
                 Highlighted = false;
 
                 // draw the research label
-                if (!Completed && !Available)
-                    GUI.color = Color.grey;
-                else
-                    GUI.color = Color.white;
+                GUI.color = Color.white;
 
                 if (detailedMode)
                 {
@@ -287,10 +287,7 @@ namespace HumanResources
                 // draw research cost and icon
                 if (detailedMode)
                 {
-                    Text.Anchor = TextAnchor.UpperRight;
-                    Text.Font = Tech.baseCost > 1000000 ? GameFont.Tiny : GameFont.Small;
-                    Widgets.Label(CostLabelRect, Tech.baseCost.ToStringByStyle(ToStringStyle.Integer));
-                    GUI.DrawTexture(CostIconRect, !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon, ScaleMode.ScaleToFit);
+                    DrawStats(pawnTechLevel, achieved);
                 }
 
                 Text.WordWrap = true;
@@ -355,7 +352,7 @@ namespace HumanResources
                 if (Event.current.button == 1)
                 {
                     MainButtonDefOf.Research.Worker.InterfaceTryActivate();
-                    ResearchTree_Patches.interest = Tech;
+                    ResearchTree_Patches.Interest = Tech;
                 }
                 Event.current.Use();
             }
@@ -366,11 +363,42 @@ namespace HumanResources
             return ResearchTree_Patches.MissingFacilities(Tech);
         }
 
-        public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, bool forceDetailedMode = false)
+        private void DrawStats(TechLevel pawnTechLevel, float achieved)
+        {
+            Texture icon = null;
+            string iconTip = null;
+            if (achieved < 1)
+            {
+                float cost = Tech.IndividualizedCost(pawnTechLevel, achieved, KnownSucessor);
+                Text.Anchor = TextAnchor.UpperRight;
+                Text.Font = cost > 1000000 ? GameFont.Tiny : GameFont.Small;
+                Widgets.Label(CostLabelRect, cost.ToStringByStyle(ToStringStyle.Integer));
+                string costTip = Tech.IndividualizedCostExplainer(pawnTechLevel, achieved, cost, KnownSucessor);
+                TooltipHandler.TipRegion(CostLabelRect, costTip);
+                icon = ResearchTree_Assets.ResearchIcon;
+                iconTip = costTip;
+            }
+            else if (!Completed)
+            {
+                icon = ContentFinder<Texture2D>.Get("UI/exclamation", true);
+                iconTip = "MasteredButNotDocumented".Translate(Pawn);
+            }
+            else
+            {
+                icon = ContentFinder<Texture2D>.Get("UI/check", true);
+                iconTip = "MasteredAndArchived".Translate(Pawn);
+            }
+            GUI.DrawTexture(CostIconRect, icon, ScaleMode.ScaleToFit);
+            TooltipHandler.TipRegion(CostIconRect, iconTip);
+
+
+        }
+
+        public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
         {
             SetRects(pos, size);
             SetMarked(indicatorRect);
-            Draw(visibleRect, !forceDetailedMode);
+            Draw(visibleRect, pawnTechLevel, !forceDetailedMode);
             SetRects();
         }
 

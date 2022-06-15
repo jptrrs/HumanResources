@@ -668,6 +668,30 @@ namespace HumanResources
             return hardCopy ? tech.IsOnline() : tech.IsPhysicallyArchived();
         }
 
+        public static float IndividualizedCost(this ResearchProjectDef tech, TechLevel techLevel, float achieved, bool knownSucessor = false)
+        {
+            float cost = tech.baseCost * tech.CostFactor(techLevel);
+            cost *= 1 - achieved;
+            if (knownSucessor) cost /= 2;
+            return cost;
+        }
+
+        public static string IndividualizedCostExplainer(this ResearchProjectDef tech, TechLevel techLevel, float achieved, float finalValue, bool knownSucessor = false)
+        {
+            StringBuilder text = new StringBuilder();
+            text.AppendLine($"Base cost: {tech.baseCost.ToStringByStyle(ToStringStyle.Integer)}");
+            text.AppendLine($"Personal tech level ({techLevel.ToStringHuman()}): x{tech.CostFactor(techLevel).ToStringPercent()}");
+            if (knownSucessor) text.AppendLine($"Known branching tech: x{0.5f.ToStringPercent()}");
+            string costLabel = "Cost to learn";
+            if (achieved > 0)
+            {
+                text.AppendLine($"Learned: {achieved.ToStringPercent()}");
+                costLabel = "Remaining cost to learn";
+            }
+            text.Append($"{costLabel}: {finalValue.ToStringByStyle(ToStringStyle.Integer)}");
+            return text.ToString();
+        }
+
         public static bool IsKnownBy(this ResearchProjectDef tech, Pawn pawn)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();

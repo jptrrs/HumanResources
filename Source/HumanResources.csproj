@@ -152,7 +152,6 @@
     <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
     <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
     <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
@@ -193,7 +192,6 @@
     <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
-    <None Include="Legacy\Extensions_RW1.2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
@@ -216,6 +214,7 @@
   <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2'">
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
@@ -228,6 +227,7 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.1' OR '$(Configuration)' == '1.2'">
     <Compile Include="Legacy\ExpertiseNode.cs" />
+    <Compile Include="Legacy\Extensions_RW1.2.cs" />
     <Compile Include="Legacy\Extension_Research.cs" />
     <Compile Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />

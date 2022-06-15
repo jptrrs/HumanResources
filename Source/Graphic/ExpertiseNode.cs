@@ -335,8 +335,6 @@ namespace HumanResources
             }
             GUI.DrawTexture(CostIconRect, icon, ScaleMode.ScaleToFit);
             TooltipHandler.TipRegion(CostIconRect, iconTip);
-
-
         }
 
         public void DrawAt(Vector2 pos, Vector2 size, Rect visibleRect, Rect indicatorRect, TechLevel pawnTechLevel, bool forceDetailedMode = false)
