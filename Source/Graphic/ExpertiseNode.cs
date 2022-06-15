@@ -63,7 +63,6 @@ namespace HumanResources
             }
         }
 
-        public bool Available => !Tech.IsFinished && (DebugSettings.godMode || BuildingPresent());
 
         public Color Color
         {
@@ -73,9 +72,7 @@ namespace HumanResources
                     return GenUI.MouseoverColor;
                 if (Completed)
                     return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
             }
         }
 
@@ -109,9 +106,7 @@ namespace HumanResources
                     return GenUI.MouseoverColor;
                 if (Completed)
                     return ResearchTree_Assets.ColorCompleted[Tech.techLevel];
-                if (Available)
-                    return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
-                return ResearchTree_Assets.ColorUnavailable[Tech.techLevel];
+                return ResearchTree_Assets.ColorAvailable[Tech.techLevel];
             }
         }
 
@@ -222,10 +217,7 @@ namespace HumanResources
                 Highlighted = false;
 
                 // draw the research label
-                if (!Completed && !Available)
-                    GUI.color = Color.grey;
-                else
-                    GUI.color = Color.white;
+                GUI.color = Color.white;
 
                 if (detailedMode)
                 {
@@ -328,7 +320,7 @@ namespace HumanResources
                 Widgets.Label(CostLabelRect, cost.ToStringByStyle(ToStringStyle.Integer));
                 string costTip = Tech.IndividualizedCostExplainer(pawnTechLevel, achieved, cost, KnownSucessor);
                 TooltipHandler.TipRegion(CostLabelRect, costTip);
-                icon = !Completed && !Available ? ResearchTree_Assets.Lock : ResearchTree_Assets.ResearchIcon;
+                icon = ResearchTree_Assets.ResearchIcon;
                 iconTip = costTip;
             }
             else if(!Completed)
