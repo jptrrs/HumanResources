@@ -17,6 +17,8 @@
 	<Expand>Развернуть</Expand>
 	<Collapse>Свернуть</Collapse>
   <!--NEW--><CurrentTechLevelFor>Current level for {0_nameDef}</CurrentTechLevelFor>
+  <!--NEW--><MasteredButNotDocumented>Mastered by {0_nameDef} but not yet documented.</MasteredButNotDocumented>
+  <!--NEW--><MasteredAndArchived>Mastered by {0_nameDef} and archived.</MasteredAndArchived>
   <TabCatalogue>Каталог</TabCatalogue>
 	<AvailableBooksReport>^Number( {0} | '# книга' | '# книги' | '# книг')^ в ^Number( {1} | '# книжном шкафу' | '# книжных шкафах' | '# книжных шкафах')^</AvailableBooksReport>
 	<AvailableOnNetwork>^Number( {0} | '# технология' | '# технологии' | '# технологий')^ в облачном хранилище</AvailableOnNetwork>

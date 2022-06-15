@@ -17,6 +17,8 @@
   <Expand>Expandir</Expand>
   <Collapse>Recolher</Collapse>
   <CurrentTechLevelFor>Nível atual para {0_nameDef}</CurrentTechLevelFor>
+  <MasteredButNotDocumented>Conhecido por {0_nameDef} mas ainda náo documentado.</MasteredButNotDocumented>
+  <MasteredAndArchived>Conhecido por {0_nameDef} e arquivado.</MasteredAndArchived>
   <TabCatalogue>Catálogo</TabCatalogue>
   <AvailableBooksReport>{0} livros em {1} estantes</AvailableBooksReport>
   <AvailableOnNetwork>{0} tecnologias online</AvailableOnNetwork>

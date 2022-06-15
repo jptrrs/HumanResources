@@ -34,7 +34,11 @@
   
   <!--NEW-->
   <CurrentTechLevelFor>Current level for {0_nameDef}</CurrentTechLevelFor>
-  
+  <!--NEW-->
+  <MasteredButNotDocumented>Mastered by {0_nameDef} but not yet documented.</MasteredButNotDocumented>
+  <!--NEW-->
+  <MasteredAndArchived>Mastered by {0_nameDef} and archived.</MasteredAndArchived>
+
   <!--EN: Catalog-->
   <TabCatalogue>目录</TabCatalogue>
   <!--EN: {0} books in {1} shelves-->
