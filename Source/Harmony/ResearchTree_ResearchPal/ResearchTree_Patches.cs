@@ -194,6 +194,9 @@ namespace HumanResources
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(LeftClick_Prefix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "TechLevelTooLowTooltip"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechLevelTooLowTooltip_Prefix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "ShortcutManualTooltip"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ShortcutManualTooltip_Prefix))),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ShortcutManualTooltip_Postfix))));
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = GetFieldOrFeedback(ResearchNodeType(), "isMatched", ref FailedFields);
@@ -887,53 +890,35 @@ namespace HumanResources
             if (searchActive != state) searchActive = state;
         }
 
+
+        //Redacting misleading Tooltips:
+        //1. Mark faction level tooltip by making its text = its id.
         public static bool TechLevelTooLowTooltip_Prefix(ResearchProjectDef ___Research, ref string __result)
         {
             __result = (___Research.GetHashCode() + 3).ToString();
             return false;
         }
 
-        //Tooltip censoring on the main tree
+        //2. Supress marked tooltips when main research tab window is on.
         public static bool TooltipHandler_TipRegion_Prefix(Func<string> textGetter, int uniqueId)
         {
             return MainTabInstance == null || !textGetter.Invoke().Equals(uniqueId.ToString());
         }
 
-        //private string ShortcutManualTooltip_Prefix()
-        //{
-        //    if (Event.current.shift)
-        //    {
-        //        StringBuilder builder = new StringBuilder();
-        //        if (PainterIs(Painter.Queue))
-        //        {
-        //            builder.AppendLine(ResourceBank.String.LClickRemoveFromQueue);
-        //        }
-        //        else
-        //        {
-        //            if (Available())
-        //            {
-        //                builder.AppendLine(ResourceBank.String.LClickReplaceQueue);
-        //                builder.AppendLine(ResourceBank.String.SLClickAddToQueue);
-        //                builder.AppendLine(ResourceBank.String.ALClickAddToQueue);
-        //            }
-        //            if (DebugSettings.godMode)
-        //            {
-        //                builder.AppendLine(ResourceBank.String.CLClickDebugInstant);
-        //            }
-        //        }
-        //        if (Available())
-        //        {
-        //            builder.AppendLine(ResourceBank.String.Drag);
-        //        }
-        //        builder.AppendLine(ResourceBank.String.RClickHighlight);
-        //        builder.AppendLine(ResourceBank.String.RClickIcon);
-        //        return builder.ToString();
-        //    }
-        //    else
-        //    {
-        //        return ResourceBank.String.ShiftForShortcutManual;
-        //    }
-        //}
+        //3. Masking the actual availability of techs when processing the shortcut tips, so there's no queueing.
+        public static void ShortcutManualTooltip_Prefix(ref bool ____available, ref bool __state)
+        {
+            if (ResearchTreeHelper.QueueAvailable) return;
+            __state = ____available;
+            ____available = false;
+        }
+
+        //4. Restoring actual tech availability when we're done.
+        public static void ShortcutManualTooltip_Postfix(ref bool ____available, ref bool __state)
+        {
+            if (ResearchTreeHelper.QueueAvailable) return;
+            ____available = __state;
+        }
 
 
         //the 1/9/2021 update simplified GetUnlockDefsAndDescs, changing the return type, so these 3 additional methods are now needed. Branching changes ensued.
