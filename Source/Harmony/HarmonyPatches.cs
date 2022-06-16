@@ -140,7 +140,8 @@ namespace HumanResources
             x.PackageIdPlayerFacing.StartsWith("Mlie.RoadsOfTheRim") ||
             x.PackageIdPlayerFacing.StartsWith("fluffy.backuppower") ||
             x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") ||
-            x.PackageIdPlayerFacing.StartsWith("Ogliss.AdMech.Armoury")))
+            x.PackageIdPlayerFacing.StartsWith("Ogliss.AdMech.Armoury") ||
+            x.PackageIdPlayerFacing.StartsWith("VanillaExpanded.VFEArt")))
             {
                 RunSpecialCases = true;
             }

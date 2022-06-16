@@ -18,8 +18,9 @@ namespace HumanResources
             CraftingHints = new List<string>() { "tool", "armor", "armour", "cloth" },
             IntellectualHints = new List<string>() { "manage" },
             MiningHints = new List<string>() { "scanner", "explosive", "terraform" },
-            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery" },
-            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic" };
+            MedicineHints = new List<string>() { "sterile", "medical", "medicine", "cryptosleep", "prostheses", "implant", "organs", "surgery", "biosculpter", "neural" },
+            PlantsHints = new List<string>() { "irrigation", "soil", "hydroponic", "farm" },
+            ArtisticHints = new List<string>() { "music", "sculpture" };
 
         public List<string> Hints
         {
@@ -34,6 +35,7 @@ namespace HumanResources
                     else if (Skill == SkillDefOf.Mining) hints.AddRange(MiningHints);
                     else if (Skill == SkillDefOf.Medicine) hints.AddRange(MedicineHints);
                     else if (Skill == SkillDefOf.Plants) hints.AddRange(PlantsHints);
+                    else if (Skill == SkillDefOf.Artistic) hints.AddRange(ArtisticHints);
                 }
                 return hints;
             }
