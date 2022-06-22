@@ -300,7 +300,8 @@ namespace HumanResources
                     keywords.Add("weapon");
                 }
             }
-            if (LoadedModManager.RunningMods.First(x => x.PackageIdPlayerFacing.StartsWith("VanillaExpanded.VFEArt")).AllDefs.Contains(tech))
+            var VFE = LoadedModManager.RunningMods.Where(x => x.PackageIdPlayerFacing.StartsWith("VanillaExpanded.VFEArt"));
+            if (!VFE.EnumerableNullOrEmpty() && VFE.First().AllDefs.Contains(tech))
             {
                 SetSkillRelevance(SkillDefOf.Artistic, true);
             }

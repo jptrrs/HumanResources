@@ -303,6 +303,11 @@ namespace HumanResources
                     keywords.Add("weapon");
                 }
             }
+            var VFE = LoadedModManager.RunningMods.Where(x => x.PackageIdPlayerFacing.StartsWith("VanillaExpanded.VFEArt"));
+            if (!VFE.EnumerableNullOrEmpty() && VFE.First().AllDefs.Contains(tech))
+            {
+                SetSkillRelevance(SkillDefOf.Artistic, true);
+            }
         }
 
         private static int CheckUnlockedRecipes(this ResearchProjectDef tech, ref int recipeThingsCount, ref int recipeSkillsCount, IEnumerable<RecipeDef> recipeDefs)
