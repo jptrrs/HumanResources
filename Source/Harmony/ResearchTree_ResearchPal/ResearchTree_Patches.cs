@@ -471,6 +471,7 @@ namespace HumanResources
                 ReflectKnowledge(techComp, out expertiseDisplay);
                 displayActive = true;
             }
+            ColonistHighlight(size, excess, pawn, box, mouseOver, techComp.raisedHand);
             GUI.DrawTexture(box, PortraitsCache.Get(pawn, boxSize, Rot4.South, cameraZoom: 1.4f));
             if (!techComp.homework.NullOrEmpty())
             {
@@ -482,9 +483,13 @@ namespace HumanResources
                 }
                 TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
             }
-            bool flag = techComp.raisedHand;
-            GUI.color = flag ? BrightColor : GUI.color;
-            if (mouseOver || flag) GUI.DrawTexture(box, TexUI.HighlightTex);
+        }
+
+        private static void ColonistHighlight(float size, bool excess, Pawn pawn, Rect box, bool mouseOver, bool raisedHand)
+        {
+            GUI.color = raisedHand ? BrightColor : GUI.color;
+            Texture texture = raisedHand ? BaseContent.WhiteTex : TexUI.HighlightTex;
+            if (mouseOver || raisedHand) GUI.DrawTexture(box, texture);
             Vector2 pos = new Vector2(box.center.x, box.yMax);
             if (!excess || mouseOver) GenMapUI.DrawPawnLabel(pawn, pos, 1f, size, null, GameFont.Tiny, false, true);
             GUI.color = Color.white;
@@ -856,7 +861,6 @@ namespace HumanResources
         {
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             if (mouseOver) ResearchTree_Watcher.OnTechHovered(__instance, Research);
-            //else ResearchTree_Watcher.OnHoverOut(__instance, Research);
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             Research.DrawExtras(rect, mouseOver || HighlightedProxy(__instance));
             if (mouseOver && Event.current.type == EventType.MouseDown && Event.current.button == 0)

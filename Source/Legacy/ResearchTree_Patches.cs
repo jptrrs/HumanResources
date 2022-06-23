@@ -190,6 +190,8 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "ShortcutManualTooltip"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ShortcutManualTooltip_Prefix))),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ShortcutManualTooltip_Postfix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "Unhighlight"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Unhighlight_Prefix))));
                 HighlightInfo = AccessTools.Method(ResearchNodeType(), "Highlight");
                 BuildingPresentInfo = AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { ResearchNodeType() });
                 isMatchedInfo = GetFieldOrFeedback(ResearchNodeType(), "isMatched", ref FailedFields);
@@ -414,42 +416,44 @@ namespace HumanResources
                 canvas = canvas.ExpandedBy(Margin);
             }
             float padding = 12f;
-            float spacing = Find.ColonistBar.SpaceBetweenColonistsHorizontal;
-            float height = canvas.height;
-            float startPos = canvas.xMax - height - padding;
-            Vector2 size = new Vector2(height + spacing, height - padding);
-            Vector2 innerSize = new Vector2(height - padding, height - padding);
-            IEnumerable<object> expertiseDisplay = new object[] { };
+            float size = canvas.height;
+            float startPos = canvas.xMax - (size / 2) - padding;
+            var colonists = Find.ColonistBar.GetColonistsInOrder();
+            float space = canvas.width - 2 * padding;
+            bool excess = (colonists.Count() * size - space) > 0;
+            float spacing = excess ? space / colonists.Count() : size;
+            Vector2 boxSize = new Vector2(spacing, size - padding);
+            IEnumerable<object> expertiseDisplay = Array.Empty<object>();
             bool displayActive = false;
-            using (IEnumerator<Pawn> enumerator = Find.ColonistBar.GetColonistsInOrder().Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
+            using (IEnumerator<Pawn> enumerator = colonists.Where(x => x.TechBound()).AsEnumerable().Reverse().GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
-                    Vector2 position = new Vector2(startPos, canvas.y);
-                    Rect box = new Rect(position, size);
-                    Rect innerBox = new Rect(position.x + spacing, position.y, size.x - spacing - 2 * padding, size.y);
                     Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
-                    CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-                    if (Mouse.IsOver(innerBox))
-                    {
-                        DeInterest();
-                        ReflectKnowledge(techComp, out expertiseDisplay);
-                        displayActive = true;
-                    }
-                    if (!techComp.homework.NullOrEmpty())
-                    {
-                        StringBuilder homeworkSummary = new StringBuilder();
-                        homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
-                        foreach (var tech in techComp.homework)
-                        {
-                            homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
-                        }
-                        TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
-                    }
-                    Vector2 pos = new Vector2(box.center.x, box.yMax);
-                    GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
-                    startPos -= height;
+                    Vector2 position = new Vector2(startPos, canvas.y);
+                    DrawColonistOnTree(padding, size, excess, boxSize, ref expertiseDisplay, ref displayActive, pawn, position);
+                    startPos -= spacing;
+
+                    //GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.4f));
+                    //CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+                    //if (Mouse.IsOver(innerBox))
+                    //{
+                    //    DeInterest();
+                    //    ReflectKnowledge(techComp, out expertiseDisplay);
+                    //    displayActive = true;
+                    //}
+                    //if (!techComp.homework.NullOrEmpty())
+                    //{
+                    //    StringBuilder homeworkSummary = new StringBuilder();
+                    //    homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                    //    foreach (var tech in techComp.homework)
+                    //    {
+                    //        homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                    //    }
+                    //    TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
+                    //}
+                    //Vector2 pos = new Vector2(box.center.x, box.yMax);
+                    //GenMapUI.DrawPawnLabel(pawn, pos, 1f, box.width, null, GameFont.Tiny, false, true);
                 }
             }
             if (AltRPal)
@@ -467,7 +471,43 @@ namespace HumanResources
             }
             return false;
         }
-        
+
+        private static void DrawColonistOnTree(float padding, float size, bool excess, Vector2 boxSize, ref IEnumerable<object> expertiseDisplay, ref bool displayActive, Pawn pawn, Vector2 position)
+        {
+            Rect box = new Rect(position, boxSize);
+            Rect innerBox = new Rect(position.x + padding, position.y, boxSize.x - 2 * padding, boxSize.y);
+            bool mouseOver = Mouse.IsOver(innerBox);
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (mouseOver)
+            {
+                DeInterest();
+                ReflectKnowledge(techComp, out expertiseDisplay);
+                displayActive = true;
+            }
+            ColonistHighlight(size, excess, pawn, box, mouseOver, techComp.raisedHand);
+            GUI.DrawTexture(box, PortraitsCache.Get(pawn, boxSize, default, 1.4f));
+            if (!techComp.homework.NullOrEmpty())
+            {
+                StringBuilder homeworkSummary = new StringBuilder();
+                homeworkSummary.AppendLine("AssignedTo".Translate(pawn));
+                foreach (var tech in techComp.homework)
+                {
+                    homeworkSummary.AppendLine("- " + TechStrings.GetTask(pawn, tech) + " " + tech.label);
+                }
+                TooltipHandler.TipRegionByKey(box, homeworkSummary.ToString());
+            }
+        }
+
+        private static void ColonistHighlight(float size, bool excess, Pawn pawn, Rect box, bool mouseOver, bool raisedHand)
+        {
+            GUI.color = raisedHand ? BrightColor : GUI.color;
+            Texture texture = raisedHand ? BaseContent.WhiteTex : TexUI.HighlightTex;
+            if (mouseOver || raisedHand) GUI.DrawTexture(box, texture);
+            Vector2 pos = new Vector2(box.center.x, box.yMax);
+            if (!excess || mouseOver) GenMapUI.DrawPawnLabel(pawn, pos, 1f, size, null, GameFont.Tiny, false, true);
+            GUI.color = Color.white;
+        }
+
         public static bool EdgeColor_Prefix(object __instance, ref Color __result)
         {
             if (HighlightedProxy(__instance))
@@ -693,6 +733,7 @@ namespace HumanResources
 
                 if (mouseOver)
                 {
+                    ResearchTree_Watcher.OnTechHovered(__instance, Research);
                     if (Interest != null && Interest != Research) DeInterest();
 
                     //highlight prerequisites if research available
@@ -709,6 +750,7 @@ namespace HumanResources
                             HighlightedProxy(Convert.ChangeType(child, ResearchNodeType()), true);
                     }
                 }
+                else ResearchTree_Watcher.OnHoverOut(__instance, Research);
             }
 
             //CUSTOM: a bunch of things on top
@@ -831,6 +873,7 @@ namespace HumanResources
         public static bool HandleDragging_Prefix(object __instance, bool mouseOver, bool ____available)
         {
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
+            if (mouseOver) ResearchTree_Watcher.OnTechHovered(__instance, Research);
             Rect rect = (Rect)RectInfo.GetValue(__instance);
             Research.DrawExtras(rect, mouseOver || HighlightedProxy(__instance));
             if (mouseOver && Event.current.type == EventType.MouseDown && Event.current.button == 0)
@@ -867,6 +910,11 @@ namespace HumanResources
                 return (bool)HighlightedInfo.GetValue(node);
             }
             return false;
+        }
+
+        public static void Unhighlight_Prefix(object __instance, ResearchProjectDef ___Research)
+        {
+            ResearchTree_Watcher.OnHoverOut(__instance, ___Research);
         }
 
         public static bool LeftClick_Prefix()
