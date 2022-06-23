@@ -12,6 +12,22 @@ namespace HumanResources
 
     public class CompKnowledge : ThingComp
     {
+
+        private void TreeNodeHoveredHandler(object sender, ResearchProjectDef tech)
+        {
+            if (knownTechs.EnumerableNullOrEmpty() || tech == null)
+            {
+                lastQuery = null;
+                return;
+            }
+            if (knownTechs.Contains(tech)) lastQuery = tech;
+        }
+
+        private void TreeNodeHoveredOutHandler(object sender, ResearchProjectDef tech)
+        {
+            if (lastQuery == tech) lastQuery = null;
+        }
+
         public Dictionary<ResearchProjectDef, float> expertise;
         public List<ResearchProjectDef> homework;
         public TechLevel techLevel;
@@ -33,6 +49,9 @@ namespace HumanResources
             proficientWeapons;
         private List<ThingDef> _craftableWeapons = new List<ThingDef>();
         private List<ResearchProjectDef> _knownTechs;
+
+        public bool raisedHand => lastQuery != null;
+        private ResearchProjectDef lastQuery = null;
 
         public IEnumerable<ThingDef> craftableWeapons
         {
@@ -388,6 +407,8 @@ namespace HumanResources
         {
             if (expertise == null) AcquireExpertise();
             if (techLevel == 0) techLevel = expertise.Keys.Aggregate((a, b) => a.techLevel > b.techLevel ? a : b).techLevel;
+            ResearchTree_Watcher.TechHovered += TreeNodeHoveredHandler;
+            ResearchTree_Watcher.HoveredOut += TreeNodeHoveredOutHandler;
         }
 
         private static int FactionExpertiseRange(TechLevel level)
