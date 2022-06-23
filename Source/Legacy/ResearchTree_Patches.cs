@@ -500,7 +500,7 @@ namespace HumanResources
 
         private static void ColonistHighlight(float size, bool excess, Pawn pawn, Rect box, bool mouseOver, bool raisedHand)
         {
-            GUI.color = raisedHand ? BrightColor : GUI.color;
+            GUI.color = raisedHand ? ShadedColor : GUI.color;
             Texture texture = raisedHand ? BaseContent.WhiteTex : TexUI.HighlightTex;
             if (mouseOver || raisedHand) GUI.DrawTexture(box, texture);
             Vector2 pos = new Vector2(box.center.x, box.yMax);
