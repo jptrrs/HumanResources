@@ -104,15 +104,20 @@ namespace HumanResources
         public void AcquireExpertise()
         {
             if (Prefs.LogVerbose) Log.Warning($"[HumanResources] Acquiring expertise for {pawn}...");
+
             expertise = new Dictionary<ResearchProjectDef, float>();
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
-            var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
-            if (!acquiredExpertise.EnumerableNullOrEmpty())
+            if (IsPawnEligibleForExpertise(pawn))
             {
-                expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
-                if (Prefs.LogVerbose) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} knowledge is going to be {expertise.Keys.ToStringSafeEnumerable()}.");
+                var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
+
+                if (!acquiredExpertise.EnumerableNullOrEmpty())
+                {
+                    expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
+                    if (Prefs.LogVerbose) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} knowledge is going to be {expertise.Keys.ToStringSafeEnumerable()}.");
+                }
+                else Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
             }
-            else Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
             AcquireWeaponKnowledge(faction);
             if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} weapon proficiency is going to be: {proficientWeapons.ToStringSafeEnumerable()}");
             AcquirePlantKnowledge();
@@ -221,7 +226,7 @@ namespace HumanResources
         {
             //1. Gather info on that pawn
 
-            //a. tech level
+            // A - Tech level
             TechLevel factionTechLevel = faction?.techLevel ?? 0;
             TechLevel childhoodLevel = 0;
             SkillDef childhoodSkill = null;
@@ -229,13 +234,13 @@ namespace HumanResources
             techLevel = TechPoolIncludesBackground || !isPlayer ? FindBGTechLevel(pawn, out childhoodLevel, out childhoodSkill) : factionTechLevel;
             TechLevel workingTechLevel = startingTechLevel = techLevel;
 
-            //b. highest skills
+            // B - Highest skills
             SkillRecord highestSkillRecord = pawn.skills.skills.Aggregate(AccessHighestSkill);
             SkillDef highestSkill = highestSkillRecord.def;
             IEnumerable<SkillRecord> secondCandidates = pawn.skills.skills.Except(highestSkillRecord).Where(x => SkillIsRelevant(x.def, techLevel));
             SkillDef secondSkill = secondCandidates.Aggregate(AccessHighestSkill).def;
 
-            //c. age
+            // C - Age
             float middleAge = pawn.RaceProps.lifeExpectancy / 2;
             int matureAge = pawn.RaceProps.lifeStageAges.FindLastIndex(x => x.minAge < middleAge); //not always the last possible age because there are mods with an "eldery" stage
             int growthAdjust = 0;
@@ -249,7 +254,7 @@ namespace HumanResources
                 oldBonus = 1;
             }
 
-            //d. special cases
+            // D - Special cases
             isFighter = highestSkill == SkillDefOf.Melee;
             isShooter = highestSkill == SkillDefOf.Shooting;
             int fighterHandicap = (isFighter | isShooter) ? 1 : 0;
@@ -407,7 +412,7 @@ namespace HumanResources
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             if (expertise == null) AcquireExpertise();
-            if (techLevel == 0) techLevel = expertise.Keys.Aggregate((a, b) => a.techLevel > b.techLevel ? a : b).techLevel;
+            if (techLevel == 0) techLevel = expertise.Any() ? expertise.Keys.Aggregate((a, b) => a.techLevel > b.techLevel ? a : b).techLevel : GetFactionTechLevel(pawn);
             ResearchTree_Watcher.TechHovered += TreeNodeHoveredHandler;
             ResearchTree_Watcher.HoveredOut += TreeNodeHoveredOutHandler;
         }
@@ -436,25 +441,42 @@ namespace HumanResources
             return i;
         }
 
+        /// <summary>
+        /// Check if pawn is a Child without any SkillGains (Biotech) - If so, they should not have any expertise
+        /// </summary>
+        /// <param name="pawn"></param>
+        /// <returns></returns>
+        private static bool IsPawnEligibleForExpertise(Pawn pawn)
+        {
+            if (!pawn.story.Childhood.skillGains.Any() && pawn.story.Adulthood == null)
+            {
+                Log.Message($"[HumanResources] - {pawn} is a child with no SkillGains, and will not have any Expertise");
+                return false;
+            }
+
+            return true;
+        }
+
         private static TechLevel FindBGTechLevel(Pawn pawn, out TechLevel childhoodLevel, out SkillDef childhoodSkill)
         {
             TechLevel asAdult = 0;
             TechLevel asChild = 0;
+            childhoodLevel = 0;
             childhoodSkill = null;
+
             try
             {
                 if (pawn.story != null)
                 {
-                    asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Childhood.identifier]; // Backstory-access for pawns is now from a Property and the original field has been made Private
-                    if (pawn.story.Adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Adulthood.identifier];
+                    asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Childhood.defName];
+                    if (pawn.story.Adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Adulthood.defName];
                     var skillGains = pawn.story.Childhood.skillGains;
                     if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
                     else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
                 }
                 if (asAdult == 0 || asChild == 0)
                 {
-                    FactionDef faction = pawn.Faction?.def ?? pawn.kindDef?.defaultFactionType;
-                    TechLevel fallback = faction?.techLevel ?? TechLevel.Industrial;
+                    TechLevel fallback = GetFactionTechLevel(pawn);
                     if (asAdult == 0) asAdult = fallback;
                     if (asChild == 0) asChild = fallback;
                 }
@@ -465,6 +487,12 @@ namespace HumanResources
             }
             childhoodLevel = asChild;
             return asAdult;
+        }
+
+        private static TechLevel GetFactionTechLevel(Pawn pawn)
+        {
+            FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+            return faction?.techLevel ?? TechLevel.Industrial;
         }
 
         private static bool SkillIsRelevant(SkillDef skill, TechLevel level)
