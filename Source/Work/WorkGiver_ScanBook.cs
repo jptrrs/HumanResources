@@ -91,9 +91,9 @@ namespace HumanResources
         protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
         {
             IntRange range = (IntRange)rangeInfo.GetValue(this);
-            if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
+            if (Find.TickManager.TicksGame >= bill.nextTickToSearchForIngredients + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
             {
-                bill.lastIngredientSearchFailTicks = 0;
+                bill.nextTickToSearchForIngredients = 0;
                 if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                 {
                     Job result = TryStartNewDoBillJob(pawn, bill, giver);
@@ -225,7 +225,7 @@ namespace HumanResources
                 return chosenIngThings.Any();
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksToScan".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
             return false;
         }
     }

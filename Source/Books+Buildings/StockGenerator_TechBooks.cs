@@ -19,7 +19,7 @@ namespace HumanResources
             return base.GenerateThings(forTile, faction);
         }
 
-        public override Thing MakeThing(ThingDef def, Faction faction = null)
+        protected override Thing MakeThing(ThingDef def, Faction faction = null) // Another one that Vanilla code made Protected
         {
             if (!def.tradeability.TraderCanSell())
             {
@@ -52,7 +52,7 @@ namespace HumanResources
             return thingDef.tradeability != Tradeability.None && thingDef.techLevel <= maxTechLevelBuy && thingDef == TechDefOf.TechBook;
         }
 
-        public override float SelectionWeight(ThingDef thingDef)
+        protected override float SelectionWeight(ThingDef thingDef)
         {
             return SelectionWeightMarketValueCurve.Evaluate(thingDef.BaseMarketValue);
         }

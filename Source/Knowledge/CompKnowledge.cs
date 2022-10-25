@@ -444,9 +444,9 @@ namespace HumanResources
             {
                 if (pawn.story != null)
                 {
-                    asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.childhood.identifier];
-                    if (pawn.story.adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.adulthood.identifier];
-                    var skillGains = pawn.story.childhood.skillGainsResolved;
+                    asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Childhood.identifier]; // Backstory-access for pawns is now from a Property and the original field has been made Private
+                    if (pawn.story.Adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Adulthood.identifier];
+                    var skillGains = pawn.story.Childhood.skillGains;
                     if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
                     else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
                 }

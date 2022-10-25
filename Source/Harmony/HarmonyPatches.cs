@@ -50,6 +50,12 @@ namespace HumanResources
                 ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
                 ResearchPal = true;
             }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("owlchemist.researchpowl")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPowl.");
+                ResearchTree_Patches.Execute(Instance, "ResearchPowl", true);
+                ResearchPal = true;
+            }
             else
             {
                 Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");

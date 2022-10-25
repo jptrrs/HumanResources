@@ -50,7 +50,7 @@ namespace HumanResources
                 if (!traumas.NullOrEmpty() && chosenIngThings.All(x => traumas.Contains(x.Thing.def))) JobFailReason.Is("FearedWeapon".Translate(pawn));
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
             return false;
         }
     }

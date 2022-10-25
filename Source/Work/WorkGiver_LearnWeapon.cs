@@ -98,9 +98,9 @@ namespace HumanResources
         protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
         {
             IntRange range = (IntRange)rangeInfo.GetValue(this);
-            if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
+            if (Find.TickManager.TicksGame >= bill.nextTickToSearchForIngredients + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
             {
-                bill.lastIngredientSearchFailTicks = 0;
+                bill.nextTickToSearchForIngredients = 0;
                 if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                 {
                     Job result = TryStartNewDoBillJob(pawn, bill, giver);
@@ -120,7 +120,7 @@ namespace HumanResources
                 return job;
             }
             Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
-            if (chosenIngThings.Any()) //to acomodate PractiseWeapon, which uses no ingredient.
+            if (chosenIngThings.Any()) //to accomodate PractiseWeapon, which uses no ingredient.
             {
                 job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
                 job2.countQueue = new List<int>(chosenIngThings.Count);
@@ -145,7 +145,7 @@ namespace HumanResources
                 }
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
             return false;
         }
     }

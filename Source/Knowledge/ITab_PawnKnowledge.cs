@@ -97,7 +97,7 @@ namespace HumanResources
         private TechLevel IndividualTechLevel => PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.techLevel ?? Faction.OfPlayer.def.techLevel;
 
 
-        public override void FillTab()
+        protected override void FillTab()
         {
             float padding = Mathf.Max(margin, 10f);
             Rect canvas = new Rect(margin, 2 * margin, size.x - margin - 1f, size.y - 2 * margin);
@@ -111,13 +111,13 @@ namespace HumanResources
             ResearchTree_Patches.Context = PawnToShowInfoAbout.TryGetComp<CompKnowledge>();
         }
 
-        public  override void CloseTab()
+        protected override void CloseTab()
         {
             ResearchTree_Patches.Context = null;
             base.CloseTab();
         }
 
-        public override void UpdateSize()
+        protected override void UpdateSize()
         {
             base.UpdateSize();
             Vector2 margins = new Vector2(17f, 17f) * 2f;
