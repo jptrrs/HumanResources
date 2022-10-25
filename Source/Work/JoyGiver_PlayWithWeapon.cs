@@ -5,7 +5,7 @@ namespace HumanResources
 {
     class JoyGiver_PlayWithWeapon : JoyGiver_InteractBuildingInteractionCell
     {
-        protected override bool CanInteractWith(Pawn pawn, Thing t, bool inBed)
+        public override bool CanInteractWith(Pawn pawn, Thing t, bool inBed)
         {
             bool flag = false;
             if (pawn.equipment != null && pawn.equipment.Primary != null)

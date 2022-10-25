@@ -191,7 +191,7 @@ namespace HumanResources
             }
         }
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             Bill bill = job.bill;
             AddEndCondition(delegate
