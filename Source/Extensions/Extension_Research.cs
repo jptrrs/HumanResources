@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
@@ -139,6 +140,7 @@ namespace HumanResources
                 }
             };
             techStuff.ResolveReferences();
+
             MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
             GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
             DefDatabase<ThingDef>.Add(techStuff);

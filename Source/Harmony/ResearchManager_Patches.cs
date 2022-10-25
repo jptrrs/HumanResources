@@ -12,7 +12,7 @@ namespace HumanResources
     public static class ResearchManager_Patches
     {
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(ResearchManager.FinishProject), new Type[] { typeof(ResearchProjectDef), typeof(bool), typeof(Pawn) })]
+        [HarmonyPatch(nameof(ResearchManager.FinishProject), new Type[] { typeof(ResearchProjectDef), typeof(bool), typeof(Pawn), typeof(bool) })]
         public static void FinishProject_Postfix(ResearchProjectDef proj)
         {
             var weapons = proj.UnlockedWeapons();

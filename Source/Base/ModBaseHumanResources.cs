@@ -8,7 +8,6 @@ using System.Reflection;
 using UnityEngine.SceneManagement;
 using Verse;
 
-
 namespace HumanResources
 {
     using static HumanResourcesSettings;
@@ -30,7 +29,7 @@ namespace HumanResources
         //    StudySpeedTiedToDifficulty,
         //    FullStartupReport,
         //    IndividualTechsReport;
-        public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
+        public static FieldInfo ScenePartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef>
             SimpleWeapons = new List<ThingDef>(),
             MountedWeapons = new List<ThingDef>(),
@@ -50,13 +49,14 @@ namespace HumanResources
         //public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
         //public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
 
-        public override string ModIdentifier
-        {
-            get
-            {
-                return "JPT_HumanResources";
-            }
-        }
+        // Deprecated
+        //public override string ModIdentifier
+        //{
+        //    get
+        //    {
+        //        return "JPT_HumanResources";
+        //    }
+        //}
 
         public override void DefsLoaded()
         {
@@ -112,7 +112,7 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //d. Also removing atipical weapons
+            //d. Also removing atypical weapons
             List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
@@ -234,11 +234,11 @@ namespace HumanResources
             }
         }
 
-        public override void SettingsChanged()
-        {
-            base.SettingsChanged();
-            //UpdateSettings();
-        }
+        //public override void SettingsChanged()
+        //{
+        //    base.SettingsChanged();
+        //    //UpdateSettings();
+        //}
 
         //public void UpdateSettings()
         //{
@@ -275,11 +275,11 @@ namespace HumanResources
         //    }
         //}
 
-        public void ResetControl(SettingHandle hanlde)
-        {
-            MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
-            ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
-        }
+        //public void ResetControl(SettingHandle hanlde)
+        //{
+        //    MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
+        //    ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
+        //}
 
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
         {

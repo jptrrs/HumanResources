@@ -32,33 +32,16 @@ namespace HumanResources
             //Harmony.DEBUG = true;
             Instance.PatchAll();
 
-            //ResearchTree/ResearchPal integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
-            {
-                Log.Message("[HumanResources] Deriving from ResearchTree.");
-                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
-            }
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
-            {
-                Log.Message("[HumanResources] Deriving from ResearchPal.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal");
-                ResearchPal = true;
-            }
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
-            {
-                Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
-                ResearchPal = true;
-            }
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("owlchemist.researchpowl")))
+            // ResearchPowl integration -- Other forks of the original ResearchTree mod are abandoned
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
             {
                 Log.Message("[HumanResources] Deriving from ResearchPowl.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPowl", true);
+                ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
                 ResearchPal = true;
             }
             else
             {
-                Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");
+                Log.Error("[HumanResources] Could not find ResearchPowl. Human Resources will not work!");
             }
 
             //Go Explore! integration
