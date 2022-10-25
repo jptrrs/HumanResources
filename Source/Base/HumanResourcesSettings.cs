@@ -13,20 +13,18 @@ namespace HumanResources
     {
 
         public static bool
-            TechPoolTitle,
-            TechPoolIncludesStarting,
-            TechPoolIncludesTechLevel,
+            TechPoolIncludesStarting = true,
+            TechPoolIncludesTechLevel = true,
             TechPoolIncludesBackground,
-            TechPoolIncludesScenario,
+            TechPoolIncludesScenario = true,
             FreeScenarioWeapons,
             LearnMeleeWeaponsByGroup,
-            LearnRangedWeaponsByGroup,
+            LearnRangedWeaponsByGroup = true,
             RequireTrainingForSingleUseWeapons,
-            EnableJoyGiver,
-            ResearchSpeedTiedToDifficulty,
-            StudySpeedTiedToDifficulty,
+            EnableJoyGiver = true,
+            ResearchSpeedTiedToDifficulty = true,
+            StudySpeedTiedToDifficulty = true,
             FullStartupReport;
-        //IndividualTechsReport; // Not sure what this does, not referenced anywhere
 
         public static FactionWeaponPool WeaponPoolMode;
         public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
@@ -34,19 +32,19 @@ namespace HumanResources
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref TechPoolTitle, "TechPoolTitle", false);
-            Scribe_Values.Look(ref TechPoolIncludesStarting, "TechPoolIncludesStarting", true);
-            Scribe_Values.Look(ref TechPoolIncludesTechLevel, "TechPoolIncludesTechLevel", true);
-            Scribe_Values.Look(ref TechPoolIncludesBackground, "TechPoolIncludesBackground", false);
-            Scribe_Values.Look(ref TechPoolIncludesScenario, "TechPoolIncludesScenario", true);
-            Scribe_Values.Look(ref FreeScenarioWeapons, "FreeScenarioWeapons", false);
-            Scribe_Values.Look(ref LearnMeleeWeaponsByGroup, "LearnMeleeWeaponsByGroup", false) ;
-            Scribe_Values.Look(ref LearnRangedWeaponsByGroup, "LearnRangedWeaponsByGroup", true);
-            Scribe_Values.Look(ref RequireTrainingForSingleUseWeapons, "RequireTrainingForSingleUseWeapons", false);
-            Scribe_Values.Look(ref EnableJoyGiver, "EnableJoyGiver", true);
-            Scribe_Values.Look(ref ResearchSpeedTiedToDifficulty, "ResearchSpeedTiedToDifficulty", true);
-            Scribe_Values.Look(ref StudySpeedTiedToDifficulty, "StudySpeedTiedToDifficulty", true);
-            Scribe_Values.Look(ref FullStartupReport, "FullStartupReport", false);
+            //Scribe_Values.Look(ref TechPoolTitle, "TechPoolTitle", false);
+            Scribe_Values.Look<bool>(ref TechPoolIncludesStarting, "TechPoolIncludesStarting", true);
+            Scribe_Values.Look<bool>(ref TechPoolIncludesTechLevel, "TechPoolIncludesTechLevel", true);
+            Scribe_Values.Look<bool>(ref TechPoolIncludesBackground, "TechPoolIncludesBackground", false);
+            Scribe_Values.Look<bool>(ref TechPoolIncludesScenario, "TechPoolIncludesScenario", true);
+            Scribe_Values.Look<bool>(ref FreeScenarioWeapons, "FreeScenarioWeapons", false);
+            Scribe_Values.Look<bool>(ref LearnMeleeWeaponsByGroup, "LearnMeleeWeaponsByGroup", false) ;
+            Scribe_Values.Look<bool>(ref LearnRangedWeaponsByGroup, "LearnRangedWeaponsByGroup", true);
+            Scribe_Values.Look<bool>(ref RequireTrainingForSingleUseWeapons, "RequireTrainingForSingleUseWeapons", false);
+            Scribe_Values.Look<bool>(ref EnableJoyGiver, "EnableJoyGiver", true);
+            Scribe_Values.Look<bool>(ref ResearchSpeedTiedToDifficulty, "ResearchSpeedTiedToDifficulty", true);
+            Scribe_Values.Look<bool>(ref StudySpeedTiedToDifficulty, "StudySpeedTiedToDifficulty", true);
+            Scribe_Values.Look<bool>(ref FullStartupReport, "FullStartupReport", false);
             Scribe_Values.Look<FactionWeaponPool>(ref WeaponPoolMode, "WeaponPoolMode", FactionWeaponPool.Scenario);
             //Scribe_Values.Look(ref IndividualTechsReport, "IndividualTechsReport");
             base.ExposeData();
