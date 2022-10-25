@@ -8,6 +8,7 @@ using Verse;
 
 namespace HumanResources
 {
+    using static HumanResourcesSettings;
     using static ModBaseHumanResources;
 
     public class CompKnowledge : ThingComp

@@ -11,6 +11,7 @@ using Verse;
 
 namespace HumanResources
 {
+    using static HumanResourcesSettings;
     using static ModBaseHumanResources;
     using static ResearchTree_Patches;
     using static ResearchTreeHelper;

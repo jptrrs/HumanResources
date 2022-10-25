@@ -143,6 +143,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BackupState.cs" />
+    <Compile Include="Base\HumanResources.cs" />
+    <Compile Include="Base\HumanResourcesSettings.cs" />
     <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Base\TechDatabase.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Books+Buildings\RoomRoleWorker_Library.cs" />
     <Compile Include="Books+Buildings\ShootingRangeUtility.cs" />
     <Compile Include="Books+Buildings\StatPart_AvailableBooks.cs" />
+    <Compile Include="Extensions\Listing_StandardExtension.cs" />
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />

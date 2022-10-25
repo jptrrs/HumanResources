@@ -8,25 +8,28 @@ using System.Reflection;
 using UnityEngine.SceneManagement;
 using Verse;
 
+
 namespace HumanResources
 {
+    using static HumanResourcesSettings;
+
     public class ModBaseHumanResources : ModBase
     {
-        public static SettingHandle<bool>
-            TechPoolTitle,
-            TechPoolIncludesStarting,
-            TechPoolIncludesTechLevel,
-            TechPoolIncludesBackground,
-            TechPoolIncludesScenario,
-            FreeScenarioWeapons,
-            LearnMeleeWeaponsByGroup,
-            LearnRangedWeaponsByGroup,
-            RequireTrainingForSingleUseWeapons,
-            EnableJoyGiver,
-            ResearchSpeedTiedToDifficulty,
-            StudySpeedTiedToDifficulty,
-            FullStartupReport,
-            IndividualTechsReport;
+        //public static SettingHandle<bool>
+        //    TechPoolTitle,
+        //    TechPoolIncludesStarting,
+        //    TechPoolIncludesTechLevel,
+        //    TechPoolIncludesBackground,
+        //    TechPoolIncludesScenario,
+        //    FreeScenarioWeapons,
+        //    LearnMeleeWeaponsByGroup,
+        //    LearnRangedWeaponsByGroup,
+        //    RequireTrainingForSingleUseWeapons,
+        //    EnableJoyGiver,
+        //    ResearchSpeedTiedToDifficulty,
+        //    StudySpeedTiedToDifficulty,
+        //    FullStartupReport,
+        //    IndividualTechsReport;
         public static FieldInfo ScenPartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef>
             SimpleWeapons = new List<ThingDef>(),
@@ -34,7 +37,7 @@ namespace HumanResources
             UniversalCrops = new List<ThingDef>(),
             UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
-        public static FactionWeaponPool WeaponPoolMode;
+        //public static FactionWeaponPool WeaponPoolMode;
         private static bool GameJustLoaded = true;
 
         public ModBaseHumanResources()
@@ -42,10 +45,10 @@ namespace HumanResources
             Settings.EntryName = "Human Resources";
         }
 
-        public enum FactionWeaponPool { Both, TechLevel, Scenario }
+        //public enum FactionWeaponPool { Both, TechLevel, Scenario }
 
-        public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
-        public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
+        //public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
+        //public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
 
         public override string ModIdentifier
         {
@@ -58,7 +61,7 @@ namespace HumanResources
         public override void DefsLoaded()
         {
             //1. Preparing settings
-            UpdateSettings();
+            //UpdateSettings();
 
             //2. Adding Tech Tab to Pawns
             //ThingDef injection stolen from the work of notfood for Psychology
@@ -234,43 +237,43 @@ namespace HumanResources
         public override void SettingsChanged()
         {
             base.SettingsChanged();
-            UpdateSettings();
+            //UpdateSettings();
         }
 
-        public void UpdateSettings()
-        {
-            TechPoolTitle = Settings.GetHandle("TechPoolTitle", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), false);
-            TechPoolTitle.CustomDrawer = rect => false;
-            TechPoolTitle.CanBeReset = false;
-            TechPoolIncludesStarting = Settings.GetHandle<bool>("TechPoolIncludesStarting", "TechPoolIncludesStartingTitle".Translate(), "TechPoolIncludesStartingDesc".Translate(), true);
-            TechPoolIncludesStarting.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-            TechPoolIncludesTechLevel = Settings.GetHandle<bool>("TechPoolIncludesTechLevel", "TechPoolIncludesTechLevelTitle".Translate(), "TechPoolIncludesTechLevelDesc".Translate(), true);
-            TechPoolIncludesTechLevel.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-            TechPoolIncludesBackground = Settings.GetHandle<bool>("TechPoolIncludesBackground", "TechPoolIncludesBackgroundTitle".Translate(), "TechPoolIncludesBackgroundDesc".Translate(), false);
-            TechPoolIncludesBackground.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-            TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
-            TechPoolIncludesScenario.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-            WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
-            FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
-            LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);
-            LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
-            RequireTrainingForSingleUseWeapons = Settings.GetHandle<bool>("RequireTrainingForSingleUseWeapons", "RequireTrainingForSingleUseWeaponsTitle".Translate(), "RequireTrainingForSingleUseWeaponsDesc".Translate(), false);
-            EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
-            ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
-            StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
-            FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
-            FullStartupReport.NeverVisible = !Prefs.DevMode;
-        }
+        //public void UpdateSettings()
+        //{
+        //    TechPoolTitle = Settings.GetHandle("TechPoolTitle", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), false);
+        //    TechPoolTitle.CustomDrawer = rect => false;
+        //    TechPoolTitle.CanBeReset = false;
+        //    TechPoolIncludesStarting = Settings.GetHandle<bool>("TechPoolIncludesStarting", "TechPoolIncludesStartingTitle".Translate(), "TechPoolIncludesStartingDesc".Translate(), true);
+        //    TechPoolIncludesStarting.OnValueChanged = x => { ValidateTechPoolSettings(x); };
+        //    TechPoolIncludesTechLevel = Settings.GetHandle<bool>("TechPoolIncludesTechLevel", "TechPoolIncludesTechLevelTitle".Translate(), "TechPoolIncludesTechLevelDesc".Translate(), true);
+        //    TechPoolIncludesTechLevel.OnValueChanged = x => { ValidateTechPoolSettings(x); };
+        //    TechPoolIncludesBackground = Settings.GetHandle<bool>("TechPoolIncludesBackground", "TechPoolIncludesBackgroundTitle".Translate(), "TechPoolIncludesBackgroundDesc".Translate(), false);
+        //    TechPoolIncludesBackground.OnValueChanged = x => { ValidateTechPoolSettings(x); };
+        //    TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
+        //    TechPoolIncludesScenario.OnValueChanged = x => { ValidateTechPoolSettings(x); };
+        //    WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
+        //    FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
+        //    LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);
+        //    LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
+        //    RequireTrainingForSingleUseWeapons = Settings.GetHandle<bool>("RequireTrainingForSingleUseWeapons", "RequireTrainingForSingleUseWeaponsTitle".Translate(), "RequireTrainingForSingleUseWeaponsDesc".Translate(), false);
+        //    EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
+        //    ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
+        //    StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
+        //    FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
+        //    FullStartupReport.NeverVisible = !Prefs.DevMode;
+        //}
 
-        public void ValidateTechPoolSettings(bool value)
-        {
-            if (!value && !TechPoolIncludesStarting.Value && !TechPoolIncludesTechLevel.Value && !TechPoolIncludesBackground && !TechPoolIncludesScenario)
-            {
-                Messages.Message("TechPoolMinimumDefaultMsg".Translate(), MessageTypeDefOf.CautionInput);
-                TechPoolIncludesStarting.ResetToDefault();
-                ResetControl(TechPoolIncludesStarting);
-            }
-        }
+        //public void ValidateTechPoolSettings(bool value)
+        //{
+        //    if (!value && !TechPoolIncludesStarting.Value && !TechPoolIncludesTechLevel.Value && !TechPoolIncludesBackground && !TechPoolIncludesScenario)
+        //    {
+        //        Messages.Message("TechPoolMinimumDefaultMsg".Translate(), MessageTypeDefOf.CautionInput);
+        //        TechPoolIncludesStarting.ResetToDefault();
+        //        ResetControl(TechPoolIncludesStarting);
+        //    }
+        //}
 
         public void ResetControl(SettingHandle hanlde)
         {
