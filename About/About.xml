@@ -21,6 +21,7 @@
     <li>jelly.survivaltoolsreborn</li>
     <li>roolo.whatthehack</li>
     <li>bennington.medievalpatches</li>
+    <li>Owlchemist.ResearchPowl</li>
   </loadAfter>
   <incompatibleWith>
     <li>GHXX.TechAdvancing</li>
