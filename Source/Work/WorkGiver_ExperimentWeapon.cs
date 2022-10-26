@@ -37,7 +37,7 @@ namespace HumanResources
 
         protected override bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
-            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+            if (TryFindBestBillIngredients(bill, pawn, giver as Thing, chosenIngThings, missingIngredients))
             {
                 var studyWeapons = StudyWeapons(bill, pawn);
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));

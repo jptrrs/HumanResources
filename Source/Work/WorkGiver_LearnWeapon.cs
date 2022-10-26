@@ -12,7 +12,6 @@ namespace HumanResources
     internal class WorkGiver_LearnWeapon : WorkGiver_Knowledge
     {
         public new List<ThingCount> chosenIngThings = new List<ThingCount>();
-        protected MethodInfo BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
         protected FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
         public static bool ShouldReserve(Pawn p, LocalTargetInfo target, int maxPawns = 1, int stackCount = -1, ReservationLayerDef layer = null, bool ignoreOtherReservations = false)
@@ -120,7 +119,7 @@ namespace HumanResources
                 return job;
             }
             Job job2 = new Job(TechJobDefOf.TrainWeapon, (Thing)giver);
-            if (chosenIngThings.Any()) //to accomodate PractiseWeapon, which uses no ingredient.
+            if (chosenIngThings.Any()) //to accommodate PractiseWeapon, which uses no ingredient.
             {
                 job2.targetQueueB = new List<LocalTargetInfo>(chosenIngThings.Count);
                 job2.countQueue = new List<int>(chosenIngThings.Count);
@@ -134,7 +133,7 @@ namespace HumanResources
 
         protected virtual bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
-            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+            if (TryFindBestBillIngredients(bill, pawn, giver as Thing, chosenIngThings, missingIngredients))
             {
                 var studyWeapons = StudyWeapons(bill, pawn);
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));

@@ -14,9 +14,7 @@ namespace HumanResources
     class WorkGiver_ScanBook : WorkGiver_Knowledge
     {
         public new List<ThingCount> chosenIngThings = new List<ThingCount>();
-        protected static MethodInfo
-            GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell"),
-            BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+        protected static MethodInfo GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell");
         protected static FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
         private static Func<Thing, Bill, List<Thing>> ContainsSelected = (thing, bill) =>
