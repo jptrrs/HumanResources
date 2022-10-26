@@ -117,7 +117,7 @@ namespace HumanResources
             }
 
             //Fluffy Breakdowns integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") || x.PackageIdPlayerFacing.StartsWith("theeyeofbrows.fluffybreakdowns")))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Fluffy.FluffyBreakdowns") || x.PackageIdPlayerFacing.StartsWith("theeyeofbrows.fluffybreakdowns")))
             {
                 Log.Message("[HumanResources] Fluffy Breakdowns detected! Integrating...");
                 FluffyBreakdowns_Patches.Execute(Instance);
