@@ -66,7 +66,7 @@ namespace HumanResources
 
         public static bool ExemptIfSingleUse(this ThingDef weapon)
         {
-            return !ModBaseHumanResources.RequireTrainingForSingleUseWeapons && weapon.IsSingleUseWeapon();
+            return !HumanResourcesSettings.RequireTrainingForSingleUseWeapons && weapon.IsSingleUseWeapon();
         }
 
         public static bool NotThatHard(this ThingDef weapon)

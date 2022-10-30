@@ -235,5 +235,10 @@ namespace HumanResources
             }
             return false;
         }
+
+        public void Notify_SettingsChanged()
+        {
+            // TODO Only used in a few places in vanilla 1.4 code. Need to assess if this needs to be implemented or not. Several "implementations" of it are blank like this in the vanilla code. 
+        }
     }
 }

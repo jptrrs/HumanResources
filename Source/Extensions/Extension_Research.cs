@@ -6,11 +6,13 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
 namespace HumanResources
 {
+    using static HumanResourcesSettings;
     using static ModBaseHumanResources;
     using static ResearchTree_Patches;
     using static ResearchTreeHelper;
@@ -138,8 +140,13 @@ namespace HumanResources
                 }
             };
             techStuff.ResolveReferences();
-            MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
-            GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
+
+            //MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
+            //GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
+
+            var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+            ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
+
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;

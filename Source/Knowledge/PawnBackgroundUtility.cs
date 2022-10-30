@@ -18,13 +18,14 @@ namespace HumanResources
 
         public static void BuildCache()
         {
-            foreach (var bs in BackstoryDatabase.allBackstories)
+            foreach (var backstory in DefDatabase<BackstoryDef>.AllDefs)//(var bs in BackstoryDatabase.allBackstories)
             {
-                TechLevelByBackstory.Add(bs.Key, InferTechLevelfromBackstory(bs.Value));
+                //TechLevelByBackstory.Add(backstory.Key, InferTechLevelfromBackstory(backstory.Value));
+                TechLevelByBackstory.Add(backstory.defName, InferTechLevelfromBackstory(backstory));
             }
         }
 
-        public static TechLevel InferTechLevelfromBackstory(Backstory backstory)
+        public static TechLevel InferTechLevelfromBackstory(BackstoryDef backstory)
         {
             string text = (backstory.untranslatedTitle + " " + backstory.untranslatedTitleShort + " " + backstory.untranslatedDesc).ToLower();
             foreach (string word in spacerHints)
