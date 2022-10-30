@@ -28,7 +28,7 @@ namespace HumanResources
             }
         }
 
-        public static string ResearchPalNamespaceRoot
+        public static string ResearchPalLocalizationNamespaceRoot
         {
             get
             {
@@ -40,7 +40,7 @@ namespace HumanResources
                     case ResearchPalVersion.VinaLx:
                         return "ResearchPal";
                     case ResearchPalVersion.Owlchemist:
-                        return "ResearchPowl";
+                        return "ResearchPal"; // Because of course OwlChemist kept those as "ResearchPal" //return "ResearchPowl";
                     default: return string.Empty;
                 }
             }

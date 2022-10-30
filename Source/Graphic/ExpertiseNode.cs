@@ -243,7 +243,7 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 // Attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPalNamespaceRoot;
+                string root = HarmonyPatches.ResearchPalLocalizationNamespaceRoot;
 
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
                 if (!BuildingPresent())
@@ -434,7 +434,10 @@ namespace HumanResources
         //}
         public bool TechprintAvailable()
         {
-            return ResearchTree_Patches.TechprintAvailable(Tech);
+            if (HarmonyPatches.ResearchPal != ResearchPalVersion.Owlchemist)
+                return ResearchTree_Patches.TechprintAvailable(Tech);
+
+            return ResearchTree_Patches.OwlChemistTechprintAvailable(Tech);
         }
 
         public void UpdateAssignment()

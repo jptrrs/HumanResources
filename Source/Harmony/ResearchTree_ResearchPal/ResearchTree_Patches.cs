@@ -258,7 +258,7 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(MainTabType(), "SetRects"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MainTabWindow_SetRects_Postfix))));
             };
-            if (!AltRPal.HasFlag(ResearchPalVersion.Owlchemist) && modName != "ResearchPal") // ResearchTree-specific?
+            if (AltRPal.HasFlag(ResearchPalVersion.Fluffy)) // ResearchTree-specific?
             {
                 instance.Patch(AccessTools.Method(MainTabType(), "Notify_TreeInitialized"),
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeInitialized_Postfix))));
@@ -277,7 +277,7 @@ namespace HumanResources
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Prefix))),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(PopulateNodes_Postfix))));
-            if (modName == "ResearchPal")
+            if (!AltRPal.HasFlag(ResearchPalVersion.Fluffy))
             {
                 string initializer = (AltRPal & ResearchPalVersion.PalForks) != 0 ? "InitializeLayout" : "Initialize";
                 instance.Patch(AccessTools.Method(TreeType(), initializer),
@@ -683,14 +683,14 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 //attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPalNamespaceRoot;
+                string root = HarmonyPatches.ResearchPalLocalizationNamespaceRoot;
                 TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
                 if (!BuildingPresentProxy(Research))
                 {
                     string languageKey = root + ".MissingFacilities";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
                 }
-                else if (!TechprintAvailable(Research))
+                else if (!OwlChemistTechprintAvailable(Research) || (AltRPal != ResearchPalVersion.Owlchemist && !TechprintAvailable(Research)))
                 {
                     string languageKey = root + ".MissingTechprints";
                     TooltipHandler.TipRegion(rect, languageKey.Translate(Research.TechprintsApplied, Research.techprintCount));
@@ -775,6 +775,11 @@ namespace HumanResources
 
         public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
 
+        public static bool OwlChemistTechprintAvailable(ResearchProjectDef research)
+        {
+            return research.TechprintRequirementMet;
+        }
+
         public static void TreeRect_Prefix(object __instance)
         {
             if (!nodeSizeHacked)
@@ -856,7 +861,11 @@ namespace HumanResources
 
         public static bool BuildingPresentProxy(ResearchProjectDef research)
         {
-            if ((AltRPal & ResearchPalVersion.PalForks) != 0 && ResearchNodeInfo != null)
+            if ((AltRPal & ResearchPalVersion.Owlchemist) != 0)
+            {
+                return research.PlayerHasAnyAppropriateResearchBench; // WTF? Apparently what we were looking for here is a completely vanilla property. 1.4 addition? Powl just checks this while older forks have some funky Algorithm and Caching.
+            }
+            if ((AltRPal & ResearchPalVersion.VinaLx) != 0 && ResearchNodeInfo != null)
             {
                 object rnode = ResearchNodeInfo.Invoke(research, new object[] { research });
                 return (bool)BuildingPresentInfo.Invoke(rnode, new object[] { rnode });
