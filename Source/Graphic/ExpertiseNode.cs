@@ -242,8 +242,9 @@ namespace HumanResources
 
                 Text.WordWrap = true;
 
-                // attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
+                // Attach description and further info to a tooltip
+                string root = HarmonyPatches.ResearchPalNamespaceRoot;
+
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
                 if (!BuildingPresent())
                 {

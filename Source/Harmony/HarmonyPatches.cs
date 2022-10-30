@@ -10,12 +10,13 @@ namespace HumanResources
         public static Harmony instance = null;
 
         public static bool
-            ResearchPal = false,
             PrisonLabor = false,
             VFEM = false,
             RunSpecialCases = false,
             SemiRandom = false,
             VisibleBooksCategory = false;
+
+        public static ResearchPalVersion ResearchPal = ResearchPalVersion.Fluffy;
 
         public static Harmony Instance
         {
@@ -24,6 +25,24 @@ namespace HumanResources
                 if (instance == null)
                     instance = new Harmony("JPT.HumanResources");
                 return instance;
+            }
+        }
+
+        public static string ResearchPalNamespaceRoot
+        {
+            get
+            {
+                switch (ResearchPal)
+                {
+                    case ResearchPalVersion.Fluffy:
+                        return "Fluffy.ResearchTree";
+                    case ResearchPalVersion.NotFood:
+                    case ResearchPalVersion.VinaLx:
+                        return "ResearchPal";
+                    case ResearchPalVersion.Owlchemist:
+                        return "ResearchPowl";
+                    default: return string.Empty;
+                }
             }
         }
 
@@ -36,8 +55,26 @@ namespace HumanResources
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
             {
                 Log.Message("[HumanResources] Deriving from ResearchPowl.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
-                ResearchPal = true;
+                ResearchTree_Patches.Execute(Instance, "ResearchPowl", ResearchPalVersion.Owlchemist);
+                ResearchPal = ResearchPalVersion.Owlchemist;
+            }
+            // ResearchTree/ResearchPal integration - Assuming
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchTree.");
+                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPal.");
+                ResearchTree_Patches.Execute(Instance, "ResearchPal");
+                ResearchPal = ResearchPalVersion.NotFood;
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
+                ResearchTree_Patches.Execute(Instance, "ResearchPal", ResearchPalVersion.VinaLx);
+                ResearchPal = ResearchPalVersion.VinaLx;
             }
             else
             {
