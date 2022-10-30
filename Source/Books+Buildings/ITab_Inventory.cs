@@ -68,7 +68,7 @@ namespace HumanResources
             labelKey = "TabCatalogue";
         }
 
-        public override void FillTab() // FillTab access became Protected in 1.4
+        public override void FillTab()
         {
             Text.Font = GameFont.Small;
             Rect rect = new Rect(0f, 20f, size.x, size.y - 20f);

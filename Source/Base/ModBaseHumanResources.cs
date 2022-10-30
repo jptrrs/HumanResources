@@ -14,21 +14,6 @@ namespace HumanResources
 
     public class ModBaseHumanResources : ModBase
     {
-        //public static SettingHandle<bool>
-        //    TechPoolTitle,
-        //    TechPoolIncludesStarting,
-        //    TechPoolIncludesTechLevel,
-        //    TechPoolIncludesBackground,
-        //    TechPoolIncludesScenario,
-        //    FreeScenarioWeapons,
-        //    LearnMeleeWeaponsByGroup,
-        //    LearnRangedWeaponsByGroup,
-        //    RequireTrainingForSingleUseWeapons,
-        //    EnableJoyGiver,
-        //    ResearchSpeedTiedToDifficulty,
-        //    StudySpeedTiedToDifficulty,
-        //    FullStartupReport,
-        //    IndividualTechsReport;
         public static FieldInfo ScenePartThingDefInfo = AccessTools.Field(typeof(ScenPart_ThingCount), "thingDef");
         public static List<ThingDef>
             SimpleWeapons = new List<ThingDef>(),
@@ -36,7 +21,6 @@ namespace HumanResources
             UniversalCrops = new List<ThingDef>(),
             UniversalWeapons = new List<ThingDef>();
         public static UnlockManager unlocked = new UnlockManager();
-        //public static FactionWeaponPool WeaponPoolMode;
         private static bool GameJustLoaded = true;
 
         public ModBaseHumanResources()
@@ -44,26 +28,10 @@ namespace HumanResources
             Settings.EntryName = "Human Resources";
         }
 
-        //public enum FactionWeaponPool { Both, TechLevel, Scenario }
-
-        //public static bool WeaponPoolIncludesScenario => WeaponPoolMode != FactionWeaponPool.TechLevel;
-        //public static bool WeaponPoolIncludesTechLevel => WeaponPoolMode < FactionWeaponPool.Scenario;
-
-        // Deprecated
-        //public override string ModIdentifier
-        //{
-        //    get
-        //    {
-        //        return "JPT_HumanResources";
-        //    }
-        //}
-
         public override void DefsLoaded()
         {
-            //1. Preparing settings
-            //UpdateSettings();
 
-            //2. Adding Tech Tab to Pawns
+            // 1. Adding Tech Tab to Pawns
             //ThingDef injection stolen from the work of notfood for Psychology
             var zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
             IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
@@ -85,9 +53,9 @@ namespace HumanResources
             }
             InspectPaneUtility.Reset();
 
-            //3. Preparing knowledge support infrastructure
+            // 2. Preparing knowledge support infrastructure
 
-            //a. Provisions to deal with turrets & artilleries
+            // A. Provisions to deal with turrets & artilleries
             List<ThingDef> turretGuns = new List<ThingDef>();
             foreach (var (t, foundGun) in from ThingDef t in DefDatabase<ThingDef>.AllDefs
                                           let foundGun = t.GetTurretGun()
@@ -98,11 +66,11 @@ namespace HumanResources
                 else turretGuns.Add(foundGun);
             }
 
-            //b. Things everyone knows
+            // B. Things everyone knows
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon).Except(turretGuns));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
-            //c. Minus things unlocked on research
+            // C. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
@@ -112,16 +80,16 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //d. Also removing atypical weapons
+            // D. Also removing atypical weapons
             List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
             garbage.Add(TechDefOf.HardWeapons);
 
-            //e. Classifying pawn backstories
+            // E. Classifying pawn backstories
             PawnBackgroundUtility.BuildCache();
 
-            //f. Telling humans what's going on
+            // F. Telling humans what's going on
             ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose || FullStartupReport)
@@ -156,15 +124,15 @@ namespace HumanResources
             }
             else Log.Message($"[HumanResources] This is what we know: {codifiedTech.EnumerableCount()} technologies processed, {UniversalCrops.Count()} basic crops, {UniversalWeapons.Count()} basic weapons + {SimpleWeapons.Count()} that require training.");
 
-            //4. Filling gaps on the database
+            // 5. Filling gaps on the database
 
-            //a. TechBook dirty trick, but only now this is possible!
+            // A. TechBook dirty trick, but only now this is possible!
             TechDefOf.TechBook.stuffCategories = TechDefOf.UnfinishedTechBook.stuffCategories = TechDefOf.LowTechCategories.stuffCategories;
             TechDefOf.TechDrive.stuffCategories = TechDefOf.HiTechCategories.stuffCategories;
             garbage.Add(TechDefOf.LowTechCategories);
             garbage.Add(TechDefOf.HiTechCategories);
 
-            //b. Filling main tech category with subcategories
+            // B. Filling main tech category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
                 foreach (ThingCategoryDef c in t.thingCategories)
@@ -177,7 +145,7 @@ namespace HumanResources
                 }
             }
 
-            //c. Populating knowledge recipes and book shelves
+            // C. Populating knowledge recipes and book shelves
             foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.ingredients.Count == 1 && x.fixedIngredientFilter.AnyAllowedDef == null))
             {
                 r.fixedIngredientFilter.ResolveReferences();
@@ -189,7 +157,7 @@ namespace HumanResources
                 t.building.defaultStorageSettings.filter.ResolveReferences();
             }
 
-            //d. Removing temporary defs from database.
+            // D. Removing temporary defs from database.
             foreach (ThingDef def in garbage)
             {
                 AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { def });
@@ -233,53 +201,6 @@ namespace HumanResources
                 }
             }
         }
-
-        //public override void SettingsChanged()
-        //{
-        //    base.SettingsChanged();
-        //    //UpdateSettings();
-        //}
-
-        //public void UpdateSettings()
-        //{
-        //    TechPoolTitle = Settings.GetHandle("TechPoolTitle", "TechPoolModeTitle".Translate(), "TechPoolModeDesc".Translate(), false);
-        //    TechPoolTitle.CustomDrawer = rect => false;
-        //    TechPoolTitle.CanBeReset = false;
-        //    TechPoolIncludesStarting = Settings.GetHandle<bool>("TechPoolIncludesStarting", "TechPoolIncludesStartingTitle".Translate(), "TechPoolIncludesStartingDesc".Translate(), true);
-        //    TechPoolIncludesStarting.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-        //    TechPoolIncludesTechLevel = Settings.GetHandle<bool>("TechPoolIncludesTechLevel", "TechPoolIncludesTechLevelTitle".Translate(), "TechPoolIncludesTechLevelDesc".Translate(), true);
-        //    TechPoolIncludesTechLevel.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-        //    TechPoolIncludesBackground = Settings.GetHandle<bool>("TechPoolIncludesBackground", "TechPoolIncludesBackgroundTitle".Translate(), "TechPoolIncludesBackgroundDesc".Translate(), false);
-        //    TechPoolIncludesBackground.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-        //    TechPoolIncludesScenario = Settings.GetHandle<bool>("TechPoolIncludesScenario", "TechPoolIncludesScenarioTitle".Translate(), "TechPoolIncludesScenarioDesc".Translate(), true);
-        //    TechPoolIncludesScenario.OnValueChanged = x => { ValidateTechPoolSettings(x); };
-        //    WeaponPoolMode = Settings.GetHandle("WeaponPoolMode", "WeaponPoolModeTitle".Translate(), "WeaponPoolModeDesc".Translate(), FactionWeaponPool.Scenario, null, "WeaponPoolMode_");
-        //    FreeScenarioWeapons = Settings.GetHandle("FreeScenarioWeapons", "FreeScenarioWeaponsTitle".Translate(), "FreeScenarioWeaponsDesc".Translate(), false);
-        //    LearnMeleeWeaponsByGroup = Settings.GetHandle<bool>("LearnMeleeWeaponsByGroup", "LearnMeleeWeaponsByGroupTitle".Translate(), "LearnMeleeWeaponsByGroupDesc".Translate(), false);
-        //    LearnRangedWeaponsByGroup = Settings.GetHandle<bool>("LearnRangedWeaponsByGroup", "LearnRangedWeaponsByGroupTitle".Translate(), "LearnRangedWeaponsByGroupDesc".Translate(), true);
-        //    RequireTrainingForSingleUseWeapons = Settings.GetHandle<bool>("RequireTrainingForSingleUseWeapons", "RequireTrainingForSingleUseWeaponsTitle".Translate(), "RequireTrainingForSingleUseWeaponsDesc".Translate(), false);
-        //    EnableJoyGiver = Settings.GetHandle<bool>("EnableJoyGiver", "EnableJoyGiverTitle".Translate(), "EnableJoyGiverDesc".Translate(), true);
-        //    ResearchSpeedTiedToDifficulty = Settings.GetHandle<bool>("ResearchSpeedTiedToDifficulty", "ResearchSpeedTiedToDifficultyTitle".Translate(), "ResearchSpeedTiedToDifficultyDesc".Translate(), true);
-        //    StudySpeedTiedToDifficulty = Settings.GetHandle<bool>("StudySpeedTiedToDifficulty", "StudySpeedTiedToDifficultyTitle".Translate(), "StudySpeedTiedToDifficultyDesc".Translate(), true);
-        //    FullStartupReport = Settings.GetHandle<bool>("FullStartupReport", "DEV: Print full startup report", null, false);
-        //    FullStartupReport.NeverVisible = !Prefs.DevMode;
-        //}
-
-        //public void ValidateTechPoolSettings(bool value)
-        //{
-        //    if (!value && !TechPoolIncludesStarting.Value && !TechPoolIncludesTechLevel.Value && !TechPoolIncludesBackground && !TechPoolIncludesScenario)
-        //    {
-        //        Messages.Message("TechPoolMinimumDefaultMsg".Translate(), MessageTypeDefOf.CautionInput);
-        //        TechPoolIncludesStarting.ResetToDefault();
-        //        ResetControl(TechPoolIncludesStarting);
-        //    }
-        //}
-
-        //public void ResetControl(SettingHandle hanlde)
-        //{
-        //    MethodInfo ResetHandleControlInfo = AccessTools.Method("HugsLib.Settings.Dialog_ModSettings:ResetHandleControlInfo");
-        //    ResetHandleControlInfo.Invoke(Find.WindowStack.currentlyDrawnWindow, new object[] { hanlde });
-        //}
 
         private static bool SplitSimpleWeapons(ThingDef t, List<string> forbiddenWeaponTags)
         {

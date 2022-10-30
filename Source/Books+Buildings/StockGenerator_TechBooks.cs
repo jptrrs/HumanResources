@@ -19,7 +19,7 @@ namespace HumanResources
             return base.GenerateThings(forTile, faction);
         }
 
-        public override Thing MakeThing(ThingDef def, Faction faction = null) // Another one that Vanilla code made Protected
+        public override Thing MakeThing(ThingDef def, Faction faction = null)
         {
             if (!def.tradeability.TraderCanSell())
             {
