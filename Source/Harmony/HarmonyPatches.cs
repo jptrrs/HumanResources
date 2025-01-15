@@ -38,9 +38,8 @@ namespace HumanResources
                         return "Fluffy.ResearchTree";
                     case ResearchPalVersion.NotFood:
                     case ResearchPalVersion.VinaLx:
-                        return "ResearchPal";
                     case ResearchPalVersion.Owlchemist:
-                        return "ResearchPal"; // Because of course OwlChemist kept those as "ResearchPal" //return "ResearchPowl";
+                        return "ResearchPal";
                     default: return string.Empty;
                 }
             }
@@ -51,18 +50,16 @@ namespace HumanResources
             //Harmony.DEBUG = true;
             Instance.PatchAll();
 
-            // ResearchPowl integration -- Other forks of the original ResearchTree mod are abandoned
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
-            {
-                Log.Message("[HumanResources] Deriving from ResearchPowl.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPowl", ResearchPalVersion.Owlchemist);
-                ResearchPal = ResearchPalVersion.Owlchemist;
-            }
-            // ResearchTree/ResearchPal integration - Assuming
-            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
+            // integration with ResearchTree / ResearchPal / whatever kids use these days
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchTree.");
                 ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Mlie.ResearchTree")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchTree (Mlie version).");
+                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree"); //Hypotesis
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
             {
@@ -72,13 +69,25 @@ namespace HumanResources
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
             {
-                Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forked (VinaLx version).");
                 ResearchTree_Patches.Execute(Instance, "ResearchPal", ResearchPalVersion.VinaLx);
+                ResearchPal = ResearchPalVersion.VinaLx;
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPowl (Owlchemist version).");
+                ResearchTree_Patches.Execute(Instance, "ResearchPowl", ResearchPalVersion.Owlchemist);
+                ResearchPal = ResearchPalVersion.Owlchemist;
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Maruf61.ResearchPalForkd")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forkd (Maruf61 version).");
+                ResearchTree_Patches.Execute(Instance, "ResearchPal", ResearchPalVersion.VinaLx); //Hypotesis
                 ResearchPal = ResearchPalVersion.VinaLx;
             }
             else
             {
-                Log.Error("[HumanResources] Could not find ResearchPowl. Human Resources will not work!");
+                Log.Error("[HumanResources] Could not find ResearchTree nor ResearchPal. Human Resources will not work!");
             }
 
             //Go Explore! integration
