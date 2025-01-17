@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.props" Condition="Exists('..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.props')" />
+  <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -98,23 +98,34 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
-    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
+    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.4\Assemblies\HugsLib.dll</HugsLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.5|AnyCPU'">
+    <OutputPath>..\1.5\Assemblies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>none</ErrorReport>
+    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.5\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.2.2\lib\net472\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.3.3\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
       <HintPath>$(HugsLibPath)</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JPTools">
-      <HintPath>..\..\JPTools\Assemblies\JPTools.dll</HintPath>
+    <Reference Include="JPTools" Condition="'$(Configuration)' != '1.4' AND '$(Configuration)' != '1.5'">
+      <HintPath>..\..\JPTools\1.1\Assemblies\JPTools.dll</HintPath>
+    </Reference>
+    <Reference Include="JPTools" Condition="'$(Configuration)' == '1.4' OR '$(Configuration)' == '1.5'">
+      <HintPath>..\..\JPTools\1.4\Assemblies\JPTools.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -190,7 +201,6 @@
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
-    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ResearchManager_Patches.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Watcher.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
@@ -209,17 +219,13 @@
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
     <Compile Include="Harmony\WorkGiver_FixBrokenDownBuilding_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
-    <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
-    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_ScanBook.cs" />
     <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
@@ -264,6 +270,20 @@
   <ItemGroup Condition="'$(Configuration)' == '1.2'">
     <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != '1.5'">
+    <Compile Include="Legacy\CompUseEffect_LearnRandomResearchProject_RW1.4.cs" />
+    <Compile Include="Legacy\ResearchManager_ApplyTechprint_RW1.4.cs" />
+    <Compile Include="Legacy\CompKnowledge_RW1.4.cs" />
+    <Compile Include="Legacy\JobDriver_DocumentTech_RW1.4.cs" />
+    <Compile Include="Legacy\JobDriver_LearnWeapon_RW1.4.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.5'">
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
+    <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Work\JobDriver_DocumentTech.cs" />
+    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
@@ -275,12 +295,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-		<Publicize Include="Assembly-CSharp" />
-	</ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props'))" />
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets'))" />
+  </Target>
+  <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" />
   <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
-    <ModFolder>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
+    <ModFolder>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
   </PropertyGroup>
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>
@@ -311,12 +339,4 @@
     <Copy SourceFiles="..\LICENSE" DestinationFolder="$(ModFolder)\$(SolutionName)\" SkipUnchangedFiles="true" />
     <Message Text="Mod files updated." Importance="High" />
   </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.props'))" />
-    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.targets'))" />
-  </Target>
-  <Import Project="..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.0.1\build\Krafs.Publicizer.targets')" />
 </Project>

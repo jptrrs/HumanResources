@@ -16,7 +16,7 @@ namespace HumanResources
             SemiRandom = false,
             VisibleBooksCategory = false;
 
-        public static ResearchPalVersion ResearchPal = ResearchPalVersion.Fluffy;
+        public static ResearchTreeVersion ResearchTreeBase = ResearchTreeVersion.Fluffy;
 
         public static Harmony Instance
         {
@@ -28,17 +28,18 @@ namespace HumanResources
             }
         }
 
-        public static string ResearchPalLocalizationNamespaceRoot
+        public static string ResearchTreeNamespaceRoot
         {
             get
             {
-                switch (ResearchPal)
+                switch (ResearchTreeBase)
                 {
-                    case ResearchPalVersion.Fluffy:
+                    case ResearchTreeVersion.Fluffy:
+                    case ResearchTreeVersion.Mlie:
                         return "Fluffy.ResearchTree";
-                    case ResearchPalVersion.NotFood:
-                    case ResearchPalVersion.VinaLx:
-                    case ResearchPalVersion.Owlchemist:
+                    case ResearchTreeVersion.NotFood:
+                    case ResearchTreeVersion.VinaLx:
+                    case ResearchTreeVersion.Owlchemist:
                         return "ResearchPal";
                     default: return string.Empty;
                 }
@@ -64,26 +65,26 @@ namespace HumanResources
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal.");
+                ResearchTreeBase = ResearchTreeVersion.NotFood;
                 ResearchTree_Patches.Execute(Instance, "ResearchPal");
-                ResearchPal = ResearchPalVersion.NotFood;
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal - Forked (VinaLx version).");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal", ResearchPalVersion.VinaLx);
-                ResearchPal = ResearchPalVersion.VinaLx;
+                ResearchTreeBase = ResearchTreeVersion.VinaLx;
+                ResearchTree_Patches.Execute(Instance, "ResearchPal");
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
             {
                 Log.Message("[HumanResources] Deriving from ResearchPowl (Owlchemist version).");
-                ResearchTree_Patches.Execute(Instance, "ResearchPowl", ResearchPalVersion.Owlchemist);
-                ResearchPal = ResearchPalVersion.Owlchemist;
+                ResearchTreeBase = ResearchTreeVersion.Owlchemist;
+                ResearchTree_Patches.Execute(Instance, "ResearchPowl");
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Maruf61.ResearchPalForkd")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal - Forkd (Maruf61 version).");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal", ResearchPalVersion.VinaLx); //Hypotesis
-                ResearchPal = ResearchPalVersion.VinaLx;
+                ResearchTreeBase = ResearchTreeVersion.VinaLx;
+                ResearchTree_Patches.Execute(Instance, "ResearchPal"); //Hypotesis
             }
             else
             {

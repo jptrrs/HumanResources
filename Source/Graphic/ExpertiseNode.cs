@@ -43,7 +43,7 @@ namespace HumanResources
         //
         private Pawn Pawn;
 
-        private bool 
+        private bool
             knownSucessorSet = false,
             knownSucessor;
 
@@ -243,7 +243,7 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 // Attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPalLocalizationNamespaceRoot;
+                string root = HarmonyPatches.ResearchTreeNamespaceRoot;
 
                 TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
                 if (!BuildingPresent())
@@ -324,7 +324,7 @@ namespace HumanResources
                 icon = ResearchTree_Assets.ResearchIcon;
                 iconTip = costTip;
             }
-            else if(!Completed)
+            else if (!Completed)
             {
                 icon = ContentFinder<Texture2D>.Get("UI/exclamation", true);
                 iconTip = "MasteredButNotDocumented".Translate(Pawn);
@@ -434,7 +434,7 @@ namespace HumanResources
         //}
         public bool TechprintAvailable()
         {
-            if (HarmonyPatches.ResearchPal != ResearchPalVersion.Owlchemist)
+            if (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist)
                 return ResearchTree_Patches.TechprintAvailable(Tech);
 
             return ResearchTree_Patches.OwlChemistTechprintAvailable(Tech);

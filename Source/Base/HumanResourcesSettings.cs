@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Verse;
+﻿using Verse;
 
 namespace HumanResources
 {
@@ -38,7 +33,7 @@ namespace HumanResources
             Scribe_Values.Look<bool>(ref TechPoolIncludesBackground, "TechPoolIncludesBackground", false);
             Scribe_Values.Look<bool>(ref TechPoolIncludesScenario, "TechPoolIncludesScenario", true);
             Scribe_Values.Look<bool>(ref FreeScenarioWeapons, "FreeScenarioWeapons", false);
-            Scribe_Values.Look<bool>(ref LearnMeleeWeaponsByGroup, "LearnMeleeWeaponsByGroup", false) ;
+            Scribe_Values.Look<bool>(ref LearnMeleeWeaponsByGroup, "LearnMeleeWeaponsByGroup", false);
             Scribe_Values.Look<bool>(ref LearnRangedWeaponsByGroup, "LearnRangedWeaponsByGroup", true);
             Scribe_Values.Look<bool>(ref RequireTrainingForSingleUseWeapons, "RequireTrainingForSingleUseWeapons", false);
             Scribe_Values.Look<bool>(ref EnableJoyGiver, "EnableJoyGiver", true);
@@ -51,7 +46,7 @@ namespace HumanResources
         }
 
 
-        
+
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using HugsLib;
-using HugsLib.Settings;
 using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +25,14 @@ namespace HumanResources
         public ModBaseHumanResources()
         {
             Settings.EntryName = "Human Resources";
+        }
+
+        public override string ModIdentifier
+        {
+            get
+            {
+                return "JPT_HumanResources";
+            }
         }
 
         public override void DefsLoaded()

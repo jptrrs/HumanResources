@@ -9,6 +9,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
+    //Changed in RW 1.4
     public class JobDriver_DocumentTech : JobDriver_Knowledge
     {
         protected ThingDef techStuff;
@@ -170,7 +171,7 @@ namespace HumanResources
                 curJob.bill.Notify_IterationCompleted(actor, ingredients);
                 RecordsUtility.Notify_BillDone(actor, list);
                 UnfinishedThing unfinishedThing = curJob.GetTarget(TargetIndex.B).Thing as UnfinishedThing;
-                if (curJob.bill.recipe.WorkAmountForStuff((unfinishedThing != null) ? unfinishedThing.Stuff : null) >= 10000f && list.Count > 0)
+                if (curJob.bill.recipe.WorkAmountTotal((unfinishedThing != null) ? unfinishedThing.Stuff : null) >= 10000f && list.Count > 0)
                 {
                     TaleRecorder.RecordTale(TaleDefOf.CompletedLongCraftingProject, new object[]
                     {
@@ -194,7 +195,7 @@ namespace HumanResources
                     {
                         if (!GenPlace.TryPlaceThing(list[i], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                         {
-                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[i]} near {actor.Position}");
+                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[i]} near {actor.Position}", false);
                         }
                     }
                     actor.jobs.EndCurrentJob(JobCondition.Succeeded, true, true);
@@ -206,7 +207,7 @@ namespace HumanResources
                     {
                         if (!GenPlace.TryPlaceThing(list[j], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                         {
-                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[j]} near {actor.Position}");
+                            Log.Error($"[HumanResources] {actor} could not drop recipe product {list[j]} near {actor.Position}", false);
                         }
                     }
                 }
@@ -222,11 +223,11 @@ namespace HumanResources
                 }
                 else
                 {
-                    Log.ErrorOnce("[HumanResources] Unknown store mode", 9158246);
+                    Log.ErrorOnce("[HumanResources] Unknown store mode", 9158246, false);
                 }
                 if (!GenPlace.TryPlaceThing(list[0], actor.Position, actor.Map, ThingPlaceMode.Near, null, null, default(Rot4)))
                 {
-                    Log.Error($"[HumanResources] Bill doer could not drop product {list[0]} near {actor.Position}");
+                    Log.Error($"[HumanResources] Bill doer could not drop product {list[0]} near {actor.Position}", false);
                 }
             };
             return toil;

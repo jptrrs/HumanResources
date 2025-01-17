@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -53,7 +51,7 @@ namespace HumanResources
         private static void DrawResearchButton_Postfix(Rect drawRect, ResearchProjectDef projectDef)
         {
             float height = drawRect.height / 1.5f;
-            Vector2 frameOffset = new Vector2(0, drawRect.yMax -  height * 0.75f );
+            Vector2 frameOffset = new Vector2(0, drawRect.yMax - height * 0.75f);
             float startPos = drawRect.xMax - height / 2;
             projectDef.DrawPawnAssignments(height, frameOffset, startPos, true);
         }

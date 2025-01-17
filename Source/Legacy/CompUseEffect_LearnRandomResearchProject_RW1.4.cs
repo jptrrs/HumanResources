@@ -7,6 +7,7 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     public class CompUseEffect_LearnRandomResearchProject : CompUseEffect
     {
         private static PropertyInfo ResearchableInfo = AccessTools.Property(typeof(ResearchProjectDef), "PlayerHasAnyAppropriateResearchBench");
@@ -31,8 +32,9 @@ namespace HumanResources
             }
         }
 
-        public override AcceptanceReport CanBeUsedBy(Pawn p)
+        public override bool CanBeUsedBy(Pawn p, out string failReason)
         {
+            failReason = null;
             CompKnowledge techComp = p.TryGetComp<CompKnowledge>();
             if (techComp != null)
             {
@@ -41,6 +43,7 @@ namespace HumanResources
                     return techComp.homework.Any(x => !x.IsFinished);
                 }
             }
+            failReason = "NoActiveResearchProjectToFinish".Translate();
             return false;
         }
     }

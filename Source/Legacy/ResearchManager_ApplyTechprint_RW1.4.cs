@@ -5,6 +5,7 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     //Diverts Techprint to the pawn's expertise
     [HarmonyPatch(typeof(ResearchManager), "ApplyTechprint")]
     public static class ResearchManager_ApplyTechprint
@@ -59,7 +60,7 @@ namespace HumanResources
                 }
                 if (stringBuilder.Length > 0)
                 {
-                    Find.LetterStack.ReceiveLetter("LetterTechprintAppliedLabel".Translate(proj.Named("PROJECT")), stringBuilder.ToString().TrimEndNewlines(), LetterDefOf.PositiveEvent, null, 0, true);
+                    Find.LetterStack.ReceiveLetter("LetterTechprintAppliedLabel".Translate(proj.Named("PROJECT")), stringBuilder.ToString().TrimEndNewlines(), LetterDefOf.PositiveEvent, null);
                 }
                 return false;
             }

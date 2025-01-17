@@ -9,6 +9,7 @@ using Verse.AI;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     public class JobDriver_DocumentTech : JobDriver_Knowledge
     {
         protected ThingDef techStuff;
@@ -170,7 +171,7 @@ namespace HumanResources
                 curJob.bill.Notify_IterationCompleted(actor, ingredients);
                 RecordsUtility.Notify_BillDone(actor, list);
                 UnfinishedThing unfinishedThing = curJob.GetTarget(TargetIndex.B).Thing as UnfinishedThing;
-                if (curJob.bill.recipe.WorkAmountForStuff((unfinishedThing != null) ? unfinishedThing.Stuff : null) >= 10000f && list.Count > 0)
+                if (curJob.bill.recipe.WorkAmountTotal((unfinishedThing != null) ? unfinishedThing.Stuff : null) >= 10000f && list.Count > 0)
                 {
                     TaleRecorder.RecordTale(TaleDefOf.CompletedLongCraftingProject, new object[]
                     {

@@ -11,6 +11,7 @@ namespace HumanResources
     using static HumanResourcesSettings;
     using static ModBaseHumanResources;
 
+    //Changed in RW 1.5
     public class CompKnowledge : ThingComp
     {
 
@@ -471,8 +472,8 @@ namespace HumanResources
                     asChild = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Childhood.defName];
                     if (pawn.story.Adulthood != null) asAdult = PawnBackgroundUtility.TechLevelByBackstory[pawn.story.Adulthood.defName];
                     var skillGains = pawn.story.Childhood.skillGains;
-                    if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.amount >= b.amount) ? a : b).skill;
-                    else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().skill;
+                    if (skillGains.Count() > 1) childhoodSkill = skillGains.Aggregate((a, b) => (a.Value >= b.Value) ? a : b).Key;
+                    else if (!skillGains.EnumerableNullOrEmpty()) childhoodSkill = skillGains.FirstOrDefault().Key;
                 }
                 if (asAdult == 0 || asChild == 0)
                 {

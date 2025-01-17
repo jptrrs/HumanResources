@@ -11,6 +11,7 @@ using Verse.Sound;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     public class JobDriver_LearnWeapon : JobDriver_DoBill
     {
         protected bool practice = false;
@@ -220,7 +221,7 @@ namespace HumanResources
                 }
                 return false;
             });
-            AddFinishAction(delegate (JobCondition jobCondition)
+            AddFinishAction(delegate ()
             {
                 if (pawn.equipment.Primary != null && !practice)
                 {

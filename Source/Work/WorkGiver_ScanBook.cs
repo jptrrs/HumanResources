@@ -135,7 +135,7 @@ namespace HumanResources
             return availableThings.FirstOrDefault();
         }
 
-        private static new bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen)
+        private static bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen)
         {
             chosen.Clear();
             newRelevantThings.Clear();

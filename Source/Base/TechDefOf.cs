@@ -18,7 +18,7 @@ namespace HumanResources
             PracticeWeaponMelee,
             ExperimentWeaponShooting,
             ExperimentWeaponMelee;
-        public static ThingCategoryDef 
+        public static ThingCategoryDef
             Knowledge,
             WeaponsRanged,
             WeaponsMelee;
