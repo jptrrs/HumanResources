@@ -107,8 +107,8 @@ namespace HumanResources
 
             expertise = new Dictionary<ResearchProjectDef, float>();
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
-            if (IsPawnEligibleForExpertise(pawn))
-            {
+            //if (IsPawnEligibleForExpertise(pawn)) //hold that thought.
+            //{
                 var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
 
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
@@ -117,7 +117,7 @@ namespace HumanResources
                     if (Prefs.LogVerbose) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} knowledge is going to be {expertise.Keys.ToStringSafeEnumerable()}.");
                 }
                 else Log.Warning($"[HumanResources] {pawn} spawned without acquiring any expertise.");
-            }
+            //}
             AcquireWeaponKnowledge(faction);
             if (Prefs.LogVerbose && proficientWeapons.Any()) Log.Message($"... {pawn.gender.GetPossessive().CapitalizeFirst()} weapon proficiency is going to be: {proficientWeapons.ToStringSafeEnumerable()}");
             AcquirePlantKnowledge();
