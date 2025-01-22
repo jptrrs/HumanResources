@@ -523,7 +523,7 @@ namespace HumanResources
                 if (!strict)
                 {
                     if (TechPoolIncludesScenario && !unlocked.scenarioTechs.EnumerableNullOrEmpty() && unlocked.scenarioTechs.Contains(tech)) return true;
-                    if (TechPoolIncludesStarting && !unlocked.factionTechs.EnumerableNullOrEmpty() && unlocked.scenarioTechs.Contains(tech)) return true;
+                    if (TechPoolIncludesStarting && !unlocked.factionTechs.EnumerableNullOrEmpty() && unlocked.factionTechs.Contains(tech)) return true;
                 }
             }
             return false;
