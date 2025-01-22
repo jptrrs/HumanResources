@@ -20,7 +20,7 @@ namespace HumanResources
 
         public override bool CanBeGivenTo(Pawn pawn)
         {
-            if (HumanResourcesSettings.EnableJoyGiver && pawn.equipment != null && ((def == TechDefOf.Play_Shooting && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) || def == TechDefOf.Play_MartialArts))
+            if (ModBaseHumanResources.EnableJoyGiver && pawn.equipment != null && ((def == TechDefOf.Play_Shooting && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsRangedWeapon) || def == TechDefOf.Play_MartialArts))
             {
                 return base.CanBeGivenTo(pawn);
             }

@@ -171,8 +171,8 @@ namespace HumanResources
 
         protected void LearnWeaponGroup(ThingDef weapon, Pawn pawn, CompKnowledge techComp)
         {
-            bool groupRanged = HumanResourcesSettings.LearnRangedWeaponsByGroup && weapon.IsRangedWeapon;
-            bool groupMelee = HumanResourcesSettings.LearnMeleeWeaponsByGroup && weapon.IsMeleeWeapon;
+            bool groupRanged = ModBaseHumanResources.LearnRangedWeaponsByGroup && weapon.IsRangedWeapon;
+            bool groupMelee = ModBaseHumanResources.LearnMeleeWeaponsByGroup && weapon.IsMeleeWeapon;
             if (TechTracker.FindTechs(weapon).Any() && (groupRanged || groupMelee))
             {
                 foreach (ThingDef sister in TechTracker.FindTech(weapon).Weapons)
