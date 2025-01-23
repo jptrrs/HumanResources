@@ -130,8 +130,7 @@ namespace HumanResources
         #region "patchworks"
         public static void Execute(Harmony instance, string modName)
         {
-            Log.Message("Executing pacthes for " + modName + " AltRPal=" + HarmonyPatches.ResearchTreeBase);
-            Harmony.DEBUG = true;
+            //Harmony.DEBUG = true;
             ModName = modName;
             List<string> FailedFields = new List<string>();
             List<string> FailedProperties = new List<string>();
@@ -159,7 +158,6 @@ namespace HumanResources
             {
                 ResearchNodeInfo = AccessTools.Method(modName + ".ResearchProjectDef_Extensions:ResearchNode");
             }
-            Log.Message("step 1 - ResearchProjectDef_Extensions patched!");
 
             // Node
             IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
@@ -196,7 +194,6 @@ namespace HumanResources
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
             }
-            Log.Message("step 2 - Node patched!");
 
             // ResearchNode
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
@@ -235,26 +232,20 @@ namespace HumanResources
             }
             instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
-            Log.Message("3-4");
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
-            Log.Message("3-5");
             instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
-            Log.Message("3-6");
             instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
-            Log.Message("3-7");
             ChildrenInfo = GetPropertyOrFeedback(ResearchNodeType(), "Children", ref FailedProperties);
             ColorInfo = GetPropertyOrFeedback(ResearchNodeType(), "Color", ref FailedProperties);
             ResearchInfo = GetFieldOrFeedback(ResearchNodeType(), "Research", ref FailedFields);
             GetResearchTooltipStringInfo = AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString");
-            Log.Message("step 3 - ResearchNode patched!");
 
             //Def_Extensions
             instance.CreateReversePatcher(AccessTools.Method(modName + ".Def_Extensions:DrawColouredIcon"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DrawColouredIcon)))).Patch();
-            Log.Message("step 4 - Def_Extensions patched!");
 
             //Edge
             instance.Patch(AccessTools.Method(EdgeType<Type, Type>(), "Draw"), null,
@@ -262,7 +253,6 @@ namespace HumanResources
             InInfo = GetPropertyOrFeedback(EdgeType<Type, Type>(), "In", ref FailedProperties);
             OutInfo = GetPropertyOrFeedback(EdgeType<Type, Type>(), "Out", ref FailedProperties);
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0) InResearchInfo = AccessTools.Method(EdgeType<Type, Type>(), "InResearch");
-            Log.Message("step 5 - Edge patched!");
 
             //MainTabWindow_ResearchTree
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
@@ -291,7 +281,6 @@ namespace HumanResources
             InstanceInfo = GetPropertyOrFeedback(MainTabType(), "Instance", ref FailedProperties);
             Type windowNodeType = (HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0 ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
-            Log.Message("step 6 - MainTabWindow_ResearchTree patched!");
 
             //Tree
             instance.Patch(AccessTools.Method(TreeType(), "PopulateNodes"),
@@ -308,8 +297,6 @@ namespace HumanResources
                     StopFixedHighlightsInfo = AccessTools.Method(TreeType(), "StopFixedHighlights");
                 }
             }
-            Log.Message("step 7 - Tree patched!");
-
 
             //Queue
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
@@ -330,7 +317,6 @@ namespace HumanResources
             }
             instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
-            Log.Message("step 8 - Queue patched!");
 
             //Constants
             EpsilonInfo = GetFieldOrFeedback(ConstantsType(), "Epsilon", ref FailedFields);
@@ -360,7 +346,6 @@ namespace HumanResources
                 instance.Patch(AccessTools.Method(typeof(TooltipHandler), "TipRegion", new Type[] { typeof(Rect), typeof(Func<string>), typeof(int) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TooltipHandler_TipRegion_Prefix))));
             }
-            Log.Message("step 10 - finals patched!");
 
             if (!FailedFields.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these fields: {FailedFields.ToStringSafeEnumerable()}. Likely an unforeseen update on ResearchTree/Pal");
             if (!FailedProperties.NullOrEmpty()) Log.Error($"[HumanResources] Failed to reflect these properties: {FailedProperties.ToStringSafeEnumerable()}. Likely an unforeseen update on ResearchTree/Pal");

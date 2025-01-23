@@ -61,24 +61,18 @@ namespace HumanResources
             UpdateSettings();
 
             //2. Adding Tech Tab to Pawns
-            //ThingDef injection stolen from the work of notfood for Psychology
-            var zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
-            IEnumerable<ThingDef> things = (from def in DefDatabase<ThingDef>.AllDefs
-                                            where def.race?.intelligence == Intelligence.Humanlike && (zombieThinkTree == null || def.race.thinkTreeMain != zombieThinkTree)
-                                            select def);
-            //List<string> registered = new List<string>();
-            foreach (ThingDef t in things)
+            foreach (ThingDef thing in DefDatabase<ThingDef>.AllDefs.Where(x => x.race?.intelligence == Intelligence.Humanlike))
             {
-                if (t.inspectorTabsResolved == null)
+                if (thing.inspectorTabsResolved == null)
                 {
-                    t.inspectorTabsResolved = new List<InspectTabBase>(1);
+                    thing.inspectorTabsResolved = new List<InspectTabBase>(1);
                 }
-                t.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_PawnKnowledge)));
-                if (t.comps == null)
+                thing.inspectorTabsResolved.Add(InspectTabManager.GetSharedInstance(typeof(ITab_PawnKnowledge)));
+                if (thing.comps == null)
                 {
-                    t.comps = new List<CompProperties>(1);
+                    thing.comps = new List<CompProperties>(1);
                 }
-                t.comps.Add(new CompProperties_Knowledge());
+                thing.comps.Add(new CompProperties_Knowledge());
             }
             InspectPaneUtility.Reset();
 
@@ -109,7 +103,7 @@ namespace HumanResources
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
 
-            //d. Also removing atipical weapons
+            //d. Also removing atipical weapons"
             List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
             List<ThingDef> garbage = new List<ThingDef>();
@@ -164,7 +158,7 @@ namespace HumanResources
             //b. Filling main tech category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
-                foreach (ThingCategoryDef c in t.thingCategories)
+                foreach (ThingCategoryDef c in t.thingCategories.Where(x => !x.childCategories.NullOrEmpty()))
                 {
                     c.childThingDefs.Add(t);
                     if (!knowledgeCat.childCategories.NullOrEmpty() && !knowledgeCat.childCategories.Contains(c))
@@ -193,10 +187,9 @@ namespace HumanResources
             }
         }
 
-
         public override void SceneLoaded(Scene scene)
         {
-            if (GenScene.InPlayScene) GameJustLoaded = true;
+            GameJustLoaded = GenScene.InPlayScene;
         }
 
         public override void MapComponentsInitializing(Map map)

@@ -97,8 +97,6 @@ namespace HumanResources
         public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
         {
             string name = "Tech_" + tech.defName;
-            ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
-            StuffCategoryDef sCat = DefDatabase<StuffCategoryDef>.GetNamed(tech.techLevel.ToString());
             string label = "KnowledgeLabel".Translate(tech.label);
             ThingDef techStuff = new ThingDef
             {
@@ -107,11 +105,11 @@ namespace HumanResources
                 label = label,
                 description = tech.description,
                 category = ThingCategory.Item,
-                thingCategories = new List<ThingCategoryDef>() { tCat },
+                thingCategories = new List<ThingCategoryDef>(),
                 techLevel = tech.techLevel,
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { sCat },
+                    categories = new List<StuffCategoryDef>(),
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()
@@ -137,6 +135,12 @@ namespace HumanResources
                     }
                 }
             };
+            if (tech.techLevel > 0)
+            {
+                string tag = tech.techLevel.ToString();
+                techStuff.thingCategories.Add(DefDatabase<ThingCategoryDef>.GetNamed(tag));
+                techStuff.stuffProps.categories.Add(DefDatabase<StuffCategoryDef>.GetNamed(tag));
+            }
             techStuff.ResolveReferences();
 
             //MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");

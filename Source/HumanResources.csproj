@@ -305,7 +305,8 @@
   <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" />
   <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
-    <ModFolder>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
+    <!--<ModFolder>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>-->
+    <ModFolder>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModFolder>
   </PropertyGroup>
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>
