@@ -113,10 +113,6 @@
       <HintPath>..\packages\Lib.Harmony.2.3.3\lib\net472\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="HugsLib">
       <HintPath>$(HugsLibPath)</HintPath>
       <Private>False</Private>
@@ -126,6 +122,11 @@
     </Reference>
     <Reference Include="JPTools" Condition="'$(Configuration)' == '1.4' OR '$(Configuration)' == '1.5'">
       <HintPath>..\..\JPTools\1.4\Assemblies\JPTools.dll</HintPath>
+    </Reference>
+    <Reference Include="RW1.4.3901, Version=1.4.8706.7168, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\refs\RW\RW1.4.3901.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -195,6 +196,7 @@
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\Compatibility\FluffyBreakdowns_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
+    <Compile Include="Harmony\GenStuff_DefaultStuffFor.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
@@ -305,8 +307,8 @@
   <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" />
   <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
-    <!--<ModFolder>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>-->
-    <ModFolder>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModFolder>
+    <ModFolder>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
+    <!--<ModFolder>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModFolder>-->
   </PropertyGroup>
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>

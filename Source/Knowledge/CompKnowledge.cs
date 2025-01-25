@@ -92,11 +92,10 @@ namespace HumanResources
             get
             {
                 if (parent is Pawn p) return p;
-                else
-                {
+
                     Log.Error($"[HumanResources] {parent.Label.CapitalizeFirst()} is trying to pose as human, but his disguise can't fool us!");
                     return null;
-                }
+
             }
         }
 

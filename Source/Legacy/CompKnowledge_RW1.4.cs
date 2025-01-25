@@ -8,7 +8,6 @@ using Verse;
 
 namespace HumanResources
 {
-    using static HumanResourcesSettings;
     using static ModBaseHumanResources;
 
     //Changed in RW 1.5

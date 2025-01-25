@@ -10,6 +10,7 @@ namespace HumanResources
     {
         public static void Prefix(ThingFilter parentFilter)
         {
+            Log.Message($"Probing ThingFilterUI_DoThingFilterConfigWindow - allowed: {parentFilter.AllowedDefCount}");
             if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(TechDefOf.Knowledge)))
             {
                 HarmonyPatches.VisibleBooksCategory = true;

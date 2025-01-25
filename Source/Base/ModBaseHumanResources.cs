@@ -169,15 +169,20 @@ namespace HumanResources
             }
 
             //c. Populating knowledge recipes and book shelves
-            foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.ingredients.Count == 1 && x.fixedIngredientFilter.AnyAllowedDef == null))
+            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.ingredients.Count == 1 && x.fixedIngredientFilter.AnyAllowedDef == null))
+            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => !x.recipeUsers.NullOrEmpty() && x.recipeUsers.ContainsAny(y => (y.defName == "StudyDesk" || y.defName == "NetworkTerminal") && y.modContentPack == ModContentPack)))
+            List<RecipeDef> recipes = new List<RecipeDef>() { TechDefOf.LearnTech, TechDefOf.LearnTechDigital, TechDefOf.DocumentTech, TechDefOf.DocumentTechDigital, TechDefOf.ScanBook };
+            foreach (RecipeDef r in recipes)
             {
-                r.fixedIngredientFilter.ResolveReferences();
-                r.defaultIngredientFilter.ResolveReferences();
+                Log.Message($"Trying to populate recipe {r.defName}");
+                FilterSetUp(r.fixedIngredientFilter);
+                FilterSetUp(r.defaultIngredientFilter);
             }
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
-                t.building.fixedStorageSettings.filter.ResolveReferences();
-                t.building.defaultStorageSettings.filter.ResolveReferences();
+                Log.Message($"Trying to populate storage settings for {t.defName}");
+                FilterSetUp(t.building.fixedStorageSettings.filter);
+                FilterSetUp(t.building.defaultStorageSettings.filter);
             }
 
             //d. Removing temporary defs from database.
@@ -185,6 +190,12 @@ namespace HumanResources
             {
                 AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { def });
             }
+        }
+
+        public void FilterSetUp (ThingFilter filter)
+        {
+            Log.Message($"thingDefs: {filter.thingDefs?.Count()}, categories: {filter.categories?.Count()}");
+            filter.ResolveReferences();
         }
 
         public override void SceneLoaded(Scene scene)
