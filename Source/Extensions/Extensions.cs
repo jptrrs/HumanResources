@@ -90,8 +90,6 @@ namespace HumanResources
             Pawn actor = toil.actor;
             toil.initAction = delegate
             {
-                //Log.Message("DepositHauledBook started");
-
                 Thing book = actor.carryTracker.CarriedThing;
                 if (actor.carryTracker.CarriedThing == null)
                 {

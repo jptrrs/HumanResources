@@ -72,7 +72,6 @@ namespace HumanResources
 
         public virtual void CheckBookIn(Thing book)
         {
-            //Log.Message($"checking book in, borrowed={borrowed.Contains(book)}");
             var tech = book.TryGetTech();
             if (tech != null) tech.Unlock(this, true);
             if (!borrowed.Contains(book)) unlocked.libraryFreeSpace--;

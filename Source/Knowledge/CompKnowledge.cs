@@ -102,13 +102,12 @@ namespace HumanResources
         public void AcquireExpertise()
         {
             if (Prefs.LogVerbose) Log.Warning($"[HumanResources] Acquiring expertise for {pawn}...");
-
             expertise = new Dictionary<ResearchProjectDef, float>();
             FactionDef faction = pawn.Faction?.def ?? pawn.kindDef.defaultFactionType;
+            
             //if (IsPawnEligibleForExpertise(pawn)) //hold that thought.
             //{
                 var acquiredExpertise = GetExpertiseDefsFor(pawn, faction);
-
                 if (!acquiredExpertise.EnumerableNullOrEmpty())
                 {
                     expertise = acquiredExpertise.Where(x => x != null).ToDictionary(x => x, x => 1f);
@@ -124,67 +123,63 @@ namespace HumanResources
 
         public void AcquirePlantKnowledge()
         {
-            if (proficientPlants == null)
-            {
-                proficientPlants = new List<ThingDef>();
-                if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
-            }
+            if (proficientPlants != null) return;
+            proficientPlants = new List<ThingDef>();
+            if (!expertise.EnumerableNullOrEmpty()) foreach (ResearchProjectDef tech in expertise.Keys) LearnCrops(tech);
         }
 
         public void AcquireWeaponKnowledge(FactionDef faction)
         {
-            if (proficientWeapons == null)
+            if (proficientWeapons != null) return;
+            proficientWeapons = new List<ThingDef>();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("... ");
+            if (!expertise.EnumerableNullOrEmpty())
             {
-                proficientWeapons = new List<ThingDef>();
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.Append("... ");
-                if (!expertise.EnumerableNullOrEmpty())
-                {
-                    foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
-                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} can craft some weapons. ");
-                }
-                bool isPlayer = pawn.Faction?.IsPlayer ?? false;
-                if (isPlayer && (FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
-                {
-                    proficientWeapons.AddRange(unlocked.startingWeapons);
-                    if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} gets the scenario starting weapons. ");
-                }
-                if (isFighter || isShooter)
-                {
-                    if (Prefs.LogVerbose)
-                    {
-                        string[] role = isFighter ? new[] { "fighter", "melee" } : new[] { "shooter", "ranged" };
-                        stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is a {role[0]} and gets extra {role[1]} weapons from ");
-                    }
-                    if (WeaponPoolIncludesTechLevel || !isPlayer)
-                    {
-                        foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, true)))
-                        {
-                            var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
-                            if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
-                        }
-                        if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPossessive().ToLower()} faction's tech level");
-                    }
-                    if (isPlayer && WeaponPoolIncludesScenario && !(FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
-                    {
-                        proficientWeapons.AddRange(unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
-                        string connector = WeaponPoolIncludesTechLevel ? " and " : "";
-                        if (Prefs.LogVerbose) stringBuilder.Append($"{connector}the starting scenario");
-                    }
-                    if (Prefs.LogVerbose) stringBuilder.Append(". ");
-                }
-                if (pawn.equipment.HasAnything())
-                {
-                    ThingWithComps weapon = pawn.equipment.Primary;
-                    if (!knownWeapons.Contains(weapon.def))
-                    {
-                        proficientWeapons.Add(weapon.def);
-                        if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is using a {weapon.def.label}.");
-                    }
-                }
-                proficientWeapons.RemoveDuplicates();
-                if (Prefs.LogVerbose && stringBuilder.Length > 4) Log.Message(stringBuilder.ToString());
+                foreach (ResearchProjectDef tech in expertise.Keys) LearnWeapons(tech);
+                if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} can craft some weapons. ");
             }
+            bool isPlayer = pawn.Faction?.IsPlayer ?? false;
+            if (isPlayer && (FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
+            {
+                proficientWeapons.AddRange(unlocked.startingWeapons);
+                if (Prefs.LogVerbose && !proficientWeapons.NullOrEmpty()) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} gets the scenario starting weapons. ");
+            }
+            if (isFighter || isShooter)
+            {
+                if (Prefs.LogVerbose)
+                {
+                    string[] role = isFighter ? new[] { "fighter", "melee" } : new[] { "shooter", "ranged" };
+                    stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is a {role[0]} and gets extra {role[1]} weapons from ");
+                }
+                if (WeaponPoolIncludesTechLevel || !isPlayer)
+                {
+                    foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs.Where(x => TechPool(isPlayer, x, techLevel, true)))
+                    {
+                        var weapons = tech.UnlockedWeapons().Where(x => TestIfWeapon(x, isFighter));
+                        if (weapons.Any()) foreach (ThingDef w in weapons) proficientWeapons.Add(w);
+                    }
+                    if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPossessive().ToLower()} faction's tech level");
+                }
+                if (isPlayer && WeaponPoolIncludesScenario && !(FreeScenarioWeapons || unlocked.knowAllStartingWeapons))
+                {
+                    proficientWeapons.AddRange(unlocked.startingWeapons.Where(x => TestIfWeapon(x, isFighter)));
+                    string connector = WeaponPoolIncludesTechLevel ? " and " : "";
+                    if (Prefs.LogVerbose) stringBuilder.Append($"{connector}the starting scenario");
+                }
+                if (Prefs.LogVerbose) stringBuilder.Append(". ");
+            }
+            if (pawn.equipment.HasAnything())
+            {
+                ThingWithComps weapon = pawn.equipment.Primary;
+                if (!knownWeapons.Contains(weapon.def))
+                {
+                    proficientWeapons.Add(weapon.def);
+                    if (Prefs.LogVerbose) stringBuilder.Append($"{pawn.gender.GetPronoun().CapitalizeFirst()} is using a {weapon.def.label}.");
+                }
+            }
+            proficientWeapons.RemoveDuplicates();
+            if (Prefs.LogVerbose && stringBuilder.Length > 4) Log.Message(stringBuilder.ToString());
         }
 
         public void AddWeaponTrauma(ThingDef weapon)
@@ -409,6 +404,7 @@ namespace HumanResources
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
+            if (pawn == null) return;
             if (expertise == null) AcquireExpertise();
             if (techLevel == 0) techLevel = expertise.Any() ? expertise.Keys.Aggregate((a, b) => a.techLevel > b.techLevel ? a : b).techLevel : GetFactionTechLevel(pawn);
             ResearchTree_Watcher.TechHovered += TreeNodeHoveredHandler;

@@ -94,7 +94,7 @@ namespace HumanResources
         #endregion
 
         #region startup
-        public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
+        public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef unset = null, ThingDef standard = null)
         {
             string name = "Tech_" + tech.defName;
             string label = "KnowledgeLabel".Translate(tech.label);
@@ -107,6 +107,7 @@ namespace HumanResources
                 category = ThingCategory.Item,
                 thingCategories = new List<ThingCategoryDef>(),
                 techLevel = tech.techLevel,
+                resourceReadoutPriority = ResourceCountPriority.Uncounted, //avoids null error in RW 1.5 when drawing gizmo
                 stuffProps = new StuffProperties()
                 {
                     categories = new List<StuffCategoryDef>(),
@@ -135,24 +136,29 @@ namespace HumanResources
                     }
                 }
             };
+            string tag = tech.techLevel.ToString();
+            var stuffCatDef = new StuffCategoryDef();
             if (tech.techLevel > 0)
             {
-                string tag = tech.techLevel.ToString();
+                stuffCatDef = DefDatabase<StuffCategoryDef>.GetNamed(tag);
                 techStuff.thingCategories.Add(DefDatabase<ThingCategoryDef>.GetNamed(tag));
-                techStuff.stuffProps.categories.Add(DefDatabase<StuffCategoryDef>.GetNamed(tag));
+                techStuff.stuffProps.categories.Add(stuffCatDef);
             }
             techStuff.ResolveReferences();
-
-            //MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
-            //GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
-
             var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
             ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
-
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;
             totalBooks++;
+            //dealing with default stuff:
+            if (stuffCatDef == null || unset == null) return false;
+            if (standard.stuffCategories.Contains(stuffCatDef))
+            {
+                unset.defaultStuff = techStuff;
+                return true;
+            }
+            return false;
         }
 
         public static void InferSkillBias(this ResearchProjectDef tech)

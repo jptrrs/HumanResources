@@ -95,10 +95,22 @@ namespace HumanResources
 
             //c. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
+            ThingDef unset = TechDefOf.TechBook;
+            ThingDef standard = TechDefOf.LowTechCategories;
+            bool stage = true;
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
                 tech.InferSkillBias();
-                tech.CreateStuff(lateFilter, unlocked);
+                if (tech.CreateStuff(lateFilter, unset, standard))
+                {
+                    if (stage)
+                    {
+                        unset = TechDefOf.TechDrive;
+                        standard = TechDefOf.HiTechCategories;
+                        stage = false;
+                    }
+                    else unset = standard = null;
+                }
                 foreach (ThingDef weapon in tech.UnlockedWeapons()) UniversalWeapons.Remove(weapon);
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
@@ -158,7 +170,7 @@ namespace HumanResources
             //b. Filling main tech category with subcategories
             foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
-                foreach (ThingCategoryDef c in t.thingCategories.Where(x => !x.childCategories.NullOrEmpty()))
+                foreach (ThingCategoryDef c in t.thingCategories/*.Where(x => !x.childCategories.NullOrEmpty())*/)
                 {
                     c.childThingDefs.Add(t);
                     if (!knowledgeCat.childCategories.NullOrEmpty() && !knowledgeCat.childCategories.Contains(c))
@@ -169,20 +181,16 @@ namespace HumanResources
             }
 
             //c. Populating knowledge recipes and book shelves
-            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => x.ingredients.Count == 1 && x.fixedIngredientFilter.AnyAllowedDef == null))
-            //foreach (RecipeDef r in DefDatabase<RecipeDef>.AllDefs.Where(x => !x.recipeUsers.NullOrEmpty() && x.recipeUsers.ContainsAny(y => (y.defName == "StudyDesk" || y.defName == "NetworkTerminal") && y.modContentPack == ModContentPack)))
             List<RecipeDef> recipes = new List<RecipeDef>() { TechDefOf.LearnTech, TechDefOf.LearnTechDigital, TechDefOf.DocumentTech, TechDefOf.DocumentTechDigital, TechDefOf.ScanBook };
             foreach (RecipeDef r in recipes)
             {
-                Log.Message($"Trying to populate recipe {r.defName}");
-                FilterSetUp(r.fixedIngredientFilter);
-                FilterSetUp(r.defaultIngredientFilter);
+                r.fixedIngredientFilter.ResolveReferences();
+                r.defaultIngredientFilter.ResolveReferences();
             }
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
-                Log.Message($"Trying to populate storage settings for {t.defName}");
-                FilterSetUp(t.building.fixedStorageSettings.filter);
-                FilterSetUp(t.building.defaultStorageSettings.filter);
+                t.building.fixedStorageSettings.filter.ResolveReferences();
+                t.building.defaultStorageSettings.filter.ResolveReferences();
             }
 
             //d. Removing temporary defs from database.
@@ -190,12 +198,6 @@ namespace HumanResources
             {
                 AccessTools.Method(typeof(DefDatabase<ThingDef>), "Remove").Invoke(this, new object[] { def });
             }
-        }
-
-        public void FilterSetUp (ThingFilter filter)
-        {
-            Log.Message($"thingDefs: {filter.thingDefs?.Count()}, categories: {filter.categories?.Count()}");
-            filter.ResolveReferences();
         }
 
         public override void SceneLoaded(Scene scene)

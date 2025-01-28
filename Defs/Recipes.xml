@@ -2,12 +2,12 @@
 <Defs>
 
   <RecipeDef Name="KnowledgeTransferBase" Abstract="True">
-    <ingredients>
-      <li>
+    <ingredients/>
+    <!--<li>-->
         <!--no filter on purpose-->
-        <count>1</count>
+        <!--<count>1</count>
       </li>
-    </ingredients>
+    </ingredients>-->
     <fixedIngredientFilter>
       <categories>
         <li>Knowledge</li>
