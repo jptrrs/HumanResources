@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 
 namespace HumanResources
 {
@@ -181,15 +183,11 @@ namespace HumanResources
                 EdgeColorInfo = GetPropertyOrFeedback(NodeType(), "EdgeColor", ref FailedProperties);
                 HighlightedInfo = GetPropertyOrFeedback(NodeType(), "Highlighted", ref FailedProperties);
             }
-            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
-            {
-                instance.Patch(AccessTools.Method(NodeType(), "SetRects"),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
 
-            }
-            else
-            { 
+            //All this does is change the tree nodes's size a little bit.
+            //But with Mlie's the spacing doesn't correspond, so it's off for now.
+            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) 
+            {
                 instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
@@ -216,8 +214,11 @@ namespace HumanResources
             }
             else
             {
-                instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
+                if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
+                {
+                    instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "BuildingPresent", new Type[] { typeof(ResearchProjectDef) }),
+                        new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(BuildingPresent)))).Patch();
+                }
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "Draw"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Draw_Prefix))));
                 instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "EdgeColor"),
@@ -225,19 +226,29 @@ namespace HumanResources
                 GetMissingRequiredRecursiveInfo = AccessTools.Method(ResearchNodeType(), "GetMissingRequiredRecursive");
                 AvailableInfo = GetPropertyOrFeedback(ResearchNodeType(), "Available", ref FailedProperties);
             }
-            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Owlchemist))
+            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Owlchemist) && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
             {
                 instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "TechprintAvailable", new Type[] { typeof(ResearchProjectDef) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TechprintAvailable)))).Patch(); // Seems that OwlChemist removed this as all it did was check a single Property - In Powl this ("Research.TechprintRequirementMet") is just simply checked directly.
             }
-            instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
+            {
+                instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef), typeof(int) }),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Alternate_Prefix))));
+            }
+            else
+            {
+                instance.CreateReversePatcher(AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef) }),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(MissingFacilities)))).Patch();
+                instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
+                    null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
+                instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
+            }
             instance.Patch(AccessTools.PropertyGetter(ResearchNodeType(), "Color"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Color_Prefix))));
-            instance.Patch(AccessTools.Constructor(ResearchNodeType(), new Type[] { typeof(ResearchProjectDef) }),
-                null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
-            instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Prefix))));
             ChildrenInfo = GetPropertyOrFeedback(ResearchNodeType(), "Children", ref FailedProperties);
             ColorInfo = GetPropertyOrFeedback(ResearchNodeType(), "Color", ref FailedProperties);
             ResearchInfo = GetFieldOrFeedback(ResearchNodeType(), "Research", ref FailedFields);
@@ -276,8 +287,8 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
-            instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
-                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
+            //instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
+            //    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
             InstanceInfo = GetPropertyOrFeedback(MainTabType(), "Instance", ref FailedProperties);
             Type windowNodeType = (HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0 ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
@@ -315,8 +326,16 @@ namespace HumanResources
                 EnqueueInfo = AccessTools.Method(QueueType(), "Enqueue", new Type[] { ResearchNodeType(), typeof(bool) });
                 DequeueInfo = AccessTools.Method(QueueType(), "Dequeue");
             }
-            instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
+            {
+                instance.Patch(AccessTools.Method(QueueType(), "DrawLabel", new Type[] { typeof(Rect), typeof(Color), typeof(Color), typeof(string), typeof(string) }),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
+            }
+            else
+            { 
+                instance.Patch(AccessTools.Method(QueueType(), "DrawLabel"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Inhibitor))));
+            }
 
             //Constants
             EpsilonInfo = GetFieldOrFeedback(ConstantsType(), "Epsilon", ref FailedFields);
@@ -387,6 +406,7 @@ namespace HumanResources
             {
                 NodeSizeInfo.SetValue(__instance, oldNodeSize);
                 nodeSizeHacked = false;
+                Log.Message("nodeSize unHacked!");
             }
             MainTabInstance = null;
         }
@@ -553,8 +573,15 @@ namespace HumanResources
         {
             var text = new StringBuilder();
             text.AppendLine(___Research.description);
-            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Fluffy)) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Stem)) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
             __result = text.ToString();
+            return false;
+        }
+
+        public static bool GetResearchTooltipString_Alternate_Prefix(ResearchProjectDef ___Research, ref StringBuilder __result)
+        {
+            __result.AppendLine(___Research.description);
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Stem)) __result.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
             return false;
         }
 
@@ -571,7 +598,16 @@ namespace HumanResources
                 );
         }
 
+        public static List<ThingDef> MissingFacilitiesProxy(ResearchProjectDef research)
+        {
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) return research.MissingFacilities();
+            return MissingFacilities(research);
+        }
+
+        //public static void BuildTips(object instace) { throw stubMsg; }
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
+        //public List<ThingDef> MissingFacilitiesB(+ResearchProjectDef research) { throw stubMsg; }
+
 
         public static void Node_SetRects_Prefix(object __instance)
         {
@@ -691,19 +727,7 @@ namespace HumanResources
 
                 Text.WordWrap = true;
 
-                //attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchTreeNamespaceRoot;
-                TooltipHandler.TipRegion(rect, new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), Research.GetHashCode());
-                if (!BuildingPresentProxy(Research))
-                {
-                    string languageKey = root + ".MissingFacilities";
-                    TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilities(Research).Select(td => td.LabelCap).ToArray())));
-                }
-                else if (!OwlChemistTechprintAvailable(Research) || (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist && !TechprintAvailable(Research)))
-                {
-                    string languageKey = root + ".MissingTechprints";
-                    TooltipHandler.TipRegion(rect, languageKey.Translate(Research.TechprintsApplied, Research.techprintCount));
-                }
+                Research.ToolTip(new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), rect);
 
                 //draw unlock icons
                 if (detailedMode)
@@ -797,6 +821,7 @@ namespace HumanResources
                 newNodeSize = oldNodeSize + push;
                 NodeSizeInfo.SetValue(__instance, newNodeSize);
                 nodeSizeHacked = true;
+                Log.Message("nodeSizeHacked!");
             }
         }
 
@@ -870,7 +895,7 @@ namespace HumanResources
 
         public static bool BuildingPresentProxy(ResearchProjectDef research)
         {
-            if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.Owlchemist) != 0)
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Owlchemist) || HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
             {
                 return research.PlayerHasAnyAppropriateResearchBench; // WTF? Apparently what we were looking for here is a completely vanilla property. 1.4 addition? Powl just checks this while older forks have some funky Algorithm and Caching.
             }
@@ -1017,6 +1042,7 @@ namespace HumanResources
         Owlchemist = 8,
         Mlie = 16,
 
+        Stem = Fluffy | Mlie,
         Pal = NotFood | VinaLx,
         PalForks = VinaLx | Owlchemist
     }

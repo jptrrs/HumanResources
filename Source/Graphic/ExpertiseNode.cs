@@ -243,19 +243,7 @@ namespace HumanResources
                 Text.WordWrap = true;
 
                 // Attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchTreeNamespaceRoot;
-
-                TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
-                if (!BuildingPresent())
-                {
-                    string languageKey = root + ".MissingFacilities";
-                    TooltipHandler.TipRegion(Rect, languageKey.Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
-                }
-                else if (!TechprintAvailable())
-                {
-                    string languageKey = root + ".MissingTechprints";
-                    TooltipHandler.TipRegion(Rect, languageKey.Translate(Tech.TechprintsApplied, Tech.techprintCount));
-                }
+                Tech.ToolTip(GetResearchTooltipString, Rect);
 
                 // draw unlock icons
                 if (detailedMode)

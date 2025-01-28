@@ -60,6 +60,7 @@ namespace HumanResources
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Mlie.ResearchTree")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchTree (Mlie version).");
+                ResearchTreeBase = ResearchTreeVersion.Mlie;
                 ResearchTree_Patches.Execute(Instance, "FluffyResearchTree"); //Hypotesis
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
