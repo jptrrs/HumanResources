@@ -405,27 +405,10 @@ namespace HumanResources
             _rectsSet = true;
         }
 
-
-        //        CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
-        //        Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
-        //            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
-        //            {
-        //                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
-        //                {
-        //                    amount *= 2;
-        //                    break;
-        //                }
-        //}
-        //if (researcher != null && researcher.Faction != null)
-        //{
-        //    amount /= tech.CostFactor(techComp.techLevel);
-        //}
         public bool TechprintAvailable()
         {
-            if (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist)
-                return ResearchTree_Patches.TechprintAvailable(Tech);
-
-            return ResearchTree_Patches.OwlChemistTechprintAvailable(Tech);
+            if (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist) return ResearchTree_Patches.TechprintAvailable(Tech);
+            return ResearchTree_Patches.TechprintAvailable_Alternate(Tech);
         }
 
         public void UpdateAssignment()

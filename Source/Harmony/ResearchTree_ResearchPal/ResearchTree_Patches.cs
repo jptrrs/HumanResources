@@ -359,6 +359,13 @@ namespace HumanResources
                 FixedPrimaryColorInfo.SetValue(instance, VariantColor); //light orange
             }
 
+            //Mlie's Modified tooltiphandler
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
+            {
+                instance.CreateReversePatcher(AccessTools.Method(modName + ".TooltipHandler_Modified:TipRegion"),
+                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TipRegion)))).Patch();
+            }
+
             //Base game
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
             {
@@ -571,18 +578,17 @@ namespace HumanResources
 
         public static bool GetResearchTooltipString_Prefix(ResearchProjectDef ___Research, ref string __result)
         {
-            var text = new StringBuilder();
-            text.AppendLine(___Research.description);
-            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Stem)) text.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
-            __result = text.ToString();
+            __result = ResearchTooltipString_Modified(___Research).ToString();
             return false;
         }
 
-        public static bool GetResearchTooltipString_Alternate_Prefix(ResearchProjectDef ___Research, ref StringBuilder __result)
+        private static StringBuilder ResearchTooltipString_Modified(ResearchProjectDef ___Research)
         {
-            __result.AppendLine(___Research.description);
-            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Stem)) __result.AppendLine("Fluffy.ResearchTree.RClickInstaFinish".Translate()); //There's no corresponding line on ResearchPal, but it works anyway. 
-            return false;
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(___Research.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n");
+            stringBuilder.AppendLine(___Research.description);
+            if (DebugSettings.godMode && !HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Stem)) stringBuilder.AppendLine("Fluffy.ResearchTree.RClickInstaFinishNew".Translate());
+            return stringBuilder;
         }
 
         public static List<Pair<Def, string>> GetUnlockDefsAndDescs(ResearchProjectDef research, bool dedupe = true) { throw stubMsg; }
@@ -604,10 +610,7 @@ namespace HumanResources
             return MissingFacilities(research);
         }
 
-        //public static void BuildTips(object instace) { throw stubMsg; }
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
-        //public List<ThingDef> MissingFacilitiesB(+ResearchProjectDef research) { throw stubMsg; }
-
 
         public static void Node_SetRects_Prefix(object __instance)
         {
@@ -666,7 +669,6 @@ namespace HumanResources
             ResearchProjectDef Research = (ResearchProjectDef)ResearchInfo.GetValue(__instance);
             bool available = (bool)AvailableInfo.GetValue(__instance);
             bool completed = Research.IsFinished; //simplified
-                                                  //
 
             if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect }))
             {
@@ -726,8 +728,8 @@ namespace HumanResources
                 }
 
                 Text.WordWrap = true;
-
-                Research.ToolTip(new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), rect);
+                //Research.ToolTip(new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), rect);
+                Research.ToolTip(new Func<string>(() => ResearchTooltipString_Modified(Research).ToString()), rect);
 
                 //draw unlock icons
                 if (detailedMode)
@@ -749,7 +751,7 @@ namespace HumanResources
                             iconRect.x = IconsRect.x + 4f;
                             GUI.DrawTexture(iconRect, ResearchTree_Assets.MoreIcon, ScaleMode.ScaleToFit);
                             var tip = string.Join("\n", unlocks.GetRange(i, unlocks.Count - i).Select(p => p.Second).ToArray());
-                            TooltipHandler.TipRegion(iconRect, tip);
+                            DispatchToolTip(iconRect, tip);
                             //new TipSignal(tip, Settings.TipID, TooltipPriority.Pawn) );
                             break;
                         }
@@ -757,8 +759,8 @@ namespace HumanResources
                         //draw icon
                         unlocks[i].First.DrawColouredIcon(iconRect);
 
-                        //tooltip
-                        TooltipHandler.TipRegion(iconRect, unlocks[i].Second);
+                        //CUSTOM: tooltip
+                        DispatchToolTip(iconRect, unlocks[i].Second);
                     }
                 }
 
@@ -807,11 +809,6 @@ namespace HumanResources
         }
 
         public static bool TechprintAvailable(ResearchProjectDef research) { throw stubMsg; }
-
-        public static bool OwlChemistTechprintAvailable(ResearchProjectDef research)
-        {
-            return research.TechprintRequirementMet;
-        }
 
         public static void TreeRect_Prefix(object __instance)
         {
@@ -1030,6 +1027,32 @@ namespace HumanResources
             return GetUnlockDefsAndDescs(research);
         }
 
+        #endregion
+
+        #region Owlchemist.ResearchPowl adaptation
+
+        public static bool TechprintAvailable_Alternate(ResearchProjectDef research)
+        {
+            return research.TechprintRequirementMet;
+        }
+
+        #endregion
+
+        #region Mlie.ResearchTree adaptation
+
+        public static bool GetResearchTooltipString_Alternate_Prefix(ResearchProjectDef ___Research, ref StringBuilder __result)
+        {
+            __result = ResearchTooltipString_Modified(___Research);
+            return false;
+        }
+
+        public static void TipRegion(Rect rect, TipSignal tip) { throw stubMsg; }
+
+        public static void DispatchToolTip(Rect rect, TipSignal tip)
+        {
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) TipRegion(rect, tip);
+            else TooltipHandler.TipRegion(rect, tip);
+        }
         #endregion
     }
 

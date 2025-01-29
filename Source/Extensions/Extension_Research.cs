@@ -813,16 +813,16 @@ namespace HumanResources
         public static void ToolTip(this ResearchProjectDef tech, Func<string> toolTipFunc, Rect rect)
         {
             string root = HarmonyPatches.ResearchTreeNamespaceRoot;
-            TooltipHandler.TipRegion(rect, toolTipFunc, tech.GetHashCode());
+            DispatchToolTip(rect, new TipSignal(toolTipFunc, tech.GetHashCode()));
             if (!BuildingPresentProxy(tech))
             {
                 string languageKey = root + ".MissingFacilities";
-                TooltipHandler.TipRegion(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech).Select(td => td.LabelCap).ToArray())));
+                DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech).Select(td => td.LabelCap).ToArray())));
             }
-            else if (!OwlChemistTechprintAvailable(tech) || (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist && !TechprintAvailable(tech)))
+            else if (!TechprintAvailable_Alternate(tech) || (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist && !TechprintAvailable(tech)))
             {
                 string languageKey = root + ".MissingTechprints";
-                TooltipHandler.TipRegion(rect, languageKey.Translate(tech.TechprintsApplied, tech.techprintCount));
+                DispatchToolTip(rect, languageKey.Translate(tech.TechprintsApplied, tech.techprintCount));
             }
         }
 
