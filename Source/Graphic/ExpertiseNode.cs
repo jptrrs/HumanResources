@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using Verse;
+using static RimWorld.MechClusterSketch;
 
 namespace HumanResources
 {

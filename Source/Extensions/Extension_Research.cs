@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Assertions.Must;
 using Verse;
 
 namespace HumanResources
@@ -810,49 +812,21 @@ namespace HumanResources
             if (tech.IsFinished) tech.Unlock(location, false);
         }
 
-        public static void ToolTip(this ResearchProjectDef tech, Func<string> toolTipFunc, Rect rect)
+        public static void ToolTip(this ResearchProjectDef tech, Func<string> toolTipFunc, Rect rect, bool complete = false)
         {
             string root = HarmonyPatches.ResearchTreeNamespaceRoot;
             DispatchToolTip(rect, new TipSignal(toolTipFunc, tech.GetHashCode()));
+            if (!complete) return;
             if (!BuildingPresentProxy(tech))
             {
                 string languageKey = root + ".MissingFacilities";
                 DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech).Select(td => td.LabelCap).ToArray())));
             }
-            else if (!TechprintAvailable_Alternate(tech) || (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist && !TechprintAvailable(tech)))
+            else if (!tech.TechprintRequirementMet)
             {
                 string languageKey = root + ".MissingTechprints";
                 DispatchToolTip(rect, languageKey.Translate(tech.TechprintsApplied, tech.techprintCount));
             }
-        }
-
-        //Because we can't rely on Mlie's version MissingFacilities anymore.
-        //This is pretty heavy for a tooltip, we should avoid if possible
-        public static List<ThingDef> MissingFacilities(this ResearchProjectDef research)
-        {
-            var list = research.Ancestors().Where(rpd => !rpd.IsFinished && !rpd.PlayerHasAnyAppropriateResearchBench).ToList();
-            list.Add(research);
-            var availableBenches = Find.Maps.SelectMany(map => map.listerBuildings.allBuildingsColonist).OfType<Building_ResearchBench>();
-            var distinctBenches = availableBenches.Select(b => b.def).Distinct();
-            var value = new List<ThingDef>();
-            foreach (var item in list)
-            {
-                if (item.requiredResearchBuilding == null) continue;
-                if (!distinctBenches.Contains(item.requiredResearchBuilding))
-                {
-                    value.Add(item.requiredResearchBuilding);
-                }
-                if (item.requiredResearchFacilities.NullOrEmpty()) continue;
-                foreach (var facility in item.requiredResearchFacilities)
-                {
-                    if (availableBenches.Where(b => b.GetComp<CompAffectedByFacilities>() != null && b.GetComp<CompAffectedByFacilities>().LinkedFacilitiesListForReading.Select(f => f.def).Contains(facility)).Any())
-                    {
-                        value.Add(facility);
-                    }
-                }
-            }
-            value = value.Distinct().ToList();
-            return value;
         }
 
         #endregion

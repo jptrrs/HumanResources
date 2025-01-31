@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
+//using UnityEngine.Assertions;
 using Verse;
 using Verse.Noise;
 
@@ -74,9 +75,12 @@ namespace HumanResources
             OutInfo;
 
         private static MethodInfo
+        //ResearchProjectDef_Extensions
+            ResearchNodeInfo,
         //ResearchNode:
             GetMissingRequiredRecursiveInfo,
             GetResearchTooltipStringInfo,
+            MissingFacilitiesInfo,
         //Node:
             IsVisibleInfo,
             InEdgeColorInfo,
@@ -105,6 +109,8 @@ namespace HumanResources
             NormalHighlightColorInfo,
             HoverPrimaryColorInfo,
             FixedPrimaryColorInfo;
+
+        public static MethodInfo BuildTipsInfo;
 
         public static Type AssetsType() => AccessTools.TypeByName(ModName + ".Assets");
         public static Type LinesType() => AccessTools.Inner(AssetsType(), "Lines");
@@ -156,7 +162,8 @@ namespace HumanResources
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetPlantsUnlocked)))).Patch();
             instance.CreateReversePatcher(AccessTools.Method(modName + ".ResearchProjectDef_Extensions:Ancestors"),
                 new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Ancestors)))).Patch();
-            if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
+
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.PalForks) || HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
             {
                 ResearchNodeInfo = AccessTools.Method(modName + ".ResearchProjectDef_Extensions:ResearchNode");
             }
@@ -287,8 +294,6 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
-            //instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
-            //    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
             InstanceInfo = GetPropertyOrFeedback(MainTabType(), "Instance", ref FailedProperties);
             Type windowNodeType = (HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0 ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
@@ -606,9 +611,12 @@ namespace HumanResources
 
         public static List<ThingDef> MissingFacilitiesProxy(ResearchProjectDef research)
         {
-            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) return research.MissingFacilities();
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) //return research.MissingFacilities();
+            {
+                return (List<ThingDef>)MissingFacilitiesInfo.Invoke(CachedNode(research), new object[] { research, false });
+            }
             return MissingFacilities(research);
-        }
+        }    
 
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }
 
@@ -631,14 +639,14 @@ namespace HumanResources
             }
         }
 
-        public static void PopulateNodes_Postfix()
-        {
-            populating = false;
-        }
-
         public static void PopulateNodes_Prefix()
         {
             populating = true;
+        }
+
+        public static void PopulateNodes_Postfix()
+        {
+            populating = false;
         }
 
         private static void ReflectKnowledge(CompKnowledge techComp, out IEnumerable<object> expertiseDisplay)
@@ -728,8 +736,8 @@ namespace HumanResources
                 }
 
                 Text.WordWrap = true;
-                //Research.ToolTip(new Func<string>(() => (string)GetResearchTooltipStringInfo.Invoke(__instance, new object[] { })), rect);
-                Research.ToolTip(new Func<string>(() => ResearchTooltipString_Modified(Research).ToString()), rect);
+                //CUSTOM: tooltip
+                Research.ToolTip(new Func<string>(() => ResearchTooltipString_Modified(Research).ToString()), rect, true); //Mlie replaces this by his BuildTips method.
 
                 //draw unlock icons
                 if (detailedMode)
@@ -751,16 +759,14 @@ namespace HumanResources
                             iconRect.x = IconsRect.x + 4f;
                             GUI.DrawTexture(iconRect, ResearchTree_Assets.MoreIcon, ScaleMode.ScaleToFit);
                             var tip = string.Join("\n", unlocks.GetRange(i, unlocks.Count - i).Select(p => p.Second).ToArray());
-                            DispatchToolTip(iconRect, tip);
-                            //new TipSignal(tip, Settings.TipID, TooltipPriority.Pawn) );
+                            TooltipHandler.TipRegion(iconRect, tip);
                             break;
                         }
 
                         //draw icon
                         unlocks[i].First.DrawColouredIcon(iconRect);
 
-                        //CUSTOM: tooltip
-                        DispatchToolTip(iconRect, unlocks[i].Second);
+                        TooltipHandler.TipRegion(iconRect, unlocks[i].Second);
                     }
                 }
 
@@ -865,7 +871,6 @@ namespace HumanResources
         public static bool expertiseDisplayed = false;
 
         private static MethodInfo
-            ResearchNodeInfo,
             BuildingPresentInfo,
             HighlightInfo,
             AppendSInfo,
@@ -890,15 +895,16 @@ namespace HumanResources
             }
         }
 
-        public static bool BuildingPresentProxy(ResearchProjectDef research)
+        public static bool BuildingPresentProxy(ResearchProjectDef research) //TO DO: add requisites from ResearchProjectDef.CanStartNow!
         {
             if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Owlchemist) || HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
             {
-                return research.PlayerHasAnyAppropriateResearchBench; // WTF? Apparently what we were looking for here is a completely vanilla property. 1.4 addition? Powl just checks this while older forks have some funky Algorithm and Caching.
+                //return research.PlayerHasAnyAppropriateResearchBench; ; // WTF? Apparently what we were looking for here is a completely vanilla property. 1.4 addition? Powl just checks this while older forks have some funky Algorithm and Caching.
+                return research.requiredResearchBuilding == null || research.PlayerHasAnyAppropriateResearchBench;
             }
-            if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.VinaLx) != 0 && ResearchNodeInfo != null)
+            if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.VinaLx) && ResearchNodeInfo != null)
             {
-                object rnode = ResearchNodeInfo.Invoke(research, new object[] { research });
+                object rnode = CachedNode(research);
                 return (bool)BuildingPresentInfo.Invoke(rnode, new object[] { rnode });
             }
             else if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
@@ -906,6 +912,12 @@ namespace HumanResources
                 Log.Error("[HumanResources] Error adapting to ResearchPal-Forked: null ResearchNodeInfo");
             }
             return BuildingPresent(research);
+        }
+
+        private static object CachedNode(ResearchProjectDef research)
+        {
+            if (!ResearchNodesCache.NullOrEmpty() && ResearchNodesCache.ContainsKey(research)) return ResearchNodesCache[research];
+            return ResearchNodeInfo.Invoke(new object[] { }, new object[] { research });
         }
 
         public static bool HandleDragging_Prefix(object __instance, bool mouseOver, bool ____available)
@@ -1053,6 +1065,7 @@ namespace HumanResources
             if (HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) TipRegion(rect, tip);
             else TooltipHandler.TipRegion(rect, tip);
         }
+
         #endregion
     }
 
