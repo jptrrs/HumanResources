@@ -250,7 +250,6 @@
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
     <Compile Include="Harmony\RepairUtility_PawnCanRepairEver.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
     <Compile Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Harmony\CompMannable_CompFloatMenuOptions.cs" />
@@ -262,7 +261,7 @@
     <Compile Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Legacy\ResearchTree_Patches.cs" />
-    <Compile Include="Legacy\SimpleSidearms_Patches.cs" />
+    <Compile Include="Legacy\SimpleSidearms_Patches_RW1.2.cs" />
     <Compile Include="Legacy\StockGenerator_TechBooks.cs" />
     <Compile Include="Legacy\WorkGiver_Knowledge.cs" />
     <Compile Include="Legacy\WorkGiver_Repair_HasJobOnThing.cs" />
@@ -273,7 +272,13 @@
   <ItemGroup Condition="'$(Configuration)' == '1.2'">
     <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' != '1.5'">
+  <ItemGroup Condition="'$(Configuration)' == '1.3'">
+    <Compile Include="Legacy\SimpleSidearms_Patches_RW1.3.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2' AND '$(Configuration)' != '1.3'">
+    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+  </ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != '1.5'">
     <Compile Include="Legacy\CompUseEffect_LearnRandomResearchProject_RW1.4.cs" />
     <Compile Include="Legacy\ResearchManager_ApplyTechprint_RW1.4.cs" />
     <Compile Include="Legacy\CompKnowledge_RW1.4.cs" />
