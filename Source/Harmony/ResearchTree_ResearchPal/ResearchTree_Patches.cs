@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using UnityEngine;
-//using UnityEngine.Assertions;
 using Verse;
 using Verse.Noise;
 
@@ -190,15 +189,9 @@ namespace HumanResources
                 EdgeColorInfo = GetPropertyOrFeedback(NodeType(), "EdgeColor", ref FailedProperties);
                 HighlightedInfo = GetPropertyOrFeedback(NodeType(), "Highlighted", ref FailedProperties);
             }
-
-            //All this does is change the tree nodes's size a little bit.
-            //But with Mlie's the spacing doesn't correspond, so it's off for now.
-            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
-            {
-                instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
-                    new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
-            }
+            instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Postfix))));
 
             // ResearchNode
             if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0)
@@ -295,6 +288,8 @@ namespace HumanResources
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(DoWindowContents_Postfix))));
             instance.Patch(AccessTools.Method(typeof(Window), "PostClose"),
                 null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Close_Postfix))));
+            instance.Patch(AccessTools.PropertyGetter(MainTabType(), "TreeRect"),
+                new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(TreeRect_Prefix))));
             InstanceInfo = GetPropertyOrFeedback(MainTabType(), "Instance", ref FailedProperties);
             Type windowNodeType = (HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.PalForks) != 0 ? ResearchNodeType() : NodeType();
             MainTabCenterOnInfo = AccessTools.Method(MainTabType(), "CenterOn", new Type[] { windowNodeType });
