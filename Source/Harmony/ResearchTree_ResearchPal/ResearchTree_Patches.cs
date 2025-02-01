@@ -29,7 +29,7 @@ namespace HumanResources
             populating = false,
             nodeSizeHacked = false,
             treeReady = false;
-        private static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
+        public static Dictionary<ResearchProjectDef, object> ResearchNodesCache = new Dictionary<ResearchProjectDef, object>();
         private static NotImplementedException stubMsg = new NotImplementedException("ResearchTree reverse patch");
         private static Vector2
             oldNodeSize,
@@ -193,7 +193,7 @@ namespace HumanResources
 
             //All this does is change the tree nodes's size a little bit.
             //But with Mlie's the spacing doesn't correspond, so it's off for now.
-            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie)) 
+            if (!HarmonyPatches.ResearchTreeBase.HasFlag(ResearchTreeVersion.Mlie))
             {
                 instance.Patch(AccessTools.Method(NodeType(), "SetRects", new Type[] { typeof(Vector2) }),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(Node_SetRects_Prefix))),
@@ -244,6 +244,7 @@ namespace HumanResources
                     null, new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(ResearchNode_Postfix))));
                 instance.Patch(AccessTools.Method(ResearchNodeType(), "GetResearchTooltipString"),
                     new HarmonyMethod(AccessTools.Method(typeof(ResearchTree_Patches), nameof(GetResearchTooltipString_Alternate_Prefix))));
+                MissingFacilitiesInfo = AccessTools.Method(ResearchNodeType(), "MissingFacilities", new Type[] { typeof(ResearchProjectDef), typeof(bool) });
             }
             else
             {
@@ -615,7 +616,7 @@ namespace HumanResources
             {
                 return (List<ThingDef>)MissingFacilitiesInfo.Invoke(CachedNode(research), new object[] { research, false });
             }
-            return MissingFacilities(research);
+            return MissingFacilities(research); //reverse patch
         }    
 
         public static List<ThingDef> MissingFacilities(ResearchProjectDef research) { throw stubMsg; }

@@ -819,8 +819,12 @@ namespace HumanResources
             if (!complete) return;
             if (!BuildingPresentProxy(tech))
             {
-                string languageKey = root + ".MissingFacilities";
-                DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech).Select(td => td.LabelCap).ToArray())));
+                if (ResearchNodesCache.ContainsKey(tech))
+                {
+                    string languageKey = root + ".MissingFacilities";
+                    DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech)?.Select(td => td.LabelCap).ToArray())));
+                }
+                else Log.Error($"[HumanResources] {tech.LabelCap} is uncached! ResearchNodesCache contains {ResearchNodesCache.Count} techs");                
             }
             else if (!tech.TechprintRequirementMet)
             {
