@@ -61,7 +61,7 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Deriving from ResearchTree (Mlie version).");
                 ResearchTreeBase = ResearchTreeVersion.Mlie;
-                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree"); //Hypotesis
+                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
             {
@@ -85,7 +85,7 @@ namespace HumanResources
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal - Forkd (Maruf61 version).");
                 ResearchTreeBase = ResearchTreeVersion.VinaLx;
-                ResearchTree_Patches.Execute(Instance, "ResearchPal"); //Hypotesis
+                ResearchTree_Patches.Execute(Instance, "ResearchPal");
             }
             else
             {

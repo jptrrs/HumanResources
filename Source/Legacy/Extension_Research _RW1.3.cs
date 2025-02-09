@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using HugsLib.Utils;
 using RimWorld;
 using System;
 using System.Collections;
@@ -98,7 +97,7 @@ namespace HumanResources
         #endregion
 
         #region startup
-        public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef pending = null, TechLevel cutoff = TechLevel.Spacer)
+        public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef unset = null, ThingDef standard = null)
         {
             string name = "Tech_" + tech.defName;
             string label = "KnowledgeLabel".Translate(tech.label);
@@ -142,28 +141,24 @@ namespace HumanResources
             };
             string tag = tech.techLevel.ToString();
             var stuffCatDef = new StuffCategoryDef();
-            if (tech.techLevel > 0 && tech.knowledgeCategory == null)
+            if (tech.techLevel > 0)
             {
                 stuffCatDef = DefDatabase<StuffCategoryDef>.GetNamed(tag);
-                if (stuffCatDef == null) Log.Warning($"HR: error looking for s-category {tag}");
-                ThingCategoryDef test = DefDatabase<ThingCategoryDef>.GetNamed(tag);
-                if (test == null) Log.Warning($"HR: error looking for t-category {tag}");
-                techStuff.thingCategories.Add(test);
+                techStuff.thingCategories.Add(DefDatabase<ThingCategoryDef>.GetNamed(tag));
                 techStuff.stuffProps.categories.Add(stuffCatDef);
             }
             techStuff.ResolveReferences();
-            //var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-            //ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
-            InjectedDefHasher.GiveShortHashToDef(techStuff, typeof(ThingDef));
+            var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+            ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;
             totalBooks++;
             //dealing with default stuff:
-            if (stuffCatDef == null || pending == null) return false;
-            if (pending.defaultStuff == null && pending.techLevel == tech.techLevel)
+            if (stuffCatDef == null || unset == null) return false;
+            if (standard.stuffCategories.Contains(stuffCatDef))
             {
-                pending.defaultStuff = techStuff;
+                unset.defaultStuff = techStuff;
                 return true;
             }
             return false;
@@ -460,36 +455,25 @@ namespace HumanResources
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed, bool outsideTree = false)
         {
-            int step = 0;
             Find.WindowStack.FloatMenu?.Close(false);
             if (HarmonyPatches.SemiRandom && !completed && !outsideTree) return;
             List<FloatMenuOption> options = new List<FloatMenuOption>();
-            step++;
-            Log.Message($"Step {step} for {tech}");
             if (tech.TechprintRequirementMet)
             {
-                Log.Message($"Case {step}-a");
-
                 options = (from opt in GeneratePawnRestrictionOptions(tech, completed)
                            select opt.option).ToList();
                 if (QueueAvailable && !IsQueued(tech)) options.Add(SelectforVanillaResearch(tech));
             }
             else
             {
-                Log.Message($"Case {step}-b");
-
                 int count = ModLister.RoyaltyInstalled ? tech.techprintCount : 0; //not using 1.2's property to maintain 1.1 compatibility
                 options.Add(new FloatMenuOption("InsufficientTechprintsApplied".Translate(tech.TechprintsApplied, count), null)
                 {
                     Disabled = true,
                 });
             }
-            step++;
-            Log.Message($"Step {step}");
             if (!options.Any()) options.Add(new FloatMenuOption("NoOptionsFound".Translate(), null));
             Find.WindowStack.Add(new FloatMenu(options));
-            step++;
-            Log.Message($"Step {step}");
         }
 
         public static void DrawPawnAssignments(this ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos, bool reverse = false)

@@ -38,18 +38,18 @@
       <li>StudyDesk</li>
     </recipeUsers>
     <fixedIngredientFilter>
-      <disallowedCategories>
+      <!--<disallowedCategories>
         <li>Spacer</li>
         <li>Ultra</li>
         <li>Archotech</li>
-      </disallowedCategories>
+      </disallowedCategories>-->
     </fixedIngredientFilter>
     <defaultIngredientFilter>
-      <disallowedCategories>
+      <!--<disallowedCategories>
         <li>Spacer</li>
         <li>Ultra</li>
         <li>Archotech</li>
-      </disallowedCategories>
+      </disallowedCategories>-->
     </defaultIngredientFilter>
   </RecipeDef>
   
@@ -81,18 +81,18 @@
       <TechBook>1</TechBook>
     </products>
     <fixedIngredientFilter>
-      <disallowedCategories>
+      <!--<disallowedCategories>
         <li>Spacer</li>
         <li>Ultra</li>
         <li>Archotech</li>
-      </disallowedCategories>
+      </disallowedCategories>-->
     </fixedIngredientFilter>
     <defaultIngredientFilter>
-      <disallowedCategories>
+      <!--<disallowedCategories>
         <li>Spacer</li>
         <li>Ultra</li>
         <li>Archotech</li>
-      </disallowedCategories>
+      </disallowedCategories>-->
     </defaultIngredientFilter>
   </RecipeDef>
 

@@ -1,10 +1,13 @@
 ﻿using HarmonyLib;
 using HugsLib;
 using HugsLib.Settings;
+using HugsLib.Utils;
 using RimWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine.SceneManagement;
 using Verse;
 
@@ -93,28 +96,56 @@ namespace HumanResources
             UniversalWeapons.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWeapon).Except(turretGuns));
             UniversalCrops.AddRange(DefDatabase<ThingDef>.AllDefs.Where(x => x.plant != null && x.plant.Sowable));
 
+            //test
+            Dictionary<ThingCategoryDef,StuffCategoryDef> LowTechCategories = new Dictionary<ThingCategoryDef, StuffCategoryDef>();
+            Dictionary<ThingCategoryDef, StuffCategoryDef> HiTechCategories = new Dictionary<ThingCategoryDef, StuffCategoryDef>();
+            TechLevel cutoff = TechDefOf.TechDrive.techLevel;
+            ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
+            foreach (TechLevel level in Enum.GetValues(typeof(TechLevel)))
+            {
+                string tag = level.ToString();
+
+                ThingCategoryDef thingCat = new ThingCategoryDef
+                {
+                    defName = tag,
+                    label = tag.ToLower(),
+                    parent = TechDefOf.Knowledge
+                };
+                InjectedDefHasher.GiveShortHashToDef(thingCat, typeof(ThingCategoryDef));
+                DefDatabase<ThingCategoryDef>.Add(thingCat);
+                knowledgeCat.childCategories.Add(thingCat);
+                //thingCat.ResolveReferences();
+
+                StuffCategoryDef stuffCat = new StuffCategoryDef
+                {
+                    defName = tag,
+                    label = tag.ToLower()
+                };
+                InjectedDefHasher.GiveShortHashToDef(stuffCat, typeof(StuffCategoryDef));
+                DefDatabase<StuffCategoryDef>.Add(stuffCat);
+
+                if (level < cutoff)
+                {
+                    LowTechCategories.Add(thingCat, stuffCat);
+                }
+                else HiTechCategories.Add(thingCat, stuffCat);
+            }
+
             //c. Minus things unlocked on research
             ThingFilter lateFilter = new ThingFilter();
-            ThingDef unset = TechDefOf.TechBook;
-            ThingDef standard = TechDefOf.LowTechCategories;
+            ThingDef pending = TechDefOf.TechBook;
             bool stage = true;
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
                 tech.InferSkillBias();
-                if (tech.CreateStuff(lateFilter, unset, standard))
+                if (tech.CreateStuff(lateFilter, pending, cutoff) && stage) //on first positive, load the next thing to set defaultStuff.
                 {
-                    if (stage)
-                    {
-                        unset = TechDefOf.TechDrive;
-                        standard = TechDefOf.HiTechCategories;
-                        stage = false;
-                    }
-                    else unset = standard = null;
+                    pending = TechDefOf.TechDrive;
+                    stage = false;
                 }
                 foreach (ThingDef weapon in tech.UnlockedWeapons()) UniversalWeapons.Remove(weapon);
                 foreach (ThingDef plant in tech.UnlockedPlants()) UniversalCrops.Remove(plant);
             };
-
             //d. Also removing atipical weapons"
             List<string> ForbiddenWeaponTags = TechDefOf.HardWeapons.weaponTags;
             UniversalWeapons.RemoveAll(x => SplitSimpleWeapons(x, ForbiddenWeaponTags));
@@ -125,7 +156,6 @@ namespace HumanResources
             PawnBackgroundUtility.BuildCache();
 
             //f. Telling humans what's going on
-            ThingCategoryDef knowledgeCat = TechDefOf.Knowledge;
             IEnumerable<ThingDef> codifiedTech = DefDatabase<ThingDef>.AllDefs.Where(x => x.IsWithinCategory(knowledgeCat));
             if (Prefs.LogVerbose || FullStartupReport)
             {
@@ -162,33 +192,41 @@ namespace HumanResources
             //4. Filling gaps on the database
 
             //a. TechBook dirty trick, but only now this is possible!
-            TechDefOf.TechBook.stuffCategories = TechDefOf.UnfinishedTechBook.stuffCategories = TechDefOf.LowTechCategories.stuffCategories;
-            TechDefOf.TechDrive.stuffCategories = TechDefOf.HiTechCategories.stuffCategories;
-            garbage.Add(TechDefOf.LowTechCategories);
-            garbage.Add(TechDefOf.HiTechCategories);
+            TechDefOf.TechBook.stuffCategories = TechDefOf.UnfinishedTechBook.stuffCategories = LowTechCategories.Values.ToList();
+            TechDefOf.TechDrive.stuffCategories = HiTechCategories.Values.ToList();
 
             //b. Filling main tech category with subcategories
-            foreach (ThingDef t in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
+            foreach (ThingDef stuff in lateFilter.AllowedThingDefs.Where(t => !t.thingCategories.NullOrEmpty()))
             {
-                foreach (ThingCategoryDef c in t.thingCategories/*.Where(x => !x.childCategories.NullOrEmpty())*/)
+                foreach (ThingCategoryDef category in stuff.thingCategories)
                 {
-                    c.childThingDefs.Add(t);
-                    if (!knowledgeCat.childCategories.NullOrEmpty() && !knowledgeCat.childCategories.Contains(c))
-                    {
-                        knowledgeCat.childCategories.Add(c);
-                    }
+                    category.childThingDefs.Add(stuff);
                 }
+            }
+            foreach(ThingCategoryDef stuffCat in knowledgeCat.childCategories)
+            {
+                stuffCat.PostLoad();
             }
 
             //c. Populating knowledge recipes and book shelves
-            List<RecipeDef> recipes = new List<RecipeDef>() { TechDefOf.LearnTech, TechDefOf.LearnTechDigital, TechDefOf.DocumentTech, TechDefOf.DocumentTechDigital, TechDefOf.ScanBook };
-            foreach (RecipeDef r in recipes)
+            List<RecipeDef> LoTechRecipes = new List<RecipeDef>() { TechDefOf.LearnTech, TechDefOf.DocumentTech};
+            List<RecipeDef> HiTechRecipes = new List<RecipeDef>() { TechDefOf.LearnTechDigital, TechDefOf.DocumentTechDigital, TechDefOf.ScanBook };
+            List<string> LoTechBlackList = HiTechCategories.Keys.Select(x => x.defName).ToList();
+            foreach(RecipeDef recipe in LoTechRecipes)
+            {
+                //if (recipe.fixedIngredientFilter == null) recipe.fixedIngredientFilter = new ThingFilter();
+                //if (recipe.defaultIngredientFilter == null) recipe.defaultIngredientFilter = new ThingFilter();
+                //recipe.fixedIngredientFilter.categories = LowTechCategories.Values.Select(x => x.defName).ToList();
+                recipe.fixedIngredientFilter.disallowedCategories = recipe.defaultIngredientFilter.disallowedCategories = LoTechBlackList;
+            }
+            foreach (RecipeDef r in LoTechRecipes.Concat(HiTechRecipes))
             {
                 r.fixedIngredientFilter.ResolveReferences();
                 r.defaultIngredientFilter.ResolveReferences();
             }
             foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs.Where(x => x.thingClass == typeof(Building_BookStore)))
             {
+                t.building.fixedStorageSettings.filter.disallowedCategories = LoTechBlackList;
                 t.building.fixedStorageSettings.filter.ResolveReferences();
                 t.building.defaultStorageSettings.filter.ResolveReferences();
             }

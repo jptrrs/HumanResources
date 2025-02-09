@@ -8,14 +8,14 @@ namespace HumanResources
     public class StockGenerator_TechBooks : StockGenerator_MiscItems
     {
 #pragma warning disable 0649
-        private List<ThingCategoryDef> excludedCategories;
+        public List<ThingCategoryDef> excludedCategories;
 #pragma warning restore
+        public TechLevel minTechLevelGenerate = TechLevel.Neolithic;
 
-        private TechLevel defaultLevel = TechLevel.Undefined;
-
+        //Restrics stock tech Level to the trader faction's
         public override IEnumerable<Thing> GenerateThings(int forTile, Faction faction = null)
         {
-            if (faction?.def.techLevel != null) defaultLevel = faction.def.techLevel;
+            if (faction?.def.techLevel != null && faction.def.techLevel < maxTechLevelGenerate) maxTechLevelGenerate = faction.def.techLevel;
             return base.GenerateThings(forTile, faction);
         }
 
@@ -30,7 +30,6 @@ namespace HumanResources
             if (def.MadeFromStuff)
             {
                 if (!GenStuff.AllowedStuffsFor(def, TechLevel.Undefined).Where(x => AppropriateTechLevel(x)).TryRandomElementByWeight((ThingDef x) => x.stuffProps.commonality, out stuff))
-
                 {
                     stuff = GenStuff.RandomStuffByCommonalityFor(def, TechLevel.Undefined);
                 }
@@ -42,9 +41,7 @@ namespace HumanResources
 
         private bool AppropriateTechLevel(ThingDef x)
         {
-            if (!excludedCategories.NullOrEmpty()) return !excludedCategories.Intersect(x.thingCategories).Any();
-            else if (defaultLevel != 0) return x.techLevel == defaultLevel;
-            else return true;
+            return x.techLevel >= minTechLevelGenerate && x.techLevel <= maxTechLevelGenerate;
         }
 
         public override bool HandlesThingDef(ThingDef thingDef)

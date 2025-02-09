@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using RimWorld;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Emit;
 using UnityEngine;
 using Verse;
@@ -13,7 +15,7 @@ namespace HumanResources
         public static Pawn Pawn;
         private static CompKnowledge Comp => Pawn.TryGetComp<CompKnowledge>();
 
-        //determines project from category then triggers next step. Triggered by: StudyAnomaly, TryInteractWith
+        //Original determines project from category then triggers next step. Triggered by: StudyAnomaly, TryInteractWith
         [HarmonyPatch(nameof(ResearchManager.ApplyKnowledge), new Type[] { typeof(KnowledgeCategoryDef), typeof(float) })]
         public static bool Prefix(ResearchManager __instance, KnowledgeCategoryDef category, float amount)
         {
@@ -22,7 +24,7 @@ namespace HumanResources
             return false;
         }
 
-        //checks for project pre-requisites and if finished, then triggers finishproject. Triggered by: ApplyKnowledge, OnReadingTick
+        //Original checks for project pre-requisites and if finished, then triggers finishproject. Triggered by: ApplyKnowledge, OnReadingTick
         [HarmonyPatch(nameof(ResearchManager.ApplyKnowledge), new Type[] { typeof(ResearchProjectDef), typeof(float), typeof(float) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out })]
         public static void Prefix(ResearchProjectDef project, float amount, out float remainder)
         {
@@ -31,20 +33,20 @@ namespace HumanResources
 
         private static void LearnAnomalyTechRecursive(KnowledgeCategoryDef category, float amount)
         {
-            ResearchProjectDef project = Comp?.homework.Find(x => x.knowledgeCategory == category);
-            if (project == null) return;
-            bool flag = false;
-            if (project != null)
+            var homework = Comp?.homework;
+            if (homework == null) return;
+            bool overflow = false;
+            float num;
+            foreach (ResearchProjectDef project in homework.Where(x => x.knowledgeCategory == category))
             {
-                float num;
                 if (LearnAnomalyTech(project, amount, out num) && num > 0f)
                 {
                     amount = num;
-                    flag = true;
+                    overflow = true;
                 }
+                if (!overflow) break;
             }
-            else flag = true;
-            if (flag && category.overflowCategory != null)
+            if (overflow && category.overflowCategory != null)
             {
                 LearnAnomalyTechRecursive(category.overflowCategory, amount);
             }

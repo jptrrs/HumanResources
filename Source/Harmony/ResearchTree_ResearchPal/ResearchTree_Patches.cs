@@ -414,7 +414,6 @@ namespace HumanResources
             {
                 NodeSizeInfo.SetValue(__instance, oldNodeSize);
                 nodeSizeHacked = false;
-                Log.Message("nodeSize unHacked!");
             }
             MainTabInstance = null;
         }
@@ -820,7 +819,6 @@ namespace HumanResources
                 newNodeSize = oldNodeSize + push;
                 NodeSizeInfo.SetValue(__instance, newNodeSize);
                 nodeSizeHacked = true;
-                Log.Message("nodeSizeHacked!");
             }
         }
 

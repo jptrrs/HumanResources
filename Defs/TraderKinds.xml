@@ -8,11 +8,12 @@
     <stockGenerators>
       <li Class="HumanResources.StockGenerator_TechBooks">
         <countRange>6~12</countRange>
-        <excludedCategories>
+        <minTechLevelGenerate>Spacer</minTechLevelGenerate>
+        <!--<excludedCategories>
           <li>Spacer</li>
           <li>Ultra</li>
           <li>Archotech</li>
-        </excludedCategories>
+        </excludedCategories>-->
       </li>
     </stockGenerators>
   </TraderKindDef>
@@ -25,9 +26,10 @@
     <stockGenerators>
       <li Class="HumanResources.StockGenerator_TechBooks">
         <countRange>8~20</countRange>
-        <excludedCategories>
+        <minTechLevelGenerate>Neolithic</minTechLevelGenerate>
+        <!--<excludedCategories>
           <li>Neolithic</li>
-        </excludedCategories>
+        </excludedCategories>-->
       </li>
     </stockGenerators>
   </TraderKindDef>

@@ -58,9 +58,6 @@
     <RimWorldPath>..\..\References\RimWorld 1.3\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
     <OutputPath>..\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -190,6 +187,7 @@
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
+    <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
     <Compile Include="Harmony\Anomaly\ReadingOutcomeDoerGainAnomalyResearch_OnReadingTick.cs" />
     <Compile Include="Harmony\Anomaly\Pawn_InteractionsTracker_TryInteractWithBase.cs" />
     <Compile Include="Harmony\Anomaly\ResearchManager_ApplyKnowledge.cs" />
@@ -249,7 +247,6 @@
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
     <Compile Include="Harmony\RepairUtility_PawnCanRepairEver.cs" />
@@ -278,9 +275,11 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.3'">
     <Compile Include="Legacy\SimpleSidearms_Patches_RW1.3.cs" />
+    <Compile Include="Legacy\Extension_Research _RW1.3.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2' AND '$(Configuration)' != '1.3'">
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != '1.5'">
     <Compile Include="Legacy\CompUseEffect_LearnRandomResearchProject_RW1.4.cs" />
