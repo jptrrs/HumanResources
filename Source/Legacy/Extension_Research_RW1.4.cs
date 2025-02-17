@@ -142,7 +142,7 @@ namespace HumanResources
             };
             string tag = null;
             var stuffCatDef = new StuffCategoryDef();
-            if (IsTechLevelRelevant(tech.techLevel, out tag) && tech.knowledgeCategory == null)
+            if (IsTechLevelRelevant(tech.techLevel, out tag))
             {
                 stuffCatDef = DefDatabase<StuffCategoryDef>.GetNamed(tag);
                 if (stuffCatDef == null) Log.Warning($"[HumanResources] Error looking for s-category {tag} for {tech.LabelCap}");

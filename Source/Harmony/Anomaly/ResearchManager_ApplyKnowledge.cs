@@ -65,17 +65,15 @@ namespace HumanResources
             {
                 expertise.Add(project, amount);
             }
-            bool finished = expertise[project] >= project.Cost;
-            if (project.PrerequisitesCompleted && finished) //This means trying to learn anything beyond what's alredy documented will waste the effort!
+            if (expertise[project] > 1f)
             {
                 remainder = expertise[project] - project.knowledgeCost;
-                //expertise[project] = Mathf.Min(expertise[project], project.Cost);
                 Comp.LearnTech(project);
                 return true;
             }
             end:
             remainder = 0f;
             return false;
-        }
+        }   
     }
 }

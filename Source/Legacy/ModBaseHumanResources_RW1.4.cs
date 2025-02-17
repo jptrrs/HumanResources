@@ -137,7 +137,7 @@ namespace HumanResources
             bool stage = true;
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
-                if (!ModsConfig.AnomalyActive || tech.knowledgeCategory == null) tech.InferSkillBias(); //excluding Anomaly techs
+                tech.InferSkillBias(); //excluding Anomaly techs
                 if (tech.CreateStuff(lateFilter, pending, cutoff) && stage) //on first positive, load the next thing to set defaultStuff for.
                 {
                     pending = TechDefOf.TechDrive;
@@ -247,11 +247,11 @@ namespace HumanResources
                 tag = level.ToString();
                 return true;
             }
-            if (ModsConfig.AnomalyActive)
-            {
-                tag = "Anomaly";
-                return true;
-            }
+            //if (ModsConfig.AnomalyActive)
+            //{
+            //    tag = "Anomaly";
+            //    return true;
+            //}
             tag = null;
             return false; 
         }

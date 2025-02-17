@@ -60,7 +60,7 @@ namespace HumanResources
             return result / 100;
         }
 
-        public static bool Anomaly => ModLister.AnomalyInstalled && ModsConfig.AnomalyActive;
+        //public static bool Anomaly => ModLister.AnomalyInstalled && ModsConfig.AnomalyActive;
 
         public static SkillMapping FindSkill<T>(T query) where T : class
         {

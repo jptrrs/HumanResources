@@ -160,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BackupState.cs" />
-    <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Base\TechDatabase.cs" />
     <Compile Include="Base\TechDefOf.cs" />
@@ -187,11 +186,6 @@
     <Compile Include="Extensions\SkillMapping.cs" />
     <Compile Include="Extensions\TechMapping.cs" />
     <Compile Include="Harmony\Alert_NeedResearchProject_GetReport.cs" />
-    <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
-    <Compile Include="Harmony\Anomaly\ReadingOutcomeDoerGainAnomalyResearch_OnReadingTick.cs" />
-    <Compile Include="Harmony\Anomaly\Pawn_InteractionsTracker_TryInteractWithBase.cs" />
-    <Compile Include="Harmony\Anomaly\ResearchManager_ApplyKnowledge.cs" />
-    <Compile Include="Harmony\Anomaly\StudyManager_StudyAnomaly.cs" />
     <Compile Include="Harmony\Bill_IsFixedOrAllowedIngredient.cs" />
     <Compile Include="Harmony\Bill_PawnAllowedToStartAnew.cs" />
     <Compile Include="Harmony\Compatibility\SemiRandom_Patch.cs" />
@@ -225,7 +219,6 @@
     <Compile Include="Harmony\WorkGiver_FixBrokenDownBuilding_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
-    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
@@ -277,9 +270,11 @@
     <Compile Include="Legacy\SimpleSidearms_Patches_RW1.3.cs" />
     <Compile Include="Legacy\Extension_Research _RW1.3.cs" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.4'">
+    <Compile Include="Legacy\Extension_Research_RW1.4.cs" />
+  </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2' AND '$(Configuration)' != '1.3'">
     <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' != '1.5'">
     <Compile Include="Legacy\CompUseEffect_LearnRandomResearchProject_RW1.4.cs" />
@@ -287,13 +282,23 @@
     <Compile Include="Legacy\CompKnowledge_RW1.4.cs" />
     <Compile Include="Legacy\JobDriver_DocumentTech_RW1.4.cs" />
     <Compile Include="Legacy\JobDriver_LearnWeapon_RW1.4.cs" />
+    <Compile Include="Legacy\ModBaseHumanResources_RW1.4.cs" />
+    <Compile Include="Legacy\ITab_PawnKnowledge_RW1.4.cs" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.5'">
-    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
     <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_LearnWeapon.cs" />
+    <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
+    <Compile Include="Harmony\Anomaly\ReadingOutcomeDoerGainAnomalyResearch_OnReadingTick.cs" />
+    <Compile Include="Harmony\Anomaly\Pawn_InteractionsTracker_TryInteractWithBase.cs" />
+    <Compile Include="Harmony\Anomaly\ResearchManager_ApplyKnowledge.cs" />
+    <Compile Include="Harmony\Anomaly\StudyManager_StudyAnomaly.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
