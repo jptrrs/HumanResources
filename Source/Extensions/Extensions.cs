@@ -12,6 +12,7 @@ namespace HumanResources
         public static bool Allows(this Bill bill, IEnumerable<ResearchProjectDef> homework)
         {
             var textBooks = homework.Select(x => TechTracker.FindTech(x).Stuff);
+            //Log.Message($"Bill for {bill.recipe.defName} allows {bill.ingredientFilter.AllowedThingDefs.ToStringSafeEnumerable()}.");
             bool result = bill.ingredientFilter.AllowedThingDefs.Intersect(textBooks).Any();
             return result;
         }

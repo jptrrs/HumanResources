@@ -20,6 +20,7 @@ namespace HumanResources
     using static ResearchTreeHelper;
     using static TechTracker;
 
+    //Changed in RW 1.5
     public static class Extension_Research
     {
         #region variables

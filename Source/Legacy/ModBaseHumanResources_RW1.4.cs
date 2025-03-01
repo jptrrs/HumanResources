@@ -13,6 +13,7 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     public class ModBaseHumanResources : ModBase
     {
         public static SettingHandle<bool>
@@ -99,7 +100,7 @@ namespace HumanResources
                 InjectedDefHasher.GiveShortHashToDef(thingCat, typeof(ThingCategoryDef));
                 DefDatabase<ThingCategoryDef>.Add(thingCat);
                 knowledgeCat.childCategories.Add(thingCat);
-                //thingCat.ResolveReferences();
+                thingCat.ResolveReferences();
 
                 StuffCategoryDef stuffCat = new StuffCategoryDef
                 {
@@ -137,7 +138,7 @@ namespace HumanResources
             bool stage = true;
             foreach (ResearchProjectDef tech in DefDatabase<ResearchProjectDef>.AllDefs)
             {
-                tech.InferSkillBias(); //excluding Anomaly techs
+                tech.InferSkillBias();
                 if (tech.CreateStuff(lateFilter, pending, cutoff) && stage) //on first positive, load the next thing to set defaultStuff for.
                 {
                     pending = TechDefOf.TechDrive;

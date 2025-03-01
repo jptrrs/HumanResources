@@ -21,10 +21,11 @@ namespace HumanResources
         //}
 
         [HarmonyPatch("Visible", new Type[] { typeof(TreeNode_ThingCategory) })]
-        public static void Prefix(TreeNode_ThingCategory node)
+        public static void Postfix(TreeNode_ThingCategory node, ThingFilter ___parentFilter, ref bool __result)
         {
             if (node.catDef == TechDefOf.Knowledge || node.catDef.parent == TechDefOf.Knowledge)
             {
+                __result = false;
                 string test = node.catDef != null ? "ok" : "bad";
                 Log.Message($"HR: node {node.Label}, catDef is {test}, descendents: {node.catDef.DescendantThingDefs.ToStringSafeEnumerable()}");
             }
@@ -38,3 +39,4 @@ namespace HumanResources
         }
     }
 }
+d

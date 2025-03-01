@@ -5,12 +5,11 @@ using Verse;
 namespace HumanResources
 {
     //Tweaks visibility of technical books category, 1/2
-    //[HarmonyPatch(typeof(ThingFilterUI), nameof(ThingFilterUI.DoThingFilterConfigWindow))]
+    [HarmonyPatch(typeof(ThingFilterUI), nameof(ThingFilterUI.DoThingFilterConfigWindow))]
     public static class ThingFilterUI_DoThingFilterConfigWindow
     {
         public static void Prefix(ThingFilter parentFilter)
         {
-            //Log.Message($"Probing ThingFilterUI_DoThingFilterConfigWindow - allowed: {parentFilter.AllowedDefCount}");
             if (parentFilter != null && parentFilter.AllowedDefCount > 0 && parentFilter.AllowedThingDefs.All(x => x.IsWithinCategory(TechDefOf.Knowledge)))
             {
                 HarmonyPatches.VisibleBooksCategory = true;

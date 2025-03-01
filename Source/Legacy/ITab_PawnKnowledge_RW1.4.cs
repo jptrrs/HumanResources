@@ -9,6 +9,7 @@ using Verse;
 
 namespace HumanResources
 {
+    //Changed in RW 1.5
     public class ITab_PawnKnowledge : ITab
     {
         private const int

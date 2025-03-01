@@ -99,7 +99,7 @@ namespace HumanResources
                 InjectedDefHasher.GiveShortHashToDef(thingCat, typeof(ThingCategoryDef));
                 DefDatabase<ThingCategoryDef>.Add(thingCat);
                 knowledgeCat.childCategories.Add(thingCat);
-                //thingCat.ResolveReferences();
+                thingCat.ResolveReferences();
 
                 StuffCategoryDef stuffCat = new StuffCategoryDef
                 {
@@ -214,12 +214,12 @@ namespace HumanResources
             List<RecipeDef> LoTechRecipes = new List<RecipeDef>() { TechDefOf.LearnTech, TechDefOf.DocumentTech};
             List<RecipeDef> HiTechRecipes = new List<RecipeDef>() { TechDefOf.LearnTechDigital, TechDefOf.DocumentTechDigital, TechDefOf.ScanBook };
             List<string> LoTechBlackList = HiTechCategories.Keys.Select(x => x.defName).ToList();
-            foreach(RecipeDef recipe in LoTechRecipes)
+            foreach (RecipeDef r in LoTechRecipes)
             {
-                //if (recipe.fixedIngredientFilter == null) recipe.fixedIngredientFilter = new ThingFilter();
-                //if (recipe.defaultIngredientFilter == null) recipe.defaultIngredientFilter = new ThingFilter();
-                //recipe.fixedIngredientFilter.categories = LowTechCategories.Values.Select(x => x.defName).ToList();
-                recipe.fixedIngredientFilter.disallowedCategories = recipe.defaultIngredientFilter.disallowedCategories = LoTechBlackList;
+                //    //if (recipe.fixedIngredientFilter == null) recipe.fixedIngredientFilter = new ThingFilter();
+                //    //if (recipe.defaultIngredientFilter == null) recipe.defaultIngredientFilter = new ThingFilter();
+                //    r.fixedIngredientFilter.categories = LowTechCategories.Keys.Select(x => x.defName).ToList(); //recipes seems to draw ingredient categories from the def just fine.
+                r.fixedIngredientFilter.disallowedCategories = r.defaultIngredientFilter.disallowedCategories = LoTechBlackList;
             }
             foreach (RecipeDef r in LoTechRecipes.Concat(HiTechRecipes))
             {

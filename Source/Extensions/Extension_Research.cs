@@ -101,7 +101,7 @@ namespace HumanResources
         public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef pending = null, TechLevel cutoff = TechLevel.Spacer)
         {
             string name = "Tech_" + tech.defName;
-            string label = "KnowledgeLabel".Translate(tech.label);
+            string label = "KnowledgeLabel".Translate(tech.label);  
             ThingDef techStuff = new ThingDef
             {
                 thingClass = typeof(ThingWithComps),
@@ -142,7 +142,7 @@ namespace HumanResources
             };
             string tag = null;
             var stuffCatDef = new StuffCategoryDef();
-            if (IsTechLevelRelevant(tech.techLevel, out tag) && tech.knowledgeCategory == null)
+            if (IsTechLevelRelevant(tech.techLevel, out tag))
             {
                 stuffCatDef = DefDatabase<StuffCategoryDef>.GetNamed(tag);
                 if (stuffCatDef == null) Log.Warning($"[HumanResources] Error looking for s-category {tag} for {tech.LabelCap}");

@@ -21,7 +21,8 @@ namespace HumanResources
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
+            //project = techComp.homework?.Where(x => job.bill.Allows(x)).Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
+            project = techComp.homework?.Intersect(techComp.knownTechs).Reverse().FirstOrDefault();
             if (project == null) return false;
             techStuff = TechTracker.FindTech(project).Stuff;
             return base.TryMakePreToilReservations(errorOnFailed);
