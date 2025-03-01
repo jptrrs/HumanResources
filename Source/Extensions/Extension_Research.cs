@@ -283,7 +283,9 @@ namespace HumanResources
 
         public static float StuffCostFactor(this ResearchProjectDef tech)
         {
-            return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
+            float cost = tech.baseCost > 0 ? tech.baseCost : tech.knowledgeCost * 100;
+            if (cost == 0) Log.Error($"[HumanResources] Can't determine the cost for {tech}!");
+            return (float)Math.Round(Math.Pow(cost, (1.0 / 2.0)), 1);
         }
 
         private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
