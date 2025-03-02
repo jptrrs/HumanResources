@@ -29,8 +29,7 @@ namespace HumanResources
             rect2 = rect2.ContractedBy(10f);
             rect2.y += 5f;
             Text.Font = GameFont.Medium;
-            string key = (num > 1) ? "ActiveProjectPlural" : "ActiveProject";
-            Widgets.Label(rect4, key.Translate());
+            Widgets.Label(rect4, "Assignments".Translate());
             Text.Font = GameFont.Small;
             Rect startButRect = new Rect
             {
@@ -40,7 +39,6 @@ namespace HumanResources
                 width = rect.width / 2f + 20f
             };
             Widgets.DrawMenuSection(rect3);
-
             //Research Progress
             //if (ModsConfig.AnomalyActive && window.curTabInt == ResearchTabDefOf.Anomaly)
             //{
@@ -65,30 +63,24 @@ namespace HumanResources
             //}
             //else
             //{
-            ResearchProjectDef project3 = Find.ResearchManager.GetProject(null);
-            if (project3 == null)
-            {
-                using (new TextBlock(TextAnchor.MiddleCenter))
-                {
-                    Widgets.Label(rect2, "NoProjectSelected".Translate());
-                    goto IL_285;
-                }
-            }
-            IL_285:
-            float height = rect2.height / 1.5f;
-            Vector2 frameOffset = new Vector2(0, rect2.yMax - height * 0.75f);
-            float startPos = rect2.xMax - height / 2;
-            project3.DrawPawnAssignments(height, frameOffset, startPos, true);
-
+            //ResearchProjectDef project3 = Find.ResearchManager.GetProject(null);
+            //if (project3 == null)
+            //{
+            //    using (new TextBlock(TextAnchor.MiddleCenter))
+            //    {
+            //        Widgets.Label(rect2, "NoProjectSelected".Translate());
+            //        goto IL_285;
+            //    }
+            //}
+            //IL_285:
+            float height = rect2.height;
+            Vector2 frameOffset = new Vector2(0, rect2.y);
+            float startPos = rect2.x - height/4;
             if (Widgets.ButtonText(startButRect, "Research".Translate(), true, true, true, null))
             {
                 tech.SelectMenu(false, true);
             }
-            SemiRandom_Patch.DrawResearchButton_Postfix(rect2, tech); //The assignemnts, actually
-
-
-            //window.DrawProjectProgress(rect2, project3, null, 75f);
-            //}
+            tech.DrawAssignmentsArray(height, frameOffset, startPos);
 
             //Start Button + Dev options
             //window.DrawStartButton(startButRect);
@@ -119,6 +111,9 @@ namespace HumanResources
                 yMax = startButRect.yMin - 10f
             });
         }
+
+
+
     }
 }
 

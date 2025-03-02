@@ -15,6 +15,7 @@ using Verse;
 
 namespace HumanResources
 {
+    using static HarmonyLib.Code;
     using static ModBaseHumanResources;
     using static ResearchTree_Patches;
     using static ResearchTreeHelper;
@@ -452,12 +453,17 @@ namespace HumanResources
         #region research tree
         public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
-            DrawStorageMarker(tech, rect, highlighted);
+            tech.DrawStorageMarker(rect, highlighted);
             float height = rect.height;
             Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
             float startPos = rect.x - frameOffset.x;
-            if (QueueAvailable && IsQueued(tech)) startPos += DrawQueueAssignment(tech, VFE_Supercomputer, height, frameOffset, startPos);
-            tech.DrawPawnAssignments(height, frameOffset, startPos);
+            tech.DrawAssignmentsArray(height, frameOffset, startPos);
+        }
+
+        public static void DrawAssignmentsArray(this ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos, bool reverse = false)
+        {
+            if (QueueAvailable && IsQueued(tech)) startPos += tech.DrawQueueAssignment(VFE_Supercomputer, height, frameOffset, startPos);
+            tech.DrawPawnAssignments(height, frameOffset, startPos, reverse);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed, bool outsideTree = false)
@@ -504,7 +510,7 @@ namespace HumanResources
             }
         }
 
-        private static float DrawQueueAssignment(ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
+        private static float DrawQueueAssignment(this ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
         {
             Vector2 position;
             Vector2 size = new Vector2(height, height);
@@ -517,7 +523,7 @@ namespace HumanResources
             return height / 2;
         }
 
-        private static void DrawStorageMarker(ResearchProjectDef tech, Rect rect, bool highlighted)
+        private static void DrawStorageMarker(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
             float height = rect.height;
             float ribbon = ResearchTree_Constants.push.x;

@@ -69,7 +69,7 @@ namespace HumanResources
             float height = drawRect.height / 1.5f;
             Vector2 frameOffset = new Vector2(0, drawRect.yMax - height * 0.75f);
             float startPos = drawRect.xMax - height / 2;
-            projectDef.DrawPawnAssignments(height, frameOffset, startPos, true);
+            projectDef.DrawAssignmentsArray(height, frameOffset, startPos, true);
         }
 
     }
