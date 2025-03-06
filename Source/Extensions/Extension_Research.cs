@@ -453,7 +453,7 @@ namespace HumanResources
         #region research tree
         public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
-            tech.DrawStorageMarker(rect, highlighted);
+            if (!tech.DrawStorageMarker(new Vector2(rect.xMax, rect.y), rect.height, ResearchTree_Constants.push.x, highlighted)) OriginTooltip(tech, rect);
             float height = rect.height;
             Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
             float startPos = rect.x - frameOffset.x;
@@ -523,32 +523,32 @@ namespace HumanResources
             return height / 2;
         }
 
-        private static void DrawStorageMarker(this ResearchProjectDef tech, Rect rect, bool highlighted)
+        public static bool DrawStorageMarker(this ResearchProjectDef tech, Vector2 position, float height, float width, bool highlighted, bool boxed = true)
         {
-            float height = rect.height;
-            float ribbon = ResearchTree_Constants.push.x;
-            Vector2 position = new Vector2(rect.xMax, rect.y);
             Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
-            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
-            Color backup = GUI.color;
             if (unlocked.TechsArchived.ContainsKey(tech))
             {
+                Color backup = GUI.color;
                 bool cloud = tech.IsOnline();
                 bool book = tech.IsPhysicallyArchived();
                 bool twin = cloud && book;
-                Vector2 markerSize = new Vector2(ribbon, height);
+                Vector2 markerSize = new Vector2(width, height);
                 Rect box = new Rect(position, markerSize);
                 Rect inner = box;
-                inner.height = ribbon;
+                inner.height = width;
                 if (twin)
                 {
                     inner.y -= height * 0.08f;
                 }
                 else
                 {
-                    inner.y += (height - ribbon) / 2;
+                    inner.y += (height - width) / 2;
                 }
-                Widgets.DrawBoxSolid(box, shadedColor);
+                if (boxed)
+                {
+                    Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
+                    Widgets.DrawBoxSolid(box, shadedColor);
+                }
                 if (cloud)
                 {
                     GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
@@ -562,25 +562,26 @@ namespace HumanResources
                         inner.width *= reduction;
                         inner.height *= reduction;
                         inner.y = box.yMax - inner.height - 1f;
-                        inner.x += (ribbon - inner.width) / 2;
+                        inner.x += (width - inner.width) / 2;
                     }
                     var material = TechDefOf.TechBook.graphic.MatSingle;
                     material.color = techColor;
                     Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
                     TooltipHandler.TipRegionByKey(inner, "bookInLibrary");
                 }
+                GUI.color = backup;
+                return true;
             }
-            //origin tooltip if necessary
-            else if (tech.IsFinished)
-            {
-                bool fromScenario = unlocked.scenarioTechs.Contains(tech);
-                bool fromFaction = unlocked.factionTechs.Contains(tech);
-                bool startingTech = fromScenario || fromFaction;
-                string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
-                TooltipHandler.TipRegionByKey(rect, "bookFromStart", source);
-            }
-            GUI.color = backup;
-            return;
+            return false;
+        }
+
+        private static void OriginTooltip(ResearchProjectDef tech, Rect rect)
+        {
+            if (!tech.IsFinished) return;
+            bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+            bool startingTech = fromScenario || unlocked.factionTechs.Contains(tech);
+            string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+            TooltipHandler.TipRegionByKey(rect, "bookFromStart", source);
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
