@@ -251,7 +251,6 @@
   <ItemGroup Condition="'$(Configuration)' == '1.1' OR '$(Configuration)' == '1.2'">
     <Compile Include="Legacy\ExpertiseNode.cs" />
     <Compile Include="Legacy\Extensions_RW1.2.cs" />
-    <Compile Include="Legacy\Extension_Research.cs" />
     <Compile Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Legacy\ResearchTree_Patches.cs" />
