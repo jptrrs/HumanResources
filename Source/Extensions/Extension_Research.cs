@@ -284,9 +284,14 @@ namespace HumanResources
 
         public static float StuffCostFactor(this ResearchProjectDef tech)
         {
+            return (float)Math.Round(Math.Pow(tech.SafeBaseCost(), (1.0 / 2.0)), 1);
+        }
+
+        public static float SafeBaseCost(this ResearchProjectDef tech) // because Anomaly techs have no baseCost
+        {
             float cost = tech.baseCost > 0 ? tech.baseCost : tech.knowledgeCost * 100;
             if (cost == 0) Log.Error($"[HumanResources] Can't determine the cost for {tech}!");
-            return (float)Math.Round(Math.Pow(cost, (1.0 / 2.0)), 1);
+            return cost;
         }
 
         private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
@@ -445,7 +450,7 @@ namespace HumanResources
         }
         private static float StuffMarketValueFactor(this ResearchProjectDef tech)
         {
-            return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+            return (float)Math.Round(Math.Pow(tech.SafeBaseCost(), 1.0 / 3.0) / 10, 1);
         }
 
         #endregion
@@ -726,7 +731,7 @@ namespace HumanResources
 
         public static float IndividualizedCost(this ResearchProjectDef tech, TechLevel techLevel, float achieved, bool knownSucessor = false)
         {
-            float cost = tech.baseCost * tech.CostFactor(techLevel);
+            float cost = tech.SafeBaseCost() * tech.CostFactor(techLevel);
             cost *= 1 - achieved;
             if (knownSucessor) cost /= 2;
             return cost;
@@ -735,7 +740,7 @@ namespace HumanResources
         public static string IndividualizedCostExplainer(this ResearchProjectDef tech, TechLevel techLevel, float achieved, float finalValue, bool knownSucessor = false)
         {
             StringBuilder text = new StringBuilder();
-            text.AppendLine($"Base cost: {tech.baseCost.ToStringByStyle(ToStringStyle.Integer)}");
+            text.AppendLine($"Base cost: {tech.SafeBaseCost().ToStringByStyle(ToStringStyle.Integer)}");
             text.AppendLine($"Personal tech level ({techLevel.ToStringHuman()}): x{tech.CostFactor(techLevel).ToStringPercent()}");
             if (knownSucessor) text.AppendLine($"Known branching tech: x{0.5f.ToStringPercent()}");
             string costLabel = "Cost to learn";
@@ -768,14 +773,14 @@ namespace HumanResources
 
         public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
         {
-            float total = research ? tech.baseCost : recipeCost * tech.StuffCostFactor();
+            float total = research ? tech.SafeBaseCost() : recipeCost * tech.StuffCostFactor();
             amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
             amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true); //Because, why not?
             CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
             Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
             foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
             {
-                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
+                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech)) //faster learning for known sucessors 
                 {
                     amount *= 2;
                     break;
@@ -783,7 +788,7 @@ namespace HumanResources
             }
             if (researcher != null && researcher.Faction != null)
             {
-                amount /= tech.CostFactor(techComp.techLevel);
+                amount /= tech.CostFactor(techComp.techLevel); //modulates acoording to faction tech level
             }
             if (DebugSettings.fastResearch)
             {
@@ -791,7 +796,7 @@ namespace HumanResources
             }
             if (researcher != null && research)
             {
-                researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount);
+                researcher.records.AddTo(RecordDefOf.ResearchPointsResearched, amount); //records if research
             }
             float num = tech.GetProgress(expertise);
             num += amount / total;

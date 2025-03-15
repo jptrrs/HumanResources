@@ -41,7 +41,7 @@ namespace HumanResources
                         //Otherwise, check each one and choose the one with the cheapest prerequisite.
                         else if (___recipe.recipeUsers.Count() > 1)
                         {
-                            recipeHolder = ___recipe.recipeUsers.Aggregate((l, r) => (l.researchPrerequisites.FirstOrDefault().baseCost < r.researchPrerequisites.FirstOrDefault().baseCost) ? l : r);
+                            recipeHolder = ___recipe.recipeUsers.Aggregate((l, r) => (l.researchPrerequisites.FirstOrDefault().SafeBaseCost() < r.researchPrerequisites.FirstOrDefault().SafeBaseCost()) ? l : r);
                         }
                         //Or, if its just one, pick that.
                         else
