@@ -197,7 +197,6 @@
     <Compile Include="Harmony\Compatibility\RecipeIcons_Patch.cs" />
     <Compile Include="Harmony\Compatibility\FluffyBreakdowns_Patches.cs" />
     <Compile Include="Harmony\Compatibility\VFEM_Patches.cs" />
-    <Compile Include="Harmony\ReadingOutcomeDoerGainResearch_OnReadingTick.cs" />
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
@@ -287,18 +286,19 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.5'">
     <Compile Include="Base\ModBaseHumanResources.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
-    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
-    <Compile Include="Knowledge\CompKnowledge.cs" />
-    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
-    <Compile Include="Work\JobDriver_DocumentTech.cs" />
-    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
+    <Compile Include="Harmony\ReadingOutcomeDoerGainResearch_OnReadingTick.cs" />
     <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
     <Compile Include="Harmony\Anomaly\ReadingOutcomeDoerGainAnomalyResearch_OnReadingTick.cs" />
     <Compile Include="Harmony\Anomaly\Pawn_InteractionsTracker_TryInteractWithBase.cs" />
     <Compile Include="Harmony\Anomaly\ResearchManager_ApplyKnowledge.cs" />
     <Compile Include="Harmony\Anomaly\StudyManager_StudyAnomaly.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
+    <Compile Include="Work\JobDriver_DocumentTech.cs" />
+    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

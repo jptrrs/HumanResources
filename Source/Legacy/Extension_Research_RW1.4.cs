@@ -287,6 +287,11 @@ namespace HumanResources
             return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
         }
 
+        public static float SafeBaseCost(this ResearchProjectDef tech) // needed only to avoid changing 1.5 code
+        {
+            return tech.baseCost;
+        }
+
         private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
         {
             var matches = 0;
