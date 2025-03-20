@@ -31,9 +31,8 @@ namespace HumanResources
             }
         }
 
-        public override bool CanBeUsedBy(Pawn p, out string failReason)
+        public override AcceptanceReport CanBeUsedBy(Pawn p)
         {
-            failReason = null;
             CompKnowledge techComp = p.TryGetComp<CompKnowledge>();
             if (techComp != null)
             {
@@ -42,7 +41,6 @@ namespace HumanResources
                     return techComp.homework.Any(x => !x.IsFinished);
                 }
             }
-            failReason = "NoActiveResearchProjectToFinish".Translate();
             return false;
         }
     }

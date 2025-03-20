@@ -220,7 +220,7 @@ namespace HumanResources
                 }
                 return false;
             });
-            AddFinishAction(delegate ()
+            AddFinishAction(delegate (JobCondition jobCondition)
             {
                 if (pawn.equipment.Primary != null && !practice)
                 {

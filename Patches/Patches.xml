@@ -101,10 +101,11 @@
         <value>
           <li Class="HumanResources.StockGenerator_TechBooks">
             <countRange>1~3</countRange>
-            <excludedCategories>
+            <maxTechLevelGenerate>Spacer</maxTechLevelGenerate>
+            <!--<excludedCategories>
               <li>Ultra</li>
               <li>Archotech</li>
-            </excludedCategories>
+            </excludedCategories>-->
           </li>
         </value>
       </li>

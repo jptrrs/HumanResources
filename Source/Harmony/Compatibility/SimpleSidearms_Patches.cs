@@ -10,16 +10,15 @@ namespace HumanResources
         public static void Execute(Harmony instance)
         {
             Type StatCalculatorType = AccessTools.TypeByName("PeteTimesSix.SimpleSidearms.Utilities.StatCalculator");
-            MethodBase canCarrySidearmBase = AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() });
-            instance.Patch(AccessTools.Method(StatCalculatorType, "canCarrySidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() }),
-                new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(canCarrySidearmÌnstance_Prefix)), null, null);
+            instance.Patch(AccessTools.Method(StatCalculatorType, "CanPickupSidearmInstance", new Type[] { typeof(ThingWithComps), typeof(Pawn), typeof(string).MakeByRefType() }),
+                new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(CanPickupSidearmÌnstance_Prefix)), null, null);
 
             Type WeaponAssingmentType = AccessTools.TypeByName("PeteTimesSix.SimpleSidearms.Utilities.WeaponAssingment");
             instance.Patch(AccessTools.Method(WeaponAssingmentType, "equipSpecificWeapon"),
                 new HarmonyMethod(typeof(SimpleSidearms_Patches), nameof(equipSpecificWeapon_Prefix)), null, null);
         }
 
-        public static bool canCarrySidearmÌnstance_Prefix(ThingWithComps sidearmThing, Pawn pawn, out string errString)
+        public static bool CanPickupSidearmÌnstance_Prefix(ThingWithComps sidearmThing, Pawn pawn, out string errString)
         {
             errString = ModBaseHumanResources.unlocked.weapons.Contains(sidearmThing.def) ? "UnknownWeapon".Translate() : "EvilWeapon".Translate();
             if (pawn.RaceProps.Humanlike && pawn.Faction != null && pawn.Faction.IsPlayer && pawn.TryGetComp<CompKnowledge>() != null) return HarmonyPatches.CheckKnownWeapons(pawn, sidearmThing);

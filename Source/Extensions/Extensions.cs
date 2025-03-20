@@ -1,5 +1,4 @@
 using RimWorld;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Verse;
@@ -13,6 +12,7 @@ namespace HumanResources
         public static bool Allows(this Bill bill, IEnumerable<ResearchProjectDef> homework)
         {
             var textBooks = homework.Select(x => TechTracker.FindTech(x).Stuff);
+            //Log.Message($"Bill for {bill.recipe.defName} allows {bill.ingredientFilter.AllowedThingDefs.ToStringSafeEnumerable()}.");
             bool result = bill.ingredientFilter.AllowedThingDefs.Intersect(textBooks).Any();
             return result;
         }
@@ -91,8 +91,6 @@ namespace HumanResources
             Pawn actor = toil.actor;
             toil.initAction = delegate
             {
-                //Log.Message("DepositHauledBook started");
-
                 Thing book = actor.carryTracker.CarriedThing;
                 if (actor.carryTracker.CarriedThing == null)
                 {

@@ -26,6 +26,7 @@
   <ClickToAssignForDocumentation>Botão esquerdo para marcar para documentação.</ClickToAssignForDocumentation>
   <ClickToUnassign>Botão esquerdo para desmarcar.</ClickToUnassign>
   <RightClickToTree>Botão direito para abrir na árvore de pesquisa.</RightClickToTree>
+  <Assignments>Encarregados:</Assignments>
   <AssignedTo>{0} foi encarregado de:</AssignedTo>
   <AssignedToResearch>{0} foi encarregado de pesquisar isto.</AssignedToResearch>
   <AssignedToStudy>{0} foi encarregado de estudar isto.</AssignedToStudy>

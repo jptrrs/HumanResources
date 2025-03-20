@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
-  <StuffCategoryDef>
+ 
+  <!--<StuffCategoryDef>
     <defName>Neolithic</defName>
     <label>neolithic</label>
   </StuffCategoryDef>
@@ -31,4 +31,9 @@
     <label>archotech</label>
   </StuffCategoryDef>
 
+  <StuffCategoryDef>
+    <defName>Anomaly</defName>
+    <label>anomaly</label>
+  </StuffCategoryDef>-->
+  
 </Defs>

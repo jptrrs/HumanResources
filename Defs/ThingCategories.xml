@@ -7,7 +7,7 @@
     <parent>Root</parent>
   </ThingCategoryDef>
   
-  <ThingCategoryDef>
+  <!--<ThingCategoryDef>
     <defName>Neolithic</defName>
     <label>neolithic</label>
     <parent>Knowledge</parent>
@@ -41,6 +41,6 @@
     <defName>Archotech</defName>
     <label>archotech</label>
     <parent>Knowledge</parent>
-  </ThingCategoryDef>
+  </ThingCategoryDef>-->
   
 </Defs>

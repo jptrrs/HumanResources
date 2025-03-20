@@ -37,7 +37,7 @@ namespace HumanResources
 
         protected override bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
         {
-            if ((bool)BestIngredientsInfo.Invoke(this, new object[] { bill, pawn, giver, chosenIngThings }))
+            if (TryFindBestBillIngredients(bill, pawn, giver as Thing, chosenIngThings, missingIngredients))
             {
                 var studyWeapons = StudyWeapons(bill, pawn);
                 chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
@@ -50,7 +50,7 @@ namespace HumanResources
                 if (!traumas.NullOrEmpty() && chosenIngThings.All(x => traumas.Contains(x.Thing.def))) JobFailReason.Is("FearedWeapon".Translate(pawn));
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
             return false;
         }
     }

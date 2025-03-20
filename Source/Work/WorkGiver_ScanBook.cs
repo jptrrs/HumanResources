@@ -14,9 +14,7 @@ namespace HumanResources
     class WorkGiver_ScanBook : WorkGiver_Knowledge
     {
         public new List<ThingCount> chosenIngThings = new List<ThingCount>();
-        protected static MethodInfo
-            GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell"),
-            BestIngredientsInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "TryFindBestBillIngredients");
+        protected static MethodInfo GetBillGiverRootCellInfo = AccessTools.Method(typeof(WorkGiver_DoBill), "GetBillGiverRootCell");
         protected static FieldInfo rangeInfo = AccessTools.Field(typeof(WorkGiver_DoBill), "ReCheckFailedBillTicksRange");
 
         private static Func<Thing, Bill, List<Thing>> ContainsSelected = (thing, bill) =>
@@ -91,9 +89,9 @@ namespace HumanResources
         protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
         {
             IntRange range = (IntRange)rangeInfo.GetValue(this);
-            if (Find.TickManager.TicksGame >= bill.lastIngredientSearchFailTicks + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
+            if (Find.TickManager.TicksGame >= bill.nextTickToSearchForIngredients + range.RandomInRange || FloatMenuMakerMap.makingFor == pawn)
             {
-                bill.lastIngredientSearchFailTicks = 0;
+                bill.nextTickToSearchForIngredients = 0;
                 if (bill.ShouldDoNow() && bill.PawnAllowedToStartAnew(pawn))
                 {
                     Job result = TryStartNewDoBillJob(pawn, bill, giver);
@@ -137,7 +135,7 @@ namespace HumanResources
             return availableThings.FirstOrDefault();
         }
 
-        private static new bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen)
+        private static bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen)
         {
             chosen.Clear();
             newRelevantThings.Clear();
@@ -225,7 +223,7 @@ namespace HumanResources
                 return chosenIngThings.Any();
             }
             if (!JobFailReason.HaveReason) JobFailReason.Is("NoBooksToScan".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.lastIngredientSearchFailTicks = Find.TickManager.TicksGame;
+            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
             return false;
         }
     }

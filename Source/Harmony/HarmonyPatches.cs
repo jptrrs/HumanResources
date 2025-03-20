@@ -10,12 +10,13 @@ namespace HumanResources
         public static Harmony instance = null;
 
         public static bool
-            ResearchPal = false,
             PrisonLabor = false,
             VFEM = false,
             RunSpecialCases = false,
             SemiRandom = false,
             VisibleBooksCategory = false;
+
+        public static ResearchTreeVersion ResearchTreeBase = ResearchTreeVersion.Fluffy;
 
         public static Harmony Instance
         {
@@ -27,28 +28,64 @@ namespace HumanResources
             }
         }
 
+        public static string ResearchTreeNamespaceRoot
+        {
+            get
+            {
+                switch (ResearchTreeBase)
+                {
+                    case ResearchTreeVersion.Fluffy:
+                    case ResearchTreeVersion.Mlie:
+                        return "Fluffy.ResearchTree";
+                    case ResearchTreeVersion.NotFood:
+                    case ResearchTreeVersion.VinaLx:
+                    case ResearchTreeVersion.Owlchemist:
+                        return "ResearchPal";
+                    default: return string.Empty;
+                }
+            }
+        }
+
         static HarmonyPatches()
         {
             //Harmony.DEBUG = true;
             Instance.PatchAll();
 
-            //ResearchTree/ResearchPal integration
+            // integration with ResearchTree / ResearchPal / whatever kids use these days
             if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.researchtree")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchTree.");
                 ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
             }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Mlie.ResearchTree")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchTree (Mlie version).");
+                ResearchTreeBase = ResearchTreeVersion.Mlie;
+                ResearchTree_Patches.Execute(Instance, "FluffyResearchTree");
+            }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("notfood.ResearchPal")))
             {
                 Log.Message("[HumanResources] Deriving from ResearchPal.");
+                ResearchTreeBase = ResearchTreeVersion.NotFood;
                 ResearchTree_Patches.Execute(Instance, "ResearchPal");
-                ResearchPal = true;
             }
             else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("VinaLx.ResearchPalForked")))
             {
-                Log.Message("[HumanResources] Deriving from ResearchPal - Forked.");
-                ResearchTree_Patches.Execute(Instance, "ResearchPal", true);
-                ResearchPal = true;
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forked (VinaLx version).");
+                ResearchTreeBase = ResearchTreeVersion.VinaLx;
+                ResearchTree_Patches.Execute(Instance, "ResearchPal");
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Owlchemist.ResearchPowl"))) // Note for the next sucker who comes in here - CASE SENSITIVE. -VS7
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPowl (Owlchemist version).");
+                ResearchTreeBase = ResearchTreeVersion.Owlchemist;
+                ResearchTree_Patches.Execute(Instance, "ResearchPowl");
+            }
+            else if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Maruf61.ResearchPalForkd")))
+            {
+                Log.Message("[HumanResources] Deriving from ResearchPal - Forkd (Maruf61 version).");
+                ResearchTreeBase = ResearchTreeVersion.VinaLx;
+                ResearchTree_Patches.Execute(Instance, "ResearchPal");
             }
             else
             {
@@ -128,7 +165,7 @@ namespace HumanResources
             }
 
             //Fluffy Breakdowns integration
-            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") || x.PackageIdPlayerFacing.StartsWith("theeyeofbrows.fluffybreakdowns")))
+            if (LoadedModManager.RunningModsListForReading.Any(x => x.PackageIdPlayerFacing.StartsWith("Fluffy.FluffyBreakdowns") || x.PackageIdPlayerFacing.StartsWith("theeyeofbrows.fluffybreakdowns")))
             {
                 Log.Message("[HumanResources] Fluffy Breakdowns detected! Integrating...");
                 FluffyBreakdowns_Patches.Execute(Instance);
@@ -139,7 +176,7 @@ namespace HumanResources
             x.PackageIdPlayerFacing.StartsWith("loconeko.roadsoftherim") ||
             x.PackageIdPlayerFacing.StartsWith("Mlie.RoadsOfTheRim") ||
             x.PackageIdPlayerFacing.StartsWith("fluffy.backuppower") ||
-            x.PackageIdPlayerFacing.StartsWith("fluffy.fluffybreakdowns") ||
+            x.PackageIdPlayerFacing.StartsWith("Fluffy.FluffyBreakdowns") ||
             x.PackageIdPlayerFacing.StartsWith("Ogliss.AdMech.Armoury") ||
             x.PackageIdPlayerFacing.StartsWith("VanillaExpanded.VFEArt")))
             {

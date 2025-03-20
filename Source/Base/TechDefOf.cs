@@ -18,26 +18,27 @@ namespace HumanResources
             PracticeWeaponMelee,
             ExperimentWeaponShooting,
             ExperimentWeaponMelee;
-        public static ThingCategoryDef 
+        public static ThingCategoryDef
             Knowledge,
             WeaponsRanged,
             WeaponsMelee;
-        public static StuffCategoryDef
-            //Technic,
-            Neolithic,
-            Medieval,
-            Industrial,
-            Spacer,
-            Ultra,
-            Archotech;
+        //public static StuffCategoryDef
+        //    Neolithic,
+        //    Medieval,
+        //    Industrial,
+        //    Spacer,
+        //    Ultra,
+        //    Archotech,
+        //    Anomaly;
         public static ThingDef
             TechBook,
             TechDrive,
             UnfinishedTechBook,
             HardWeapons,
             EasyWeapons,
-            LowTechCategories,
-            HiTechCategories,
+            //LowTechCategories,
+            //HiTechCategories,
+            //HiTechCutoff,
             NetworkTerminal,
             NetworkServer;
         public static WorkTypeDef HR_Learn;

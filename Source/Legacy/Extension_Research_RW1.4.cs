@@ -1,23 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using HarmonyLib;
+using HugsLib.Utils;
 using RimWorld;
-using Verse;
-using HarmonyLib;
-using System.Reflection;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
-using UnityEngine;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Assertions.Must;
+using Verse;
 
 namespace HumanResources
 {
-    //Changed in RW 1.3
-
     using static ModBaseHumanResources;
-    using static TechTracker;
-    using static ResearchTreeHelper;
     using static ResearchTree_Patches;
+    using static ResearchTreeHelper;
+    using static TechTracker;
 
+    //Changed in RW 1.5
     public static class Extension_Research
     {
         #region variables
@@ -68,7 +71,7 @@ namespace HumanResources
             }
         }
         private static float DifficultyResearchSpeedFactor // 90% from vanilla on easy, 80% on medium, 75% on rough & 70% on hard.
-        { 
+        {
             get
             {
                 float delta = 1 - Find.Storyteller.difficulty.researchSpeedFactor;
@@ -89,18 +92,16 @@ namespace HumanResources
             get
             {
                 float baseValue = 1.1f;
-                return StudySpeedTiedToDifficulty? baseValue * DifficultyResearchSpeedFactor : baseValue;
+                return StudySpeedTiedToDifficulty ? baseValue * DifficultyResearchSpeedFactor : baseValue;
             }
         }
 
         #endregion
 
         #region startup
-        public static void CreateStuff(this ResearchProjectDef tech, ThingFilter filter, UnlockManager unlocked)
+        public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef pending = null, TechLevel cutoff = TechLevel.Spacer)
         {
             string name = "Tech_" + tech.defName;
-            ThingCategoryDef tCat = DefDatabase<ThingCategoryDef>.GetNamed(tech.techLevel.ToString());
-            StuffCategoryDef sCat = DefDatabase<StuffCategoryDef>.GetNamed(tech.techLevel.ToString());
             string label = "KnowledgeLabel".Translate(tech.label);
             ThingDef techStuff = new ThingDef
             {
@@ -109,12 +110,12 @@ namespace HumanResources
                 label = label,
                 description = tech.description,
                 category = ThingCategory.Item,
-                thingCategories = new List<ThingCategoryDef>() { tCat },
+                thingCategories = new List<ThingCategoryDef>(),
                 techLevel = tech.techLevel,
-                menuHidden = true,
+                resourceReadoutPriority = ResourceCountPriority.Uncounted, //avoids null error in RW 1.5 when drawing gizmo
                 stuffProps = new StuffProperties()
                 {
-                    categories = new List<StuffCategoryDef>() { sCat },
+                    categories = new List<StuffCategoryDef>(),
                     color = ResearchTree_Assets.ColorCompleted[tech.techLevel],
                     stuffAdjective = tech.LabelCap,
                     statOffsets = new List<StatModifier>()
@@ -140,13 +141,33 @@ namespace HumanResources
                     }
                 }
             };
+            string tag = null;
+            var stuffCatDef = new StuffCategoryDef();
+            if (IsTechLevelRelevant(tech.techLevel, out tag))
+            {
+                stuffCatDef = DefDatabase<StuffCategoryDef>.GetNamed(tag);
+                if (stuffCatDef == null) Log.Warning($"[HumanResources] Error looking for s-category {tag} for {tech.LabelCap}");
+                ThingCategoryDef thingCatDef = DefDatabase<ThingCategoryDef>.GetNamed(tag);
+                if (thingCatDef == null) Log.Warning($"[HumanResources] Error looking for t-category {tag} for {tech.LabelCap}");
+                techStuff.thingCategories.Add(thingCatDef);
+                techStuff.stuffProps.categories.Add(stuffCatDef);
+            }
             techStuff.ResolveReferences();
-            MethodInfo GiveShortHashInfo = AccessTools.Method(typeof(ShortHashGiver), "GiveShortHash");
-            GiveShortHashInfo.Invoke(tech, new object[] { techStuff, typeof(ThingDef) });
+            //var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
+            //ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
+            InjectedDefHasher.GiveShortHashToDef(techStuff, typeof(ThingDef));
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
             FindTech(tech).Stuff = techStuff;
             totalBooks++;
+            //dealing with default stuff:
+            if (stuffCatDef == null || pending == null) return false;
+            if (pending.defaultStuff == null && pending.techLevel == tech.techLevel)
+            {
+                pending.defaultStuff = techStuff;
+                return true;
+            }
+            return false;
         }
 
         public static void InferSkillBias(this ResearchProjectDef tech)
@@ -163,8 +184,8 @@ namespace HumanResources
             bool usedPreReq = false;
 
             //1. check what it unlocks
-            List<Pair<Def, string>> unlocks = GetUnlockDefsAndDescs(tech);
-            IEnumerable<Def> defs = unlocks.Select(x => x.First).AsEnumerable();
+            List<Def> unlocks = GetUnlockDefsProxy(tech);
+            IEnumerable<Def> defs = unlocks.AsEnumerable();
             IEnumerable<ThingDef> thingDefs = defs.Where(d => d is ThingDef).Select(d => d as ThingDef);
             IEnumerable<RecipeDef> recipeDefs = defs.Where(d => d is RecipeDef).Select(d => d as RecipeDef);
             IEnumerable<TerrainDef> terrainDefs = defs.Where(d => d is TerrainDef).Select(d => d as TerrainDef);
@@ -220,7 +241,7 @@ namespace HumanResources
                 if (success && FullStartupReport)
                 {
                     GatherSuccessDetails(tech, matchesCount, thingsCount, recipesCount, recipeThingsCount, recipeSkillsCount, terrainsCount, keywords, usedPreReq, relevantSkills, report);
-                    Log.Message($"{tech.LabelCap}: {report}", true);
+                    Log.Message($"{tech.LabelCap}: {report}");
                 }
             }
             NoMatchesWarning(tech, usedPreReq, relevantSkills, success, report);
@@ -236,7 +257,7 @@ namespace HumanResources
                     bool check = false;
                     try { check = skill.Criteria(thing); } catch { }
                     SetSkillRelevance(skill, check);
-                    found |= check; 
+                    found |= check;
                 }
                 WeaponsRegistration(thing, tech);
             }
@@ -257,13 +278,18 @@ namespace HumanResources
             query = query.ToLower(culture);
             return
                 tech.LabelCap.RawText.ToLower(culture).Contains(query) ||
-                ResearchTree_Patches.GetUnlockDefsAndDescs(tech).Any(unlock => unlock.First.LabelCap.RawText.ToLower(culture).Contains(query)) ||
+                ResearchTree_Patches.GetUnlockDefsProxy(tech).Any(unlock => unlock.LabelCap != null && unlock.LabelCap.RawText.ToLower(culture).Contains(query)) ||
                 tech.description.ToLower(culture).Contains(query);
         }
 
         public static float StuffCostFactor(this ResearchProjectDef tech)
         {
             return (float)Math.Round(Math.Pow(tech.baseCost, (1.0 / 2.0)), 1);
+        }
+
+        public static float SafeBaseCost(this ResearchProjectDef tech) // needed only to avoid changing 1.5 code
+        {
+            return tech.baseCost;
         }
 
         private static int CheckKeywordsFor(this ResearchProjectDef tech, List<string> keywords)
@@ -422,20 +448,25 @@ namespace HumanResources
         }
         private static float StuffMarketValueFactor(this ResearchProjectDef tech)
         {
-			return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
-		}
+            return (float)Math.Round(Math.Pow(tech.baseCost, 1.0 / 3.0) / 10, 1);
+        }
 
         #endregion
 
         #region research tree
         public static void DrawExtras(this ResearchProjectDef tech, Rect rect, bool highlighted)
         {
-            DrawStorageMarker(tech, rect, highlighted);
+            if (!tech.DrawStorageMarker(new Vector2(rect.xMax, rect.y), rect.height, ResearchTree_Constants.push.x, highlighted)) OriginTooltip(tech, rect);
             float height = rect.height;
             Vector2 frameOffset = new Vector2(height / 3, rect.y + (height / 3));
             float startPos = rect.x - frameOffset.x;
-            if (QueueAvailable && IsQueued(tech)) startPos += DrawQueueAssignment(tech, VFE_Supercomputer, height, frameOffset, startPos);
-            tech.DrawPawnAssignments(height, frameOffset, startPos);
+            tech.DrawAssignmentsArray(height, frameOffset, startPos);
+        }
+
+        public static void DrawAssignmentsArray(this ResearchProjectDef tech, float height, Vector2 frameOffset, float startPos, bool reverse = false)
+        {
+            if (QueueAvailable && IsQueued(tech)) startPos += tech.DrawQueueAssignment(VFE_Supercomputer, height, frameOffset, startPos);
+            tech.DrawPawnAssignments(height, frameOffset, startPos, reverse);
         }
 
         public static void SelectMenu(this ResearchProjectDef tech, bool completed, bool outsideTree = false)
@@ -474,7 +505,7 @@ namespace HumanResources
                     Rect box = new Rect(position, size);
                     Rect clickBox = new Rect(position.x + frameOffset.x, position.y, size.x - (2 * frameOffset.x), size.y);
                     Pawn pawn = enumerator.Current;
-                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, default, 1.2f));
+                    GUI.DrawTexture(box, PortraitsCache.Get(pawn, size, Rot4.South, cameraZoom: 1.2f));
                     if (Widgets.ButtonInvisible(clickBox)) pawn.TryGetComp<CompKnowledge>().CancelBranch(tech);
                     TooltipHandler.TipRegion(clickBox, new Func<string>(() => AssignmentStatus(pawn, tech)), tech.GetHashCode());
                     startPos = reverse ? startPos - spacing : startPos + spacing;
@@ -482,7 +513,7 @@ namespace HumanResources
             }
         }
 
-        private static float DrawQueueAssignment(ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
+        private static float DrawQueueAssignment(this ResearchProjectDef tech, ThingDef thingDef, float height, Vector2 frameOffset, float startPos)
         {
             Vector2 position;
             Vector2 size = new Vector2(height, height);
@@ -495,32 +526,32 @@ namespace HumanResources
             return height / 2;
         }
 
-        private static void DrawStorageMarker(ResearchProjectDef tech, Rect rect, bool highlighted)
+        public static bool DrawStorageMarker(this ResearchProjectDef tech, Vector2 position, float height, float width, bool highlighted, bool boxed = true)
         {
-            float height = rect.height;
-            float ribbon = ResearchTree_Constants.push.x;
-            Vector2 position = new Vector2(rect.xMax, rect.y);
             Color techColor = ResearchTree_Assets.ColorCompleted[tech.techLevel];
-            Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
-            Color backup = GUI.color;
             if (unlocked.TechsArchived.ContainsKey(tech))
             {
+                Color backup = GUI.color;
                 bool cloud = tech.IsOnline();
                 bool book = tech.IsPhysicallyArchived();
                 bool twin = cloud && book;
-                Vector2 markerSize = new Vector2(ribbon, height);
+                Vector2 markerSize = new Vector2(width, height);
                 Rect box = new Rect(position, markerSize);
                 Rect inner = box;
-                inner.height = ribbon;
+                inner.height = width;
                 if (twin)
                 {
                     inner.y -= height * 0.08f;
                 }
                 else
                 {
-                    inner.y += (height - ribbon) / 2;
+                    inner.y += (height - width) / 2;
                 }
-                Widgets.DrawBoxSolid(box, shadedColor);
+                if (boxed)
+                {
+                    Color shadedColor = highlighted ? ResearchTree_Patches.ShadedColor : ResearchTree_Assets.ColorAvailable[tech.techLevel];
+                    Widgets.DrawBoxSolid(box, shadedColor);
+                }
                 if (cloud)
                 {
                     GUI.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("UI/cloud", true));
@@ -534,25 +565,26 @@ namespace HumanResources
                         inner.width *= reduction;
                         inner.height *= reduction;
                         inner.y = box.yMax - inner.height - 1f;
-                        inner.x += (ribbon - inner.width) / 2;
+                        inner.x += (width - inner.width) / 2;
                     }
                     var material = TechDefOf.TechBook.graphic.MatSingle;
                     material.color = techColor;
                     Graphics.DrawTexture(inner.ContractedBy(1f), ContentFinder<Texture2D>.Get("Things/Item/book", true), material, 0);
                     TooltipHandler.TipRegionByKey(inner, "bookInLibrary");
                 }
+                GUI.color = backup;
+                return true;
             }
-            //origin tooltip if necessary
-            else if (tech.IsFinished)
-            {
-                bool fromScenario = unlocked.scenarioTechs.Contains(tech);
-                bool fromFaction = unlocked.factionTechs.Contains(tech);
-                bool startingTech = fromScenario || fromFaction;
-                string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
-                TooltipHandler.TipRegionByKey(rect, "bookFromStart", source);
-            }
-            GUI.color = backup;
-            return;
+            return false;
+        }
+
+        private static void OriginTooltip(ResearchProjectDef tech, Rect rect)
+        {
+            if (!tech.IsFinished) return;
+            bool fromScenario = unlocked.scenarioTechs.Contains(tech);
+            bool startingTech = fromScenario || unlocked.factionTechs.Contains(tech);
+            string source = fromScenario ? Find.Scenario.name : Find.FactionManager.OfPlayer.Name;
+            TooltipHandler.TipRegionByKey(rect, "bookFromStart", source);
         }
 
         private static IEnumerable<Widgets.DropdownMenuElement<Pawn>> GeneratePawnRestrictionOptions(this ResearchProjectDef tech, bool completed)
@@ -615,6 +647,28 @@ namespace HumanResources
             if (tech.IsFinished) return currentPawns.Where(x => !tech.IsKnownBy(x)).OrderBy(x => x.workSettings.WorkIsActive(TechDefOf.HR_Learn)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level);
             else return currentPawns.OrderBy(x => tech.IsKnownBy(x))/*.ThenBy(x => x.workSettings.WorkIsActive(WorkTypeDefOf.Research)).ThenByDescending(x => x.skills.GetSkill(SkillDefOf.Intellectual).Level)*/;
         }
+
+        public static void ToolTip(this ResearchProjectDef tech, Func<string> toolTipFunc, Rect rect, bool complete = false)
+        {
+            string root = HarmonyPatches.ResearchTreeNamespaceRoot;
+            DispatchToolTip(rect, new TipSignal(toolTipFunc, tech.GetHashCode()));
+            if (!complete) return;
+            if (!BuildingPresentProxy(tech))
+            {
+                if (ResearchNodesCache.ContainsKey(tech))
+                {
+                    string languageKey = root + ".MissingFacilities";
+                    DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech)?.Select(td => td.LabelCap).ToArray())));
+                }
+                else Log.Error($"[HumanResources] {tech.LabelCap} is uncached! ResearchNodesCache contains {ResearchNodesCache.Count} techs");
+            }
+            else if (!tech.TechprintRequirementMet)
+            {
+                string languageKey = root + ".MissingTechprints";
+                DispatchToolTip(rect, languageKey.Translate(tech.TechprintsApplied, tech.techprintCount));
+            }
+        }
+
         #endregion
 
         #region operational
@@ -709,7 +763,7 @@ namespace HumanResources
         {
             return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.physical;
         }
-        
+
         public static bool IsPhysicallyArchived(this ResearchProjectDef tech)
         {
             return unlocked.TechsArchived.ContainsKey(tech) && unlocked.TechsArchived[tech] != BackupState.digital;
@@ -787,7 +841,7 @@ namespace HumanResources
         {
             if (tech == null)
             {
-                Log.Error("Tried to upload a null tech.", false);
+                Log.Error("Tried to upload a null tech.");
                 return;
             }
             float num = Find.ResearchManager.GetProgress(tech);
@@ -796,7 +850,6 @@ namespace HumanResources
             progress[tech] = num;
             if (tech.IsFinished) tech.Unlock(location, false);
         }
-
         #endregion
     }
 }

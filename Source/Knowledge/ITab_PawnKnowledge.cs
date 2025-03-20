@@ -63,7 +63,6 @@ namespace HumanResources
             }
         }
         private static bool expandTab => fullTechs | fullWeapons;
-        private int columns => expandTab ? (groupTechs ? TechTracker.Skills.Count() : maxColumns) : 1;
         private float columnWidth => extendedNodeLength + margin;
         private float extendedNodeLength => nodeSize.x + margin + buttonSize.x;
         private int maxColumns => ResearchTree_Tree.RelevantTechLevels.Count();
@@ -96,7 +95,6 @@ namespace HumanResources
         private Texture2D SkillBarFillTex => (Texture2D)SkillBarFillTexInfo.GetValue(this);
         private TechLevel IndividualTechLevel => PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.techLevel ?? Faction.OfPlayer.def.techLevel;
 
-
         public override void FillTab()
         {
             float padding = Mathf.Max(margin, 10f);
@@ -111,7 +109,7 @@ namespace HumanResources
             ResearchTree_Patches.Context = PawnToShowInfoAbout.TryGetComp<CompKnowledge>();
         }
 
-        public  override void CloseTab()
+        public override void CloseTab()
         {
             ResearchTree_Patches.Context = null;
             base.CloseTab();
@@ -226,8 +224,11 @@ namespace HumanResources
             float baselineY = scrollrect.max.y + padding;
             float next = baselineX;
             next = DrawToggle(next, baselineY, "ShowCompact", ref showCompact, ContentFinder<Texture2D>.Get("UI/compact", true));
-            next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
-            next = DrawToggle(next, baselineY, "ShowAssignment", ref showAssignment, ContentFinder<Texture2D>.Get("UI/assignment", true));
+            if (PawnToShowInfoAbout.IsPlayerControlled)
+            {
+                next = DrawToggle(next, baselineY, "ShowAvailable", ref showAvailable, ContentFinder<Texture2D>.Get("UI/available", true));
+                next = DrawToggle(next, baselineY, "ShowAssignment", ref showAssignment, ContentFinder<Texture2D>.Get("UI/assignment", true));
+            }
             next = DrawToggle(next, baselineY, "GroupBySkills", ref groupTechs, ContentFinder<Texture2D>.Get("UI/skills", true));
             foreach (TechLevel level in ResearchTree_Tree.RelevantTechLevels)
             {
@@ -404,10 +405,13 @@ namespace HumanResources
             var techComp = PawnToShowInfoAbout.TryGetComp<CompKnowledge>();
             if (techComp == null) return null;
             var expertise = techComp.expertise;
-            if (showAvailable) return DefDatabase<ResearchProjectDef>.AllDefsListForReading.Except(expertise.Keys).Where(x => x.IsFinished);
-            var homework = techComp.homework;
-            if (showAssignment) return homework != null ? homework.AsEnumerable() : null;
-            else return expertise.Keys;
+            if (PawnToShowInfoAbout.IsPlayerControlled)
+            {
+                if (showAvailable) return DefDatabase<ResearchProjectDef>.AllDefsListForReading.Except(expertise.Keys).Where(x => x.IsFinished);
+                var homework = techComp.homework;
+                if (showAssignment) return homework != null ? homework.AsEnumerable() : null;
+            }
+            return expertise.Keys;
         }
 
         private void PrintCell(string content, int row, float x, int shift, float width = rowHeight, string tooltip = "")

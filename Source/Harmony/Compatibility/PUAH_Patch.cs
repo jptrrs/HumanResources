@@ -9,13 +9,13 @@ namespace HumanResources
 {
     class PUAH_Patch
     {
-        private static Type 
+        private static Type
             patchType = AccessTools.TypeByName("PickUpAndHaul.JobDriver_UnloadYourHauledInventory"),
             CompHauledToInventoryType = AccessTools.TypeByName("PickUpAndHaul.CompHauledToInventory");
         private static MethodInfo
             FirstUnloadableThingInfo = AccessTools.Method(patchType, "FirstUnloadableThing", new Type[] { typeof(Pawn) }),
             GetHashSetInfo = AccessTools.Method(CompHauledToInventoryType, "GetHashSet"),
-            TryGetCompHauledToInventoryInfo = AccessTools.Method(typeof(ThingCompUtility), "TryGetComp", new Type[] { typeof(Thing)}).MakeGenericMethod(new Type[] { CompHauledToInventoryType });
+            TryGetCompHauledToInventoryInfo = AccessTools.Method(typeof(ThingCompUtility), "TryGetComp", new Type[] { typeof(Thing) }).MakeGenericMethod(new Type[] { CompHauledToInventoryType });
         private static PropertyInfo ThingCountThingInfo = AccessTools.Property(typeof(ThingCount), "Thing");
         private static FieldInfo countToDropInfo = AccessTools.Field(patchType, "_countToDrop");
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29728.190
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanResources", "Source\HumanResources.csproj", "{36A3E364-2E2B-401C-9E79-3909DEBE07D0}"
 EndProject
@@ -408,12 +408,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Things", "Things", "{8C6D64
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{F293C052-2089-4841-818D-426D6EB7F847}"
 	ProjectSection(SolutionItems) = preProject
-		Textures\Things\Building\BookShelf_east.png = Textures\Things\Building\BookShelf_east.png
-		Textures\Things\Building\BookShelf_eastm.png = Textures\Things\Building\BookShelf_eastm.png
-		Textures\Things\Building\BookShelf_north.png = Textures\Things\Building\BookShelf_north.png
-		Textures\Things\Building\BookShelf_northm.png = Textures\Things\Building\BookShelf_northm.png
-		Textures\Things\Building\BookShelf_south.png = Textures\Things\Building\BookShelf_south.png
-		Textures\Things\Building\BookShelf_southm.png = Textures\Things\Building\BookShelf_southm.png
 		Textures\Things\Building\BookShelfEmpty_east.png = Textures\Things\Building\BookShelfEmpty_east.png
 		Textures\Things\Building\BookShelfEmpty_eastm.png = Textures\Things\Building\BookShelfEmpty_eastm.png
 		Textures\Things\Building\BookShelfEmpty_north.png = Textures\Things\Building\BookShelfEmpty_north.png
@@ -426,6 +420,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Building", "Building", "{F2
 		Textures\Things\Building\BookShelfSparse_northm.png = Textures\Things\Building\BookShelfSparse_northm.png
 		Textures\Things\Building\BookShelfSparse_south.png = Textures\Things\Building\BookShelfSparse_south.png
 		Textures\Things\Building\BookShelfSparse_southm.png = Textures\Things\Building\BookShelfSparse_southm.png
+		Textures\Things\Building\BookShelf_east.png = Textures\Things\Building\BookShelf_east.png
+		Textures\Things\Building\BookShelf_eastm.png = Textures\Things\Building\BookShelf_eastm.png
+		Textures\Things\Building\BookShelf_north.png = Textures\Things\Building\BookShelf_north.png
+		Textures\Things\Building\BookShelf_northm.png = Textures\Things\Building\BookShelf_northm.png
+		Textures\Things\Building\BookShelf_south.png = Textures\Things\Building\BookShelf_south.png
+		Textures\Things\Building\BookShelf_southm.png = Textures\Things\Building\BookShelf_southm.png
 		Textures\Things\Building\MrDummy_east.png = Textures\Things\Building\MrDummy_east.png
 		Textures\Things\Building\MrDummy_north.png = Textures\Things\Building\MrDummy_north.png
 		Textures\Things\Building\MrDummy_south.png = Textures\Things\Building\MrDummy_south.png
@@ -584,10 +584,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patches", "Patches", "{844E
 		Patches\Patches_ZARS.xml = Patches\Patches_ZARS.xml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DefInjected", "DefInjected", "{DE827F72-7C89-4982-B875-03C373D9D04B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobDef", "JobDef", "{E856CA20-47A5-4BCD-AD6F-D773088F5D71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1.1|Any CPU = 1.1|Any CPU
 		1.2|Any CPU = 1.2|Any CPU
+		1.3|Any CPU = 1.3|Any CPU
+		1.4|Any CPU = 1.4|Any CPU
+		1.5|Any CPU = 1.5|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
@@ -596,6 +603,12 @@ Global
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.1|Any CPU.Build.0 = 1.1|Any CPU
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.2|Any CPU.ActiveCfg = 1.2|Any CPU
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.2|Any CPU.Build.0 = 1.2|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.3|Any CPU.ActiveCfg = 1.3|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.3|Any CPU.Build.0 = 1.3|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.4|Any CPU.ActiveCfg = 1.4|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.4|Any CPU.Build.0 = 1.4|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.5|Any CPU.ActiveCfg = 1.5|Any CPU
+		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.1.5|Any CPU.Build.0 = 1.5|Any CPU
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36A3E364-2E2B-401C-9E79-3909DEBE07D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -702,6 +715,8 @@ Global
 		{F5DDEEF5-8150-41DA-8C56-18924E66AFF6} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
 		{A48BB53B-1904-4F48-A364-85DCEDD4EC52} = {ADAD18EC-0280-4B87-900A-84D5EE4BA4C9}
 		{501A09B3-F38A-4AB6-ABB9-AEE256AEA87C} = {C70089AB-5A29-4787-B2E1-70F01CE4CD76}
+		{DE827F72-7C89-4982-B875-03C373D9D04B} = {ED1BF476-A7E9-4BE4-8AC1-566B4008DE33}
+		{E856CA20-47A5-4BCD-AD6F-D773088F5D71} = {DE827F72-7C89-4982-B875-03C373D9D04B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81CBABA7-BFEC-4F9E-B35A-9167491DE3DA}

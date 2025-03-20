@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Verse;
+using static RimWorld.MechClusterSketch;
 
 namespace HumanResources
 {
@@ -47,8 +48,8 @@ namespace HumanResources
             {
                 if (criteria == null)
                 {
-                    if (Skill == SkillDefOf.Shooting) criteria = (thing) => thing.IsRangedWeapon | thing.designationCategory == DesignationCategoryDefOf.Security;
-                    else if (Skill == SkillDefOf.Melee) criteria = (thing) => thing.IsMeleeWeapon | thing.designationCategory == DesignationCategoryDefOf.Security;
+                    if (Skill == SkillDefOf.Shooting) criteria = (thing) => thing.IsRangedWeapon | thing.building.IsTurret | thing.building.isTrap;
+                    else if (Skill == SkillDefOf.Melee) criteria = (thing) => thing.IsMeleeWeapon | thing.building.isTrap;
                     else if (Skill == SkillDefOf.Construction) criteria = (thing) => thing.BuildableByPlayer;
                     else if (Skill == SkillDefOf.Cooking) criteria = (thing) => thing.ingestible.IsMeal | thing.building.isMealSource;
                     else if (Skill == SkillDefOf.Plants) criteria = (thing) => thing.plant != null;

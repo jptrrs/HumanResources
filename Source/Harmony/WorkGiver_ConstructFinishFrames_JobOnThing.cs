@@ -25,10 +25,6 @@ namespace HumanResources
                 {
                     return true;
                 }
-                if (frame.MaterialsNeeded().Count > 0)
-                {
-                    return true;
-                }
                 var requisites = t.def.entityDefToBuild.researchPrerequisites;
                 if (!requisites.NullOrEmpty())
                 {

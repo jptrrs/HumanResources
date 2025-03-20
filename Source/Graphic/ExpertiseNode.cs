@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using Verse;
+using static RimWorld.MechClusterSketch;
 
 namespace HumanResources
 {
@@ -43,7 +44,7 @@ namespace HumanResources
         //
         private Pawn Pawn;
 
-        private bool 
+        private bool
             knownSucessorSet = false,
             knownSucessor;
 
@@ -242,19 +243,8 @@ namespace HumanResources
 
                 Text.WordWrap = true;
 
-                // attach description and further info to a tooltip
-                string root = HarmonyPatches.ResearchPal ? "ResearchPal" : "Fluffy.ResearchTree";
-                TooltipHandler.TipRegion(Rect, GetResearchTooltipString, Tech.GetHashCode());
-                if (!BuildingPresent())
-                {
-                    string languageKey = root + ".MissingFacilities";
-                    TooltipHandler.TipRegion(Rect, languageKey.Translate(string.Join(", ", MissingFacilities().Select(td => td.LabelCap).ToArray())));
-                }
-                else if (!TechprintAvailable())
-                {
-                    string languageKey = root + ".MissingTechprints";
-                    TooltipHandler.TipRegion(Rect, languageKey.Translate(Tech.TechprintsApplied, Tech.techprintCount));
-                }
+                // Attach description and further info to a tooltip
+                Tech.ToolTip(GetResearchTooltipString, Rect);
 
                 // draw unlock icons
                 if (detailedMode)
@@ -323,7 +313,7 @@ namespace HumanResources
                 icon = ResearchTree_Assets.ResearchIcon;
                 iconTip = costTip;
             }
-            else if(!Completed)
+            else if (!Completed)
             {
                 icon = ContentFinder<Texture2D>.Get("UI/exclamation", true);
                 iconTip = "MasteredButNotDocumented".Translate(Pawn);
@@ -416,24 +406,10 @@ namespace HumanResources
             _rectsSet = true;
         }
 
-
-        //        CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
-        //        Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
-        //            foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
-        //            {
-        //                if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech))
-        //                {
-        //                    amount *= 2;
-        //                    break;
-        //                }
-        //}
-        //if (researcher != null && researcher.Faction != null)
-        //{
-        //    amount /= tech.CostFactor(techComp.techLevel);
-        //}
         public bool TechprintAvailable()
         {
-            return ResearchTree_Patches.TechprintAvailable(Tech);
+            if (HarmonyPatches.ResearchTreeBase != ResearchTreeVersion.Owlchemist) return ResearchTree_Patches.TechprintAvailable(Tech);
+            return ResearchTree_Patches.TechprintAvailable_Alternate(Tech);
         }
 
         public void UpdateAssignment()

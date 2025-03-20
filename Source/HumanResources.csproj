@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -27,6 +28,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,9 +58,6 @@
     <RimWorldPath>..\..\References\RimWorld 1.3\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.3\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.1|AnyCPU'">
     <OutputPath>..\1.1\Assemblies\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -82,20 +82,53 @@
     <RimWorldPath>..\..\References\RimWorld 1.2\Assembly-CSharp_publicized.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.2\Assemblies\HugsLib.dll</HugsLibPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.3|AnyCPU'">
+    <OutputPath>..\1.3\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <RimWorldPath>..\..\..\..\refs\RW\RW1.3.3287.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.4\Assemblies\HugsLib.dll</HugsLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.4|AnyCPU'">
+    <OutputPath>..\1.4\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>none</ErrorReport>
+    <RimWorldPath>..\..\..\..\refs\RW\RW1.4.3901.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.4\Assemblies\HugsLib.dll</HugsLibPath>
+    <ModsPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == '1.5|AnyCPU'">
+    <OutputPath>..\1.5\Assemblies\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>none</ErrorReport>
+    <RimWorldPath>..\..\..\..\refs\RW\RW1.5.9102.dll</RimWorldPath>
+    <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.5\Assemblies\HugsLib.dll</HugsLibPath>
+    <ModsPath>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModsPath>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RimWorld">
+      <HintPath>$(RimWorldPath)</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="0Harmony, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.3.3\lib\net472\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>$(RimWorldPath)</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HugsLib">
       <HintPath>$(HugsLibPath)</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="JPTools">
-      <HintPath>..\..\JPTools\Assemblies\JPTools.dll</HintPath>
+    <Reference Include="JPTools" Condition="'$(Configuration)' != '1.4' AND '$(Configuration)' != '1.5'">
+      <HintPath>..\..\JPTools\1.1\Assemblies\JPTools.dll</HintPath>
+    </Reference>
+    <Reference Include="JPTools" Condition="'$(Configuration)' == '1.4' OR '$(Configuration)' == '1.5'">
+      <HintPath>..\..\JPTools\1.4\Assemblies\JPTools.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
@@ -127,7 +160,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BackupState.cs" />
-    <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Base\ResearchTreeHelper.cs" />
     <Compile Include="Base\TechDatabase.cs" />
     <Compile Include="Base\TechDefOf.cs" />
@@ -168,7 +200,6 @@
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
-    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ResearchManager_Patches.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Watcher.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
@@ -187,17 +218,12 @@
     <Compile Include="Harmony\WorkGiver_DoBill_TryFindBestBillIngredientsInSet.cs" />
     <Compile Include="Harmony\WorkGiver_FixBrokenDownBuilding_HasJobOnThing.cs" />
     <Compile Include="Harmony\WorkGiver_GrowerSow_JobOnCell.cs" />
-    <Compile Include="Knowledge\CompKnowledge.cs" />
     <Compile Include="Knowledge\CompProperties_Knowledge.cs" />
-    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
-    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
     <Compile Include="Knowledge\PawnBackgroundUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Work\JobDriver_DocumentTech.cs" />
     <Compile Include="Work\JobDriver_DocumentTechDigital.cs" />
     <Compile Include="Work\JobDriver_Knowledge.cs" />
     <Compile Include="Work\JobDriver_LearnTech.cs" />
-    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
     <Compile Include="Work\JobDriver_PlayWithWeapon.cs" />
     <Compile Include="Work\JobDriver_ScanBook.cs" />
     <Compile Include="Work\JoyGiver_PlayWithWeapon.cs" />
@@ -214,12 +240,10 @@
     <Compile Include="Harmony\EquipmentUtility_CanEquip.cs" />
     <Compile Include="Graphic\ExpertiseNode.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Extensions\Extension_Research.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipUtilityItem.cs" />
     <Compile Include="Harmony\JobGiver_PickUpOpportunisticWeapon_ShouldEquipWeapon.cs" />
     <Compile Include="Harmony\RepairUtility_PawnCanRepairEver.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Patches.cs" />
-    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
     <Compile Include="Books+Buildings\StockGenerator_TechBooks.cs" />
     <Compile Include="Work\WorkGiver_Knowledge.cs" />
     <Compile Include="Harmony\CompMannable_CompFloatMenuOptions.cs" />
@@ -227,11 +251,10 @@
   <ItemGroup Condition="'$(Configuration)' == '1.1' OR '$(Configuration)' == '1.2'">
     <Compile Include="Legacy\ExpertiseNode.cs" />
     <Compile Include="Legacy\Extensions_RW1.2.cs" />
-    <Compile Include="Legacy\Extension_Research.cs" />
     <Compile Include="Legacy\JobGiver_PickUpOpportunisticWeapon_ShouldEquip.cs" />
     <Compile Include="Legacy\Pawn_JobTracker_TryTakeOrderedJob.cs" />
     <Compile Include="Legacy\ResearchTree_Patches.cs" />
-    <Compile Include="Legacy\SimpleSidearms_Patches.cs" />
+    <Compile Include="Legacy\SimpleSidearms_Patches_RW1.2.cs" />
     <Compile Include="Legacy\StockGenerator_TechBooks.cs" />
     <Compile Include="Legacy\WorkGiver_Knowledge.cs" />
     <Compile Include="Legacy\WorkGiver_Repair_HasJobOnThing.cs" />
@@ -241,6 +264,41 @@
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == '1.2'">
     <Compile Include="Legacy\EquipmentUtility_CanEquip_RW1.2.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.3'">
+    <Compile Include="Legacy\SimpleSidearms_Patches_RW1.3.cs" />
+    <Compile Include="Legacy\Extension_Research _RW1.3.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.4'">
+    <Compile Include="Legacy\Extension_Research_RW1.4.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != '1.1' AND '$(Configuration)' != '1.2' AND '$(Configuration)' != '1.3'">
+    <Compile Include="Harmony\Compatibility\SimpleSidearms_Patches.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' != '1.5'">
+    <Compile Include="Legacy\CompUseEffect_LearnRandomResearchProject_RW1.4.cs" />
+    <Compile Include="Legacy\ResearchManager_ApplyTechprint_RW1.4.cs" />
+    <Compile Include="Legacy\CompKnowledge_RW1.4.cs" />
+    <Compile Include="Legacy\JobDriver_DocumentTech_RW1.4.cs" />
+    <Compile Include="Legacy\JobDriver_LearnWeapon_RW1.4.cs" />
+    <Compile Include="Legacy\ModBaseHumanResources_RW1.4.cs" />
+    <Compile Include="Legacy\ITab_PawnKnowledge_RW1.4.cs" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == '1.5'">
+    <Compile Include="Base\ModBaseHumanResources.cs" />
+    <Compile Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
+    <Compile Include="Harmony\ReadingOutcomeDoerGainResearch_OnReadingTick.cs" />
+    <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
+    <Compile Include="Harmony\Anomaly\ReadingOutcomeDoerGainAnomalyResearch_OnReadingTick.cs" />
+    <Compile Include="Harmony\Anomaly\Pawn_InteractionsTracker_TryInteractWithBase.cs" />
+    <Compile Include="Harmony\Anomaly\ResearchManager_ApplyKnowledge.cs" />
+    <Compile Include="Harmony\Anomaly\StudyManager_StudyAnomaly.cs" />
+    <Compile Include="Knowledge\CompUseEffect_LearnRandomResearchProject.cs" />
+    <Compile Include="Knowledge\CompKnowledge.cs" />
+    <Compile Include="Knowledge\ITab_PawnKnowledge.cs" />
+    <Compile Include="Work\JobDriver_DocumentTech.cs" />
+    <Compile Include="Work\JobDriver_LearnWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -252,10 +310,21 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.props'))" />
+    <Error Condition="!Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets'))" />
+  </Target>
+  <Import Project="..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets" Condition="Exists('..\packages\Krafs.Publicizer.2.3.0\build\Krafs.Publicizer.targets')" />
   <!--Script to copy files to RimWorld's mod folder after build-->
   <PropertyGroup>
-    <ModFolder>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModFolder>
+    <ModFolder>$(ModsPath)</ModFolder>
   </PropertyGroup>
   <Target Name="ModFiles" AfterTargets="Build">
     <ItemGroup>

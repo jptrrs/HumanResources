@@ -21,11 +21,11 @@ namespace HumanResources
 
         private float scrollViewHeight;
 
-        private static readonly Color 
+        private static readonly Color
             ThingLabelColor = new Color(0.9f, 0.9f, 0.9f, 1f),
             HighlightColor = new Color(0.5f, 0.5f, 0.5f, 1f);
 
-        private const float 
+        private const float
             ThingIconSize = 28f,
             ThingRowHeight = 28f,
             ThingLeftX = 36f,
