@@ -800,6 +800,7 @@ namespace HumanResources
             }
             float num = tech.GetProgress(expertise);
             num += amount / total;
+            if (num > 1f) num = 1f;
             expertise[tech] = num;
         }
 
