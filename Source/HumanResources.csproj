@@ -109,7 +109,8 @@
     <ErrorReport>none</ErrorReport>
     <RimWorldPath>..\..\..\..\refs\RW\RW1.5.9102.dll</RimWorldPath>
     <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.5\Assemblies\HugsLib.dll</HugsLibPath>
-    <ModsPath>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModsPath>
+    <ModsPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModsPath>
+    <!--<ModsPath>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModsPath>-->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RimWorld">
@@ -200,7 +201,6 @@
     <Compile Include="Harmony\HarmonyPatches.cs" />
     <Compile Include="Harmony\Listing_TreeThingFilter_Visible.cs" />
     <Compile Include="Harmony\MainTabWindow_Inspect_GetLabel.cs" />
-    <Compile Include="Harmony\BookUtility_IsValidBook.cs" />
     <Compile Include="Harmony\ResearchManager_Patches.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Watcher.cs" />
     <Compile Include="Harmony\ResearchTree_ResearchPal\ResearchTree_Assets.cs" />
@@ -288,6 +288,7 @@
   <ItemGroup Condition="'$(Configuration)' == '1.5'">
     <Compile Include="Base\ModBaseHumanResources.cs" />
     <Compile Include="Extensions\Extension_Research.cs" />
+    <Compile Include="Harmony\BookUtility_IsValidBook.cs" />
     <Compile Include="Harmony\ResearchManager_ApplyTechprint.cs" />
     <Compile Include="Harmony\ReadingOutcomeDoerGainResearch_OnReadingTick.cs" />
     <Compile Include="Harmony\Anomaly\MainTabWindow_Research_DrawProjectInfo.cs" />
