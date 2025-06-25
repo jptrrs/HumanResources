@@ -168,7 +168,13 @@ namespace HumanResources
             }
 
             // Node
-            IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
+            if ((HarmonyPatches.ResearchTreeBase & ResearchTreeVersion.Mlie) != 0)
+            {
+                IsVisibleInfo = AccessTools.Method(NodeType(), "IsWithinViewport");
+            }
+            else            {
+                IsVisibleInfo = AccessTools.Method(NodeType(), "IsVisible");
+            }
             RectInfo = GetPropertyOrFeedback(NodeType(), "Rect", ref FailedProperties);
             RightInfo = GetPropertyOrFeedback(NodeType(), "Right", ref FailedProperties);
             _rightInfo = GetFieldOrFeedback(NodeType(), "_right", ref FailedFields);
@@ -673,7 +679,7 @@ namespace HumanResources
             bool available = (bool)AvailableInfo.GetValue(__instance);
             bool completed = Research.IsFinished; //simplified
 
-            if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect }))
+            if (!(bool)IsVisibleInfo.Invoke(__instance, new object[] { visibleRect })) //Error on latest Mlie's
             {
                 HighlightedProxy(__instance, false);
                 return false;
