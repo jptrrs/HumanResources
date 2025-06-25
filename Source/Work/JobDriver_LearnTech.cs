@@ -90,10 +90,11 @@ namespace HumanResources
             acquireKnowledge.tickAction = delegate ()
             {
                 Pawn actor = acquireKnowledge.actor;
-                float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true);
-                num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
-                float workAmount = IsResearch ? 1f : job.bill.recipe.workAmount;
-                project.Learned(num, workAmount, actor, job.bill == null);
+                //float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true); //handled be the final method now
+                //num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
+                float num = TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
+                float cost = IsResearch ? 1f : job.bill.recipe.workAmount;
+                project.Learned(num, cost, actor, job.bill == null);
                 actor.skills.Learn(SkillDefOf.Intellectual, 0.1f, false);
                 actor.GainComfortFromCellIfPossible(true);
             };

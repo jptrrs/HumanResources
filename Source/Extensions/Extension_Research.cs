@@ -774,22 +774,36 @@ namespace HumanResources
         public static void Learned(this ResearchProjectDef tech, float amount, float recipeCost, Pawn researcher, bool research = false)
         {
             float total = research ? tech.SafeBaseCost() : recipeCost * tech.StuffCostFactor();
+            float initialAmount = amount;
             amount *= research ? ResearchPointsPerWorkTick : StudyPointsPerWorkTick;
-            amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true); //Because, why not?
+            amount *= researcher.GetStatValue(StatDefOf.ResearchSpeed, true); //research speed included even for studying tasks, avoiding huge discrepancies for a pawn to acquire a tech
+            amount *= researcher.GetStatValue(StatDefOf.GlobalLearningFactor, true);
             CompKnowledge techComp = researcher.TryGetComp<CompKnowledge>();
             Dictionary<ResearchProjectDef, float> expertise = techComp.expertise;
+
+            bool withSucessor = false;
             foreach (ResearchProjectDef sucessor in expertise.Keys.Where(x => x.IsKnownBy(researcher)))
             {
                 if (!sucessor.prerequisites.NullOrEmpty() && sucessor.prerequisites.Contains(tech)) //faster learning for known sucessors 
                 {
                     amount *= 2;
+                    withSucessor = true;
                     break;
                 }
             }
+
+            float factionCostFactor = 0f;
             if (researcher != null && researcher.Faction != null)
             {
-                amount /= tech.CostFactor(techComp.techLevel); //modulates acoording to faction tech level
+                factionCostFactor = tech.CostFactor(techComp.techLevel);
+                amount /= factionCostFactor; //modulates acoording to faction tech level
             }
+
+            if (Prefs.LogVerbose)
+            {
+                Log.Message($"[HumanResources] {researcher.LabelShortCap} is learning {tech.label} from {(research ? "research" : "studying it")}. Processing {Math.Round(initialAmount, 3).ToString("0.###")}/{recipeCost} -> {Math.Round(amount, 3).ToString("0.###")}/{total} points. (faction cost factor: {factionCostFactor.ToStringPercent()}{(withSucessor ? ", [known sucessor]" : "")})");
+            }
+
             if (DebugSettings.fastResearch)
             {
                 amount *= 500f;
