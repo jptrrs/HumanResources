@@ -107,10 +107,11 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>none</ErrorReport>
-    <RimWorldPath>..\..\..\..\refs\RW\RW1.5.9102.dll</RimWorldPath>
+    <RimWorldPath>..\..\..\..\..\..\..\Games\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</RimWorldPath>
+    <!--<RimWorldPath>..\..\..\..\refs\RW\RW1.5.9102.dll</RimWorldPath>-->
     <HugsLibPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\workshop\content\294100\818773962\v1.5\Assemblies\HugsLib.dll</HugsLibPath>
-    <ModsPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModsPath>
-    <!--<ModsPath>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModsPath>-->
+    <!--<ModsPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods</ModsPath>-->
+    <ModsPath>..\..\..\..\..\..\..\Games\RimWorld\Mods</ModsPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.3.6.0, Culture=neutral, processorArchitecture=MSIL">

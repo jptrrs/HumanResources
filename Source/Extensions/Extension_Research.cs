@@ -2,15 +2,12 @@
 using HugsLib.Utils;
 using RimWorld;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Assertions.Must;
 using Verse;
 
 namespace HumanResources
@@ -657,12 +654,12 @@ namespace HumanResources
             if (!complete) return;
             if (!BuildingPresentProxy(tech))
             {
-                if (ResearchNodesCache.ContainsKey(tech))
-                {
+                //if (ResearchNodesCache.ContainsKey(tech))
+                //{
                     string languageKey = root + ".MissingFacilities";
                     DispatchToolTip(rect, languageKey.Translate(string.Join(", ", MissingFacilitiesProxy(tech)?.Select(td => td.LabelCap).ToArray())));
-                }
-                else Log.Error($"[HumanResources] {tech.LabelCap} is uncached! ResearchNodesCache contains {ResearchNodesCache.Count} techs");
+                //}
+                //else Log.Error($"[HumanResources] {tech.LabelCap} is uncached! ResearchNodesCache contains {ResearchNodesCache.Count} techs");
             }
             else if (!tech.TechprintRequirementMet)
             {
