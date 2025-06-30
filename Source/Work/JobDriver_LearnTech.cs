@@ -71,7 +71,7 @@ namespace HumanResources
             acquireKnowledge.AddEndCondition(delegate
             {
                 Pawn actor = acquireKnowledge.actor;
-                if (expertise.ContainsKey(project) && expertise[project] > 1f)
+                if (expertise.ContainsKey(project) && expertise[project] >= 1f)
                 {
                     if (techComp.LearnTech(project))
                     {
@@ -90,8 +90,6 @@ namespace HumanResources
             acquireKnowledge.tickAction = delegate ()
             {
                 Pawn actor = acquireKnowledge.actor;
-                //float num = actor.GetStatValue(StatDefOf.ResearchSpeed, true); //handled be the final method now
-                //num *= TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
                 float num = TargetThingA.GetStatValue(StatDefOf.ResearchSpeedFactor, true);
                 float cost = IsResearch ? 1f : job.bill.recipe.workAmount;
                 project.Learned(num, cost, actor, job.bill == null);
