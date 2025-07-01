@@ -12,7 +12,7 @@ namespace HumanResources
             Stance_Cooldown stance = pawn.stances.curStance as Stance_Cooldown;
             if (stance != null) stance.ticksLeft++;
             else pawn.stances.SetStance(new Stance_Cooldown(2, target, verbToUse));
-            if (verbToUse.verbProps != null && verbToUse.verbProps.warmupTime > 0)
+            if (verbToUse?.verbProps != null && verbToUse.verbProps.warmupTime > 0)
             {
                 int warmup = (int)(verbToUse.verbProps.AdjustedFullCycleTime(verbToUse, pawn).SecondsToTicks() * warmupSoundFactor);
                 if ((ticksSpentAlready % warmup) == 0)
