@@ -22,36 +22,50 @@ namespace HumanResources
             return true;
         }
 
-        protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
+        protected override bool ValidateChosenWeapons(Pawn pawn, Thing t, Bill bill, ref byte failReason, ref List<ThingDef> unavailable)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            IEnumerable<ThingDef> known = techComp.knownWeapons;
-            IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
-            IEnumerable<ThingDef> available = unlocked.hardWeapons.Concat(craftable);
-            IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            IEnumerable<ThingDef> feared = techComp.fearedWeapons;
-            IEnumerable<ThingDef> unavailable = chosen.Except(known).Where(x => !available.Contains(x));
-            var result = feared.EnumerableNullOrEmpty() ? chosen.Intersect(unavailable) : chosen.Intersect(unavailable).Except(feared);
-            return result;
+            if (!WorkGiver_DoBill.IsUsableIngredient(t, bill))
+            {
+                if (failReason < 1) failReason = 1;
+                return false; // no weapon found => NoWeaponsFoundToLearn
+            }
+            if (techComp.knownWeapons.Contains(t.def))
+            {
+                if (failReason < 2) failReason = 2;
+                return false; // weapon found, but already proficient => NoWeaponToLearn 
+            }
+            if (unlocked.hardWeapons.Concat(techComp.craftableWeapons).Contains(t.def))
+            {
+                if (failReason < 3) failReason = 3;
+                return false; // weapon found, not proficient, but corresponding tech is available => NoWeaponsFoundToLearn 
+            }
+            if (techComp.fearedWeapons != null && techComp.fearedWeapons.Contains(t.def))
+            {
+                if (failReason < 4) failReason = 4;
+                return false; // weapon found, not proficient, unknown tech, but pawn traumatized by it => FearedWeapon
+            }
+            failReason = 0;
+            return true; //found relevant weapon, allowed to proceed.
         }
 
-        protected override bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
+        protected override void Feedback(Pawn pawn, byte reason, List<ThingDef> unavailable)
         {
-            if (TryFindBestBillIngredients(bill, pawn, giver as Thing, chosenIngThings, missingIngredients))
+            switch (reason)
             {
-                var studyWeapons = StudyWeapons(bill, pawn);
-                chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
-                if (chosenIngThings.Any())
-                {
-                    if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
-                    return studyWeapons.Any();
-                }
-                var traumas = pawn.TryGetComp<CompKnowledge>().fearedWeapons;
-                if (!traumas.NullOrEmpty() && chosenIngThings.All(x => traumas.Contains(x.Thing.def))) JobFailReason.Is("FearedWeapon".Translate(pawn));
+                case 1:
+                    JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
+                    break;
+                case 2:
+                    JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+                    break;
+                case 3:
+                    JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null); //(TO DO: new msg, opposite of "MissingRequirementToLearnWeapon")
+                    break;
+                case 4:
+                    JobFailReason.Is("FearedWeapon".Translate(pawn));
+                    break;
             }
-            if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
-            return false;
         }
     }
 }

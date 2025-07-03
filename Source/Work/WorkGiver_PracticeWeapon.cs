@@ -14,18 +14,21 @@ namespace HumanResources
             return knownWeapons == null || !knownWeapons.Any();
         }
 
-        protected override IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
+        protected override bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen, List<IngredientCount> missingIngredients)
         {
-            IEnumerable<ThingDef> knownWeapons = pawn.TryGetComp<CompKnowledge>().knownWeapons;
-            IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            return chosen.Intersect(knownWeapons);
+            bool result = ValidateChosenWeapons(pawn, bill);
+            if (!JobFailReason.HaveReason)
+            {
+                JobFailReason.Is("NoWeaponEquipped".Translate(), null); // Do we need a more detailed feedback message here?
+            }
+            return result;
         }
 
-        protected override bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
+        private bool ValidateChosenWeapons(Pawn pawn, Bill bill)
         {
-            bool result = pawn.equipment.Primary != null && bill.ingredientFilter.AllowedThingDefs.Contains(pawn.equipment.Primary.def);
-            if (!JobFailReason.HaveReason && !result) JobFailReason.Is("NoWeaponEquipped".Translate(pawn), null);
-            return result;
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            Thing equipped = pawn.equipment.Primary;
+            return equipped != null && WorkGiver_DoBill.IsUsableIngredient(equipped, bill) && techComp.knownWeapons.Contains(equipped.def);
         }
     }
 }

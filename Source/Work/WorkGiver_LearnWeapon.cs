@@ -33,14 +33,14 @@ namespace HumanResources
                 if (billGiver != null && ThingIsUsableBillGiver(thing) && billGiver.BillStack.AnyShouldDoNow && billGiver.UsableForBillsAfterFueling())
                 {
                     LocalTargetInfo target = thing;
-                    if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn)) //basic desk availabilty
+                    if (pawn.CanReserve(target, 1, -1, null, forced) && !thing.IsBurning() && !thing.IsForbidden(pawn))
                     {
-                        if (IsRangeClear(thing)) //check is shooting area is clear if it exists.
+                        if (IsRangeClear(thing))
                         {
                             billGiver.BillStack.RemoveIncompletableBills();
                             foreach (Bill bill in RelevantBills(thing, pawn))
                             {
-                                if (ValidateChosenWeapons(bill, pawn, billGiver)) //check bill filter
+                                if (TryFindBestBillIngredients(bill, pawn, billGiver as Thing, chosenIngThings, missingIngredients))
                                 {
                                     actualJob = StartBillJob(pawn, billGiver, bill);
                                     lastVerifiedJobTick = tick;
@@ -73,25 +73,8 @@ namespace HumanResources
                 IEnumerable<ThingDef> studyMaterial = available.Except(knownWeapons);
                 return !studyMaterial.Any();
             }
+            Log.Message($"[HumanResources] {pawn.Name} is skipping learning weapons.");
             return true;
-        }
-
-        protected virtual IEnumerable<ThingDef> StudyWeapons(Bill bill, Pawn pawn)
-        {
-            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            IEnumerable<ThingDef> known = techComp.knownWeapons;
-            IEnumerable<ThingDef> craftable = techComp.craftableWeapons;
-            IEnumerable<ThingDef> allowed = unlocked.hardWeapons.Concat(craftable);
-            IEnumerable<ThingDef> chosen = bill.ingredientFilter.AllowedThingDefs;
-            IEnumerable<ThingDef> viable = chosen.Intersect(allowed).Except(known);
-            IEnumerable<ThingDef> unavailable = chosen.Except(viable);
-            if (viable.EnumerableNullOrEmpty() && !unavailable.EnumerableNullOrEmpty())
-            {
-                string thoseWeapons = "ThoseWeapons".Translate();
-                string listing = (unavailable.EnumerableCount() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : thoseWeapons;
-                JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing));
-            }
-            return viable;
         }
 
         protected Job StartBillJob(Pawn pawn, IBillGiver giver, Bill bill)
@@ -131,21 +114,53 @@ namespace HumanResources
             return job2;
         }
 
-        protected virtual bool ValidateChosenWeapons(Bill bill, Pawn pawn, IBillGiver giver)
+        protected virtual new bool TryFindBestBillIngredients(Bill bill, Pawn pawn, Thing billGiver, List<ThingCount> chosen, List<IngredientCount> missingIngredients)
         {
-            if (TryFindBestBillIngredients(bill, pawn, giver as Thing, chosenIngThings, missingIngredients))
+            byte reason = 0;
+            List<ThingDef> unavailable = new List<ThingDef>();
+            bool result = WorkGiver_DoBill.TryFindBestIngredientsHelper((Thing t) => ValidateChosenWeapons(pawn, t, bill, ref reason, ref unavailable), (List<Thing> foundThings) => WorkGiver_DoBill.TryFindBestBillIngredientsInSet(foundThings, bill, chosen, WorkGiver_DoBill.GetBillGiverRootCell(billGiver, pawn), billGiver is Pawn, missingIngredients), bill.recipe.ingredients, pawn, billGiver, chosen, bill.ingredientSearchRadius);
+            if (!JobFailReason.HaveReason && reason > 0) Feedback(pawn, reason, unavailable);
+            return result;
+        }
+
+        protected virtual bool ValidateChosenWeapons(Pawn pawn, Thing t, Bill bill, ref byte failReason, ref List<ThingDef> unavailable)
+        {
+            CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
+            if (!WorkGiver_DoBill.IsUsableIngredient(t, bill))
             {
-                var studyWeapons = StudyWeapons(bill, pawn);
-                chosenIngThings.RemoveAll(x => !studyWeapons.Contains(x.Thing.def));
-                if (chosenIngThings.Any())
-                {
-                    if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
-                    return studyWeapons.Any();
-                }
+                if (failReason < 1) failReason = 1;
+                return false; // no weapon found => NoWeaponsFoundToLearn
             }
-            if (!JobFailReason.HaveReason) JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
-            if (FloatMenuMakerMap.makingFor != pawn) bill.nextTickToSearchForIngredients = Find.TickManager.TicksGame;
-            return false;
+            if (techComp.knownWeapons.Contains(t.def))
+            {
+                if (failReason < 2) failReason = 2;
+                return false; // weapon found, but already proficient => NoWeaponToLearn
+            }
+            if (!unlocked.hardWeapons.Concat(techComp.craftableWeapons).Contains(t.def))
+            {
+                if (failReason < 3) failReason = 3;
+                unavailable.Add(t.def);
+                return false; // weapon found, not proficient, but corresponding tech unavailable => MissingRequirementToLearnWeapon
+            }
+            failReason = 0;
+            return true; //found relevant weapon, allowed to proceed.
+        }
+
+        protected virtual void Feedback(Pawn pawn, byte reason, List<ThingDef> unavailable)
+        {
+            switch (reason)
+            {
+                case 1:
+                    JobFailReason.Is("NoWeaponsFoundToLearn".Translate(pawn), null);
+                    break;
+                case 2:
+                    JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
+                    break;
+                case 3:
+                    string listing = (unavailable.Count() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : (string)"ThoseWeapons".Translate();
+                    JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing), null);
+                    break;
+            }
         }
     }
 }

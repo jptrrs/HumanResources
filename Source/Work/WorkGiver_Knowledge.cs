@@ -37,12 +37,15 @@ namespace HumanResources
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            Building_WorkTable desk = t as Building_WorkTable;
-            if (desk != null)
+            if (pawn.TryGetComp<CompKnowledge>() != null)
             {
-                var relevantBills = RelevantBills(desk, pawn);
-                if (!CheckJobOnThing(pawn, t, forced) || relevantBills.EnumerableNullOrEmpty()) return false;
-                return JobOnThing(pawn, t, forced) != null;
+                Building_WorkTable desk = t as Building_WorkTable;
+                if (desk != null)
+                {
+                    var relevantBills = RelevantBills(desk, pawn);
+                    if (!CheckJobOnThing(pawn, t, forced) || relevantBills.EnumerableNullOrEmpty()) return false;
+                    return JobOnThing(pawn, t, forced) != null;
+                }
             }
             return false;
         }
