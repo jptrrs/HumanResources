@@ -126,7 +126,7 @@ namespace HumanResources
         protected virtual bool ValidateChosenWeapons(Pawn pawn, Thing t, Bill bill, ref byte failReason, ref List<ThingDef> unavailable)
         {
             CompKnowledge techComp = pawn.TryGetComp<CompKnowledge>();
-            if (!WorkGiver_DoBill.IsUsableIngredient(t, bill))
+            if (!WorkGiver_DoBill.IsUsableIngredient(t, bill) || CompBiocodable.IsBiocoded(t))
             {
                 if (failReason < 1) failReason = 1;
                 return false; // no weapon found => NoWeaponsFoundToLearn
