@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Verse;
+using JPTools;
 
 namespace HumanResources
 {
@@ -85,9 +86,9 @@ namespace HumanResources
             }
             if (Prefs.LogVerbose)
             {
-                if (!startingWeapons.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {startingWeapons.Count()} starting scenario weapons: {startingWeapons.Select(x => x.label).ToStringSafeEnumerable()}");
-                if (!scenarioTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {scenarioTechs.Count()} starting scenario techs: {scenarioTechs.Select(x => x.label).ToStringSafeEnumerable()}");
-                if (!factionTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {factionTechs.Count()} starting techs for player faction ({playerFaction}): {factionTechs.Select(x => x.label).ToStringSafeEnumerable()}");
+                if (!startingWeapons.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {startingWeapons.Count()} starting scenario weapons: {startingWeapons.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable()}");
+                if (!scenarioTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {scenarioTechs.Count()} starting scenario techs: {scenarioTechs.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable()}");
+                if (!factionTechs.EnumerableNullOrEmpty()) Log.Message($"[HumanResources] Found {factionTechs.Count()} starting techs for player faction ({playerFaction}): {factionTechs.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable()}");
             }
             else
             {

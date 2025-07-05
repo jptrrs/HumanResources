@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using JPTools;
 using RimWorld;
 using System.Linq;
 using Verse;
@@ -16,7 +17,7 @@ namespace HumanResources
             var requisites = t.def.researchPrerequisites;
             if (requisites.NullOrEmpty() || requisites.All(x => x.IsKnownBy(pawn))) return;
             var missing = requisites.Where(x => !x.IsKnownBy(pawn));
-            string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;
+            string preReqText = (missing.Count() > 1) ? missing.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable() : Utility.DefLabelFailSafe(missing.FirstOrDefault());
             JobFailReason.Is("DoesntKnowHowToRepair".Translate(pawn, t.def.label, preReqText));
             __result = false;
         }

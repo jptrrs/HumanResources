@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using Verse;
 using Verse.AI;
+using JPTools;
 
 namespace HumanResources
 {
@@ -25,7 +26,7 @@ namespace HumanResources
                     if (!flag)
                     {
                         var missing = requisites.Where(x => !x.IsKnownBy(pawn));
-                        string preReqText = (missing.Count() > 1) ? missing.Select(x => x.label).ToStringSafeEnumerable() : missing.FirstOrDefault().label;
+                        string preReqText = (missing.Count() > 1) ? missing.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable() : Utility.DefLabelFailSafe(missing.FirstOrDefault());
                         JobFailReason.Is("DoesntKnowThisPlant".Translate(pawn, ___wantedPlantDef, preReqText));
                         __result = null;
                     }

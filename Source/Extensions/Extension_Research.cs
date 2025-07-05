@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using UnityEngine;
 using Verse;
+using JPTools;
 
 namespace HumanResources
 {
@@ -99,7 +100,7 @@ namespace HumanResources
         public static bool CreateStuff(this ResearchProjectDef tech, ThingFilter filter, ThingDef pending = null, TechLevel cutoff = TechLevel.Spacer)
         {
             string name = "Tech_" + tech.defName;
-            string label = "KnowledgeLabel".Translate(tech.label);  
+            string label = "KnowledgeLabel".Translate(Utility.DefLabelFailSafe(tech));  
             ThingDef techStuff = new ThingDef
             {
                 thingClass = typeof(ThingWithComps),
@@ -150,8 +151,6 @@ namespace HumanResources
                 techStuff.stuffProps.categories.Add(stuffCatDef);
             }
             techStuff.ResolveReferences();
-            //var usedHashes = ShortHashGiver.takenHashesPerDeftype[typeof(ThingDef)];
-            //ShortHashGiver.GiveShortHash(techStuff, typeof(ThingDef), usedHashes);
             InjectedDefHasher.GiveShortHashToDef(techStuff, typeof(ThingDef));
             DefDatabase<ThingDef>.Add(techStuff);
             filter.SetAllow(techStuff, true);
@@ -682,7 +681,7 @@ namespace HumanResources
             }
             Find.ResearchManager.FinishProject(project);
             if (careful) project.prerequisites.AddRange(prerequisitesCopy);
-            Messages.Message("MessageFiledTech".Translate(project.label), place, MessageTypeDefOf.TaskCompletion, true);
+            Messages.Message("MessageFiledTech".Translate(Utility.DefLabelFailSafe(project)), place, MessageTypeDefOf.TaskCompletion, true);
             project.WipeAssignments();
         }
 
@@ -706,7 +705,7 @@ namespace HumanResources
                 Dictionary<ResearchProjectDef, float> progress = (Dictionary<ResearchProjectDef, float>)progressInfo.GetValue(Find.ResearchManager);
                 progress[tech] = 0f;
                 unlocked.TechsArchived.Remove(tech);
-                Messages.Message("MessageEjectedTech".Translate(tech.label), place, MessageTypeDefOf.TaskCompletion, true);
+                Messages.Message("MessageEjectedTech".Translate(Utility.DefLabelFailSafe(tech)), place, MessageTypeDefOf.TaskCompletion, true);
             }
         }
 
@@ -798,7 +797,7 @@ namespace HumanResources
 
             if (Prefs.LogVerbose)
             {
-                Log.Message($"[HumanResources] {researcher.LabelShortCap} is learning {tech.label} from {(research ? "research" : "studying it")}. Processing {Math.Round(initialAmount, 3).ToString("0.###")}/{recipeCost} -> {Math.Round(amount, 3).ToString("0.###")}/{total} points. (faction cost factor: {factionCostFactor.ToStringPercent()}{(withSucessor ? ", [known sucessor]" : "")})");
+                Log.Message($"[HumanResources] {researcher.LabelShortCap} is learning {Utility.DefLabelFailSafe(tech)} from {(research ? "research" : "studying it")}. Processing {Math.Round(initialAmount, 3).ToString("0.###")}/{recipeCost} -> {Math.Round(amount, 3).ToString("0.###")}/{total} points. (faction cost factor: {factionCostFactor.ToStringPercent()}{(withSucessor ? ", [known sucessor]" : "")})");
             }
 
             if (DebugSettings.fastResearch)

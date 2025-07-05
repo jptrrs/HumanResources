@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Verse;
 using Verse.AI;
+using JPTools;
 
 namespace HumanResources
 {
@@ -157,7 +158,7 @@ namespace HumanResources
                     JobFailReason.Is("NoWeaponToLearn".Translate(pawn), null);
                     break;
                 case 3:
-                    string listing = (unavailable.Count() < 10) ? unavailable.Select(x => x.label).ToStringSafeEnumerable() : (string)"ThoseWeapons".Translate();
+                    string listing = (unavailable.Count() < 10) ? unavailable.Select(Utility.DefLabelFailSafe).ToStringSafeEnumerable() : (string)"ThoseWeapons".Translate();
                     JobFailReason.Is("MissingRequirementToLearnWeapon".Translate(pawn, listing), null);
                     break;
             }

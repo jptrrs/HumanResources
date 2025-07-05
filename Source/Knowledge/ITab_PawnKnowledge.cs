@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using Verse;
+using JPTools;
 
 namespace HumanResources
 {
@@ -212,7 +213,7 @@ namespace HumanResources
             if (!currentlist.EnumerableNullOrEmpty())
             {
                 var orderedList = fullTechs ? currentlist.OrderBy(x => x.techLevel) : currentlist.OrderByDescending(x => x.techLevel);
-                var expertiseList = orderedList.ThenBy(x => x.label).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout));
+                var expertiseList = orderedList.ThenBy(x => Utility.DefLabelFailSafe).Select(x => new ExpertiseNode(x, PawnToShowInfoAbout));
                 Rect viewRect = new Rect(Vector2.zero, viewSize);
                 Widgets.BeginScrollView(scrollrect, ref scrollPosition, viewRect, true);
                 Vector2 pos = new Vector2(0f, 0f);
@@ -278,7 +279,7 @@ namespace HumanResources
             var knownWeapons = PawnToShowInfoAbout.TryGetComp<CompKnowledge>()?.knownWeapons.Where(weaponsFilter);
             if (!knownWeapons.EnumerableNullOrEmpty())
             {
-                var weaponsList = knownWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => x.label).ToList();
+                var weaponsList = knownWeapons.OrderBy(x => x.techLevel).ThenBy(x => x.IsMeleeWeapon).ThenBy(x => Utility.DefLabelFailSafe(x)).ToList();
                 float viewHeight = rowHeight * weaponsList.Count();
                 float viewWidth = (scrollrect.width - scrollBarWidth);
                 Rect viewRect = new Rect(0f, 0f, viewWidth, viewHeight);
